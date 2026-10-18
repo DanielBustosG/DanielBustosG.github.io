@@ -1,0 +1,1 @@
+{"cond": "A", "rep": 1, "seed": 101, "temp_K": 300.0, "prod_steps": 500000, "threads": "3", "prod_wall_s": 2942.769232273102, "ns_per_day": 29.360100361407376}

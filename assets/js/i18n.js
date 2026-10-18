@@ -461,6 +461,15 @@ var I18N_EN = {
     '<p><a class="btn btn-ghost" href="Bioinformatics-Complementary/">View material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
     '<span class="badge badge-complementary">Complementary course</span>' +
+    '<span class="project-years">27 notebooks</span></div>' +
+    '<h3><a href="DataScience/">Data Science for Computational Drug Discovery and Biomedical Research</a></h3>' +
+    '<p class="project-role">LBQC onboarding course · Self-developed</p>' +
+    '<p>Data science for students joining the group: working environment and reproducibility, data ' +
+    'handling and quality, statistics, machine learning, and the lab\'s pipelines (virtual screening, ' +
+    'molecular dynamics, omics and networks) as case studies, with real data in Google Colab.</p>' +
+    '<p><a class="btn btn-ghost" href="DataScience/">View material →</a></p></article>' +
+    '<article class="project"><div class="project-head">' +
+    '<span class="badge badge-complementary">Complementary course</span>' +
     '<span class="project-years">19 notebooks</span></div>' +
     '<h3><a href="Cheminformatics/">Cheminformatics</a></h3>' +
     '<p class="project-role">Self-developed course · Cheminformatics for Computer Scientists</p>' +

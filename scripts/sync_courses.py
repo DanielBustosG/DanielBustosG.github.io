@@ -18,7 +18,7 @@ Qué hace con cada curso:
   - BGM411 tiene dos ediciones (Python y R) en BGM411/Python/ y BGM411/R/.
 
 Los originales NO se modifican. El índice de cada curso (BGM324/index.html,
-BGM411/index.html) se mantiene a mano: si agregas una unidad, súmale su tarjeta.
+BGM411/index.html, DataScience/index.html...) se mantiene a mano: si agregas una unidad, súmale su tarjeta.
 """
 import re
 import shutil
@@ -77,6 +77,30 @@ COURSES = {
             (r'(\.\./\.\./BGM324/[0-9A-Za-z_]+/)index\.html', r"\1index_es.html"),
             # Navegación entre unidades del mismo curso: a la versión en español.
             (r'href="\.\./(U[0-9AB]+_[A-Za-z_]+)/(?:index\.html)?"', r'href="../\1/index_es.html"'),
+        ],
+    },
+    # Curso complementario de ciencia de datos (onboarding del LBQC), 27 unidades en notebooks.
+    "DataScience": {
+        "src": DOCS / "DataScience/Material",
+        "label": "Data Science &middot; complementary course",
+        "zip": "DataScience_notebooks.zip",
+        # Los notebooks leen sus datos congelados desde data/ en el repositorio publicado.
+        "extra": ["data"],
+        "replace": [
+            ("USER/REPO", REPO),
+            ("DataScience/Material/", "DataScience/"),
+            # Enlaces cruzados a otros cursos (estructura local de carpetas → sitio).
+            ("../../../ChemInformatics/Material/", "../../Cheminformatics/"),
+            ("../../../IA_BGM411/Material_Estudio_IA_Python/", "../../BGM411/Python/"),
+            ("../../../Bioinformatica_BGM324/Material_Estudio/", "../../BGM324/"),
+        ],
+        # Las salidas de los notebooks muestran rutas locales del Mac donde se ejecutaron
+        # (avisos de librerías, carpetas temporales): se reemplazan por rutas genéricas.
+        "replace_re": [
+            (r"/Users/[^/\s]+/\.claude-science/conda/envs/[^/\s]+/lib/(python3\.\d+)/site-packages/",
+             r"/usr/lib/\1/site-packages/"),
+            (r"/Users/[^/\s]+/\.claude-science/orgs/[0-9a-f-]+/workspaces/[0-9a-f-]+/\.tmp/", "/tmp/"),
+            (r"/Users/[^/\s]+/Documents/Bioinformatica_BGM324/DataScience/(?:Material/)?data", "../data"),
         ],
     },
     # Material de apoyo (no son cursos formales).
@@ -147,6 +171,8 @@ def sync(code, src):
             new = text
             for old, rep in cfg["replace"]:
                 new = new.replace(old, rep)
+            for pat, rep in cfg.get("replace_re", []):
+                new = re.sub(pat, rep, new)
             if f.name == "index_es.html":
                 for pat, rep in cfg.get("replace_es", []):
                     new = re.sub(pat, rep, new)
@@ -164,6 +190,14 @@ def sync(code, src):
             if new != text:
                 f.write_text(new, encoding="utf-8")
         print(f"   {unit.name}: {sum(1 for x in out.rglob('*') if x.is_file())} archivos")
+    for name in cfg.get("extra", []):
+        # Carpetas de apoyo sin index.html (p. ej. datos): se copian tal cual.
+        if (src / name).is_dir():
+            if (dest / name).exists():
+                shutil.rmtree(dest / name)
+            shutil.copytree(src / name, dest / name, ignore=shutil.ignore_patterns(
+                ".DS_Store", "__pycache__", "*.pyc", ".gitkeep", ".ipynb_checkpoints"))
+            print(f"   {name}/: {sum(1 for x in (dest / name).rglob('*') if x.is_file())} archivos")
     if cfg.get("zip"):
         zpath = dest / cfg["zip"]
         folder = Path(cfg["zip"]).stem

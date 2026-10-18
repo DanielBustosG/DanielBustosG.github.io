@@ -1,0 +1,49 @@
+{
+ "datasets": {
+  "protein_families.csv": {
+   "sha256": "f64f4b475a651010bcecab85b0ac1fb2aa1939aef0169322471ca478dc5cd3e6",
+   "n_rows": 621,
+   "n_cols": 8,
+   "size_bytes": 339260,
+   "source": "UniProtKB REST (rest.uniprot.org), reviewed entries, family queries",
+   "date": "2026-10-18",
+   "licence": "CC BY 4.0 (UniProt)"
+  },
+  "protein_families.fasta": {
+   "sha256": "6e27d2ac2d00bd3d8b20b1e8fe7a36fd18080764aafb2d2a2ab711417ed42beb",
+   "size_bytes": 275199,
+   "source": "same, FASTA export with accession|family|organism headers"
+  },
+  "drug_target_edges.csv": {
+   "sha256": "43b4084b10312d2ea5eddee90dda9727f78f9727b8c6e800db32111ae6fff437",
+   "n_rows": 16047,
+   "n_cols": 4,
+   "size_bytes": 506588,
+   "source": "ChEMBL_37 activity endpoint for 608 well-characterised ROCK1 compounds, all their human single-protein targets",
+   "licence": "CC BY-SA 3.0 (ChEMBL)"
+  },
+  "drug_target_targets.csv": {
+   "sha256": "f77d83319a7526e71cad00a6e63428d4f7d762cce79993bd1586a61c8f9c44f0",
+   "n_rows": 479,
+   "n_cols": 6,
+   "size_bytes": 41316
+  }
+ },
+ "summary": {
+  "edges": 16047,
+  "compounds": 602,
+  "targets": 479,
+  "multi_target_compounds": 560,
+  "median_degree": 5.0,
+  "max_degree": 386,
+  "protein_families": {
+   "globin": 118,
+   "serine_protease_S1": 118,
+   "lysozyme_C": 118,
+   "carbonic_anhydrase": 108,
+   "protein_kinase_AGC": 99,
+   "cytochrome_P450": 60
+  },
+  "n_sequences": 621
+ }
+}

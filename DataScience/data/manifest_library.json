@@ -1,0 +1,136 @@
+{
+ "dataset": "Ligand-based screening library for ROCK1 (actives + property-matched and random decoys)",
+ "source": "ChEMBL REST API (EBI), release ChEMBL_37 (2026-05-01); downloaded 2026-10-18",
+ "actives_from": "rock1_chembl_curated.csv (pActivity >= 6.5, exact measurements, 15-50 heavy atoms)",
+ "decoy_pool_targets": {
+  "CHEMBL204": "thrombin",
+  "CHEMBL240": "hERG",
+  "CHEMBL2039": "MAO-B",
+  "CHEMBL3371": "5-HT6",
+  "CHEMBL214": "5-HT1A",
+  "CHEMBL233": "mu opioid",
+  "CHEMBL1937": "HDAC2",
+  "CHEMBL217": "dopamine D2"
+ },
+ "licence": "CC BY-SA 3.0 (ChEMBL)",
+ "tools": "RDKit 2026.03.4, pandas 3.0.3, scipy (cKDTree)",
+ "files": {
+  "screening_library.csv": {
+   "sha256": "b6faada7f7dfc49f86ec916dd89cc542137235fd7d91d585730982c4c695fcab",
+   "n_rows": 12018,
+   "n_cols": 25,
+   "size_bytes": 3170568
+  }
+ },
+ "summary": {
+  "n_total": 12018,
+  "n_actives": 1327,
+  "n_decoys_matched": 6923,
+  "n_decoys_random": 3768,
+  "decoy_sources": {
+   "thrombin (serine protease)": 1692,
+   "mu opioid receptor (GPCR)": 1434,
+   "serotonin 5-HT6 receptor (GPCR)": 1419,
+   "hERG (ion channel)": 1392,
+   "serotonin 5-HT1A receptor (GPCR)": 1381,
+   "histone deacetylase 2": 1159,
+   "MAO-B (oxidase)": 1115,
+   "dopamine D2 receptor (GPCR)": 1099
+  },
+  "scaffolds": 4791,
+  "props_property_matched": {
+   "MolWt": [
+    404.6,
+    84.98
+   ],
+   "MolLogP": [
+    3.41,
+    1.19
+   ],
+   "TPSA": [
+    80.3,
+    31.95
+   ],
+   "HBD": [
+    1.94,
+    1.18
+   ],
+   "HBA": [
+    4.61,
+    1.56
+   ],
+   "RotB": [
+    5.51,
+    2.6
+   ]
+  },
+  "props_random": {
+   "MolWt": [
+    412.71,
+    115.77
+   ],
+   "MolLogP": [
+    3.9,
+    1.86
+   ],
+   "TPSA": [
+    60.49,
+    56.8
+   ],
+   "HBD": [
+    1.13,
+    1.96
+   ],
+   "HBA": [
+    3.95,
+    2.09
+   ],
+   "RotB": [
+    6.17,
+    3.94
+   ]
+  },
+  "props_actives": {
+   "MolWt": [
+    379.34,
+    67.5
+   ],
+   "MolLogP": [
+    3.44,
+    1.01
+   ],
+   "TPSA": [
+    84.69,
+    21.87
+   ],
+   "HBD": [
+    2.34,
+    0.86
+   ],
+   "HBA": [
+    4.64,
+    1.42
+   ],
+   "RotB": [
+    5.06,
+    2.0
+   ]
+  }
+ },
+ "sanity": {
+  "max_tanimoto_similarity_ranking_25_refs": {
+   "property_matched": {
+    "roc_auc": 0.917,
+    "ef1pct": 6.3
+   },
+   "random": {
+    "roc_auc": 0.943,
+    "ef1pct": 3.9
+   }
+  },
+  "property_only_random_forest_auc_5fold": {
+   "property_matched": 0.979,
+   "random": 0.999
+  }
+ }
+}

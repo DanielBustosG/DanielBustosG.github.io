@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es" data-title-es="Ciencia de datos · Curso complementario — Daniel Bustos" data-title-en="Data Science · Complementary course — Daniel Bustos">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ciencia de datos · Curso complementario — Daniel Bustos</title>
+<meta name="description" content="Data Science for Computational Drug Discovery and Biomedical Research: 27 notebooks de Python ejecutables en Google Colab, del entorno de trabajo y la estadística al aprendizaje automático, virtual screening, dinámica molecular, ómicas y comunicación científica.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Data Science for Computational Drug Discovery and Biomedical Research">
+<meta property="og:description" content="27 notebooks de Python, ejecutables en Google Colab.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+<script>
+  /* Tema antes de pintar, para evitar el destello claro en modo oscuro. */
+  try {
+    var t = localStorage.getItem('db-theme');
+    if (!t) t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="../assets/css/course.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-es="Saltar al contenido" data-en="Skip to content">Saltar al contenido</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="../">
+      <span class="brand-mark">DB</span>
+      <span class="brand-text">
+        <strong>Daniel Bustos</strong>
+        <small data-es="Bioinformática Estructural · UCM" data-en="Structural Bioinformatics · UCM">Bioinformática Estructural · UCM</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Data Science">
+      <a href="../" data-es="← Volver al sitio" data-en="← Back to main site">← Volver al sitio</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="course-hero">
+    <div class="wrap">
+      <span class="course-code" data-es="Curso complementario" data-en="Complementary course">Curso complementario</span>
+      <h1 data-es="Ciencia de datos" data-en="Data Science">Ciencia de datos</h1>
+      <p class="course-tagline">Data Science for Computational Drug Discovery and Biomedical Research</p>
+      <ul class="course-meta">
+        <li data-es="&lt;strong&gt;Tipo:&lt;/strong&gt; curso complementario de elaboración propia · curso de inducción del LBQC" data-en="&lt;strong&gt;Type:&lt;/strong&gt; self-developed complementary course · LBQC onboarding course"><strong>Tipo:</strong> curso complementario de elaboración propia · curso de inducción del LBQC</li>
+        <li data-es="&lt;strong&gt;Para:&lt;/strong&gt; estudiantes que se integran al grupo (tesistas de Bioingeniería Médica, magíster en computación, químicos y biólogos), con un curso de programación y sin formación previa en ciencia de datos" data-en="&lt;strong&gt;For:&lt;/strong&gt; students joining the group (medical-bioengineering thesis students, MSc computing students, chemists and biologists), with one programming course and no prior data-science training"><strong>Para:</strong> estudiantes que se integran al grupo (tesistas de Bioingeniería Médica, magíster en computación, químicos y biólogos), con un curso de programación y sin formación previa en ciencia de datos</li>
+        <li data-es="&lt;strong&gt;Autor:&lt;/strong&gt; Daniel Bustos, PhD" data-en="&lt;strong&gt;Author:&lt;/strong&gt; Daniel Bustos, PhD"><strong>Autor:</strong> Daniel Bustos, PhD</li>
+      </ul>
+      <p class="course-lede" data-es="Ciencia de datos aplicada a la investigación del laboratorio: el entorno de trabajo y la reproducibilidad, el manejo y la calidad de los datos, la estadística, el aprendizaje automático tal como se practica, y los pipelines del grupo (virtual screening, dinámica molecular, ómicas y redes) tratados como casos de estudio. Cada unidad es un &lt;strong&gt;notebook de Jupyter (.ipynb)&lt;/strong&gt; con teoría, código Python ejecutable, ejercicios y autoevaluación, y trabaja con conjuntos de datos reales congelados." data-en="Data science applied to the lab&#x27;s research: the working environment and reproducibility, data handling and quality, statistics, machine learning as it is practised, and the group&#x27;s pipelines (virtual screening, molecular dynamics, omics and networks) treated as case studies. Each unit is a &lt;strong&gt;Jupyter notebook (.ipynb)&lt;/strong&gt; with theory, runnable Python code, exercises and self-assessment, working on frozen real datasets.">Ciencia de datos aplicada a la investigación del laboratorio: el entorno de trabajo y la reproducibilidad, el manejo y la calidad de los datos, la estadística, el aprendizaje automático tal como se practica, y los pipelines del grupo (virtual screening, dinámica molecular, ómicas y redes) tratados como casos de estudio. Cada unidad es un <strong>notebook de Jupyter (.ipynb)</strong> con teoría, código Python ejecutable, ejercicios y autoevaluación, y trabaja con conjuntos de datos reales congelados.</p>
+      <div class="hero-cta" style="margin:20px 0 4px">
+        <a class="btn btn-primary" href="DataScience_notebooks.zip" download data-es="Descargar todos los notebooks (.zip) ↓" data-en="Download all notebooks (.zip) ↓">Descargar todos los notebooks (.zip) ↓</a>
+      </div>
+      <ol class="flow stats" aria-label="Estructura">
+        <li data-es="27 unidades" data-en="27 units">27 unidades</li>
+        <li data-es="7 bloques" data-en="7 blocks">7 bloques</li>
+        <li data-es="21 núcleo · 6 ampliación" data-en="21 core · 6 extended">21 núcleo · 6 ampliación</li>
+      </ol>
+      <p class="note" data-es="💡 &lt;strong&gt;Antes de empezar en Colab:&lt;/strong&gt; la primera celda de código de cada notebook indica qué instalar (casi siempre &lt;code&gt;!pip install rdkit&lt;/code&gt; y, según la unidad, otros paquetes); ejecútalo en una celda aparte y luego &lt;em&gt;Runtime → Run all&lt;/em&gt;. Los notebooks descargan sus datos desde la carpeta &lt;a href=&quot;data/&quot;&gt;data/&lt;/a&gt; de este sitio, así que necesitan conexión. Para guardar tus cambios usa &lt;em&gt;File → Save a copy in Drive&lt;/em&gt;. Los notebooks están escritos en inglés." data-en="💡 &lt;strong&gt;Before you start in Colab:&lt;/strong&gt; the first code cell of each notebook says what to install (almost always &lt;code&gt;!pip install rdkit&lt;/code&gt; plus, depending on the unit, a few other packages); run it in a separate cell, then &lt;em&gt;Runtime → Run all&lt;/em&gt;. The notebooks download their data from this site&#x27;s &lt;a href=&quot;data/&quot;&gt;data/&lt;/a&gt; folder, so they need a connection. To keep your changes use &lt;em&gt;File → Save a copy in Drive&lt;/em&gt;.">💡 <strong>Antes de empezar en Colab:</strong> la primera celda de código de cada notebook indica qué instalar (casi siempre <code>!pip install rdkit</code> y, según la unidad, otros paquetes); ejecútalo en una celda aparte y luego <em>Runtime → Run all</em>. Los notebooks descargan sus datos desde la carpeta <code>data/</code> de este sitio, así que necesitan conexión. Para guardar tus cambios usa <em>File → Save a copy in Drive</em>. Los notebooks están escritos en inglés.</p>
+      <div class="note reading-paths" data-es="&lt;p&gt;&lt;strong&gt;Rutas de lectura.&lt;/strong&gt; Las unidades marcadas &lt;em&gt;Núcleo&lt;/em&gt; forman el programa de inducción; las de &lt;em&gt;Ampliación&lt;/em&gt; sirven a tipos de proyecto específicos.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;Ruta de inducción&lt;/strong&gt; (primeras dos semanas en el laboratorio, todos los estudiantes): U1 → U2 → U3 → U4 → U5 → U6 → U11 → U12 → U23 → U24&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Ruta de modelamiento&lt;/strong&gt; (proyectos de QSAR / aprendizaje automático): U7 → U8 → U9 → U13 → U14 → U15 → U16 → U17 (+ U18, U26)&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Ruta de screening y simulación&lt;/strong&gt; (proyectos de virtual screening / dinámica molecular): U7 → U8 → U15 → U19 → U20 (+ U25)&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Ruta de datos biomédicos&lt;/strong&gt; (proyectos ómicos / clínicos): U7 → U8 → U9 → U13 → U16 → U17 → U21 (+ U10, U22)&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Programa completo&lt;/strong&gt; (un semestre o un grupo de lectura de 16 semanas): U1 → U27&lt;/li&gt;&lt;/ul&gt;" data-en="&lt;p&gt;&lt;strong&gt;Reading paths.&lt;/strong&gt; &lt;em&gt;Core&lt;/em&gt; units form the onboarding programme; &lt;em&gt;Extended&lt;/em&gt; units serve specific project types.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;Onboarding path&lt;/strong&gt; (first two weeks in the lab, every student): U1 → U2 → U3 → U4 → U5 → U6 → U11 → U12 → U23 → U24&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Modelling path&lt;/strong&gt; (QSAR / machine-learning projects): U7 → U8 → U9 → U13 → U14 → U15 → U16 → U17 (+ U18, U26)&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Screening &amp; simulation path&lt;/strong&gt; (virtual-screening / molecular-dynamics projects): U7 → U8 → U15 → U19 → U20 (+ U25)&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Biomedical-data path&lt;/strong&gt; (omics / clinical projects): U7 → U8 → U9 → U13 → U16 → U17 → U21 (+ U10, U22)&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Full programme&lt;/strong&gt; (a semester course or a 16-week reading group): U1 → U27&lt;/li&gt;&lt;/ul&gt;"><p><strong>Rutas de lectura.</strong> Las unidades marcadas <em>Núcleo</em> forman el programa de inducción; las de <em>Ampliación</em> sirven a tipos de proyecto específicos.</p><ul><li><strong>Ruta de inducción</strong> (primeras dos semanas en el laboratorio, todos los estudiantes): U1 → U2 → U3 → U4 → U5 → U6 → U11 → U12 → U23 → U24</li><li><strong>Ruta de modelamiento</strong> (proyectos de QSAR / aprendizaje automático): U7 → U8 → U9 → U13 → U14 → U15 → U16 → U17 (+ U18, U26)</li><li><strong>Ruta de screening y simulación</strong> (proyectos de virtual screening / dinámica molecular): U7 → U8 → U15 → U19 → U20 (+ U25)</li><li><strong>Ruta de datos biomédicos</strong> (proyectos ómicos / clínicos): U7 → U8 → U9 → U13 → U16 → U17 → U21 (+ U10, U22)</li><li><strong>Programa completo</strong> (un semestre o un grupo de lectura de 16 semanas): U1 → U27</li></ul></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:28px">
+    <div class="wrap">
+      <div class="units">
+        <h3 class="block-h" data-es="Bloque A · Fundamentos: el entorno de trabajo" data-en="Block A · Foundations: the working environment">Bloque A · Fundamentos: el entorno de trabajo</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U1</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U1_Toolkit/U1_Toolkit.ipynb" target="_blank" rel="noopener" data-es="La caja de herramientas del científico de datos: Python, notebooks y el stack científico" data-en="The Data Scientist&#x27;s Toolkit: Python, Notebooks and the Scientific Stack">La caja de herramientas del científico de datos: Python, notebooks y el stack científico</a></h2>
+            <p class="unit-sub">Unit 1 — The Data Scientist&#x27;s Toolkit: Python, Notebooks and the Scientific Stack</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U1_Toolkit/U1_Toolkit.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U1_Toolkit/U1_Toolkit.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U1_Toolkit/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U2</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U2_Reproducibility/U2_Reproducibility.ipynb" target="_blank" rel="noopener" data-es="Investigación reproducible: control de versiones, entornos, procedencia y datos FAIR" data-en="Reproducible Research: Version Control, Environments, Provenance and FAIR Data">Investigación reproducible: control de versiones, entornos, procedencia y datos FAIR</a></h2>
+            <p class="unit-sub">Unit 2 — Reproducible Research: Version Control, Environments, Provenance and FAIR Data</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U2_Reproducibility/U2_Reproducibility.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U2_Reproducibility/U2_Reproducibility.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U2_Reproducibility/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U3</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U3_Getting_Data/U3_Getting_Data.ipynb" target="_blank" rel="noopener" data-es="Obtener datos: formatos de archivo, bases de datos, APIs web y SQL" data-en="Getting Data: File Formats, Databases, Web APIs and SQL">Obtener datos: formatos de archivo, bases de datos, APIs web y SQL</a></h2>
+            <p class="unit-sub">Unit 3 — Getting Data: File Formats, Databases, Web APIs and SQL</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U3_Getting_Data/U3_Getting_Data.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U3_Getting_Data/U3_Getting_Data.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U3_Getting_Data/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque B · Manejo, exploración y calidad de datos" data-en="Block B · Data wrangling, exploration and quality">Bloque B · Manejo, exploración y calidad de datos</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U4</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U4_Tidy_Data/U4_Tidy_Data.ipynb" target="_blank" rel="noopener" data-es="Datos ordenados (tidy data) y pandas en profundidad" data-en="Tidy Data and pandas in Depth">Datos ordenados (tidy data) y pandas en profundidad</a></h2>
+            <p class="unit-sub">Unit 4 — Tidy Data and pandas in Depth</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U4_Tidy_Data/U4_Tidy_Data.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U4_Tidy_Data/U4_Tidy_Data.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U4_Tidy_Data/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U5</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U5_EDA/U5_EDA.ipynb" target="_blank" rel="noopener" data-es="Análisis exploratorio de datos y la gramática de gráficos" data-en="Exploratory Data Analysis and the Grammar of Graphics">Análisis exploratorio de datos y la gramática de gráficos</a></h2>
+            <p class="unit-sub">Unit 5 — Exploratory Data Analysis and the Grammar of Graphics</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U5_EDA/U5_EDA.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U5_EDA/U5_EDA.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U5_EDA/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U6</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U6_Data_Quality/U6_Data_Quality.ipynb" target="_blank" rel="noopener" data-es="Calidad, curación y sesgo de datos: de registros crudos a una tabla lista para modelar" data-en="Data Quality, Curation and Bias: from Raw Records to a Modelling-Ready Table">Calidad, curación y sesgo de datos: de registros crudos a una tabla lista para modelar</a></h2>
+            <p class="unit-sub">Unit 6 — Data Quality, Curation and Bias: from Raw Records to a Modelling-Ready Table</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U6_Data_Quality/U6_Data_Quality.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U6_Data_Quality/U6_Data_Quality.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U6_Data_Quality/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque C · Estadística para el investigador computacional" data-en="Block C · Statistics for the computational researcher">Bloque C · Estadística para el investigador computacional</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U7</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U7_Estimation/U7_Estimation.ipynb" target="_blank" rel="noopener" data-es="Probabilidad, distribuciones y estimación: intervalos de confianza, bootstrap y escalas logarítmicas" data-en="Probability, Distributions and Estimation: Confidence Intervals, the Bootstrap and Log Scales">Probabilidad, distribuciones y estimación: intervalos de confianza, bootstrap y escalas logarítmicas</a></h2>
+            <p class="unit-sub">Unit 7 — Probability, Distributions and Estimation: Confidence Intervals, the Bootstrap and Log Scales</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U7_Estimation/U7_Estimation.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U7_Estimation/U7_Estimation.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U7_Estimation/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U8</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U8_Hypothesis_Testing/U8_Hypothesis_Testing.ipynb" target="_blank" rel="noopener" data-es="Pruebas de hipótesis, tamaños de efecto, potencia y comparaciones múltiples" data-en="Hypothesis Testing, Effect Sizes, Power and Multiple Comparisons">Pruebas de hipótesis, tamaños de efecto, potencia y comparaciones múltiples</a></h2>
+            <p class="unit-sub">Unit 8 — Hypothesis Testing, Effect Sizes, Power and Multiple Comparisons</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U8_Hypothesis_Testing/U8_Hypothesis_Testing.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U8_Hypothesis_Testing/U8_Hypothesis_Testing.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U8_Hypothesis_Testing/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U9</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U9_Linear_Models/U9_Linear_Models.ipynb" target="_blank" rel="noopener" data-es="Modelos lineales: regresión, regresión logística, diagnóstico y regularización" data-en="Linear Models: Regression, Logistic Regression, Diagnostics and Regularisation">Modelos lineales: regresión, regresión logística, diagnóstico y regularización</a></h2>
+            <p class="unit-sub">Unit 9 — Linear Models: Regression, Logistic Regression, Diagnostics and Regularisation</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U9_Linear_Models/U9_Linear_Models.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U9_Linear_Models/U9_Linear_Models.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U9_Linear_Models/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U10</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U10_Bayesian/U10_Bayesian.ipynb" target="_blank" rel="noopener" data-es="Pensamiento bayesiano y razonamiento probabilístico" data-en="Bayesian Thinking and Probabilistic Reasoning">Pensamiento bayesiano y razonamiento probabilístico</a></h2>
+            <p class="unit-sub">Unit 10 — Bayesian Thinking and Probabilistic Reasoning</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U10_Bayesian/U10_Bayesian.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U10_Bayesian/U10_Bayesian.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U10_Bayesian/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque D · Aprendizaje automático tal como se practica" data-en="Block D · Machine learning as it is practised">Bloque D · Aprendizaje automático tal como se practica</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U11</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U11_Supervised_Workflow/U11_Supervised_Workflow.ipynb" target="_blank" rel="noopener" data-es="El flujo de trabajo del aprendizaje supervisado: pipelines, baselines y preprocesamiento sin fuga de datos" data-en="The Supervised-Learning Workflow: Pipelines, Baselines and Leakage-Free Preprocessing">El flujo de trabajo del aprendizaje supervisado: pipelines, baselines y preprocesamiento sin fuga de datos</a></h2>
+            <p class="unit-sub">Unit 11 — The Supervised-Learning Workflow: Pipelines, Baselines and Leakage-Free Preprocessing</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U11_Supervised_Workflow/U11_Supervised_Workflow.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U11_Supervised_Workflow/U11_Supervised_Workflow.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U11_Supervised_Workflow/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U12</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U12_Validation/U12_Validation.ipynb" target="_blank" rel="noopener" data-es="Validación bien hecha: particiones, validación cruzada, métricas, y-scrambling y comparación de modelos" data-en="Validation Done Right: Splits, Cross-Validation, Metrics, y-Scrambling and Comparing Models">Validación bien hecha: particiones, validación cruzada, métricas, y-scrambling y comparación de modelos</a></h2>
+            <p class="unit-sub">Unit 12 — Validation Done Right: Splits, Cross-Validation, Metrics, y-Scrambling and Comparing Models</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U12_Validation/U12_Validation.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U12_Validation/U12_Validation.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U12_Validation/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U13</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U13_Features_Dimensionality/U13_Features_Dimensionality.ipynb" target="_blank" rel="noopener" data-es="Ingeniería y selección de características, y reducción de dimensionalidad" data-en="Feature Engineering, Selection and Dimensionality Reduction">Ingeniería y selección de características, y reducción de dimensionalidad</a></h2>
+            <p class="unit-sub">Unit 13 — Feature Engineering, Selection and Dimensionality Reduction</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U13_Features_Dimensionality/U13_Features_Dimensionality.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U13_Features_Dimensionality/U13_Features_Dimensionality.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U13_Features_Dimensionality/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U14</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U14_Ensembles_Tuning/U14_Ensembles_Tuning.ipynb" target="_blank" rel="noopener" data-es="Ensambles de árboles, gradient boosting y optimización de hiperparámetros" data-en="Tree Ensembles, Gradient Boosting and Hyperparameter Optimisation">Ensambles de árboles, gradient boosting y optimización de hiperparámetros</a></h2>
+            <p class="unit-sub">Unit 14 — Tree Ensembles, Gradient Boosting and Hyperparameter Optimisation</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U14_Ensembles_Tuning/U14_Ensembles_Tuning.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U14_Ensembles_Tuning/U14_Ensembles_Tuning.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U14_Ensembles_Tuning/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U15</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U15_Clustering/U15_Clustering.ipynb" target="_blank" rel="noopener" data-es="Aprendizaje no supervisado: agrupamiento y descubrimiento de estructura" data-en="Unsupervised Learning: Clustering and Structure Discovery">Aprendizaje no supervisado: agrupamiento y descubrimiento de estructura</a></h2>
+            <p class="unit-sub">Unit 15 — Unsupervised Learning: Clustering and Structure Discovery</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U15_Clustering/U15_Clustering.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U15_Clustering/U15_Clustering.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U15_Clustering/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U16</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U16_Interpretability/U16_Interpretability.ipynb" target="_blank" rel="noopener" data-es="Interpretabilidad y explicabilidad: ¿qué aprendió el modelo?" data-en="Interpretability and Explainability: What Did the Model Learn?">Interpretabilidad y explicabilidad: ¿qué aprendió el modelo?</a></h2>
+            <p class="unit-sub">Unit 16 — Interpretability and Explainability: What Did the Model Learn?</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U16_Interpretability/U16_Interpretability.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U16_Interpretability/U16_Interpretability.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U16_Interpretability/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U17</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U17_Uncertainty_AD/U17_Uncertainty_AD.ipynb" target="_blank" rel="noopener" data-es="Incertidumbre, dominio de aplicabilidad y predicción conformal" data-en="Uncertainty, Applicability Domain and Conformal Prediction">Incertidumbre, dominio de aplicabilidad y predicción conformal</a></h2>
+            <p class="unit-sub">Unit 17 — Uncertainty, Applicability Domain and Conformal Prediction</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U17_Uncertainty_AD/U17_Uncertainty_AD.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U17_Uncertainty_AD/U17_Uncertainty_AD.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U17_Uncertainty_AD/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U18</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U18_Deep_Learning/U18_Deep_Learning.ipynb" target="_blank" rel="noopener" data-es="Fundamentos de deep learning y representaciones preentrenadas" data-en="Deep Learning Essentials and Pretrained Representations">Fundamentos de deep learning y representaciones preentrenadas</a></h2>
+            <p class="unit-sub">Unit 18 — Deep Learning Essentials and Pretrained Representations</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U18_Deep_Learning/U18_Deep_Learning.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U18_Deep_Learning/U18_Deep_Learning.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U18_Deep_Learning/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque E · Los pipelines del laboratorio como casos de ciencia de datos" data-en="Block E · The lab&#x27;s pipelines as data-science case studies">Bloque E · Los pipelines del laboratorio como casos de ciencia de datos</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U19</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U19_Virtual_Screening/U19_Virtual_Screening.ipynb" target="_blank" rel="noopener" data-es="Analítica de virtual screening: métricas de reconocimiento temprano, decoys, consensus scoring y agregación de rankings (basado en ligandos)" data-en="Virtual-Screening Analytics: Early-Recognition Metrics, Decoys, Consensus Scoring and Rank Aggregation (Ligand-Based)">Analítica de virtual screening: métricas de reconocimiento temprano, decoys, consensus scoring y agregación de rankings (basado en ligandos)</a></h2>
+            <p class="unit-sub">Unit 19 — Virtual-Screening Analytics: Early-Recognition Metrics, Decoys, Consensus Scoring and Rank Aggregation (Ligand-Based)</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U19_Virtual_Screening/U19_Virtual_Screening.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U19_Virtual_Screening/U19_Virtual_Screening.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U19_Virtual_Screening/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U20</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U20_MD_Analytics/U20_MD_Analytics.ipynb" target="_blank" rel="noopener" data-es="La salida de dinámica molecular como datos: series de tiempo, convergencia, réplicas y estadística de energía libre" data-en="Molecular-Dynamics Output as Data: Time Series, Convergence, Replicas and Free-Energy Statistics">La salida de dinámica molecular como datos: series de tiempo, convergencia, réplicas y estadística de energía libre</a></h2>
+            <p class="unit-sub">Unit 20 — Molecular-Dynamics Output as Data: Time Series, Convergence, Replicas and Free-Energy Statistics</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U20_MD_Analytics/U20_MD_Analytics.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U20_MD_Analytics/U20_MD_Analytics.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U20_MD_Analytics/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U21</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U21_Omics/U21_Omics.ipynb" target="_blank" rel="noopener" data-es="Datos de secuencias y ómicas: de FASTA y matrices de conteo a expresión diferencial y enriquecimiento" data-en="Sequence and Omics Data: from FASTA and Count Matrices to Differential Expression and Enrichment">Datos de secuencias y ómicas: de FASTA y matrices de conteo a expresión diferencial y enriquecimiento</a></h2>
+            <p class="unit-sub">Unit 21 — Sequence and Omics Data: from FASTA and Count Matrices to Differential Expression and Enrichment</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U21_Omics/U21_Omics.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U21_Omics/U21_Omics.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U21_Omics/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U22</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U22_Networks/U22_Networks.ipynb" target="_blank" rel="noopener" data-es="Redes y grafos: fármaco–blanco, proteína–proteína y polifarmacología" data-en="Networks and Graphs: Drug–Target, Protein–Protein and Polypharmacology">Redes y grafos: fármaco–blanco, proteína–proteína y polifarmacología</a></h2>
+            <p class="unit-sub">Unit 22 — Networks and Graphs: Drug–Target, Protein–Protein and Polypharmacology</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U22_Networks/U22_Networks.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U22_Networks/U22_Networks.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U22_Networks/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque F · Del notebook a la publicación y al producto" data-en="Block F · From notebook to publication and product">Bloque F · Del notebook a la publicación y al producto</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U23</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U23_Communication/U23_Communication.ipynb" target="_blank" rel="noopener" data-es="Comunicación científica: figuras para publicación, tablas y estándares de reporte" data-en="Scientific Communication: Publication Figures, Tables and Reporting Standards">Comunicación científica: figuras para publicación, tablas y estándares de reporte</a></h2>
+            <p class="unit-sub">Unit 23 — Scientific Communication: Publication Figures, Tables and Reporting Standards</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U23_Communication/U23_Communication.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U23_Communication/U23_Communication.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U23_Communication/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U24</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U24_Software_Engineering/U24_Software_Engineering.ipynb" target="_blank" rel="noopener" data-es="Ingeniería de software para científicos: de scripts a paquetes probados y documentados" data-en="Software Engineering for Scientists: from Scripts to Tested, Documented Packages">Ingeniería de software para científicos: de scripts a paquetes probados y documentados</a></h2>
+            <p class="unit-sub">Unit 24 — Software Engineering for Scientists: from Scripts to Tested, Documented Packages</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U24_Software_Engineering/U24_Software_Engineering.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U24_Software_Engineering/U24_Software_Engineering.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U24_Software_Engineering/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U25</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U25_Scaling_HPC/U25_Scaling_HPC.ipynb" target="_blank" rel="noopener" data-es="Escalar: paralelismo, HPC/SLURM, gestores de flujos de trabajo y contenedores" data-en="Scaling Up: Parallelism, HPC/SLURM, Workflow Managers and Containers">Escalar: paralelismo, HPC/SLURM, gestores de flujos de trabajo y contenedores</a></h2>
+            <p class="unit-sub">Unit 25 — Scaling Up: Parallelism, HPC/SLURM, Workflow Managers and Containers</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U25_Scaling_HPC/U25_Scaling_HPC.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U25_Scaling_HPC/U25_Scaling_HPC.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U25_Scaling_HPC/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U26</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U26_Apps_Deployment/U26_Apps_Deployment.ipynb" target="_blank" rel="noopener" data-es="Compartir modelos y resultados: apps interactivas, APIs web y model cards" data-en="Sharing Models and Results: Interactive Apps, Web APIs and Model Cards">Compartir modelos y resultados: apps interactivas, APIs web y model cards</a></h2>
+            <p class="unit-sub">Unit 26 — Sharing Models and Results: Interactive Apps, Web APIs and Model Cards</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U26_Apps_Deployment/U26_Apps_Deployment.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U26_Apps_Deployment/U26_Apps_Deployment.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U26_Apps_Deployment/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque G · Proyecto final" data-en="Block G · Capstone">Bloque G · Proyecto final</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U27</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U27_Capstone/U27_Capstone.ipynb" target="_blank" rel="noopener" data-es="Proyecto final: un proyecto reproducible de principio a fin con la plantilla del grupo" data-en="Capstone: an End-to-End Reproducible Project on the Group&#x27;s Template">Proyecto final: un proyecto reproducible de principio a fin con la plantilla del grupo</a></h2>
+            <p class="unit-sub">Unit 27 — Capstone: an End-to-End Reproducible Project on the Group&#x27;s Template</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/DataScience/U27_Capstone/U27_Capstone.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U27_Capstone/U27_Capstone.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U27_Capstone/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p data-es="© <span class='yr'>2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule."
+       data-en="© <span class='yr'>2026</span> Daniel Bustos · Bioinformatics and Computational Chemistry Laboratory, Universidad Católica del Maule.">© <span class="yr">2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule.</p>
+    <p class="footer-meta"><a href="../" data-es="Volver al sitio principal" data-en="Back to main site">Volver al sitio principal</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

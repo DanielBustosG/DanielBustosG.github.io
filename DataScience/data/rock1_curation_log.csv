@@ -1,0 +1,11 @@
+step,description,n_rows,n_molecules,note
+1,raw records as delivered by the ChEMBL API,5089,4312,
+2,drop rows without a structure (canonical_smiles),5086,4309,
+3,human target only (target_organism == 'Homo sapiens'),5086,4309,
+4,drop ChEMBL data_validity_comment flags,5073,4303,Outside typical range: 13
+5,drop rows without a numeric standard_value,5047,4292,
+6,harmonise units to nM (drop non-convertible units),5047,4292,dropped units: {}
+7,drop non-positive or absurd values (<=0 or >1e8 nM),5047,4292,
+8,"RDKit standardisation (normalise, largest fragment, uncharge) + InChIKey",5047,4292,
+9,keep small organic molecules (3 <= heavy atoms <= 70),5045,4290,
+10,aggregate replicate measurements per standardised InChIKey (median),4280,4280,compound level

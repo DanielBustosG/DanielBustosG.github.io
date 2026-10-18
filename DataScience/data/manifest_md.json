@@ -1,0 +1,78 @@
+{
+ "dataset": "md_trpcage (Trp-cage 1L2Y replica MD, 2 conditions x 3 replicas x 1 ns)",
+ "date": "2026-10-18",
+ "source": "Simulated in-house with OpenMM 8.6.1 (CPU) from RCSB PDB 1L2Y model 1",
+ "licence": "CC BY 4.0 (course data; PDB 1L2Y coordinates are public domain / CC0 per wwPDB policy)",
+ "files": [
+  {
+   "file": "md_trpcage_observables.csv",
+   "sha256": "2f84f34705929334d1c2baacc6fcbcbe5b6abd5a93bf4ef4cbe9bf0e3348d862",
+   "n_rows": 3000,
+   "n_cols": 11,
+   "bytes": 203724,
+   "source": "Simulated in-house with OpenMM 8.6.1 (CPU) from RCSB PDB 1L2Y model 1",
+   "date": "2026-10-18",
+   "licence": "CC BY 4.0 (course data; PDB 1L2Y coordinates are public domain / CC0 per wwPDB policy)"
+  },
+  {
+   "file": "md_trpcage_rmsf.csv",
+   "sha256": "dddf79232ea2cddbedcad8f92d92f9a36a7ce39058897c2f27a143a5448d9fca",
+   "n_rows": 120,
+   "n_cols": 5,
+   "bytes": 2360,
+   "source": "Simulated in-house with OpenMM 8.6.1 (CPU) from RCSB PDB 1L2Y model 1",
+   "date": "2026-10-18",
+   "licence": "CC BY 4.0 (course data; PDB 1L2Y coordinates are public domain / CC0 per wwPDB policy)"
+  },
+  {
+   "file": "md_trpcage_ca_coords.npz",
+   "sha256": "4fef9c4dc09f8b12d4704f976fb3bf6c3f6e72bb354270993fb0c4ac761ec1b5",
+   "n_rows": 3000,
+   "n_cols": null,
+   "bytes": 670671,
+   "source": "Simulated in-house with OpenMM 8.6.1 (CPU) from RCSB PDB 1L2Y model 1",
+   "date": "2026-10-18",
+   "licence": "CC BY 4.0 (course data; PDB 1L2Y coordinates are public domain / CC0 per wwPDB policy)"
+  },
+  {
+   "file": "md_trpcage_strideA1.xtc",
+   "sha256": "db8c237578f617ae77b68c468f67ac78f9d1a51030a0193343be54d2255c4dba",
+   "n_rows": 100,
+   "n_cols": 304,
+   "bytes": 126856,
+   "source": "Simulated in-house with OpenMM 8.6.1 (CPU) from RCSB PDB 1L2Y model 1",
+   "date": "2026-10-18",
+   "licence": "CC BY 4.0 (course data; PDB 1L2Y coordinates are public domain / CC0 per wwPDB policy)"
+  },
+  {
+   "file": "md_trpcage_protein.pdb",
+   "sha256": "b020839f33b42f8385e09991d93aa6e20699a90256211c4f8dbde21e7f69906f",
+   "n_rows": 304,
+   "n_cols": 20,
+   "bytes": 24777,
+   "source": "Simulated in-house with OpenMM 8.6.1 (CPU) from RCSB PDB 1L2Y model 1",
+   "date": "2026-10-18",
+   "licence": "CC BY 4.0 (course data; PDB 1L2Y coordinates are public domain / CC0 per wwPDB policy)"
+  },
+  {
+   "file": "md_trpcage_replica_summary.csv",
+   "sha256": "9f59993356cc0214a61336d74115ed06c2077d7ac9306c5108d919148c4a42d0",
+   "n_rows": 6,
+   "n_cols": 19,
+   "bytes": 930,
+   "source": "Simulated in-house with OpenMM 8.6.1 (CPU) from RCSB PDB 1L2Y model 1",
+   "date": "2026-10-18",
+   "licence": "CC BY 4.0 (course data; PDB 1L2Y coordinates are public domain / CC0 per wwPDB policy)"
+  },
+  {
+   "file": "md_trpcage_condition_summary.csv",
+   "sha256": "c92b45be6a3aebc13d3c29acada9bbf27c17b81812ff2952e5a8305cba663734",
+   "n_rows": 8,
+   "n_cols": 7,
+   "bytes": 525,
+   "source": "Simulated in-house with OpenMM 8.6.1 (CPU) from RCSB PDB 1L2Y model 1",
+   "date": "2026-10-18",
+   "licence": "CC BY 4.0 (course data; PDB 1L2Y coordinates are public domain / CC0 per wwPDB policy)"
+  }
+ ]
+}

@@ -1,0 +1,99 @@
+{
+ "dataset": "geo_periodontitis (GSE16134 subset)",
+ "date": "2026-10-18",
+ "source": "NCBI GEO GSE16134 (GPL570 annot Aug 09 2016); Enrichr libraries KEGG_2021_Human, GO_Biological_Process_2023",
+ "licence": "GEO data: public domain / NCBI terms of use; Enrichr libraries: free for academic use (see maayanlab.cloud/Enrichr/help#terms); KEGG pathway names derived from KEGG",
+ "files": [
+  {
+   "file": "geo_periodontitis_expr.csv",
+   "sha256": "d9c08cb8469464130f0e01d8d889cc424873bbc0b854377abee6e929baaedfb7",
+   "n_rows": 5000,
+   "n_cols": 138,
+   "size_bytes": 4831734,
+   "source": "GEO GSE16134 + GPL570.annot",
+   "date": "2026-10-18",
+   "licence": "GEO data: public domain / NCBI terms of use; Enrichr libraries: free for academic use (see maayanlab.cloud/Enrichr/help#terms); KEGG pathway names derived from KEGG"
+  },
+  {
+   "file": "geo_periodontitis_meta.csv",
+   "sha256": "0667b02769587e05e35c120f8222cf4075ee1469b4262738cd363b4e154fa36f",
+   "n_rows": 138,
+   "n_cols": 11,
+   "size_bytes": 23856,
+   "source": "GEO GSE16134 + GPL570.annot",
+   "date": "2026-10-18",
+   "licence": "GEO data: public domain / NCBI terms of use; Enrichr libraries: free for academic use (see maayanlab.cloud/Enrichr/help#terms); KEGG pathway names derived from KEGG"
+  },
+  {
+   "file": "geo_periodontitis_genes.csv",
+   "sha256": "1bc3cdf7139d1a6bae24f5a44c4a731bcfbdf7214cca28cfb31da618dc830ffa",
+   "n_rows": 5000,
+   "n_cols": 7,
+   "size_bytes": 254025,
+   "source": "GEO GSE16134 + GPL570.annot",
+   "date": "2026-10-18",
+   "licence": "GEO data: public domain / NCBI terms of use; Enrichr libraries: free for academic use (see maayanlab.cloud/Enrichr/help#terms); KEGG pathway names derived from KEGG"
+  },
+  {
+   "file": "genesets_kegg_2021.gmt",
+   "sha256": "9133cde8441c0571841300e55f69fd84847ca283c6ff7b1378a51eec9de8b6f0",
+   "n_rows": 259,
+   "n_cols": null,
+   "size_bytes": 82465,
+   "source": "Enrichr",
+   "date": "2026-10-18",
+   "licence": "GEO data: public domain / NCBI terms of use; Enrichr libraries: free for academic use (see maayanlab.cloud/Enrichr/help#terms); KEGG pathway names derived from KEGG"
+  },
+  {
+   "file": "genesets_gobp_2023.gmt",
+   "sha256": "e1912484030b58b0d63eda9219adf7a632fbce8ba26f7c5af4f17e86156488e9",
+   "n_rows": 1458,
+   "n_cols": null,
+   "size_bytes": 429223,
+   "source": "Enrichr",
+   "date": "2026-10-18",
+   "licence": "GEO data: public domain / NCBI terms of use; Enrichr libraries: free for academic use (see maayanlab.cloud/Enrichr/help#terms); KEGG pathway names derived from KEGG"
+  }
+ ],
+ "md5_inputs": {
+  "GSE16134_series_matrix.txt.gz_sha256": "002e389f5635d9f4de92a93f8b65ded5b2c4baabb4f613222ce8896e24c75b97",
+  "GPL570.annot.gz_sha256": "d7cd44352127b1e34f3a720ebea86093ef255a38f1612a85a2962b71bde8f394"
+ },
+ "sanity": {
+  "n_fdr05_paired": 3766,
+  "n_fdr05_unpaired": 3420,
+  "top10_up": [
+   "IGHD",
+   "IGHM",
+   "LOC100293211",
+   "BMS1P20",
+   "IGLL5",
+   "IGLJ3",
+   "TNFRSF17",
+   "IGK",
+   "POU2AF1",
+   "MLIP"
+  ],
+  "pc_var": [
+   0.2744,
+   0.1286,
+   0.102
+  ]
+ },
+ "genesets": {
+  "KEGG_2021_Human": {
+   "file": "genesets_kegg_2021.gmt",
+   "sets_in_library": 320,
+   "sets_kept_10_500": 259,
+   "median_size": 29.0,
+   "size_kb": 82.5
+  },
+  "GO_Biological_Process_2023": {
+   "file": "genesets_gobp_2023.gmt",
+   "sets_in_library": 5407,
+   "sets_kept_10_500": 1458,
+   "median_size": 17.0,
+   "size_kb": 429.2
+  }
+ }
+}

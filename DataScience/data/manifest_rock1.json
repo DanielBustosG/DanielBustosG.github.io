@@ -1,0 +1,71 @@
+{
+ "dataset": "ROCK1 (CHEMBL3231) bioactivity snapshot",
+ "source": "ChEMBL REST API (EBI)",
+ "chembl_release": "ChEMBL_37",
+ "chembl_release_date": "2026-05-01",
+ "query": "activity.json?target_chembl_id=CHEMBL3231&standard_type__in=IC50,Ki,Kd",
+ "download_date": "2026-10-18",
+ "licence": "CC BY-SA 3.0 (ChEMBL)",
+ "files": {
+  "rock1_chembl_raw.csv": {
+   "sha256": "171786196cf422ba51ebbf8186a122fafd76c809bbb5aa1d455b2eb14e07cd3d",
+   "n_rows": 5089,
+   "n_cols": 25,
+   "size_bytes": 4586895
+  },
+  "rock1_chembl_curated.csv": {
+   "sha256": "765ab0cf633b4dd26a9be200f21c79725f7012ef1640ab734d413e897f6cb0de",
+   "n_rows": 4280,
+   "n_cols": 33,
+   "size_bytes": 1005746
+  },
+  "rock1_curation_log.csv": {
+   "sha256": "4a4805552669d5a298ee5f4827169c52f72efc5d1b38989b43513311490e9c75",
+   "n_rows": 10,
+   "n_cols": 5,
+   "size_bytes": 757
+  }
+ },
+ "summary": {
+  "raw_rows": 5089,
+  "measurements_after_curation": 5045,
+  "compounds": 4280,
+  "compounds_exact": 2764,
+  "compounds_censored_only": 1516,
+  "pActivity": {
+   "count": 2764.0,
+   "mean": 6.508,
+   "std": 1.109,
+   "min": 3.569,
+   "25%": 5.726,
+   "50%": 6.435,
+   "75%": 7.301,
+   "max": 9.824
+  },
+  "scaffolds": 2005,
+  "singleton_scaffolds": 1453,
+  "class_balance": {
+   "pAct>=6.0": {
+    "active": 1898,
+    "inactive": 866
+   },
+   "pAct>=6.5": {
+    "active": 1339,
+    "inactive": 1425
+   },
+   "pAct>=7.0": {
+    "active": 914,
+    "inactive": 1850
+   }
+  },
+  "wide_spread_compounds": 60,
+  "multi_measurement": 492,
+  "named": 297,
+  "max_phase_gt0": 248
+ },
+ "docs": {
+  "README_rock1.md": {
+   "sha256": "6df706c6b84ca4dd12daa5f2f3dfc71460bad4c8c37bccb3208e8051e3e0002e"
+  }
+ }
+}
