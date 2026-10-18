@@ -578,3 +578,14 @@ a.pub-title:hover { color: var(--accent); }
 .cf-status.ok { color: var(--accent); }
 .cf-status.err { color: #b4472f; }
 .comment-form[hidden] { display: none !important; }
+
+/* Tipos de material docente (sección Docencia). */
+.badge-curricular    { background: color-mix(in srgb, var(--green) 15%, transparent); color: var(--green); }
+.badge-complementary { background: var(--accent-soft); color: var(--accent-deep); }
+:root[data-theme="dark"] .badge-complementary { color: var(--accent); }
+.badge-case { background: color-mix(in srgb, var(--amber) 16%, transparent); color: #8a5a12; }
+:root[data-theme="dark"] .badge-case { color: var(--amber); }
+.badge-supp { background: color-mix(in srgb, #7b4fb8 15%, transparent); color: #6a3fa6; }
+:root[data-theme="dark"] .badge-supp { color: #c3a6ee; }
+.teaching-legend { font-size: .86rem; color: var(--text-soft); line-height: 2; margin: -4px 0 18px; }
+.teaching-legend .badge { margin: 0 4px 0 2px; white-space: nowrap; }

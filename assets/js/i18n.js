@@ -283,7 +283,9 @@ var I18N_EN = {
     'chemistry and data science, almost always in close collaboration with experimental groups ' +
     'that put our predictions to the test.</p>' +
     '<p>We train undergraduate and graduate students in molecular simulation, scientific ' +
-    'programming and computer-aided drug design.</p>',
+    'programming and computer-aided drug design.</p>' +
+    '<p>Daniel Bustos co-created the LBQC, taking part in setting up the laboratory and its ' +
+    'computing infrastructure for molecular modelling at the Faculty of Medicine.</p>',
   group_members_h: 'Daniel Bustos group',
   group_people:
     '<section class="roster-group"><h4>Research assistants</h4><ul class="roster-list"><li><s' +
@@ -422,10 +424,16 @@ var I18N_EN = {
     'n class="funder-text">UCM</span><div class="funder-id"><span class="funder-inst">UCM int' +
     'ernal funding</span><span class="project-code">No. UCM-IN22207</span></div></div></artic' +
     'le>',
-  teaching_h: 'Teaching and service',
+  teaching_h: 'Teaching',
+  teaching_legend:
+    'Self-developed teaching material, organised by type: ' +
+    '<span class="badge badge-curricular">Curricular activity</span> courses of the degree programme · ' +
+    '<span class="badge badge-complementary">Complementary course</span> self-study courses · ' +
+    '<span class="badge badge-case">Paper case study</span> a group paper reconstructed step by step · ' +
+    '<span class="badge badge-supp">Supplementary information</span> evidence compendia from ongoing projects.',
   teaching_list:
     '<article class="project"><div class="project-head">' +
-    '<span class="badge badge-active">Study material</span>' +
+    '<span class="badge badge-curricular">Curricular activity</span>' +
     '<span class="project-years">3rd year · 2nd semester</span></div>' +
     '<h3><a href="BGM324/">BGM324 · Bioinformatics</a></h3>' +
     '<p class="project-role">Medical Bioengineering · Universidad Católica del Maule</p>' +
@@ -434,16 +442,7 @@ var I18N_EN = {
     'molecular dynamics.</p>' +
     '<p><a class="btn btn-ghost" href="BGM324/">View course material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
-    '<span class="badge badge-coi">Complementary course</span>' +
-    '<span class="project-years">6 documents</span></div>' +
-    '<h3><a href="Bioinformatics-Complementary/">Bioinformatics - complementary course</a></h3>' +
-    '<p class="project-role">Companion to BGM324 Bioinformatics · Curriculum Units 1–5</p>' +
-    '<p>A self-study course that follows the official curriculum item by item: introduction and ' +
-    'information theory, sequencing, databases and annotation, pairwise alignment and BLAST, ' +
-    'multiple alignment and phylogenetics, and structural bioinformatics.</p>' +
-    '<p><a class="btn btn-ghost" href="Bioinformatics-Complementary/">View material →</a></p></article>' +
-    '<article class="project"><div class="project-head">' +
-    '<span class="badge badge-active">Study material</span>' +
+    '<span class="badge badge-curricular">Curricular activity</span>' +
     '<span class="project-years">4th year · 1st semester</span></div>' +
     '<h3><a href="BGM411/">BGM411 · Artificial Intelligence</a></h3>' +
     '<p class="project-role">Medical Bioengineering · Universidad Católica del Maule</p>' +
@@ -452,7 +451,16 @@ var I18N_EN = {
     'neural networks, genetic algorithms and medical image classification.</p>' +
     '<p><a class="btn btn-ghost" href="BGM411/">View course material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
-    '<span class="badge badge-coi">Supporting material</span>' +
+    '<span class="badge badge-complementary">Complementary course</span>' +
+    '<span class="project-years">6 documents</span></div>' +
+    '<h3><a href="Bioinformatics-Complementary/">Bioinformatics - complementary course</a></h3>' +
+    '<p class="project-role">Companion to BGM324 Bioinformatics · Curriculum Units 1–5</p>' +
+    '<p>A self-study course that follows the official curriculum item by item: introduction and ' +
+    'information theory, sequencing, databases and annotation, pairwise alignment and BLAST, ' +
+    'multiple alignment and phylogenetics, and structural bioinformatics.</p>' +
+    '<p><a class="btn btn-ghost" href="Bioinformatics-Complementary/">View material →</a></p></article>' +
+    '<article class="project"><div class="project-head">' +
+    '<span class="badge badge-complementary">Complementary course</span>' +
     '<span class="project-years">19 notebooks</span></div>' +
     '<h3><a href="Cheminformatics/">Cheminformatics</a></h3>' +
     '<p class="project-role">Self-developed course · Cheminformatics for Computer Scientists</p>' +
@@ -461,7 +469,7 @@ var I18N_EN = {
     'design, with RDKit in Google Colab.</p>' +
     '<p><a class="btn btn-ghost" href="Cheminformatics/">View material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
-    '<span class="badge badge-coi">Case study</span>' +
+    '<span class="badge badge-case">Paper case study</span>' +
     '<span class="project-years">6 notebooks</span></div>' +
     '<h3><a href="Caso_Ureasa/">Provenance confounding in urease inhibitors</a></h3>' +
     '<p class="project-role">Supporting material · BGM324 Bioinformatics</p>' +
@@ -472,7 +480,7 @@ var I18N_EN = {
     'conformal prediction.</p>' +
     '<p><a class="btn btn-ghost" href="Caso_Ureasa/">View material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
-    '<span class="badge badge-coi">Compendium</span>' +
+    '<span class="badge badge-supp">Supplementary information</span>' +
     '<span class="project-years">15 sections · 18 tables</span></div>' +
     '<h3><a href="Compendio_RND/">Compendium of RND efflux pumps</a></h3>' +
     '<p class="project-role">In-depth material · ANID–Fondecyt Regular project 1260886</p>' +
@@ -480,13 +488,7 @@ var I18N_EN = {
     'focused on the OMF–MFP interface and the rotational register: 112 PDB entries checked, ' +
     '334 references with resolved DOIs and 164 logged searches, including those that found nothing. ' +
     'Available in Spanish only.</p>' +
-    '<p><a class="btn btn-ghost" href="Compendio_RND/">View compendium →</a></p></article>' +
-    '<article class="project"><div class="project-head">' +
-    '<span class="badge badge-active">Permanent</span></div>' +
-    '<h3>Co-creation of the LBQC</h3>' +
-    '<p class="project-role">Bioinformatics and Computational Chemistry Laboratory · UCM</p>' +
-    '<p>Setting up the laboratory and its computing infrastructure for molecular modelling at ' +
-    'the Faculty of Medicine.</p></article>',
+    '<p><a class="btn btn-ghost" href="Compendio_RND/">View compendium →</a></p></article>',
 
   /* ── Contacto ──────────────────────────────────────────── */
   s6_eyebrow: '06 — Contact',
