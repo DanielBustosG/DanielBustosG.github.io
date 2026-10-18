@@ -445,6 +445,24 @@ var I18N_EN = {
     'classification.</p>' +
     '<p><a class="btn btn-ghost" href="BGM411/">View course material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
+    '<span class="badge badge-coi">Supporting material</span>' +
+    '<span class="project-years">19 notebooks</span></div>' +
+    '<h3><a href="Cheminformatics/">Cheminformatics</a></h3>' +
+    '<p class="project-role">Self-developed course · Cheminformatics for Computer Scientists</p>' +
+    '<p>Ligand-based cheminformatics from scratch for students with a programming background: ' +
+    'molecular representation, descriptors, similarity, QSAR, machine learning and generative ' +
+    'design, with RDKit in Google Colab.</p>' +
+    '<p><a class="btn btn-ghost" href="Cheminformatics/">View material →</a></p></article>' +
+    '<article class="project"><div class="project-head">' +
+    '<span class="badge badge-coi">Case study</span>' +
+    '<span class="project-years">6 notebooks</span></div>' +
+    '<h3><a href="Caso_Ureasa/">Reading a published paper, end to end</a></h3>' +
+    '<p class="project-role">Supporting material · BGM324 Bioinformatics</p>' +
+    '<p>A step-by-step reconstruction of a paper published by the group (IJMS 2026) on ' +
+    'provenance confounding in urease inhibitors, using its own data: validation, null models and ' +
+    'conformal prediction.</p>' +
+    '<p><a class="btn btn-ghost" href="Caso_Ureasa/">View material →</a></p></article>' +
+    '<article class="project"><div class="project-head">' +
     '<span class="badge badge-active">Permanent</span></div>' +
     '<h3>Co-creation of the LBQC</h3>' +
     '<p class="project-role">Bioinformatics and Computational Chemistry Laboratory · UCM</p>' +

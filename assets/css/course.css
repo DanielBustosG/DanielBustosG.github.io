@@ -76,3 +76,20 @@
   .preview-link { font-size: .78rem; text-align: center; color: var(--text-mute); padding: 2px 0; }
   .preview-link:hover { color: var(--accent); }
   .note strong { color: var(--text); }
+
+  /* Material de apoyo: subtítulo, bloques y ficha del paper */
+  .course-tagline { font-family: var(--serif); font-style: italic; color: var(--text-soft); font-size: 1.15rem; margin: 6px 0 0; }
+  .block-h {
+    font-size: .76rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--accent); margin: 18px 0 -4px; padding-top: 10px; border-top: 1px solid var(--line);
+  }
+  .block-h:first-child { margin-top: 0; border-top: 0; padding-top: 0; }
+  .paper-card {
+    max-width: 78ch; margin-top: 22px; padding: 18px 20px;
+    background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .paper-k { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  .paper-cite { font-size: .92rem; color: var(--text-soft); margin: 0 0 12px; line-height: 1.55; }
+  .paper-cite strong { color: var(--text); }
+  .paper-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+  .flow.stats li:not(:last-child)::after { display: none; }

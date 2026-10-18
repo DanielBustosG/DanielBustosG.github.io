@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es" data-title-es="Caso de estudio · Paper ureasa — Daniel Bustos" data-title-en="Case study · Urease paper — Daniel Bustos">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caso de estudio · Paper ureasa — Daniel Bustos</title>
+<meta name="description" content="Caso de estudio para BGM324: seis notebooks de Python que reconstruyen el paper Farías-Abarca et al. (IJMS 2026) sobre confusión por procedencia en inhibidores de ureasa. Ejecutables en Google Colab.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Caso de estudio — Leer un paper de principio a fin">
+<meta property="og:description" content="Seis notebooks que reconstruyen un paper publicado con sus propios datos, ejecutables en Google Colab.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+<script>
+  /* Tema antes de pintar, para evitar el destello claro en modo oscuro. */
+  try {
+    var t = localStorage.getItem('db-theme');
+    if (!t) t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="../assets/css/course.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-es="Saltar al contenido" data-en="Skip to content">Saltar al contenido</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="../">
+      <span class="brand-mark">DB</span>
+      <span class="brand-text">
+        <strong>Daniel Bustos</strong>
+        <small data-es="Bioinformática Estructural · UCM" data-en="Structural Bioinformatics · UCM">Bioinformática Estructural · UCM</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Caso_Ureasa">
+      <a href="../" data-es="← Volver al sitio" data-en="← Back to main site">← Volver al sitio</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="course-hero">
+    <div class="wrap">
+      <span class="course-code" data-es="Caso de estudio" data-en="Case study">Caso de estudio</span>
+      <h1 data-es="Leer un paper de principio a fin" data-en="Reading a published paper, end to end">Leer un paper de principio a fin</h1>
+      <ul class="course-meta">
+        <li data-es="<strong>Material de apoyo para:</strong> <a href=&quot;../BGM324/&quot;>BGM324 · Bioinformática</a>" data-en="<strong>Supporting material for:</strong> <a href=&quot;../BGM324/&quot;>BGM324 · Bioinformatics</a>"><strong>Material de apoyo para:</strong> <a href="../BGM324/">BGM324 · Bioinformática</a></li>
+        <li data-es="<strong>Requisitos:</strong> un curso de programación y estadística básica" data-en="<strong>Prerequisites:</strong> one programming course and basic statistics"><strong>Requisitos:</strong> un curso de programación y estadística básica</li>
+      </ul>
+      <p class="course-lede" data-es="Seis notebooks que desarman un estudio publicado y lo reconstruyen con sus propios datos. No se asume formación previa en quimioinformática ni en machine learning: ambas se enseñan desde cero sobre los datos del paper." data-en="Six notebooks that take a published study apart and rebuild it from its own data. No cheminformatics or machine-learning background is assumed: both are taught from scratch on the paper’s data.">Seis notebooks que desarman un estudio publicado y lo reconstruyen con sus propios datos. No se asume formación previa en quimioinformática ni en machine learning: ambas se enseñan desde cero sobre los datos del paper.</p>
+      <div class="paper-card">
+        <p class="paper-k" data-es="El paper" data-en="The paper">El paper</p>
+        <p class="paper-cite">Farías-Abarca J, Urra G, Henríquez C, Yáñez O, Osorio MI, Palma J, Morales-Quintana L, Suardíaz R, <strong>Bustos D</strong>. Provenance-Associated Confounding in Cross-Collection Comparisons of Urease Inhibitors: A Quantified Reference Scale and a Domain-Aware Alternative. <em>Int J Mol Sci</em>. 2026;27(20):9159.</p>
+        <p class="paper-links">
+          <a class="btn btn-ghost btn-sm" href="https://www.mdpi.com/1422-0067/27/20/9159" target="_blank" rel="noopener" data-es="Leer el artículo (acceso abierto) ↗" data-en="Read the article (open access) ↗">Leer el artículo (acceso abierto) ↗</a>
+          <a class="btn btn-ghost btn-sm" href="https://doi.org/10.3390/ijms27209159" target="_blank" rel="noopener">doi:10.3390/ijms27209159 ↗</a>
+          <a class="btn btn-ghost btn-sm" href="https://github.com/DanielBustosG/Urease-provenance-audit" target="_blank" rel="noopener" data-es="Código y datos (GitHub) ↗" data-en="Code and data (GitHub) ↗">Código y datos (GitHub) ↗</a>
+        </p>
+      </div>
+      <div class="hero-cta" style="margin:20px 0 4px">
+        <a class="btn btn-primary" href="Caso_Ureasa_notebooks.zip" download data-es="Descargar todos los notebooks (.zip) ↓" data-en="Download all notebooks (.zip) ↓">Descargar todos los notebooks (.zip) ↓</a>
+      </div>
+      <ol class="flow" aria-label="Orden sugerido">
+        <li data-es="N0 · La pregunta" data-en="N0 · The question">N0 · La pregunta</li>
+        <li data-es="N1 · Herramientas" data-en="N1 · Toolbox">N1 · Herramientas</li>
+        <li data-es="N2–N3 · Experimento y validación" data-en="N2–N3 · Experiment and validation">N2–N3 · Experimento y validación</li>
+        <li data-es="N4–N5 · Inferencia" data-en="N4–N5 · Inference">N4–N5 · Inferencia</li>
+      </ol>
+      <p class="note" data-es="💡 <strong>En Colab no hay que preparar nada:</strong> la primera celda instala RDKit (unos 30 segundos) y los datos se leen directamente del repositorio público del paper. Usa <em>Runtime → Run all</em>, y <em>File → Save a copy in Drive</em> para guardar tus cambios. Léelos en orden la primera vez; después cada notebook sirve como referencia independiente. Están escritos en inglés." data-en="💡 <strong>Nothing to set up in Colab:</strong> the first cell installs RDKit (about 30 seconds) and the data are read directly from the paper’s public repository. Use <em>Runtime → Run all</em>, and <em>File → Save a copy in Drive</em> to keep your changes. Read them in order the first time; afterwards each notebook stands alone as a reference.">💡 <strong>En Colab no hay que preparar nada:</strong> la primera celda instala RDKit (unos 30 segundos) y los datos se leen directamente del repositorio público del paper. Usa <em>Runtime → Run all</em>, y <em>File → Save a copy in Drive</em> para guardar tus cambios. Léelos en orden la primera vez; después cada notebook sirve como referencia independiente. Están escritos en inglés.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:28px">
+    <div class="wrap">
+      <div class="units">
+        <article class="unit">
+          <div class="unit-num"><small data-es="Notebook" data-en="Notebook">Notebook</small>N0</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N0_Question_Confounder_Data/N0_Question_Confounder_Data.ipynb" target="_blank" rel="noopener" data-es="La pregunta, el confusor y los datos" data-en="The question, the confounder and the data">La pregunta, el confusor y los datos</a></h2>
+            <p class="unit-sub">Notebook 0 — The Question, the Confounder and the Data</p>
+            <p class="desc" data-es="Qué pregunta el paper, por qué la procedencia de las moléculas puede confundir una comparación entre colecciones, y cómo son los datos." data-en="What the paper asks, why the provenance of molecules can confound a cross-collection comparison, and what the data look like.">Qué pregunta el paper, por qué la procedencia de las moléculas puede confundir una comparación entre colecciones, y cómo son los datos.</p>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N0_Question_Confounder_Data/N0_Question_Confounder_Data.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="N0_Question_Confounder_Data/N0_Question_Confounder_Data.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="N0_Question_Confounder_Data/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Notebook" data-en="Notebook">Notebook</small>N1</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N1_Cheminformatics_Foundations/N1_Cheminformatics_Foundations.ipynb" target="_blank" rel="noopener" data-es="Fundamentos de quimioinformática" data-en="Cheminformatics foundations">Fundamentos de quimioinformática</a></h2>
+            <p class="unit-sub">Notebook 1 — Cheminformatics Foundations: Structures, Descriptors, Fingerprints and Motifs</p>
+            <p class="desc" data-es="Estructuras, descriptores, fingerprints y motivos: la caja de herramientas que usan todos los notebooks siguientes." data-en="Structures, descriptors, fingerprints and motifs: the toolbox every later notebook depends on.">Estructuras, descriptores, fingerprints y motivos: la caja de herramientas que usan todos los notebooks siguientes.</p>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N1_Cheminformatics_Foundations/N1_Cheminformatics_Foundations.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="N1_Cheminformatics_Foundations/N1_Cheminformatics_Foundations.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="N1_Cheminformatics_Foundations/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Notebook" data-en="Notebook">Notebook</small>N2</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N2_Provenance_Experiment/N2_Provenance_Experiment.ipynb" target="_blank" rel="noopener" data-es="El experimento de procedencia" data-en="The provenance experiment">El experimento de procedencia</a></h2>
+            <p class="unit-sub">Notebook 2 — The Provenance Experiment: Can a Model Recognise Where a Molecule Came From?</p>
+            <p class="desc" data-es="¿Puede un modelo reconocer de qué colección viene una molécula? El experimento central del paper, reconstruido paso a paso." data-en="Can a model recognise which collection a molecule came from? The central experiment of the paper, rebuilt step by step.">¿Puede un modelo reconocer de qué colección viene una molécula? El experimento central del paper, reconstruido paso a paso.</p>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N2_Provenance_Experiment/N2_Provenance_Experiment.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="N2_Provenance_Experiment/N2_Provenance_Experiment.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="N2_Provenance_Experiment/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Notebook" data-en="Notebook">Notebook</small>N3</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N3_Validation_Design/N3_Validation_Design.ipynb" target="_blank" rel="noopener" data-es="Diseño de la validación" data-en="Validation design">Diseño de la validación</a></h2>
+            <p class="unit-sub">Notebook 3 — Validation Design: Leakage, Grouping and Property Matching</p>
+            <p class="desc" data-es="Fuga de información, validación agrupada y emparejamiento por propiedades: cómo se diseña una validación que no se engaña a sí misma." data-en="Leakage, grouped validation and property matching: how to design a validation that does not fool itself.">Fuga de información, validación agrupada y emparejamiento por propiedades: cómo se diseña una validación que no se engaña a sí misma.</p>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N3_Validation_Design/N3_Validation_Design.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="N3_Validation_Design/N3_Validation_Design.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="N3_Validation_Design/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Notebook" data-en="Notebook">Notebook</small>N4</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N4_Null_Models/N4_Null_Models.ipynb" target="_blank" rel="noopener" data-es="Modelos nulos" data-en="Null models">Modelos nulos</a></h2>
+            <p class="unit-sub">Notebook 4 — Null Models: What a Difference Does and Does Not Prove</p>
+            <p class="desc" data-es="Qué prueba y qué no prueba una diferencia: y-scrambling y modelos nulos ajustados a la tarea." data-en="What a difference does and does not prove: y-scrambling and task-matched null models.">Qué prueba y qué no prueba una diferencia: y-scrambling y modelos nulos ajustados a la tarea.</p>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N4_Null_Models/N4_Null_Models.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="N4_Null_Models/N4_Null_Models.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="N4_Null_Models/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Notebook" data-en="Notebook">Notebook</small>N5</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N5_Applicability_Conformal/N5_Applicability_Conformal.ipynb" target="_blank" rel="noopener" data-es="Dominio de aplicabilidad y predicción conformal" data-en="Applicability domain and conformal prediction">Dominio de aplicabilidad y predicción conformal</a></h2>
+            <p class="unit-sub">Notebook 5 — Applicability Domain and Conformal Prediction: Knowing When to Refuse</p>
+            <p class="desc" data-es="Saber cuándo un modelo debe abstenerse: dominio de aplicabilidad y predicción conformal con cobertura garantizada." data-en="Knowing when a model should refuse: applicability domain and conformal prediction with guaranteed coverage.">Saber cuándo un modelo debe abstenerse: dominio de aplicabilidad y predicción conformal con cobertura garantizada.</p>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Caso_Ureasa/N5_Applicability_Conformal/N5_Applicability_Conformal.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="N5_Applicability_Conformal/N5_Applicability_Conformal.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="N5_Applicability_Conformal/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p data-es="© <span class='yr'>2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule."
+       data-en="© <span class='yr'>2026</span> Daniel Bustos · Bioinformatics and Computational Chemistry Laboratory, Universidad Católica del Maule.">© <span class="yr">2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule.</p>
+    <p class="footer-meta"><a href="../" data-es="Volver al sitio principal" data-en="Back to main site">Volver al sitio principal</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>

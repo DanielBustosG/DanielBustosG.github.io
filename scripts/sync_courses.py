@@ -48,6 +48,25 @@ COURSES = {
             ("../Material_Estudio/", "../BGM324/"),
         ],
     },
+    # Material de apoyo (no son cursos formales).
+    "Cheminformatics": {
+        "src": DOCS / "ChemInformatics/Material",
+        "label": "Quimioinform&aacute;tica &middot; Material de apoyo",
+        "zip": "Cheminformatics_notebooks.zip",
+        "replace": [
+            ("USER/REPO/blob/main/ChemInformatics/Material/", f"{REPO}/blob/main/Cheminformatics/"),
+        ],
+    },
+    "Caso_Ureasa": {
+        "src": DOCS / "Example_Paperjavier",
+        "label": "Caso de estudio &middot; Paper ureasa (IJMS 2026)",
+        "zip": "Caso_Ureasa_notebooks.zip",
+        "replace": [
+            # Los datos se siguen leyendo del repositorio del paper; solo cambian los botones Colab/GitHub.
+            ("DanielBustosG/Urease-provenance-audit/blob/main/teaching/Example_Paperjavier/",
+             f"{REPO}/blob/main/Caso_Ureasa/"),
+        ],
+    },
 }
 
 MARK = "<!-- course-backbar -->"
@@ -109,8 +128,9 @@ def sync(code, src):
 
 def main():
     args = sys.argv[1:]
-    if args and args[0].upper() in COURSES:
-        code = args[0].upper()
+    names = {k.lower(): k for k in COURSES}
+    if args and args[0].lower() in names:
+        code = names[args[0].lower()]
         src = Path(args[1]).expanduser() if len(args) > 1 else COURSES[code]["src"]
         sync(code, src)
     else:

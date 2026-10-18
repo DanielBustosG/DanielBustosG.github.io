@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es" data-title-es="Quimioinformática · Material de apoyo — Daniel Bustos" data-title-en="Cheminformatics · Supporting material — Daniel Bustos">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quimioinformática · Material de apoyo — Daniel Bustos</title>
+<meta name="description" content="Curso de quimioinformática de elaboración propia: 19 notebooks de Python con RDKit, ejecutables en Google Colab. Representación molecular, descriptores, similitud, QSAR, machine learning y diseño generativo.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Quimioinformática — Material de apoyo">
+<meta property="og:description" content="19 notebooks de Python con RDKit, ejecutables en Google Colab.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+<script>
+  /* Tema antes de pintar, para evitar el destello claro en modo oscuro. */
+  try {
+    var t = localStorage.getItem('db-theme');
+    if (!t) t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="../assets/css/course.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-es="Saltar al contenido" data-en="Skip to content">Saltar al contenido</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="../">
+      <span class="brand-mark">DB</span>
+      <span class="brand-text">
+        <strong>Daniel Bustos</strong>
+        <small data-es="Bioinformática Estructural · UCM" data-en="Structural Bioinformatics · UCM">Bioinformática Estructural · UCM</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Cheminformatics">
+      <a href="../" data-es="← Volver al sitio" data-en="← Back to main site">← Volver al sitio</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="course-hero">
+    <div class="wrap">
+      <span class="course-code" data-es="Material de apoyo" data-en="Supporting material">Material de apoyo</span>
+      <h1 data-es="Quimioinformática" data-en="Cheminformatics">Quimioinformática</h1>
+      <p class="course-tagline">Cheminformatics for Computer Scientists</p>
+      <ul class="course-meta">
+        <li data-es="<strong>Tipo:</strong> curso de elaboración propia" data-en="<strong>Type:</strong> self-developed course"><strong>Tipo:</strong> curso de elaboración propia</li>
+        <li data-es="<strong>Para:</strong> estudiantes con base en programación y machine learning, sin formación previa en química" data-en="<strong>For:</strong> students with programming and machine-learning background and no prior chemistry"><strong>Para:</strong> estudiantes con base en programación y machine learning, sin formación previa en química</li>
+        <li data-es="<strong>Autor:</strong> Daniel Bustos, PhD" data-en="<strong>Author:</strong> Daniel Bustos, PhD"><strong>Autor:</strong> Daniel Bustos, PhD</li>
+      </ul>
+      <p class="course-lede" data-es="Quimioinformática basada en ligandos, desde cero: qué es una molécula, cómo se representa en un computador y cómo se construyen y validan modelos predictivos sobre ella. Cada unidad es un <strong>notebook de Jupyter (.ipynb)</strong> con teoría, código Python ejecutable y ejercicios." data-en="Ligand-based cheminformatics from scratch: what a molecule is, how it is represented in a computer, and how predictive models are built and validated on it. Each unit is a <strong>Jupyter notebook (.ipynb)</strong> with theory, runnable Python code and exercises.">Quimioinformática basada en ligandos, desde cero: qué es una molécula, cómo se representa en un computador y cómo se construyen y validan modelos predictivos sobre ella. Cada unidad es un <strong>notebook de Jupyter (.ipynb)</strong> con teoría, código Python ejecutable y ejercicios.</p>
+      <div class="hero-cta" style="margin:20px 0 4px">
+        <a class="btn btn-primary" href="Cheminformatics_notebooks.zip" download data-es="Descargar todos los notebooks (.zip) ↓" data-en="Download all notebooks (.zip) ↓">Descargar todos los notebooks (.zip) ↓</a>
+      </div>
+      <ol class="flow stats" aria-label="Estructura">
+        <li data-es="19 unidades" data-en="19 units">19 unidades</li>
+        <li data-es="8 bloques" data-en="8 blocks">8 bloques</li>
+        <li data-es="14 núcleo · 5 ampliación" data-en="14 core · 5 extended">14 núcleo · 5 ampliación</li>
+      </ol>
+      <p class="note" data-es="💡 <strong>Antes de empezar en Colab:</strong> los notebooks usan <strong>RDKit</strong>, que no viene instalado en Colab. Crea una celda al inicio y ejecuta <code>!pip install rdkit</code> (tarda unos 30 segundos), luego <em>Runtime → Run all</em>. Para guardar tus cambios usa <em>File → Save a copy in Drive</em>. La unidad 6 consulta bases de datos en línea (ChEMBL, PubChem, PDB), así que necesita conexión. Los notebooks están escritos en inglés." data-en="💡 <strong>Before you start in Colab:</strong> the notebooks use <strong>RDKit</strong>, which Colab does not include. Add a cell at the top and run <code>!pip install rdkit</code> (about 30 seconds), then <em>Runtime → Run all</em>. To keep your changes use <em>File → Save a copy in Drive</em>. Unit 6 queries online databases (ChEMBL, PubChem, PDB), so it needs a connection.">💡 <strong>Antes de empezar en Colab:</strong> los notebooks usan <strong>RDKit</strong>, que no viene instalado en Colab. Crea una celda al inicio y ejecuta <code>!pip install rdkit</code> (tarda unos 30 segundos), luego <em>Runtime → Run all</em>. Para guardar tus cambios usa <em>File → Save a copy in Drive</em>. La unidad 6 consulta bases de datos en línea (ChEMBL, PubChem, PDB), así que necesita conexión. Los notebooks están escritos en inglés.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:28px">
+    <div class="wrap">
+      <div class="units">
+        <h3 class="block-h" data-es="Bloque A · Química básica para informáticos" data-en="Block A · The primer">Bloque A · Química básica para informáticos</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U1</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U1_Chemistry_Primer/U1_Chemistry_Primer.ipynb" target="_blank" rel="noopener" data-es="Átomos, enlaces y moléculas: química básica para informáticos" data-en="Atoms, bonds and molecules: a chemistry primer">Átomos, enlaces y moléculas: química básica para informáticos</a></h2>
+            <p class="unit-sub">Unit 1 — Atoms, Bonds and Molecules: a Chemistry Primer for Computer Scientists</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U1_Chemistry_Primer/U1_Chemistry_Primer.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U1_Chemistry_Primer/U1_Chemistry_Primer.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U1_Chemistry_Primer/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U2</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U2_Structure_and_Graph/U2_Structure_and_Graph.ipynb" target="_blank" rel="noopener" data-es="Estructura molecular, isomería y la molécula como grafo" data-en="Molecular structure, isomerism and the molecule as a graph">Estructura molecular, isomería y la molécula como grafo</a></h2>
+            <p class="unit-sub">Unit 2 — Molecular Structure, Isomerism and the Molecule as a Graph</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U2_Structure_and_Graph/U2_Structure_and_Graph.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U2_Structure_and_Graph/U2_Structure_and_Graph.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U2_Structure_and_Graph/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque B · Representar moléculas en un computador" data-en="Block B · Representing molecules in a computer">Bloque B · Representar moléculas en un computador</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U3</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U3_SMILES_InChI_Formats/U3_SMILES_InChI_Formats.ipynb" target="_blank" rel="noopener" data-es="Notaciones lineales y formatos: SMILES, InChI, SDF/MOL" data-en="Line notations and file formats: SMILES, InChI, SDF/MOL">Notaciones lineales y formatos: SMILES, InChI, SDF/MOL</a></h2>
+            <p class="unit-sub">Unit 3 — Line Notations and File Formats: SMILES, InChI, SDF/MOL and Canonicalisation</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U3_SMILES_InChI_Formats/U3_SMILES_InChI_Formats.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U3_SMILES_InChI_Formats/U3_SMILES_InChI_Formats.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U3_SMILES_InChI_Formats/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U4</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U4_Standardisation/U4_Standardisation.ipynb" target="_blank" rel="noopener" data-es="Sanitización, estandarización, tautómeros y estereoquímica" data-en="Sanitisation, standardisation, tautomers and stereochemistry">Sanitización, estandarización, tautómeros y estereoquímica</a></h2>
+            <p class="unit-sub">Unit 4 — Sanitisation, Standardisation, Tautomers and Stereochemistry in Practice</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U4_Standardisation/U4_Standardisation.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U4_Standardisation/U4_Standardisation.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U4_Standardisation/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U5</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U5_Descriptors_Fingerprints/U5_Descriptors_Fingerprints.ipynb" target="_blank" rel="noopener" data-es="Descriptores y fingerprints: de molécula a vector" data-en="Descriptors and fingerprints: turning a molecule into a vector">Descriptores y fingerprints: de molécula a vector</a></h2>
+            <p class="unit-sub">Unit 5 — Descriptors and Fingerprints: Turning a Molecule into a Vector</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U5_Descriptors_Fingerprints/U5_Descriptors_Fingerprints.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U5_Descriptors_Fingerprints/U5_Descriptors_Fingerprints.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U5_Descriptors_Fingerprints/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque C · Datos químicos y espacio químico" data-en="Block C · Chemical data and chemical space">Bloque C · Datos químicos y espacio químico</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U6</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U6_Databases/U6_Databases.ipynb" target="_blank" rel="noopener" data-es="Bases de datos químicas: ChEMBL, PubChem, PDB, ZINC" data-en="Chemical databases: ChEMBL, PubChem, PDB, ZINC">Bases de datos químicas: ChEMBL, PubChem, PDB, ZINC</a></h2>
+            <p class="unit-sub">Unit 6 — Chemical Databases and Getting Data: ChEMBL, PubChem, PDB, ZINC</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U6_Databases/U6_Databases.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U6_Databases/U6_Databases.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U6_Databases/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U7</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U7_Data_Curation/U7_Data_Curation.ipynb" target="_blank" rel="noopener" data-es="Curación de datos y trampas de los datos de bioactividad" data-en="Data curation and the pitfalls of bioactivity data">Curación de datos y trampas de los datos de bioactividad</a></h2>
+            <p class="unit-sub">Unit 7 — Data Curation and the Pitfalls of Bioactivity Data</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U7_Data_Curation/U7_Data_Curation.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U7_Data_Curation/U7_Data_Curation.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U7_Data_Curation/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U8</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U8_Chemical_Space/U8_Chemical_Space.ipynb" target="_blank" rel="noopener" data-es="Espacio químico: visualización, clustering y diversidad" data-en="Chemical space: visualisation, clustering and diversity">Espacio químico: visualización, clustering y diversidad</a></h2>
+            <p class="unit-sub">Unit 8 — Chemical Space: Visualisation, Clustering and Diversity</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U8_Chemical_Space/U8_Chemical_Space.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U8_Chemical_Space/U8_Chemical_Space.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U8_Chemical_Space/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U9</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U9_Druglikeness_ADMET/U9_Druglikeness_ADMET.ipynb" target="_blank" rel="noopener" data-es="Drug-likeness, ADMET y filtros de química médica" data-en="Drug-likeness, ADMET and medicinal-chemistry filters">Drug-likeness, ADMET y filtros de química médica</a></h2>
+            <p class="unit-sub">Unit 9 — Drug-likeness, ADMET and Medicinal-Chemistry Filters</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U9_Druglikeness_ADMET/U9_Druglikeness_ADMET.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U9_Druglikeness_ADMET/U9_Druglikeness_ADMET.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U9_Druglikeness_ADMET/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque D · Similitud, SAR y subestructuras" data-en="Block D · Similarity, SAR and substructure reasoning">Bloque D · Similitud, SAR y subestructuras</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U10</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U10_Substructure_SMARTS/U10_Substructure_SMARTS.ipynb" target="_blank" rel="noopener" data-es="Búsqueda por subestructura y SMARTS" data-en="Substructure search and SMARTS">Búsqueda por subestructura y SMARTS</a></h2>
+            <p class="unit-sub">Unit 10 — Substructure Search and SMARTS</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U10_Substructure_SMARTS/U10_Substructure_SMARTS.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U10_Substructure_SMARTS/U10_Substructure_SMARTS.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U10_Substructure_SMARTS/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U11</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U11_Similarity_SAR/U11_Similarity_SAR.ipynb" target="_blank" rel="noopener" data-es="Similitud, scaffolds, MCS y análisis SAR" data-en="Similarity, scaffolds, MCS and SAR analysis">Similitud, scaffolds, MCS y análisis SAR</a></h2>
+            <p class="unit-sub">Unit 11 — Similarity, Scaffolds, MCS and SAR Analysis</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U11_Similarity_SAR/U11_Similarity_SAR.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U11_Similarity_SAR/U11_Similarity_SAR.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U11_Similarity_SAR/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque E · QSAR y machine learning para moléculas" data-en="Block E · QSAR and machine learning for molecules">Bloque E · QSAR y machine learning para moléculas</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U12</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U12_Classical_QSAR/U12_Classical_QSAR.ipynb" target="_blank" rel="noopener" data-es="QSAR clásico y los primeros modelos predictivos" data-en="Classical QSAR and the first predictive models">QSAR clásico y los primeros modelos predictivos</a></h2>
+            <p class="unit-sub">Unit 12 — Classical QSAR and the First Predictive Models</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U12_Classical_QSAR/U12_Classical_QSAR.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U12_Classical_QSAR/U12_Classical_QSAR.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U12_Classical_QSAR/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U13</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U13_ML_Properties/U13_ML_Properties.ipynb" target="_blank" rel="noopener" data-es="Modelos de machine learning para propiedades moleculares" data-en="Machine-learning models for molecular properties">Modelos de machine learning para propiedades moleculares</a></h2>
+            <p class="unit-sub">Unit 13 — Machine-Learning Models for Molecular Properties</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U13_ML_Properties/U13_ML_Properties.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U13_ML_Properties/U13_ML_Properties.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U13_ML_Properties/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U14</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U14_Validation/U14_Validation.ipynb" target="_blank" rel="noopener" data-es="Validar modelos con honestidad: particiones, dominio de aplicabilidad y fugas" data-en="Validating molecular ML honestly: splits, applicability domain and leakage">Validar modelos con honestidad: particiones, dominio de aplicabilidad y fugas</a></h2>
+            <p class="unit-sub">Unit 14 — Validating Molecular ML Honestly: Splits, Applicability Domain and Leakage</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U14_Validation/U14_Validation.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U14_Validation/U14_Validation.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U14_Validation/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U15</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U15_Deep_Learning/U15_Deep_Learning.ipynb" target="_blank" rel="noopener" data-es="Deep learning para moléculas: conceptos y demostraciones" data-en="Deep learning for molecules: concepts and light demonstrations">Deep learning para moléculas: conceptos y demostraciones</a></h2>
+            <p class="unit-sub">Unit 15 — Deep Learning for Molecules: Concepts and Light Demonstrations</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U15_Deep_Learning/U15_Deep_Learning.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U15_Deep_Learning/U15_Deep_Learning.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U15_Deep_Learning/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque F · Quimioinformática 3D basada en ligandos" data-en="Block F · Ligand-based 3-D cheminformatics">Bloque F · Quimioinformática 3D basada en ligandos</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U16</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U16_3D_Conformers/U16_3D_Conformers.ipynb" target="_blank" rel="noopener" data-es="La tercera dimensión: confórmeros, descriptores 3D y forma" data-en="The third dimension: conformers, 3-D descriptors and shape">La tercera dimensión: confórmeros, descriptores 3D y forma</a></h2>
+            <p class="unit-sub">Unit 16 — The Third Dimension: Conformers, 3-D Descriptors and Shape</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U16_3D_Conformers/U16_3D_Conformers.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U16_3D_Conformers/U16_3D_Conformers.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U16_3D_Conformers/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque G · Reacciones, síntesis y diseño generativo" data-en="Block G · Reactions, synthesis and generative design">Bloque G · Reacciones, síntesis y diseño generativo</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U17</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U17_Reactions/U17_Reactions.ipynb" target="_blank" rel="noopener" data-es="Reacciones in silico: SMARTS de reacción, enumeración y accesibilidad sintética" data-en="Reactions in silico: reaction SMARTS, enumeration and synthetic accessibility">Reacciones in silico: SMARTS de reacción, enumeración y accesibilidad sintética</a></h2>
+            <p class="unit-sub">Unit 17 — Reactions in silico: Reaction SMARTS, Enumeration and Synthetic Accessibility</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U17_Reactions/U17_Reactions.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U17_Reactions/U17_Reactions.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U17_Reactions/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U18</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U18_Generative_Design/U18_Generative_Design.ipynb" target="_blank" rel="noopener" data-es="Modelos generativos y diseño molecular de novo" data-en="Generative models and de novo molecular design">Modelos generativos y diseño molecular de novo</a></h2>
+            <p class="unit-sub">Unit 18 — Generative Models and de novo Molecular Design</p>
+            <ul class="tags subtle"><li data-es="Ampliación" data-en="Extended">Ampliación</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U18_Generative_Design/U18_Generative_Design.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U18_Generative_Design/U18_Generative_Design.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U18_Generative_Design/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <h3 class="block-h" data-es="Bloque H · Integración" data-en="Block H · Putting it together">Bloque H · Integración</h3>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U19</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U19_Capstone/U19_Capstone.ipynb" target="_blank" rel="noopener" data-es="Reproducibilidad, benchmarking, errores comunes y proyecto final" data-en="Reproducibility, benchmarking, pitfalls and a capstone project">Reproducibilidad, benchmarking, errores comunes y proyecto final</a></h2>
+            <p class="unit-sub">Unit 19 — Reproducibility, Benchmarking, Pitfalls and a Capstone Project</p>
+            <ul class="tags subtle"><li data-es="Núcleo" data-en="Core">Núcleo</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/Cheminformatics/U19_Capstone/U19_Capstone.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U19_Capstone/U19_Capstone.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U19_Capstone/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p data-es="© <span class='yr'>2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule."
+       data-en="© <span class='yr'>2026</span> Daniel Bustos · Bioinformatics and Computational Chemistry Laboratory, Universidad Católica del Maule.">© <span class="yr">2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule.</p>
+    <p class="footer-meta"><a href="../" data-es="Volver al sitio principal" data-en="Back to main site">Volver al sitio principal</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>
