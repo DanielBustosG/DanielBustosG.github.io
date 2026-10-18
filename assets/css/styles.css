@@ -518,6 +518,21 @@ a.pub-title:hover { color: var(--accent); }
   .metrics { grid-template-columns: repeat(4, 1fr); }
 }
 
+/* Menú plegable en pantallas medianas: con 7 secciones la barra no cabe bajo ~1080 px. */
+@media (max-width: 1080px) {
+  .nav-toggle { display: grid; }
+  .nav {
+    position: fixed; inset: var(--header-h) 0 auto; z-index: 99;
+    flex-direction: column; gap: 2px; margin: 0; padding: 12px 16px 18px;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    display: none;
+  }
+  .nav.open { display: flex; }
+  .nav a { padding: 11px 12px; font-size: .95rem; }
+  .header-actions { margin-left: auto; }
+}
+
 @media (max-width: 760px) {
   .nav-toggle { display: grid; }
   .nav {

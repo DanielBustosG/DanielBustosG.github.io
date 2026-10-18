@@ -25,6 +25,7 @@ var I18N_EN = {
   nav_pubs: 'Publications',
   nav_group: 'Group',
   nav_projects: 'Projects',
+  nav_courses: 'Courses',
   nav_contact: 'Contact',
 
   /* ── Inicio ────────────────────────────────────────────── */
@@ -434,6 +435,15 @@ var I18N_EN = {
     '<p>Study material for the five units of the course: sequence alignment, protein structure ' +
     'prediction, molecular docking, computer-aided drug design and molecular dynamics.</p>' +
     '<p><a class="btn btn-ghost" href="BGM324/">View course material →</a></p></article>' +
+    '<article class="project"><div class="project-head">' +
+    '<span class="badge badge-active">Study material</span>' +
+    '<span class="project-years">4th year · 1st semester</span></div>' +
+    '<h3><a href="BGM411/">BGM411 · Artificial Intelligence</a></h3>' +
+    '<p class="project-role">Medical Bioengineering · Universidad Católica del Maule</p>' +
+    '<p>Nine units and two supplements as Python notebooks that run in Google Colab: supervised ' +
+    'and unsupervised learning, neural networks, genetic algorithms and medical image ' +
+    'classification.</p>' +
+    '<p><a class="btn btn-ghost" href="BGM411/">View course material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
     '<span class="badge badge-active">Permanent</span></div>' +
     '<h3>Co-creation of the LBQC</h3>' +

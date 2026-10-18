@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-title-es="BGM324 · Bioinformática — Daniel Bustos" data-title-en="BGM324 · Bioinformatics — Daniel Bustos">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,63 +22,7 @@
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
 </script>
-<style>
-  .course-hero { padding: 64px 0 40px; background: linear-gradient(180deg, var(--accent-soft), transparent 75%); }
-  .course-code {
-    display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .1em;
-    color: #fff; background: var(--accent); border-radius: 6px; padding: 3px 10px; margin-bottom: 14px;
-  }
-  :root[data-theme="dark"] .course-code { color: #04222c; }
-  .course-hero h1 { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 600; letter-spacing: -.02em; }
-  .course-meta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0 0; padding: 0; list-style: none; color: var(--text-soft); font-size: .93rem; }
-  .course-meta strong { color: var(--text); font-weight: 600; }
-  .course-lede { max-width: 70ch; color: var(--text-soft); font-size: 1.05rem; margin-top: 18px; }
-
-  .flow { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 0; padding: 0; counter-reset: u; }
-  .flow li {
-    counter-increment: u; display: flex; align-items: center; gap: 8px;
-    background: var(--bg-card); border: 1px solid var(--line); border-radius: 999px;
-    padding: 6px 14px 6px 6px; font-size: .86rem; font-weight: 550; color: var(--text);
-  }
-  .flow li::before {
-    content: counter(u); display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
-    background: var(--accent); color: #fff; font-size: .75rem; font-weight: 700;
-  }
-  :root[data-theme="dark"] .flow li::before { color: #04222c; }
-  .flow li:not(:last-child)::after { content: '→'; margin-left: 6px; color: var(--text-mute); }
-
-  .note {
-    display: flex; gap: 12px; align-items: flex-start; max-width: 78ch;
-    background: var(--bg-card); border: 1px solid var(--line); border-left: 3px solid var(--accent);
-    border-radius: var(--radius-sm); padding: 12px 16px; font-size: .88rem; color: var(--text-soft); margin-top: 26px;
-  }
-
-  .units { display: grid; gap: 18px; }
-  .unit {
-    display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 22px; align-items: start;
-    background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 24px; box-shadow: var(--shadow); transition: transform .15s ease, box-shadow .15s ease;
-  }
-  .unit:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-  .unit-num { font-family: var(--serif); font-size: 2.6rem; line-height: 1; font-weight: 600; color: var(--accent); }
-  .unit-num small { display: block; font-family: var(--sans); font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 6px; }
-  .unit h2 { font-size: 1.22rem; margin-bottom: 4px; }
-  .unit h2 a { color: var(--text); }
-  .unit h2 a:hover { color: var(--accent); text-decoration: none; }
-  .unit-sub { font-size: .84rem; color: var(--text-mute); margin: 0 0 10px; font-style: italic; }
-  .unit p.desc { font-size: .92rem; color: var(--text-soft); margin-bottom: 12px; }
-  .unit .tags li { font-size: .74rem; }
-  .unit-includes { font-size: .78rem; color: var(--text-mute); margin: 12px 0 0; }
-  .unit-cta { align-self: center; white-space: nowrap; }
-
-  @media (max-width: 760px) {
-    .unit { grid-template-columns: 1fr; gap: 10px; padding: 20px; }
-    .unit-num { font-size: 2rem; }
-    .unit-num small { display: inline; margin: 0 8px 0 0; }
-    .unit-cta { justify-self: start; }
-    .flow li:not(:last-child)::after { display: none; }
-  }
-</style>
+<link rel="stylesheet" href="../assets/css/course.css">
 </head>
 <body>
 
@@ -233,47 +177,6 @@
   </div>
 </footer>
 
-<script>
-(function () {
-  'use strict';
-  var LANG_KEY = 'db-lang', THEME_KEY = 'db-theme';   // mismas claves que el sitio principal
-  var TITLES = { es: 'BGM324 · Bioinformática — Daniel Bustos', en: 'BGM324 · Bioinformatics — Daniel Bustos' };
-
-  function apply(lang) {
-    lang = lang === 'en' ? 'en' : 'es';
-    document.querySelectorAll('[data-es]').forEach(function (el) {
-      var v = el.getAttribute('data-' + lang);
-      if (v != null) el.innerHTML = v;
-    });
-    document.querySelectorAll('.yr').forEach(function (el) { el.textContent = new Date().getFullYear(); });
-    document.documentElement.lang = lang;
-    document.title = TITLES[lang];
-    document.querySelectorAll('.lang-btn').forEach(function (b) {
-      var on = b.getAttribute('data-lang') === lang;
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-pressed', String(on));
-    });
-    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
-  }
-
-  var stored = null;
-  try { stored = localStorage.getItem(LANG_KEY); } catch (e) {}
-  apply(stored || ((navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'es'));
-  document.querySelectorAll('.lang-btn').forEach(function (b) {
-    b.addEventListener('click', function () { apply(b.getAttribute('data-lang')); });
-  });
-
-  var btn = document.getElementById('themeToggle');
-  btn.addEventListener('click', function () {
-    var root = document.documentElement;
-    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
-  });
-
-  var header = document.getElementById('siteHeader');
-  window.addEventListener('scroll', function () { header.classList.toggle('scrolled', window.scrollY > 8); }, { passive: true });
-})();
-</script>
+<script src="../assets/js/course.js"></script>
 </body>
 </html>
