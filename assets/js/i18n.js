@@ -286,7 +286,7 @@ var I18N_EN = {
     'programming and computer-aided drug design.</p>' +
     '<p>Daniel Bustos co-created the LBQC, taking part in setting up the laboratory and its ' +
     'computing infrastructure for molecular modelling at the Faculty of Medicine.</p>',
-  group_members_h: 'Daniel Bustos group',
+  group_members_h: 'Students',
   group_people:
     '<section class="roster-group"><h4>Research assistants</h4><ul class="roster-list"><li><s' +
     'trong>Antonia Flores</strong><span>Medical Bioengineer · Universidad Católica del Maule<' +
