@@ -91,20 +91,25 @@ UNI_ESC = re.compile(r"(?:&lt;|<)U\+([0-9A-Fa-f]{4,6})(?:&gt;|>)")
 SKIP = shutil.ignore_patterns(".DS_Store", "Thumbs.db", "__pycache__", ".ipynb_checkpoints")
 
 
-def backbar(label, home="../../"):
+def backbar(label, home="../../", other=None):
+    """other = (texto, href) del documento en el otro idioma, si existe."""
+    lang = ""
+    if other:
+        lang = (f'<a href="{other[1]}" style="color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.55);'
+                f'border-radius:6px;padding:2px 10px;margin-right:14px">{other[0]}</a>')
     return MARK + f"""
 <nav class="course-backbar" aria-label="Curso" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
   <a href="../" style="color:#fff;text-decoration:none">&larr; {label}</a>
-  <a href="{home}" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a>
+  <span>{lang}<a href="{home}" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
 </nav>
 """
 
 
-def inject(text, label, home="../../"):
+def inject(text, label, home="../../", other=None):
     if MARK in text or OLD_MARK in text:
         return text
     m = re.search(r"<body[^>]*>", text, flags=re.I)
-    bar = backbar(label, home)
+    bar = backbar(label, home, other)
     return (text[: m.end()] + "\n" + bar + text[m.end():]) if m else bar + text
 
 
@@ -129,8 +134,15 @@ def sync(code, src):
                 new = new.replace(old, rep)
             if cfg.get("fix_unicode_escapes"):
                 new = UNI_ESC.sub(lambda m: chr(int(m.group(1), 16)), new)
-            if f.suffix == ".html" and f.name == "index.html" and f.parent == out:
-                new = inject(new, cfg["label"], cfg.get("home", "../../"))
+            if f.suffix == ".html" and f.parent == out and f.name in ("index.html", "index_es.html"):
+                # Documentos con versión en español (index_es.html): enlace al otro idioma.
+                if f.name == "index_es.html":
+                    other = ("English", "./")
+                elif (out / "index_es.html").exists():
+                    other = ("Español", "index_es.html")
+                else:
+                    other = None
+                new = inject(new, cfg["label"], cfg.get("home", "../../"), other)
             if new != text:
                 f.write_text(new, encoding="utf-8")
         print(f"   {unit.name}: {sum(1 for x in out.rglob('*') if x.is_file())} archivos")
