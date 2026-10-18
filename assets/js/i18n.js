@@ -432,8 +432,9 @@ var I18N_EN = {
     '<span class="project-years">3rd year · 2nd semester</span></div>' +
     '<h3><a href="BGM324/">BGM324 · Bioinformatics</a></h3>' +
     '<p class="project-role">Medical Bioengineering · Universidad Católica del Maule</p>' +
-    '<p>Study material for the five units of the course: sequence alignment, protein structure ' +
-    'prediction, molecular docking, computer-aided drug design and molecular dynamics.</p>' +
+    '<p>Study material for five topics covered in the final units of the course: sequence ' +
+    'alignment, protein structure prediction, molecular docking, computer-aided drug design and ' +
+    'molecular dynamics.</p>' +
     '<p><a class="btn btn-ghost" href="BGM324/">View course material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
     '<span class="badge badge-active">Study material</span>' +
