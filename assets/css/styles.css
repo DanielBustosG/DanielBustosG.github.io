@@ -577,3 +577,4 @@ a.pub-title:hover { color: var(--accent); }
 .cf-status { font-size: .86rem; color: var(--text-mute); }
 .cf-status.ok { color: var(--accent); }
 .cf-status.err { color: #b4472f; }
+.comment-form[hidden] { display: none !important; }
