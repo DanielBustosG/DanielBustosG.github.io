@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unidad 1 · Alineamiento de secuencias — BGM324 Bioinformática, Universidad Católica del Maule</title>
+<meta name="description" content="Material de estudio sobre alineamiento de a pares y alineamiento múltiple de secuencias, matrices de sustitución, estadística de BLAST y su papel en la bioinformática estructural y el diseño de fármacos. BGM324 Bioinformática, Bioingeniería Médica, Universidad Católica del Maule.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+</style>
+</head>
+<body>
+<!-- course-backbar -->
+<nav class="course-backbar" aria-label="Curso" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <span><a href="./" style="color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:6px;padding:2px 10px;margin-right:14px">English</a><a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformática · Bioingeniería Médica · Universidad Católica del Maule</div>
+<h1>Unidad 1 — Alineamiento de secuencias: teoría, algoritmos e interpretación estadística</h1>
+<div class="meta">Material de estudio que acompaña a la clase 01 (<em>Alineamientos de secuencias</em>) · Preparado por Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · Primera unidad del módulo: análisis de secuencias → predicción de estructura de proteínas → docking molecular → diseño de fármacos asistido por computador → dinámica molecular</div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contenido</h2>
+<ol>
+<li><a href="#how">Cómo usar este material</a></li>
+<li><a href="#s1">1. ¿Por qué alinear secuencias?</a></li>
+<li><a href="#s2">2. Fundamentos evolutivos</a>
+  <ol><li><a href="#s2-1">Homología, ortología, paralogía</a></li><li><a href="#s2-2">La similitud no es homología</a></li><li><a href="#s2-3">Cómo divergen las secuencias</a></li></ol></li>
+<li><a href="#s3">3. Qué es un alineamiento</a></li>
+<li><a href="#s4">4. Sistemas de puntuación</a>
+  <ol><li><a href="#s4-1">Puntuación de nucleótidos</a></li><li><a href="#s4-2">Matrices log-odds</a></li><li><a href="#s4-3">PAM</a></li><li><a href="#s4-4">BLOSUM</a></li><li><a href="#s4-5">Elección de una matriz</a></li><li><a href="#s4-6">Penalizaciones por gap</a></li><li><a href="#s4-7">Ejemplo resuelto</a></li></ol></li>
+<li><a href="#s5">5. Alineamiento global (Needleman–Wunsch)</a></li>
+<li><a href="#s6">6. Alineamiento local (Smith–Waterman)</a></li>
+<li><a href="#s7">7. Búsqueda en bases de datos con BLAST</a>
+  <ol><li><a href="#s7-1">Historia y programas</a></li><li><a href="#s7-2">El algoritmo</a></li><li><a href="#s7-3">Estadística: bit score y E-value</a></li><li><a href="#s7-4">Sensibilidad y especificidad</a></li><li><a href="#s7-5">PSSM y PSI-BLAST</a></li></ol></li>
+<li><a href="#s8">8. Alineamiento múltiple de secuencias</a></li>
+<li><a href="#s9">9. Del alineamiento a la estructura</a></li>
+<li><a href="#s10">10. Trabajo práctico</a></li>
+<li><a href="#s11">11. Autoevaluación</a></li>
+<li><a href="#gloss">Glosario</a></li>
+<li><a href="#refs">Referencias y lecturas complementarias</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">Este documento amplía el contenido de la primera clase del módulo. Las diapositivas son un mapa; este texto es el territorio. Está escrito para ser leído de forma lineal una vez y luego consultado por secciones. Cada algoritmo se acompaña de un ejemplo numérico completamente resuelto que ustedes pueden reproducir a mano, cada afirmación sobre la biología o la estadística lleva una cita a la literatura primaria, y cada sección termina con una breve lista de puntos que deberían ser capaces de explicar sin apuntes.</p>
+<div class="box key"><h4>Objetivos de aprendizaje</h4>
+<ul class="objectives">
+<li>Definir homología, ortología y paralogía, y explicar por qué el "porcentaje de similitud" es evidencia a favor de la homología, pero no equivale a ella.</li>
+<li>Describir los procesos mutacionales (sustituciones, inserciones, deleciones) que un alineamiento intenta reconstruir.</li>
+<li>Explicar cómo se derivan las matrices de sustitución (PAM, BLOSUM) como puntuaciones log-odds, y elegir una matriz y un esquema de gaps apropiados para un problema dado.</li>
+<li>Completar una matriz de programación dinámica y realizar su trazado inverso (traceback) para los algoritmos de Needleman–Wunsch (global) y Smith–Waterman (local).</li>
+<li>Describir la heurística de BLAST (siembra de palabras, extensión, HSP) e interpretar las puntuaciones brutas, los bit scores y los E-values en términos de la estadística de Karlin–Altschul.</li>
+<li>Explicar cómo se construye una PSSM y por qué PSI-BLAST detecta homólogos remotos que BLASTp no encuentra.</li>
+<li>Describir el alineamiento múltiple de secuencias progresivo y sus limitaciones conocidas.</li>
+<li>Conectar el alineamiento de secuencias con las tareas posteriores de este módulo: selección de plantillas (templates) para el modelado por homología, MSA para la predicción de estructura y análisis de conservación para la identificación de sitios de unión.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Sección 1</span>¿Por qué alinear secuencias?</h2>
+<p>El alineamiento de secuencias (sequence alignment) es la operación sobre la que descansa casi todo lo demás en bioinformática. Una secuencia de nucleótidos o aminoácidos, considerada por sí sola, es una cadena de caracteres sin significado; adquiere significado solo cuando se compara con otras secuencias cuyas propiedades ya se conocen. La comparación se realiza mediante un <em>alineamiento</em>: una disposición de dos o más secuencias que sitúa, una sobre otra, los caracteres que se infiere que descienden de la misma posición ancestral.</p>
+<p>La razón por la que esto funciona es evolutiva. Las secuencias relacionadas lo están porque fueron copiadas, con errores, a partir de un ancestro común; los errores se acumulan lentamente en comparación con la velocidad a la que se pierde la función, de modo que una proteína que todavía cumple la función ancestral tiende a conservar la secuencia ancestral en las posiciones que importan. Por lo tanto, el alineamiento nos permite transferir información —función, estructura, la ubicación de un residuo catalítico, una mutación asociada a enfermedad— desde una secuencia caracterizada a una no caracterizada. Las principales aplicaciones se resumen a continuación.<sup class="c"><a href="#r13">[13]</a></sup></p>
+<table class="data">
+<thead><tr><th>Aplicación</th><th>Qué se compara</th><th>Qué se infiere</th></tr></thead>
+<tbody>
+<tr><td>Anotación funcional de una proteína nueva</td><td>Proteína consulta contra una base de datos de proteínas caracterizadas (UniProtKB/Swiss-Prot)</td><td>Función molecular probable, pertenencia a una familia, residuos catalíticos o de unión conservados</td></tr>
+<tr><td>Búsqueda de genes</td><td>ADN genómico contra transcritos conocidos, proteínas o regiones conservadas de otros genomas</td><td>Ubicación de exones, regiones codificantes y elementos regulatorios</td></tr>
+<tr><td>Relaciones evolutivas</td><td>Genes o proteínas homólogos entre organismos</td><td>Árboles filogenéticos; identificación de ortólogos y parálogos</td></tr>
+<tr><td>Análisis de familias y superfamilias</td><td>Alineamientos múltiples de secuencias de muchos parientes</td><td>Motivos y dominios conservados, perfiles específicos de posición, nuevos miembros de la familia</td></tr>
+<tr><td>Interpretación de variantes</td><td>Secuencia del paciente contra el genoma o la proteína de referencia</td><td>Ubicación de mutaciones; si un residuo afectado está conservado y, por lo tanto, probablemente es relevante</td></tr>
+<tr><td>Diseño experimental</td><td>Secuencias de partidores candidatos contra el genoma</td><td>Especificidad de los partidores (Primer-BLAST); contaminación con vectores (VecScreen)</td></tr>
+<tr><td>Bioinformática estructural</td><td>Proteína objetivo contra proteínas de estructura 3D conocida (PDB)</td><td>Plantillas para el modelado por homología; MSA utilizados por métodos del tipo AlphaFold; conservación de residuos mapeada sobre una estructura</td></tr>
+</tbody></table>
+<div class="box bridge"><h4>Puente con el resto del módulo</h4>
+<p>La última fila de la tabla es la que conecta esta unidad con las clases que siguen. La clase de predicción de estructura de proteínas comienza buscando en el Protein Data Bank una plantilla (template) con BLAST y luego alineando la secuencia objetivo con ella; la calidad de ese alineamiento determina la calidad del modelo más que cualquier otro factor. Las clases de docking y de diseño de fármacos usan alineamientos múltiples para decidir qué residuos de un bolsillo de unión están conservados entre especies o dentro de una familia de proteínas y, por lo tanto, qué interacciones debe satisfacer un ligando. La clase de dinámica molecular parte de modelos cuya numeración de secuencia se concilia con la proteína experimental mediante un alineamiento. Todo error posterior atribuible a un mal alineamiento es barato de evitar aquí y costoso de corregir después.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Sección 2</span>Fundamentos evolutivos</h2>
+
+<h3 id="s2-1">2.1 Homología, ortología y paralogía</h3>
+<p>Dos secuencias son <strong>homólogas</strong> si descienden de una secuencia ancestral común. La homología es una afirmación sobre la historia y, por lo tanto, es binaria: dos genes comparten un ancestro o no lo comparten. Expresiones como "70 % homólogas" son incorrectas; la magnitud que puede medirse y expresarse como porcentaje es la <em>identidad</em> o la <em>similitud</em>, que son propiedades de un alineamiento (Sección 2.2).<sup class="c"><a href="#r13">[13]</a>,<a href="#r14">[14]</a></sup></p>
+<p>Walter Fitch introdujo en 1970 la distinción que todavía se usa para clasificar a los homólogos según el evento evolutivo que los separó.<sup class="c"><a href="#r14">[14]</a></sup></p>
+<ul>
+<li>Los <strong>ortólogos</strong> son homólogos en <em>especies diferentes</em> que divergieron por un evento de <em>especiación</em>. La hemoglobina β humana y la hemoglobina β de caballo son ortólogas. Los ortólogos habitualmente, aunque no siempre, conservan la función ancestral, razón por la cual la ortología es la base preferida para transferir anotación funcional entre organismos.</li>
+<li>Los <strong>parálogos</strong> son homólogos que divergieron por un evento de <em>duplicación génica</em>. Pueden residir en el mismo genoma (hemoglobina α y hemoglobina β humanas) o, tras una especiación posterior, en genomas diferentes. Tras la duplicación, una copia queda liberada de la presión selectiva y puede adquirir una nueva función (neofuncionalización), repartir la función ancestral con su copia compañera (subfuncionalización) o degenerar en un pseudogén.</li>
+<li>Los <strong>xenólogos</strong> son homólogos cuya historia incluye transferencia génica horizontal; son comunes en bacterias y relevantes, por ejemplo, para la diseminación de genes de resistencia a antibióticos.</li>
+</ul>
+<figure>
+<img src="figures/fig01_homology.png" alt="Árbol génico esquemático que muestra una duplicación seguida de dos eventos de especiación, con los pares ortólogos y parálogos rotulados">
+<figcaption><b>Figura 1. Los ortólogos y los parálogos se definen por el evento ocurrido en su último ancestro común.</b> Un gen ancestral se duplica en las copias A y B (círculo naranjo). Luego, cada copia es heredada por dos especies tras un evento de especiación (cuadrados verdes). A en la especie 1 y A en la especie 2 son ortólogos; A y B en la misma especie son parálogos; los cuatro genes son homólogos. Nótese que A en la especie 1 y B en la especie 2 también son parálogos, porque el nodo que los separa es la duplicación, no la especiación. Koonin (2005) revisa el vocabulario más fino (in-parálogos, out-parálogos, co-ortólogos) necesario cuando las duplicaciones y las especiaciones se intercalan.<sup class="c"><a href="#r15">[15]</a></sup></figcaption>
+</figure>
+<p>Conviene tener presente el ejemplo de la hemoglobina durante el resto de la unidad: la familia de las globinas (cadenas α y β de la hemoglobina, mioglobina, leghemoglobinas vegetales) desciende de una única proteína ancestral de unión a oxígeno, sus miembros comparten el mismo plegamiento tridimensional y, sin embargo, algunos pares conservan menos de 20 % de identidad de secuencia. Es el caso canónico en que la comparación de secuencias por sí sola tiene dificultades, mientras que la comparación estructural tiene éxito, y volveremos a él en las Secciones 8 y 9.</p>
+
+<h3 id="s2-2">2.2 La similitud es evidencia de homología, no la homología en sí</h3>
+<p>Las diapositivas de la clase ilustran el concepto de homología con la extremidad pentadáctila: el ala de un murciélago, la aleta de un delfín y la mano humana comparten el mismo plan esquelético porque lo heredaron de un ancestro tetrápodo común, aunque hoy sirvan para volar, nadar y asir. Los anatomistas comparativos llegaron a esta conclusión a partir de la correspondencia estructural, y el análisis de secuencias razona de la misma manera: <em>observamos</em> similitud e <em>inferimos</em> homología cuando la similitud es demasiado grande para haber surgido por azar.</p>
+<p>Deben mantenerse separados tres términos:</p>
+<ul>
+<li><strong>Identidad</strong>: el porcentaje de posiciones alineadas en las que los dos residuos son iguales.</li>
+<li><strong>Similitud</strong>: el porcentaje de posiciones alineadas en las que los residuos son iguales <em>o</em> tienen una puntuación de sustitución positiva (p. ej., isoleucina alineada con leucina). La similitud es siempre al menos tan grande como la identidad y depende de la matriz utilizada.</li>
+<li><strong>Homología</strong>: la inferencia de ascendencia común. Está justificada cuando la puntuación del alineamiento es estadísticamente significativa (Sección 7.3), y se refuerza con una estructura compartida, una función compartida y una ubicación filogenética coherente.</li>
+</ul>
+<p>Lo inverso también importa. Las secuencias pueden ser similares sin ser homólogas —segmentos cortos de baja complejidad, hélices transmembrana ricas en leucina o superhélices (coiled coils) generan similitud por azar— y las secuencias homólogas pueden ser disímiles cuando han divergido durante el tiempo suficiente. La revisión de Pearson sobre búsquedas por similitud es el tratamiento breve más claro de estas distinciones y de los umbrales prácticos que se derivan de ellas.<sup class="c"><a href="#r13">[13]</a></sup></p>
+
+<h3 id="s2-3">2.3 Cómo divergen las secuencias</h3>
+<p>Un alineamiento es una hipótesis sobre los eventos mutacionales que transformaron una secuencia ancestral en las secuencias que observamos hoy. Se representan explícitamente tres clases de eventos.</p>
+<table class="data">
+<thead><tr><th>Evento</th><th>Efecto sobre el ADN</th><th>Representación en el alineamiento</th><th>Ejemplo</th></tr></thead>
+<tbody>
+<tr><td>Sustitución (mutación puntual)</td><td>Un nucleótido es reemplazado por otro</td><td>Un desapareamiento (mismatch) entre dos caracteres alineados</td><td>AT<b>A</b> → AT<b>G</b></td></tr>
+<tr><td>Inserción</td><td>Se agregan uno o más nucleótidos</td><td>Un gap ("–") en la secuencia que carece del material</td><td>AA → A<b>G</b>A</td></tr>
+<tr><td>Deleción</td><td>Se eliminan uno o más nucleótidos</td><td>Un gap en la secuencia que perdió el material</td><td>ACTG → AC–G</td></tr>
+</tbody></table>
+<p>Como un alineamiento de a pares no puede determinar si un gap refleja una inserción en un linaje o una deleción en el otro, ambos se agrupan bajo el término <strong>indel</strong>. Solo un grupo externo (outgroup) —una tercera secuencia que divergió antes— puede polarizar el evento, lo que es una de las razones por las que los alineamientos múltiples contienen más información que los de a pares.</p>
+<p>A nivel de proteína, la consecuencia de una sustitución nucleotídica depende del código genético. Una sustitución <strong>sinónima</strong> cambia el codón, pero no el aminoácido codificado (UUA → UUG, ambos leucina); es en gran medida invisible para la selección sobre la proteína y se acumula aproximadamente a la tasa neutral. Una sustitución <strong>no sinónima</strong> cambia el aminoácido (UUA → UUC, leucina → fenilalanina) o crea un codón de término (UGG → UGA, triptófano → término, una mutación <em>sin sentido</em> que trunca la proteína). Los cambios no sinónimos son filtrados por la selección: las sustituciones entre residuos fisicoquímicamente similares (leucina ↔ isoleucina, aspartato ↔ glutamato) se toleran con mucha mayor frecuencia que las radicales (triptófano ↔ glicina). Las matrices de sustitución de la Sección 4 son, en esencia, tablas cuantitativas de esta tolerancia.</p>
+<p>De la química se derivan dos consecuencias para la comparación a nivel de nucleótidos. Las purinas (A, G) son bases de dos anillos y las pirimidinas (C, T) son bases de un anillo; una sustitución que conserva la clase de anillo es una <strong>transición</strong> (A↔G, C↔T) y una que la cambia es una <strong>transversión</strong>. Aunque hay el doble de transversiones posibles que de transiciones, en la mayoría de los genomas las transiciones se observan aproximadamente con el doble de frecuencia, en parte porque se generan más fácilmente por los errores comunes de desaminación y tautomerización y son toleradas más fácilmente por la estructura de la doble hélice (Figura 3, Sección 4.1). Por último, en el ADN codificante de proteínas las tres posiciones del codón evolucionan a tasas diferentes: las terceras posiciones, donde ocurre la mayoría de los cambios sinónimos, son las más rápidas, y por eso los alineamientos de proteínas son más sensibles que los de ADN para detectar relaciones distantes.</p>
+<div class="box key"><h4>Puntos clave — Sección 2</h4><ul>
+<li>La homología es binaria e histórica; la identidad y la similitud se miden sobre un alineamiento.</li>
+<li>Los ortólogos están separados por especiación y los parálogos por duplicación; los ortólogos son la base más segura para la transferencia funcional.</li>
+<li>Los alineamientos modelan las sustituciones como desapareamientos y los indels como gaps; los datos de a pares no pueden distinguir una inserción de una deleción.</li>
+<li>El código genético y la fisicoquímica hacen que algunas sustituciones sean mucho más frecuentes que otras; esto es lo que codifican las matrices de puntuación.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Sección 3</span>Qué es un alineamiento</h2>
+<p>Formalmente, un alineamiento de dos secuencias <em>s</em> y <em>t</em> se obtiene insertando caracteres de gap ("–") en cualquiera de las secuencias, de modo que las dos cadenas resultantes tengan la misma longitud y ninguna columna contenga dos gaps. Cada columna es entonces una de tres cosas: una <strong>coincidencia</strong> (match; caracteres idénticos), un <strong>desapareamiento</strong> (mismatch; caracteres diferentes) o un <strong>indel</strong> (un carácter emparejado con un gap). El ejemplo de las diapositivas para las secuencias de juguete <em>s</em> = VIVALASVEGAS y <em>t</em> = VIVADAVIS es una de esas disposiciones:</p>
+<div class="aln">V I V A L A S V E G A S
+| | | |   |   |       |
+V I V A D A - V - - I S</div>
+<p>Las barras verticales marcan identidades (7 de 12 columnas); las columnas restantes son dos desapareamientos (L/D, E/I) y tres gaps. La pregunta planteada en la clase —<em>¿cuál de dos alineamientos es mejor?</em>— no tiene respuesta hasta que decidamos cómo puntuar las columnas. Un alineamiento con más identidades no es automáticamente mejor si las logra abriendo muchos gaps, porque cada gap postula un evento mutacional adicional. La Sección 4 desarrolla el sistema de puntuación; las Secciones 5 y 6 muestran luego cómo encontrar la disposición que maximiza la puntuación.</p>
+<p>Hay otras dos magnitudes que se informan de manera rutinaria y que serán necesarias para interpretar la salida de BLAST. La <strong>cobertura</strong> (coverage) es la fracción de la secuencia consulta que participa en el alineamiento; un alineamiento con 98 % de identidad que cubre 20 residuos de una proteína de 500 residuos nos dice algo sobre un motivo compartido, no sobre las proteínas en su totalidad. La <strong>longitud del alineamiento</strong> es el número de columnas, incluidos los gaps, y es el denominador que se usa convencionalmente para el porcentaje de identidad, aunque distintos programas toman decisiones diferentes (identidad sobre la secuencia más corta, sobre la longitud del alineamiento o solo sobre las columnas alineadas), por lo que siempre debe verificarse la convención antes de comparar dos números.</p>
+<div class="box warn"><h4>Una nota sobre la afirmación de la diapositiva de que el alineamiento global ha sido "descartado"</h4>
+<p>Es cierto que, para la <em>búsqueda en bases de datos</em>, el alineamiento global fue reemplazado por métodos locales, porque un dominio de la secuencia consulta rara vez corresponde a la longitud completa de cada entrada de la base de datos. Sin embargo, el alineamiento global sigue siendo el método de elección siempre que se sabe que dos secuencias son homólogas a lo largo de toda su longitud: al comparar proteínas ortólogas, al alinear una secuencia objetivo con su plantilla para el modelado por homología, al calcular el porcentaje de identidad de una familia y —como operación central dentro de todo programa de alineamiento múltiple progresivo— al alinear perfiles con perfiles. Consideren ambos enfoques como herramientas para preguntas diferentes, más que como lo antiguo y lo nuevo.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Sección 4</span>Sistemas de puntuación</h2>
+<p>Un sistema de puntuación asigna un número a cada columna de un alineamiento; la puntuación del alineamiento es la suma sobre las columnas. Por lo tanto, tiene dos componentes: una <strong>puntuación de sustitución</strong> σ(<em>a</em>, <em>b</em>) para cada par de residuos y una <strong>penalización por gap</strong> para las columnas que contienen un gap.</p>
+
+<h3 id="s4-1">4.1 Puntuación de nucleótidos</h3>
+<p>El esquema más simple utilizado en la clase es el esquema <em>unitario</em> o <em>de edición</em>: σ(<em>a</em>,<em>a</em>) = +1, σ(<em>a</em>,<em>b</em>) = −1 para <em>a</em> ≠ <em>b</em>, y −1 por cada posición de gap. Es adecuado para enseñar los algoritmos y para secuencias muy similares, y bajo este esquema la puntuación máxima está relacionada con la <em>distancia de edición</em> (el número mínimo de sustituciones e indels que convierte una cadena en la otra). Para datos reales se prefiere una matriz de 4 × 4 porque, como se discutió en la Sección 2.3, las transiciones son más frecuentes que las transversiones y, por lo tanto, deberían penalizarse menos. La clase utiliza la siguiente matriz ilustrativa:</p>
+<table class="score"><thead><tr><th></th><th>A</th><th>G</th><th>C</th><th>T</th></tr></thead>
+<tbody><tr><th>A</th><td>10</td><td>−1</td><td>−3</td><td>−4</td></tr>
+<tr><th>G</th><td>−1</td><td>7</td><td>−5</td><td>−3</td></tr>
+<tr><th>C</th><td>−3</td><td>−5</td><td>9</td><td>0</td></tr>
+<tr><th>T</th><td>−4</td><td>−3</td><td>0</td><td>8</td></tr></tbody></table>
+<p>Observen la estructura: las dos transiciones, A/G (−1) y C/T (0), puntúan más alto que las cuatro transversiones (−3 a −5). Las matrices por defecto de BLASTn (coincidencia +2, desapareamiento −3) y de megaBLAST (coincidencia +1, desapareamiento −2) son más simples; están ajustadas, respectivamente, a secuencias de aproximadamente 85–90 % y &gt;95 % de identidad, lo que es una de las razones por las que importa la elección del programa.</p>
+<figure>
+<img src="figures/fig03_transitions.png" alt="Diagrama de las cuatro bases del ADN con las transiciones (A-G, C-T) dibujadas como flechas continuas y las transversiones como flechas discontinuas" style="max-width:420px">
+<figcaption><b>Figura 2. Transiciones y transversiones.</b> Las transiciones intercambian una purina por una purina o una pirimidina por una pirimidina; las transversiones intercambian clases de anillo. A pesar de corresponder solo a cuatro de los doce cambios dirigidos posibles, las transiciones predominan entre las sustituciones observadas, y las matrices de puntuación de nucleótidos las penalizan menos.</figcaption>
+</figure>
+
+<h3 id="s4-2">4.2 Matrices de sustitución log-odds para proteínas</h3>
+<p>Con veinte aminoácidos de tamaño, carga e hidrofobicidad muy diferentes, una matriz para proteínas no puede escribirse a partir de primeros principios; debe <em>estimarse</em> a partir de alineamientos de proteínas que ya se sabe que están relacionadas. Las dos familias de matrices de uso común son matrices <strong>log-odds</strong>, lo que significa que cada entrada compara dos hipótesis acerca de una columna que contiene los residuos <em>i</em> y <em>j</em>:</p>
+<div class="eq">
+<em>s</em><sub><em>ij</em></sub> = (1/λ) · log ( <em>p</em><sub><em>ij</em></sub> / <em>q</em><sub><em>i</em></sub> <em>q</em><sub><em>j</em></sub> )
+<span class="where"><em>p</em><sub><em>ij</em></sub>: probabilidad observada de que <em>i</em> y <em>j</em> estén alineados en proteínas homólogas (la "frecuencia objetivo"); <em>q</em><sub><em>i</em></sub>, <em>q</em><sub><em>j</em></sub>: frecuencias de fondo de cada residuo, de modo que <em>q</em><sub><em>i</em></sub><em>q</em><sub><em>j</em></sub> es la probabilidad del par bajo la hipótesis de ausencia de relación; λ: un factor de escala que fija las unidades.</span></div>
+<p>Una puntuación positiva significa que el par se observa en homólogos con más frecuencia de lo que predice el azar; una puntuación negativa significa que se observa con menos frecuencia. Una puntuación de cero corresponde a un par no informativo. El logaritmo hace que las puntuaciones sean aditivas, de modo que sumar sobre las columnas de un alineamiento entrega el cociente log-odds del alineamiento completo: la puntuación del alineamiento es el logaritmo de cuánto más probable es el alineamiento bajo homología que bajo azar. El análisis de Altschul mostró que <em>toda</em> matriz de puntuación razonable es implícitamente una matriz log-odds para algún conjunto de frecuencias objetivo, de modo que la verdadera pregunta no es si usar log-odds, sino qué frecuencias objetivo —qué distancia evolutiva— debe representar la matriz.<sup class="c"><a href="#r40">[32]</a>,<a href="#r6">[6]</a></sup> Cuando λ se elige como ln 2, las puntuaciones están en <em>bits</em>; BLOSUM62 está tabulada en <em>medios bits</em> (λ = ln 2 / 2) y redondeada a enteros.</p>
+
+<h3 id="s4-3">4.3 Matrices PAM (Dayhoff, 1978)</h3>
+<p>Margaret Dayhoff y colaboradores construyeron las primeras matrices de sustitución sistemáticas a partir de 71 familias de proteínas estrechamente relacionadas (≥ 85 % de identidad), en las que el alineamiento era inequívoco y cada diferencia podía atribuirse razonablemente a una única mutación aceptada.<sup class="c"><a href="#r4">[4]</a></sup> El procedimiento, resumido en las diapositivas, es el siguiente.</p>
+<ol>
+<li>Dentro de cada familia, reconstruir un árbol filogenético y contar cada intercambio de aminoácidos <em>i</em> → <em>j</em> a lo largo de sus ramas. Estas son las <em>mutaciones puntuales aceptadas</em> (accepted point mutations): sustituciones que pasaron por la selección natural.</li>
+<li>Normalizar los conteos por la <em>mutabilidad</em> de cada residuo (con qué frecuencia cambia en absoluto) y por su frecuencia, para obtener una matriz de probabilidades de sustitución <em>M</em><sub><em>ij</em></sub> para una distancia evolutiva de <strong>1 PAM</strong>, definida como la cantidad de cambio en la que el 1 % de las posiciones ha experimentado una mutación aceptada.</li>
+<li>Extrapolar a distancias mayores mediante multiplicación de matrices: <em>M</em><sup>(<em>n</em>)</sup> = (<em>M</em><sup>(1)</sup>)<sup><em>n</em></sup>. PAM250 corresponde a 250 mutaciones aceptadas por cada 100 residuos; como muchas posiciones mutan más de una vez y algunas revierten, esto deja aproximadamente un 20 % de posiciones idénticas.</li>
+<li>Convertir cada matriz de probabilidades en puntuaciones log-odds dividiendo por las frecuencias de fondo y tomando el logaritmo.</li>
+</ol>
+<p>Por lo tanto, el modelo PAM supone que la evolución es un <em>proceso de Markov</em> con las mismas probabilidades de sustitución en cada posición y en todo momento, y que los intercambios observados entre proteínas casi idénticas pueden extrapolarse a proteínas distantes. Ambos supuestos son aproximaciones: las posiciones conservadas del sitio activo y las posiciones de superficie evolucionan a tasas muy diferentes, y las sustituciones que se aceptan entre proteínas con 85 % de identidad no son las mismas que se toleran tras cientos de millones de años. La <strong>convención de numeración</strong> sigue a la extrapolación: un número PAM <em>mayor</em> significa una distancia evolutiva <em>mayor</em> (PAM30 para secuencias muy similares, PAM250 para secuencias distantes).</p>
+
+<h3 id="s4-4">4.4 Matrices BLOSUM (Henikoff &amp; Henikoff, 1992)</h3>
+<p>Steven y Jorja Henikoff adoptaron el enfoque opuesto: en lugar de extrapolar a partir de parientes cercanos, medir las sustituciones directamente en el tipo de alineamiento que se desea puntuar: <em>bloques</em> conservados y sin gaps provenientes de alineamientos de proteínas lejanamente relacionadas (la base de datos BLOCKS, con ~2,000 bloques de ~500 familias en ese momento).<sup class="c"><a href="#r5">[5]</a></sup></p>
+<ol>
+<li>En cada columna de cada bloque, contar todos los pares de residuos (<em>i</em>, <em>j</em>). Una columna con los residuos A, A, A, S aporta tres pares A–A y tres pares A–S.</li>
+<li>Para evitar que grandes grupos de secuencias casi idénticas dominen los conteos, <em>agrupar</em> (clustering) las secuencias de cada bloque con un umbral de identidad elegido y tratar cada grupo como una única secuencia ponderada. El umbral le da su número a la matriz: para <strong>BLOSUM62</strong>, se fusionaron las secuencias con más de 62 % de identidad.</li>
+<li>Calcular las frecuencias objetivo <em>p</em><sub><em>ij</em></sub> y las frecuencias de fondo <em>q</em><sub><em>i</em></sub> a partir de los conteos ponderados; convertir a log-odds en medios bits (la fórmula de la Sección 4.2).</li>
+</ol>
+<p>Como agrupar con una identidad <em>menor</em> fusiona más secuencias y deja solo los pares más divergentes para ser contados, la <strong>numeración va en la dirección opuesta a la de PAM</strong>: un número BLOSUM <em>menor</em> corresponde a una distancia evolutiva <em>mayor</em> (BLOSUM80 para parientes cercanos, BLOSUM45 para parientes remotos). BLOSUM62 es la matriz por defecto de BLASTp y de la mayoría de las herramientas de alineamiento de proteínas porque tuvo el mejor desempeño en las evaluaciones comparativas originales en un amplio rango de distancias. Una curiosa nota histórica es que la BLOSUM62 que efectivamente se distribuye y se usa en todas partes difiere levemente de la que produce el algoritmo publicado, debido a un error de programación en el cálculo original; la matriz "equivocada" resulta tener un desempeño marginalmente <em>mejor</em> en las búsquedas de homología, lo que recuerda que la construcción de matrices es tan empírica como teórica.<sup class="c"><a href="#r6">[6]</a>,<a href="#r7">[7]</a></sup></p>
+<figure>
+<img src="figures/fig04_blosum62.png" alt="Mapa de calor de la matriz BLOSUM62 con los residuos agrupados por clase fisicoquímica; las puntuaciones positivas se concentran dentro de los grupos">
+<figcaption><b>Figura 3. La matriz BLOSUM62, reordenada por clase fisicoquímica.</b> Los valores son las puntuaciones estándar en medios bits (Biopython <code>substitution_matrices.load("BLOSUM62")</code>). Las puntuaciones positivas (rojo) se concentran dentro de los grupos enmarcados —residuos hidrofóbicos alifáticos/aromáticos, los residuos polares pequeños, el par ácido D/E y el par básico K/R— y la mayoría de las sustituciones entre grupos son negativas. La diagonal no es uniforme: los residuos poco frecuentes, como W (+11) y C (+9), puntúan más alto cuando coinciden que los comunes, como A (+4) o L (+4), porque es menos probable que una coincidencia entre residuos poco frecuentes ocurra por azar. El color está truncado en ±4 para facilitar la lectura; el valor impreso es exacto.</figcaption>
+</figure>
+
+<h3 id="s4-5">4.5 Elección de una matriz</h3>
+<p>La diapositiva que resume las "diferencias entre PAM y BLOSUM" condensa varias ideas y merece una ampliación. Las dos familias difieren en <em>cómo</em> fueron construidas, no en lo que representan: ambas son matrices log-odds, ambas tienen diagonales positivas y elementos fuera de la diagonal mayoritariamente negativos, y ambas existen en series que abarcan desde relaciones cercanas hasta distantes. Las afirmaciones útiles en la práctica son las siguientes.</p>
+<table class="data">
+<thead><tr><th></th><th>PAM</th><th>BLOSUM</th></tr></thead>
+<tbody>
+<tr><td>Datos</td><td>71 familias de proteínas con ≥85 % de identidad (1978)</td><td>Bloques conservados sin gaps de ~500 familias de proteínas divergentes (1992)</td></tr>
+<tr><td>Modelo</td><td>Modelo evolutivo explícito; matrices distantes extrapoladas mediante multiplicación de matrices</td><td>Sin extrapolación; cada matriz se mide directamente a partir de bloques agrupados en su umbral de identidad</td></tr>
+<tr><td>Numeración</td><td>Distancia evolutiva en mutaciones aceptadas por cada 100 residuos: mayor = más distante</td><td>Umbral de identidad de agrupamiento: menor = más distante</td></tr>
+<tr><td>Correspondencia aproximada</td><td colspan="2">PAM120 ≈ BLOSUM80 &nbsp;·&nbsp; PAM160 ≈ BLOSUM62 &nbsp;·&nbsp; PAM250 ≈ BLOSUM45</td></tr>
+<tr><td>Uso típico actual</td><td>Secuencias cortas o muy similares (PAM30, PAM70 para secuencias consulta cortas en BLAST); ajuste de modelos filogenéticos</td><td>Alineamiento de proteínas y búsqueda en bases de datos de propósito general (BLOSUM62 por defecto; BLOSUM45 para homólogos remotos; BLOSUM80 para parientes cercanos)</td></tr>
+</tbody></table>
+<p>De esto se desprenden dos reglas prácticas. Primero, usen la matriz que corresponda a la relación que esperan: una matriz ajustada para 20 % de identidad recompensará en exceso las sustituciones conservadoras entre secuencias con 90 % de identidad, y una matriz ajustada para 90 % de identidad no logrará reconocer que la isoleucina y la valina son casi intercambiables en un homólogo remoto. Segundo, cuando una búsqueda falla con BLOSUM62, repítanla con BLOSUM45 y una penalización de apertura de gap más baja antes de concluir que no existe ningún homólogo; y cuando tiene éxito con cientos de hits casi idénticos, BLOSUM80 o PAM30 afinarán el ordenamiento entre ellos.</p>
+
+<h3 id="s4-6">4.6 Penalizaciones por gap</h3>
+<p>Un gap de longitud <em>k</em> representa un indel de <em>k</em> residuos. Con una penalización <strong>lineal</strong>, cada posición de gap cuesta la misma cantidad, <em>d</em>, de modo que un gap de longitud <em>k</em> cuesta <em>k·d</em>. Esto es simple, pero biológicamente inapropiado: una única inserción de cinco residuos es un único evento mutacional y es mucho más probable que cinco inserciones independientes de un solo residuo; sin embargo, un esquema lineal cobra lo mismo por ambas. La solución estándar es la penalización <strong>afín</strong> (affine), introducida en la programación dinámica por Gotoh:<sup class="c"><a href="#r3">[3]</a></sup></p>
+<div class="eq">γ(<em>k</em>) = −<em>o</em> − (<em>k</em> − 1)·<em>e</em>
+<span class="where"><em>o</em>: penalización por apertura de gap (grande); <em>e</em>: penalización por extensión de gap por cada posición adicional (pequeña). Valores por defecto de BLASTp con BLOSUM62: <em>o</em> = 11, <em>e</em> = 1. Valores por defecto de EMBOSS Needle/Water: <em>o</em> = 10, <em>e</em> = 0.5.</span></div>
+<p>Con penalizaciones afines, el algoritmo prefiere un gap largo a varios cortos, que es lo que sugiere la biología. Los valores de <em>o</em> y <em>e</em> no son independientes de la matriz: una matriz en medios bits requiere penalizaciones mayores que una en bits, y el NCBI publica, para cada matriz, los pares de penalizaciones de gap para los cuales se han estimado los parámetros de Karlin–Altschul (Sección 7.3). Son comunes dos refinamientos adicionales. Las penalizaciones por <em>gaps terminales</em> (end gaps) a menudo se omiten en el alineamiento <strong>semiglobal</strong>, que es el modo adecuado para alinear un fragmento con una secuencia de longitud completa o una secuencia objetivo con una plantilla más larga. Las penalizaciones por gap específicas de posición, que hacen que los gaps sean más baratos en los loops que en los elementos de estructura secundaria, son utilizadas por ClustalW y por la mayoría de los alineadores que consideran la estructura (Sección 8).</p>
+
+<h3 id="s4-7">4.7 Ejemplo resuelto: puntuación de un alineamiento dado</h3>
+<p>La clase pide calcular la puntuación del siguiente alineamiento con la matriz de 4 × 4 de la Sección 4.1 y una penalización lineal por gap de −5 por cada posición de gap.</p>
+<table class="score"><tbody><tr><th>s</th><td>A</td><td>G</td><td>A</td><td>C</td><td>T</td><td>A</td><td>G</td><td>T</td><td>T</td><td>A</td><td>C</td></tr><tr><th>t</th><td>C</td><td>G</td><td>A</td><td>-</td><td>-</td><td>-</td><td>G</td><td>A</td><td>C</td><td>G</td><td>T</td></tr><tr><th>σ</th><td>-3</td><td>+7</td><td>+10</td><td>-5</td><td>-5</td><td>-5</td><td>+7</td><td>-4</td><td>+0</td><td>-1</td><td>+0</td></tr></tbody></table>
+<p>Sumando las puntuaciones de las columnas: (−3) + 7 + 10 + (−5) + (−5) + (−5) + 7 + (−4) + 0 + (−1) + 0 = <strong>1</strong>. Las tres posiciones de gap cuestan −15 y consumen todo el beneficio de las tres identidades; con un esquema afín con <em>o</em> = 5, <em>e</em> = 1, el mismo gap costaría −7 y el alineamiento puntuaría 9. Esto ilustra por qué el esquema de gaps se informa junto con la puntuación —una puntuación bruta carece de sentido sin él— y motiva el bit score <em>normalizado</em> de la Sección 7.3.</p>
+<div class="box key"><h4>Puntos clave — Sección 4</h4><ul>
+<li>Las puntuaciones de sustitución son cocientes log-odds: positivas cuando un par está sobrerrepresentado en homólogos, negativas cuando está subrepresentado; sumarlas sobre un alineamiento entrega el log-odds del alineamiento.</li>
+<li>PAM extrapola a partir de parientes cercanos (número mayor = más distante); BLOSUM mide bloques directamente (número menor = más distante). PAM160 ≈ BLOSUM62.</li>
+<li>Las penalizaciones afines por gap (apertura + extensión) modelan un indel largo como un solo evento; el esquema por defecto de BLASTp es BLOSUM62 con 11/1.</li>
+<li>Una puntuación bruta solo es interpretable junto con la matriz y el esquema de gaps utilizados.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Sección 5</span>Alineamiento global: el algoritmo de Needleman–Wunsch</h2>
+<h3>5.1 Por qué la enumeración es imposible</h3>
+<p>Dado un sistema de puntuación, el mejor alineamiento es simplemente el que tiene la puntuación más alta. El enfoque ingenuo —enumerar todos los alineamientos y quedarse con el mejor— fracasa porque el número de alineamientos crece de forma explosiva. Torres y colaboradores derivaron una expresión exacta para el número de alineamientos globales distintos de dos secuencias de longitudes <em>m</em> y <em>n</em> (contando cada patrón de coincidencias/desapareamientos y gaps):<sup class="c"><a href="#r26">[26]</a></sup></p>
+<div class="eq"><em>f</em>(<em>n</em>, <em>m</em>) = Σ<sub><em>k</em>=0</sub><sup>min(<em>n</em>,<em>m</em>)</sup> 2<sup><em>k</em></sup> · C(<em>m</em>, <em>k</em>) · C(<em>n</em>, <em>k</em>)</div>
+<p>La tabla siguiente evalúa la fórmula para longitudes iguales. La columna de la derecha anticipa la solución: el algoritmo de programación dinámica examina solo (<em>n</em>+1)(<em>m</em>+1) celdas y, aun así, tiene garantizado encontrar el óptimo.</p>
+<table class="data"><thead><tr><th>n = m</th><th>Número de alineamientos globales posibles</th><th>Celdas en la matriz de PD (n+1)²</th></tr></thead><tbody><tr><td>1</td><td>3</td><td>4</td></tr><tr><td>2</td><td>13</td><td>9</td></tr><tr><td>3</td><td>63</td><td>16</td></tr><tr><td>4</td><td>321</td><td>25</td></tr><tr><td>5</td><td>1,683</td><td>36</td></tr><tr><td>6</td><td>8,989</td><td>49</td></tr><tr><td>7</td><td>48,639</td><td>64</td></tr><tr><td>8</td><td>265,729</td><td>81</td></tr><tr><td>9</td><td>1,462,563</td><td>100</td></tr><tr><td>10</td><td>8,097,453</td><td>121</td></tr><tr><td>12</td><td>251,595,969</td><td>169</td></tr><tr><td>15</td><td>44,642,381,823</td><td>256</td></tr><tr><td>20</td><td>2.60 × 10<sup>14</sup></td><td>441</td></tr><tr><td>30</td><td>9.64 × 10<sup>21</sup></td><td>961</td></tr><tr><td>50</td><td>1.53 × 10<sup>37</sup></td><td>2,601</td></tr><tr><td>100</td><td>2.05 × 10<sup>75</sup></td><td>10,201</td></tr></tbody></table>
+<p>Para dos dominios proteicos típicos de 100 residuos existen cerca de 2 × 10<sup>75</sup> alineamientos —más que el número de átomos en el universo observable—, mientras que la matriz de programación dinámica tiene 10,201 celdas. La función de R distribuida con el curso (<code>Alig_global.R</code>) implementa exactamente esta fórmula; para <em>m</em> = 30 y <em>n</em> = 34 entrega 2.66 × 10<sup>23</sup>.</p>
+
+<h3>5.2 El principio de la programación dinámica</h3>
+<p>Needleman y Wunsch (1970) observaron que el alineamiento óptimo de dos secuencias puede construirse a partir de alineamientos óptimos de sus prefijos.<sup class="c"><a href="#r1">[1]</a></sup> Consideren el mejor alineamiento de <em>s</em><sub>1..<em>i</em></sub> con <em>t</em><sub>1..<em>j</em></sub>. Su última columna debe ser una de tres cosas: <em>s</em><sub><em>i</em></sub> alineado con <em>t</em><sub><em>j</em></sub>, <em>s</em><sub><em>i</em></sub> alineado con un gap, o <em>t</em><sub><em>j</em></sub> alineado con un gap. Sea cual sea, las columnas que la preceden deben formar un alineamiento óptimo de los prefijos más cortos correspondientes; de lo contrario, podríamos mejorar el todo mejorando la parte. Escribiendo <em>F</em>(<em>i</em>, <em>j</em>) para la mejor puntuación del alineamiento de los dos prefijos, se obtiene la recurrencia:</p>
+<div class="eq">
+<em>F</em>(<em>i</em>, <em>j</em>) = max { <em>F</em>(<em>i</em>−1, <em>j</em>−1) + σ(<em>s</em><sub><em>i</em></sub>, <em>t</em><sub><em>j</em></sub>) ;&nbsp; <em>F</em>(<em>i</em>−1, <em>j</em>) + <em>d</em> ;&nbsp; <em>F</em>(<em>i</em>, <em>j</em>−1) + <em>d</em> }
+<span class="where">con las condiciones de borde <em>F</em>(0, 0) = 0, <em>F</em>(<em>i</em>, 0) = <em>i·d</em>, <em>F</em>(0, <em>j</em>) = <em>j·d</em>, donde <em>d</em> &lt; 0 es la penalización (lineal) por gap. Los tres términos corresponden a un movimiento diagonal (coincidencia/desapareamiento), un movimiento vertical (gap en <em>t</em>) y un movimiento horizontal (gap en <em>s</em>).</span></div>
+<p>El algoritmo tiene tres pasos:</p>
+<ol>
+<li><strong>Inicialización.</strong> Llenar la primera fila y la primera columna con las penalizaciones por gap acumuladas.</li>
+<li><strong>Llenado de la matriz.</strong> Calcular cada celda a partir de sus tres vecinas (superior izquierda, superior, izquierda), fila por fila. Registrar para cada celda qué vecina produjo el máximo (el <em>puntero</em>).</li>
+<li><strong>Trazado inverso (traceback).</strong> La puntuación del alineamiento global óptimo es <em>F</em>(<em>n</em>, <em>m</em>), en la celda inferior derecha. Seguir los punteros de vuelta hasta <em>F</em>(0, 0); un paso diagonal emite una columna de dos residuos, un paso vertical emite <em>s</em><sub><em>i</em></sub> sobre un gap y un paso horizontal emite un gap sobre <em>t</em><sub><em>j</em></sub>.</li>
+</ol>
+<p>Tanto el tiempo como la memoria son proporcionales a <em>n·m</em> —<em>O</em>(<em>nm</em>)— porque cada celda se calcula una sola vez a partir de un número constante de vecinas. Con penalizaciones afines por gap se necesitan tres matrices en lugar de una (una para cada tipo de movimiento que termina el alineamiento), pero la complejidad sigue siendo cuadrática.<sup class="c"><a href="#r3">[3]</a></sup></p>
+
+<h3>5.3 Ejemplo resuelto</h3>
+<p>Alineen <em>s</em> = GATTACA (filas) con <em>t</em> = GCATGCG (columnas) con el esquema unitario (coincidencia +1, desapareamiento −1, gap −1). A continuación se muestra la matriz completa; las celdas sombreadas marcan la ruta del trazado inverso desde <em>F</em>(7, 7) hasta <em>F</em>(0, 0).</p>
+<table class="dp"><thead><tr><th></th><th></th><th>G</th><th>C</th><th>A</th><th>T</th><th>G</th><th>C</th><th>G</th></tr></thead><tbody>
+<tr><th></th><td class="tb">0</td><td>-1</td><td>-2</td><td>-3</td><td>-4</td><td>-5</td><td>-6</td><td>-7</td></tr>
+<tr><th>G</th><td>-1</td><td class="tb">1</td><td class="tb">0</td><td>-1</td><td>-2</td><td>-3</td><td>-4</td><td>-5</td></tr>
+<tr><th>A</th><td>-2</td><td>0</td><td>0</td><td class="tb">1</td><td>0</td><td>-1</td><td>-2</td><td>-3</td></tr>
+<tr><th>T</th><td>-3</td><td>-1</td><td>-1</td><td class="tb">0</td><td>2</td><td>1</td><td>0</td><td>-1</td></tr>
+<tr><th>T</th><td>-4</td><td>-2</td><td>-2</td><td>-1</td><td class="tb">1</td><td>1</td><td>0</td><td>-1</td></tr>
+<tr><th>A</th><td>-5</td><td>-3</td><td>-3</td><td>-1</td><td>0</td><td class="tb">0</td><td>0</td><td>-1</td></tr>
+<tr><th>C</th><td>-6</td><td>-4</td><td>-2</td><td>-2</td><td>-1</td><td>-1</td><td class="tb">1</td><td>0</td></tr>
+<tr><th>A</th><td>-7</td><td>-5</td><td>-3</td><td>-1</td><td>-2</td><td>-2</td><td>0</td><td class="tb">0</td></tr>
+</tbody></table>
+<p>Verifiquen una celda ustedes mismos. Para <em>F</em>(2, 3) —fila A (segundo residuo de <em>s</em>), columna A (tercer residuo de <em>t</em>)— los tres candidatos son <em>F</em>(1, 2) + σ(A, A) = 0 + 1 = 1, <em>F</em>(1, 3) + <em>d</em> = −1 − 1 = −2, y <em>F</em>(2, 2) + <em>d</em> = 0 − 1 = −1; el máximo es 1, desde la diagonal. Seguir los punteros desde la celda inferior derecha entrega:</p>
+<div class="aln">G-ATTACA
+| | | | 
+GCA-TGCG</div>
+<p>La puntuación óptima es <strong>0</strong>: cuatro coincidencias (+4), dos desapareamientos (−2) y dos gaps (−2). Los empates son frecuentes en ejemplos pequeños —aquí varias rutas alcanzan la misma puntuación— y las implementaciones los resuelven mediante un orden de preferencia fijo (típicamente diagonal, luego vertical y luego horizontal). Esto significa que la <em>puntuación</em> del alineamiento óptimo es única, pero el <em>alineamiento</em> puede no serlo; cuando un residuo podría ubicarse en cualquiera de dos posiciones, ningún programa de alineamiento puede decirles cuál es la históricamente correcta.</p>
+<div class="box key"><h4>Puntos clave — Sección 5</h4><ul>
+<li>El número de alineamientos posibles es astronómicamente grande; la programación dinámica encuentra el óptimo en <em>O</em>(<em>nm</em>) resolviendo primero los prefijos.</li>
+<li>Tres pasos: inicializar los bordes, llenar cada celda a partir de tres vecinas y realizar el trazado inverso desde la esquina inferior derecha.</li>
+<li>El alineamiento global alinea todos los residuos de ambas secuencias; es la herramienta adecuada para homólogos de longitud completa y para el alineamiento objetivo–plantilla.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Sección 6</span>Alineamiento local: el algoritmo de Smith–Waterman</h2>
+<p>Las proteínas son modulares. Un dominio quinasa puede estar fusionado con dominios regulatorios muy diferentes en distintas proteínas; un factor de transcripción puede compartir un dominio de unión al ADN con cientos de proteínas y nada más. Un alineamiento global de dos proteínas multidominio que comparten un dominio se vería obligado a alinear también las regiones no relacionadas, acumulando penalizaciones por desapareamientos y gaps hasta que la contribución del dominio compartido quedara anulada. El <strong>alineamiento local</strong> resuelve esto buscando el par de <em>subsecuencias</em> con la puntuación más alta, sin exigir en absoluto que los flancos estén alineados.</p>
+<figure>
+<img src="figures/fig02_global_local.png" alt="Dos esquemas: el alineamiento global empareja los cuatro dominios de extremo a extremo; el alineamiento local empareja solo los dominios compartidos D2 y D3, aunque aparezcan en distinto orden">
+<figcaption><b>Figura 4. Alineamiento global versus local de proteínas multidominio.</b> Arriba: dos proteínas con la misma arquitectura de dominios se comparan adecuadamente de extremo a extremo. Abajo: cuando solo se comparten los dominios D2 y D3, y en un orden diferente, un alineamiento global se vería obligado a alinear regiones no relacionadas (gris) a un costo que puede ocultar los dominios compartidos; un alineamiento local informa cada región conservada de forma independiente. Este tipo de reordenamiento de dominios (domain shuffling) es común y es una de las razones por las que las búsquedas en bases de datos son locales.</figcaption>
+</figure>
+<p>Smith y Waterman (1981) mostraron que dos pequeñas modificaciones a la recurrencia de Needleman–Wunsch logran esto:<sup class="c"><a href="#r2">[2]</a></sup></p>
+<div class="eq">
+<em>H</em>(<em>i</em>, <em>j</em>) = max { 0 ;&nbsp; <em>H</em>(<em>i</em>−1, <em>j</em>−1) + σ(<em>s</em><sub><em>i</em></sub>, <em>t</em><sub><em>j</em></sub>) ;&nbsp; <em>H</em>(<em>i</em>−1, <em>j</em>) + <em>d</em> ;&nbsp; <em>H</em>(<em>i</em>, <em>j</em>−1) + <em>d</em> }
+<span class="where">con <em>H</em>(<em>i</em>, 0) = <em>H</em>(0, <em>j</em>) = 0. El cero permite que un alineamiento <em>comience</em> en cualquier lugar; el trazado inverso parte de la celda <em>más alta</em> de la matriz en lugar de la esquina y se detiene en el primer cero, lo que permite que el alineamiento <em>termine</em> en cualquier lugar.</span></div>
+<p>Para que el cero tenga el efecto buscado, el sistema de puntuación debe tener una <em>puntuación esperada negativa</em> para pares aleatorios; de lo contrario, los alineamientos aleatorios largos acumularían puntuaciones positivas y el alineamiento "local" simplemente crecería hasta cubrirlo todo. Todas las matrices log-odds construidas a partir de frecuencias objetivo realistas satisfacen esta condición, que además es un requisito de la teoría estadística de la Sección 7.3.</p>
+<h3>Ejemplo resuelto</h3>
+<p>Alineen <em>s</em> = TGTTACGG (filas) con <em>t</em> = GGTTGACTA (columnas) usando coincidencia +3, desapareamiento −3, gap −2. Se muestran la matriz y el trazado inverso desde su máximo (13).</p>
+<table class="dp"><thead><tr><th></th><th></th><th>G</th><th>G</th><th>T</th><th>T</th><th>G</th><th>A</th><th>C</th><th>T</th><th>A</th></tr></thead><tbody>
+<tr><th></th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><th>T</th><td>0</td><td class="tb">0</td><td>0</td><td>3</td><td>3</td><td>1</td><td>0</td><td>0</td><td>3</td><td>1</td></tr>
+<tr><th>G</th><td>0</td><td>3</td><td class="tb">3</td><td>1</td><td>1</td><td>6</td><td>4</td><td>2</td><td>1</td><td>0</td></tr>
+<tr><th>T</th><td>0</td><td>1</td><td>1</td><td class="tb">6</td><td>4</td><td>4</td><td>3</td><td>1</td><td>5</td><td>3</td></tr>
+<tr><th>T</th><td>0</td><td>0</td><td>0</td><td>4</td><td class="tb">9</td><td class="tb">7</td><td>5</td><td>3</td><td>4</td><td>2</td></tr>
+<tr><th>A</th><td>0</td><td>0</td><td>0</td><td>2</td><td>7</td><td>6</td><td class="tb">10</td><td>8</td><td>6</td><td>7</td></tr>
+<tr><th>C</th><td>0</td><td>0</td><td>0</td><td>0</td><td>5</td><td>4</td><td>8</td><td class="tb">13</td><td>11</td><td>9</td></tr>
+<tr><th>G</th><td>0</td><td>3</td><td>3</td><td>1</td><td>3</td><td>8</td><td>6</td><td>11</td><td>10</td><td>8</td></tr>
+<tr><th>G</th><td>0</td><td>3</td><td>6</td><td>4</td><td>2</td><td>6</td><td>5</td><td>9</td><td>8</td><td>7</td></tr>
+</tbody></table>
+<div class="aln">GTT-AC
+||| ||
+GTTGAC</div>
+<p>El alineamiento local óptimo tiene puntuación <strong>13</strong>: cinco coincidencias (+15) y un gap (−2). Los residuos flanqueantes (la T inicial de <em>s</em>; la G inicial y el TA terminal de <em>t</em>) no se alinean y no generan penalización. Observen cómo los ceros de las primeras filas y columnas, y los dispersos por toda la matriz, reinician la puntuación cada vez que el total acumulado se volvería negativo; cada región distinta de cero de la matriz es un alineamiento local candidato, y el algoritmo puede informar varios que no se superpongan (una característica que aprovecha BLAST, cuyos HSP son precisamente regiones de este tipo).</p>
+<p>Tanto Needleman–Wunsch como Smith–Waterman son <strong>óptimos</strong>: tienen garantizado entregar el alineamiento de mayor puntuación bajo el sistema de puntuación dado. Su costo es de tiempo <em>O</em>(<em>nm</em>) por par, lo que es despreciable para dos secuencias, pero prohibitivo para buscar una secuencia consulta de 300 residuos contra las ~250 millones de secuencias de UniProtKB o los cientos de miles de millones de nucleótidos de GenBank. Este es el problema que resuelve BLAST, al precio de renunciar a la optimalidad.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Sección 7</span>Búsqueda en bases de datos con BLAST</h2>
+<h3 id="s7-1">7.1 Historia y familia de programas</h3>
+<p>La Basic Local Alignment Search Tool fue publicada por Altschul, Gish, Miller, Myers y Lipman en 1990, a partir de la heurística FASTA, anterior, de Pearson y Lipman.<sup class="c"><a href="#r8">[8]</a>,<a href="#r12">[12]</a></sup> El programa original calculaba alineamientos locales sin gaps y, de manera crucial, informaba para cada uno un valor <em>p</em> derivado de la teoría de Karlin–Altschul publicada ese mismo año.<sup class="c"><a href="#r11">[11]</a></sup> Siguieron tres hitos.</p>
+<ul>
+<li><strong>1990 — BLAST.</strong> Alineamientos sin gaps; significancia estadística de cada hit. El artículo se encuentra entre los más citados de toda la ciencia.<sup class="c"><a href="#r8">[8]</a></sup></li>
+<li><strong>1997 — Gapped BLAST y PSI-BLAST.</strong> Extensión con gaps de los hits, la heurística de siembra de dos hits (two-hit; aproximadamente tres veces más rápida) y Position-Specific Iterated BLAST, que construye un perfil a partir de la primera búsqueda y vuelve a buscar con él.<sup class="c"><a href="#r9">[9]</a></sup></li>
+<li><strong>2009 — BLAST+.</strong> Una reescritura completa en C++ con una arquitectura modular, un manejo más rápido de las bases de datos y las herramientas de línea de comandos (<code>blastp</code>, <code>blastn</code>, <code>makeblastdb</code>, …) que se usan hoy.<sup class="c"><a href="#r10">[10]</a></sup></li>
+</ul>
+<p>El programa que se debe usar depende del tipo de secuencia consulta y de base de datos. Las búsquedas traducidas usan el código genético para comparar nucleótidos con proteínas en los seis marcos de lectura (tres en cada hebra), que es la manera de encontrar un gen codificante de proteína en un genoma no anotado o un homólogo proteico en un ensamblaje de transcriptoma.</p>
+<table class="data">
+<thead><tr><th>Programa</th><th>Secuencia consulta (query)</th><th>Base de datos</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td><strong>megaBLAST</strong></td><td>Nucleótidos</td><td>Nucleótidos</td><td>Secuencias muy similares (misma especie o especies estrechamente relacionadas); tamaño de palabra 28; el más rápido</td></tr>
+<tr><td><strong>BLASTn</strong></td><td>Nucleótidos</td><td>Nucleótidos</td><td>Secuencias nucleotídicas más divergentes; tamaño de palabra 11; búsquedas entre especies</td></tr>
+<tr><td><strong>BLASTp</strong></td><td>Proteína</td><td>Proteínas</td><td>La búsqueda estándar de homólogos proteicos; BLOSUM62, tamaño de palabra 3</td></tr>
+<tr><td><strong>BLASTx</strong></td><td>Nucleótidos, traducidos en 6 marcos</td><td>Proteínas</td><td>Identificar la proteína codificada por una secuencia de ADN/EST/contig</td></tr>
+<tr><td><strong>tBLASTn</strong></td><td>Proteína</td><td>Nucleótidos, traducidos en 6 marcos</td><td>Encontrar genes que codifican una proteína en genomas o transcriptomas no anotados</td></tr>
+<tr><td><strong>tBLASTx</strong></td><td>Nucleótidos, traducidos</td><td>Nucleótidos, traducidos</td><td>Comparar el potencial codificante de dos conjuntos de nucleótidos; lento</td></tr>
+<tr><td><strong>PSI-BLAST</strong></td><td>Proteína → PSSM</td><td>Proteínas</td><td>Búsqueda iterativa por perfiles de homólogos remotos (Sección 7.5)</td></tr>
+<tr><td><strong>RPS-BLAST / CD-Search</strong></td><td>Proteína</td><td>Base de datos de PSSM (CDD)</td><td>Identificar dominios conservados en una secuencia consulta</td></tr>
+</tbody></table>
+<p>Como el código genético es degenerado y la tercera posición del codón evoluciona rápidamente, <em>la comparación a nivel de proteína es más sensible que la comparación a nivel de nucleótidos</em> para todo lo que no sean parientes cercanos. Cuando la secuencia consulta es una secuencia codificante, BLASTx contra una base de datos de proteínas habitualmente detectará homólogos que BLASTn contra una base de datos de nucleótidos no encuentra.</p>
+
+<h3 id="s7-2">7.2 El algoritmo</h3>
+<p>BLAST descansa en una observación empírica: dos secuencias relacionadas casi siempre comparten al menos un tramo corto de identidad, o casi identidad, de puntuación alta. Si es así, primero se pueden buscar esas "palabras" cortas —una operación rápida que puede hacerse con una tabla de búsqueda— y ejecutar el costoso alineamiento solo donde existe un hit de palabra. El procedimiento, para BLASTp con los parámetros por defecto, es el siguiente (Figura 5).</p>
+<figure>
+<img src="figures/fig05_blast_pipeline.png" alt="Diagrama de flujo de cinco pasos: siembra, búsqueda de hits, extensión, programación dinámica con gaps, estadística">
+<figcaption><b>Figura 5. La heurística de BLAST.</b> La programación dinámica exhaustiva se reemplaza por la siembra con palabras cortas, la búsqueda de coincidencias exactas en la base de datos, la extensión de los hits a pares de segmentos de alta puntuación y un alineamiento con gaps confinado a la vecindad de esos segmentos. Cada etapa descarta candidatos que no pueden producir un alineamiento significativo, y es allí donde se gana velocidad y donde se puede perder sensibilidad.</figcaption>
+</figure>
+<ol>
+<li><strong>Siembra (seeding).</strong> La secuencia consulta se descompone en todas las palabras superpuestas de longitud <em>k</em> (<em>k</em> = 3 para proteínas, 11 para BLASTn, 28 para megaBLAST). Para cada palabra de la secuencia consulta, BLAST genera además la <em>vecindad</em>: toda palabra de 3 letras cuya puntuación BLOSUM62 frente a la palabra de la secuencia consulta es al menos un umbral <em>T</em> (por defecto, 11). La vecindad proteica es lo que le da a BLASTp su sensibilidad a las sustituciones conservadoras; BLAST de nucleótidos usa solo palabras exactas.</li>
+<li><strong>Búsqueda de hits.</strong> Se recorre la base de datos en busca de apariciones exactas de cualquier palabra de la vecindad. Desde 1997, una extensión se desencadena solo cuando <em>dos</em> hits no superpuestos ocurren en la misma diagonal a corta distancia (el método de dos hits), lo que elimina la mayoría de los hits espurios de una sola palabra.<sup class="c"><a href="#r9">[9]</a></sup></li>
+<li><strong>Extensión sin gaps.</strong> Cada hit desencadenante se extiende en ambas direcciones, un residuo a la vez, mientras la puntuación acumulada no caiga más de <em>X</em> por debajo de la mejor puntuación vista hasta ese momento. El resultado es un <strong>par de segmentos de alta puntuación (high-scoring segment pair, HSP)</strong>: un alineamiento local maximal sin gaps.</li>
+<li><strong>Extensión con gaps.</strong> Los HSP cuya puntuación supera un segundo umbral se someten a una extensión con gaps del tipo Smith–Waterman, restringida a una banda en torno al HSP, con penalizaciones afines (11/1 por defecto).</li>
+<li><strong>Estadística.</strong> A cada alineamiento resultante se le asigna un bit score y un E-value (Sección 7.3); los hits se ordenan por E-value y se descartan los que están por encima del valor de corte definido por el usuario (por defecto, 10).</li>
+</ol>
+<h4>Ejemplo resuelto de la clase</h4>
+<p>Tomen la secuencia consulta LIAWHCMPNAAA. Sus diez palabras superpuestas de 3 letras y sus autopuntuaciones con BLOSUM62 (la puntuación que obtiene una palabra cuando coincide exactamente) son:</p>
+<table class="data"><thead><tr><th>Palabra</th><th>Puntuaciones por residuo</th><th>Autopuntuación</th></tr></thead><tbody>
+<tr><td>LIA</td><td>4 + 4 + 4</td><td>12</td></tr><tr><td>IAW</td><td>4 + 4 + 11</td><td>19</td></tr><tr><td>AWH</td><td>4 + 11 + 8</td><td>23</td></tr><tr><td>WHC</td><td>11 + 8 + 9</td><td><strong>28</strong></td></tr><tr><td>HCM</td><td>8 + 9 + 5</td><td>22</td></tr><tr><td>CMP</td><td>9 + 5 + 7</td><td>21</td></tr><tr><td>MPN</td><td>5 + 7 + 6</td><td>18</td></tr><tr><td>PNA</td><td>7 + 6 + 4</td><td>17</td></tr><tr><td>NAA</td><td>6 + 4 + 4</td><td>14</td></tr><tr><td>AAA</td><td>4 + 4 + 4</td><td>12</td></tr></tbody></table>
+<p>Las palabras que contienen residuos poco frecuentes (W, C, H) aportan la mayor cantidad de información y dominan la siembra, razón por la cual BLAST es menos sensible para secuencias formadas solo por residuos comunes. Supongamos que una secuencia de la base de datos, IIAWHCAMPNDDA, contiene hits para WHC y MPN. Extender el hit de WHC y el de MPN, y unirlos con un gap de un residuo, produce el siguiente alineamiento, puntuado con BLOSUM62 y un costo total de gap de −2 para el gap de un solo residuo:</p>
+<div class="aln">I I A W H C A M P N D D A
+. | | | | |   | | |     |
+L I A W H C - M P N A A A
+
+I/L  I/I  A/A  W/W  H/H  C/C  A/–  M/M  P/P  N/N  D/A  D/A  A/A
+ +2   +4   +4  +11   +8   +9   –2   +5   +7   +6   –2   –2   +4   = 54</div>
+<p>La puntuación bruta es 54. Si 54 es <em>buena</em> no puede decidirse a partir del número por sí solo; depende de las longitudes de las secuencias y del tamaño de la base de datos. Esa es la pregunta que responde la estadística.</p>
+
+<h3 id="s7-3">7.3 Estadística: puntuación bruta, bit score y E-value</h3>
+<p>Consideren el experimento mental de la clase. La secuencia consulta de 12 residuos LIAWHCMPNAAA tiene 12! ≈ 4.8 × 10<sup>8</sup> permutaciones distintas. Si la barajáramos, alineáramos cada versión barajada contra la misma secuencia de la base de datos y registráramos la mejor puntuación local, obtendríamos la distribución de puntuaciones esperada <em>por azar</em> para una secuencia de esta longitud y composición. La puntuación de la secuencia consulta real puede entonces juzgarse frente a esa distribución. La Figura 6 realiza este experimento con proteínas reales.</p>
+<figure>
+<img src="figures/fig06_shuffle_distribution.png" alt="Histograma de las puntuaciones de Smith-Waterman de 2000 secuencias barajadas de mioglobina contra la hemoglobina beta humana, con una curva de Gumbel ajustada, y la puntuación real de la mioglobina, 102, muy a la derecha">
+<figcaption><b>Figura 6. La puntuación de un homólogo verdadero frente a la distribución de puntuaciones por azar.</b> La hemoglobina β humana (147 aa) se alineó localmente (BLOSUM62, apertura de gap −11, extensión −1) contra 2,000 permutaciones aleatorias de la mioglobina de cachalote (154 aa), que conservan la longitud y la composición, pero destruyen el orden. Las puntuaciones por azar (media 29.4, máximo 55) siguen una distribución de valores extremos (Gumbel): asimétrica hacia la derecha, con una cola que decae exponencialmente en lugar de hacerlo como una gaussiana. La mioglobina real puntúa 102. Ninguna de las 2,000 permutaciones se le acerca, y la cola de Gumbel ajustada da una probabilidad de ≈ 4 × 10<sup>−9</sup> de alcanzar 102 por azar. La hemoglobina β y la mioglobina comparten solo cerca de 25 % de identidad y, sin embargo, el alineamiento es inequívocamente significativo. Secuencias tomadas del alineamiento de globinas de la Sección 8; cálculo realizado con Biopython.</figcaption>
+</figure>
+<p>Karlin y Altschul demostraron que, para alineamientos locales sin gaps de secuencias aleatorias bajo un sistema de puntuación con puntuación esperada negativa, la puntuación máxima <em>S</em> sigue una <strong>distribución de valores extremos</strong>, y derivaron sus parámetros analíticamente.<sup class="c"><a href="#r11">[11]</a></sup> La consecuencia práctica es una expresión cerrada para el <strong>número esperado de alineamientos con puntuación ≥ <em>S</em> que ocurrirían por azar</strong>:</p>
+<div class="eq"><em>E</em> = <em>K</em> · <em>m</em> · <em>n</em> · e<sup>−λ<em>S</em></sup>
+<span class="where"><em>m</em>: longitud de la secuencia consulta; <em>n</em>: longitud total de la base de datos (suma de las longitudes de todas las secuencias); <em>K</em> y λ: constantes que dependen de la matriz de puntuación, las penalizaciones por gap y la composición de residuos (para BLOSUM62 sin gaps, λ ≈ 0.318 y <em>K</em> ≈ 0.134; los valores con gaps se estiman por simulación y son tabulados por el NCBI).</span></div>
+<p>Vale la pena internalizar tres características de esta fórmula. El E-value crece <em>linealmente</em> con la longitud de la secuencia consulta y con el tamaño de la base de datos: el mismo alineamiento encontrado en una base de datos diez veces más grande tiene diez veces más probabilidades de ser un evento por azar, razón por la cual el E-value de un hit cambia cuando se actualiza la base de datos. Decae <em>exponencialmente</em> con la puntuación: unos pocos puntos adicionales de puntuación cambian el E-value en órdenes de magnitud. Y la puntuación bruta <em>S</em> interviene solo a través del producto λ<em>S</em>, lo que sugiere normalizarla. El <strong>bit score</strong> es esta normalización:</p>
+<div class="eq"><em>S′</em> = ( λ<em>S</em> − ln <em>K</em> ) / ln 2 &nbsp;&nbsp;&nbsp;de modo que&nbsp;&nbsp;&nbsp; <em>E</em> = <em>m</em> · <em>n</em> · 2<sup>−<em>S′</em></sup></div>
+<p>Los bit scores son comparables entre búsquedas que usaron matrices y penalizaciones por gap diferentes, porque λ y <em>K</em> han sido absorbidos. La fórmula también da una intuición sobre su magnitud: un bit score <em>S′</em> es significativo cuando 2<sup><em>S′</em></sup> es holgadamente mayor que <em>m·n</em>. Para una secuencia consulta de 300 residuos contra una base de datos de 10<sup>11</sup> residuos, <em>m·n</em> ≈ 3 × 10<sup>13</sup> ≈ 2<sup>45</sup>, de modo que los bit scores por encima de aproximadamente 50 comienzan a ser significativos y por encima de 100 lo son de manera abrumadora.</p>
+<p>Por último, la relación entre el E-value y el valor <em>p</em> (la probabilidad de al menos un alineamiento por azar con puntuación ≥ <em>S</em>) se deriva de la distribución de Poisson: <em>p</em> = 1 − e<sup>−<em>E</em></sup>. Para valores pequeños, ambos son numéricamente idénticos (E = 0.001 ⇒ <em>p</em> = 0.000999), razón por la cual BLAST informa solo E; para valores grandes, divergen (E = 5 es posible, <em>p</em> = 5 no lo es). La simplificación de la clase de que "un E-value de 0.05 significa un 5 % de probabilidad de una coincidencia aleatoria" es, por lo tanto, exacta con un margen de 2.5 %.</p>
+<h4>Interpretación de los E-values</h4>
+<table class="data"><thead><tr><th>E-value</th><th>Interpretación</th><th>Comentario</th></tr></thead><tbody>
+<tr><td>&lt; 10<sup>−50</sup></td><td>Esencialmente idénticas o muy estrechamente relacionadas</td><td>La misma proteína de especies estrechamente relacionadas, isoformas, casi duplicados</td></tr>
+<tr><td>10<sup>−50</sup> – 10<sup>−10</sup></td><td>Homología clara</td><td>La función habitualmente puede transferirse, sujeto a verificaciones de ortología y cobertura</td></tr>
+<tr><td>10<sup>−10</sup> – 10<sup>−3</sup></td><td>Homología probable</td><td>El umbral recomendado por Pearson para inferir homología a partir de una sola búsqueda es E &lt; 10<sup>−3</sup> (de manera conservadora, 10<sup>−6</sup>); verifiquen la cobertura y el alineamiento mismo<sup class="c"><a href="#r13">[13]</a></sup></td></tr>
+<tr><td>10<sup>−3</sup> – 1</td><td>Sugerente, no resuelto</td><td>Puede ser un homólogo remoto o un resultado del azar; usen PSI-BLAST, métodos que consideran la estructura o evidencia adicional</td></tr>
+<tr><td>&gt; 1</td><td>Esperado por azar</td><td>No es evidencia de homología, aunque el alineamiento "parezca" convincente</td></tr>
+</tbody></table>
+<div class="box warn"><h4>Advertencias que la fórmula no captura</h4><ul>
+<li>Las <strong>regiones de baja complejidad</strong> (tramos poli-Q, conectores ricos en prolina, segmentos transmembrana) violan el supuesto de composición aleatoria y generan hits significativos espurios. BLAST las enmascara por defecto (SEG para proteínas, DUST para nucleótidos); no desactiven esta opción sin una razón.</li>
+<li>Las <strong>secuencias consulta cortas</strong> no pueden alcanzar puntuaciones significativas contra bases de datos grandes, independientemente de la identidad: un péptido de 15 residuos con una coincidencia perfecta tiene un bit score de aproximadamente 30. Usen una base de datos más pequeña, PAM30 y la configuración para secuencias consulta cortas.</li>
+<li>El <strong>sesgo de composición</strong> (p. ej., proteínas muy ácidas o muy hidrofóbicas) se corrige parcialmente mediante el ajuste composicional que BLASTp aplica por defecto desde 2005.</li>
+<li>Un E-value significativo establece la <em>homología de la región alineada</em>, no de la proteína completa, ni la identidad de función. Inspeccionen siempre la cobertura y el alineamiento.</li>
+</ul></div>
+
+<h3 id="s7-4">7.4 Sensibilidad, especificidad y el compromiso en las heurísticas</h3>
+<p>Toda búsqueda tiene un umbral de decisión (el valor de corte del E-value), y todo umbral produce cuatro tipos de resultado cuando se compara con la verdad acerca de la homología.</p>
+<table class="data"><thead><tr><th></th><th>Verdaderamente homóloga</th><th>Verdaderamente no relacionada</th></tr></thead><tbody>
+<tr><th>Informada como hit</th><td>Verdadero positivo (TP)</td><td>Falso positivo (FP) — error de tipo I</td></tr>
+<tr><th>No informada</th><td>Falso negativo (FN) — error de tipo II</td><td>Verdadero negativo (TN)</td></tr>
+</tbody></table>
+<p>La <strong>sensibilidad</strong> (recall), TP / (TP + FN), es la fracción de homólogos verdaderos que la búsqueda encuentra; la <strong>especificidad</strong>, TN / (TN + FP), es la fracción de secuencias no relacionadas correctamente excluidas; la <strong>precisión</strong>, TP / (TP + FP), es la fracción de hits informados que son reales. Bajar el valor de corte del E-value aumenta la especificidad y la precisión a costa de la sensibilidad; subirlo produce el efecto contrario. Las heurísticas de BLAST introducen una pérdida adicional e independiente de sensibilidad: un homólogo verdadero que no comparta con la secuencia consulta ninguna palabra de puntuación ≥ <em>T</em> nunca será extendido y se perderá, por permisivo que sea el valor de corte. Por eso Smith–Waterman (p. ej., SSEARCH del paquete FASTA) encuentra un pequeño porcentaje más de homólogos remotos que BLASTp en las evaluaciones comparativas, y por eso los métodos basados en perfiles (Sección 7.5) encuentran muchos más todavía. En la práctica, un falso negativo en una búsqueda en bases de datos es mucho más común que un falso positivo con E &lt; 10<sup>−3</sup>; el error habitual de un principiante es confiar en la ausencia de hits.</p>
+
+<h3 id="s7-5">7.5 Matrices de puntuación específicas de posición y PSI-BLAST</h3>
+<p>Una matriz de sustitución aplica las mismas puntuaciones a todas las posiciones de una proteína. Pero una familia de proteínas no se comporta así: un aspartato catalítico es invariante, una leucina enterrada tolera isoleucina y valina, y un loop de superficie tolera casi cualquier cosa. Una <strong>matriz de puntuación específica de posición</strong> (PSSM, o perfil) captura esto al almacenar, para cada <em>columna</em> de un alineamiento múltiple, una puntuación para cada uno de los veinte aminoácidos.<sup class="c"><a href="#r39">[31]</a></sup></p>
+<h4>Ejemplo resuelto de la clase</h4>
+<p>Consideren cinco secuencias alineadas de 7 residuos:</p>
+<div class="aln">D R S W L E I
+D K S W I D V
+E K T W L D I
+D K S W V E L
+E E S W L E I</div>
+<p>El perfil más simple registra la frecuencia de cada residuo en cada columna: la posición 1 es D en 3/5 (0.6) y E en 2/5 (0.4); la posición 2 es K 0.6, R 0.2, E 0.2; la posición 3 es S 0.8, T 0.2; la posición 4 es W 1.0; la posición 5 es L 0.6, I 0.2, V 0.2; la posición 6 es E 0.6, D 0.4; la posición 7 es I 0.6, V 0.2, L 0.2. Una nueva secuencia candidata E R S W V E I puntúa, columna por columna, 0.4 + 0.2 + 0.8 + 1.0 + 0.2 + 0.6 + 0.6 = <strong>3.8 de un máximo de 7</strong> (0.54 por posición). ¿Es esto bueno? La secuencia coincide con el triptófano invariante, con la serina casi invariante y con el carácter ácido de las posiciones 1 y 6, y usa residuos vistos en la familia en cada posición; un 7-mer aleatorio puntuaría cerca de cero, porque la mayoría de sus residuos nunca habrían sido observados en la columna correspondiente. Por lo tanto, la secuencia es un miembro plausible de la familia, aunque no es idéntica a ninguna de las cinco.</p>
+<p>Las PSSM reales mejoran las frecuencias brutas de dos maneras. Se convierten a <em>log-odds</em> frente a las frecuencias de fondo (de modo que una coincidencia de triptófano, poco frecuente por azar, se recompensa más que una coincidencia de alanina), y agregan <em>pseudoconteos</em> derivados de la matriz de sustitución, de modo que un residuo nunca observado en una columna de cinco secuencias recibe una probabilidad pequeña distinta de cero en lugar de una penalización infinita. La matriz resultante puede usarse exactamente de la misma manera que BLOSUM62: la recurrencia de la Sección 6 simplemente consulta σ(posición, residuo) en lugar de σ(residuo, residuo).</p>
+<h4>PSI-BLAST</h4>
+<p>Position-Specific Iterated BLAST automatiza la construcción y el uso de una PSSM:<sup class="c"><a href="#r9">[9]</a></sup></p>
+<ol>
+<li>Ejecutar un BLASTp estándar con la secuencia consulta.</li>
+<li>Tomar todos los hits por debajo de un umbral de inclusión (por defecto, E &lt; 0.005), construir con ellos un alineamiento múltiple anclado en la secuencia consulta y calcular una PSSM de la longitud de la secuencia consulta.</li>
+<li>Buscar nuevamente en la base de datos con la PSSM en lugar de la secuencia consulta.</li>
+<li>Agregar los nuevos hits significativos al alineamiento, reconstruir la PSSM y repetir hasta que no se encuentren secuencias nuevas (convergencia) o se alcance un número fijo de iteraciones.</li>
+</ol>
+<p>Cada iteración incorpora la variabilidad de la familia, de modo que el perfil aprende qué posiciones pueden variar y cuáles no. PSI-BLAST detecta aproximadamente tres veces más homólogos remotos que BLASTp con la misma tasa de error, y es el método con el que, por ejemplo, se reconocieron por primera vez la mayoría de los miembros distantes de las superfamilias de GPCR y de quinasas. Su peligro es la <em>deriva del perfil</em> (profile drift): un único falso positivo incluido en la iteración 2 arrastrará el perfil hacia una familia no relacionada y reclutará a sus miembros en la iteración 3. Inspeccionen los hits agregados en cada ronda, bajen el umbral de inclusión cuando la secuencia consulta contenga segmentos repetitivos o de baja complejidad, y traten con la debida sospecha un hit que aparezca solo en la iteración 5.</p>
+<p><strong>RPS-BLAST</strong> (Reverse Position-Specific BLAST) invierte la búsqueda: una única <em>secuencia</em> consulta se compara contra una base de datos de <em>PSSM</em> precalculadas, una para cada familia de dominios conocida. Este es el motor detrás de la <strong>Conserved Domain Database</strong> del NCBI y del servicio CD-Search, que anota la arquitectura de dominios de una secuencia consulta en segundos; integra modelos de Pfam, SMART, COG y modelos curados por el NCBI.<sup class="c"><a href="#r25">[25]</a></sup> Ejecutar CD-Search sobre una proteína de función desconocida es normalmente el primer paso después de BLASTp.</p>
+<div class="box key"><h4>Puntos clave — Sección 7</h4><ul>
+<li>BLAST es una heurística: siembra de palabras → disparador de dos hits → extensión sin gaps (HSP) → extensión con gaps → estadística. Es rápido porque la mayor parte de la base de datos nunca se alinea, y puede perder homólogos por la misma razón.</li>
+<li>E = <em>K m n</em> e<sup>−λS</sup>: número esperado de hits por azar con al menos esta puntuación; lineal en el tamaño de la secuencia consulta y de la base de datos, exponencial en la puntuación.</li>
+<li>Los bit scores están normalizados y son comparables entre sistemas de puntuación; E = <em>m n</em> 2<sup>−S′</sup>.</li>
+<li>E &lt; 10<sup>−3</sup> es un umbral razonable de homología para una sola búsqueda; verifiquen siempre la cobertura y el enmascaramiento de baja complejidad.</li>
+<li>Las PSSM puntúan cada posición de forma diferente; PSI-BLAST las construye de manera iterativa y detecta homólogos remotos con el riesgo de la deriva del perfil.</li>
+</ul></div>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Sección 8</span>Alineamiento múltiple de secuencias</h2>
+<h3>8.1 Propósito</h3>
+<p>Un alineamiento múltiple de secuencias (MSA) dispone tres o más secuencias de modo que las posiciones homólogas compartan una columna. En comparación con una colección de alineamientos de a pares, ofrece información cualitativamente nueva: una posición conservada en cincuenta secuencias que abarcan mil millones de años de evolución es casi con certeza esencial desde el punto de vista estructural o funcional, mientras que la conservación entre dos secuencias puede deberse al azar; un gap presente en un linaje, pero ausente en todos los demás, puede polarizarse como una inserción; y la covariación entre dos columnas sugiere que los residuos están en contacto físico. Los MSA son el insumo para la reconstrucción filogenética, para construir PSSM y modelos ocultos de Markov (Pfam), para identificar residuos catalíticos y de unión, para distinguir ortólogos de parálogos dentro de una familia y —desde 2020— para la predicción de estructura basada en coevolución de AlphaFold y métodos relacionados.<sup class="c"><a href="#r30">[30]</a></sup></p>
+<h3>8.2 El ejemplo de las globinas</h3>
+<p>La clase muestra el clásico alineamiento de Clustal de siete globinas. Se reproduce a continuación porque ilustra todos los conceptos de esta sección.</p>
+<div class="aln small">Human beta        --------VHLTPEEKSAVTALWGKVN--VDEVGGEALGRLLVVYPWTQRFFESFGDLST
+Horse beta        --------VQLSGEEKAAVLALWDKVN--EEEVGGEALGRLLVVYPWTQRFFDSFGDLSN
+Human alpha       ---------VLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLS-
+Horse alpha       ---------VLSAADKTNVKAAWSKVGGHAGEYGAEALERMFLGFPTTKTYFPHF-DLS-
+Whale myoglobin   ---------VLSEGEWQLVLHVWAKVEADVAGHGQDILIRLFKSHPETLEKFDRFKHLKT
+Lamprey globin    PIVDTGSVAPLSAAEKTKIRSAWAPVYSTYETSGVDILVKFFTSTPAAQEFFPKFKGLTT
+Lupin globin      --------GALTESQAALVKSSWEEFNANIPKHTHRFFILVLEIAPAAKDLFSFLKGTSE
+                            *:  :   :   *  .           :  .:   * :   *  :   .
+
+Human beta        PDAVMGNPKVKAHGKKVLGAFSDGLAHLDN-----LKGTFATLSELHCDKLHVDPENFRL
+Horse beta        PGAVMGNPKVKAHGKKVLHSFGEGVHHLDN-----LKGTFAALSELHCDKLHVDPENFRL
+Human alpha       ----HGSAQVKGHGKKVADALTNAVAHVDD-----MPNALSALSDLHAHKLRVDPVNFKL
+Horse alpha       ----HGSAQVKAHGKKVGDALTLAVGHLDD-----LPGALSNLSDLHAHKLRVDPVNFKL
+Whale myoglobin   EAEMKASEDLKKHGVTVLTALGAILKKKGH-----HEAELKPLAQSHATKHKIPIKYLEF
+Lamprey globin    ADQLKKSADVRWHAERIINAVNDAVASMDDT--EKMSMKLRDLSGKHAKSFQVDPQYFKV
+Lupin globin      VP--QNNPELQAHAGKVFKLVYEAAIQLQVTGVVVTDATLKNLGSVHVSKGVAD-AHFPV
+                        . .:: *.  :   .                  :  *.  *  .       : .
+
+Human beta        LGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH------
+Horse beta        LGNVLVVVLARHFGKDFTPELQASYQKVVAGVANALAHKYH------
+Human alpha       LSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR------
+Horse alpha       LSHCLLSTLAVHLPNDFTPAVHASLDKFLSSVSTVLTSKYR------
+Whale myoglobin   ISEAIIHVLHSRHPGDFGADAQGAMNKALELFRKDIAAKYKELGYQG
+Lamprey globin    LAAVIADTVAAG---D------AGFEKLMSMICILLRSAY-------
+Lupin globin      VKEAILKTIKEVVGAKWSEELNSAWTIAYDELAIVIKKEMNDAA---
+                  :   :  .:      .      ..       .   :</div>
+<p>Los símbolos bajo cada bloque son la anotación de conservación de Clustal: un asterisco (<code>*</code>) marca una columna completamente conservada, dos puntos (<code>:</code>) una columna en la que todos los residuos pertenecen a un grupo fisicoquímico fuertemente conservado (p. ej., ILV, FYW, KR, DE) y un punto (<code>.</code>) un grupo más débil. Observen que los pares ortólogos (β humana/de caballo; α humana/de caballo) son casi idénticos; que las cadenas parálogas α y β de una misma especie difieren más entre sí que cada una de su ortóloga en la otra especie, como se espera porque la duplicación α/β (hace ~450 millones de años) es anterior a la separación entre humano y caballo (hace ~90 millones de años); y que los dos residuos invariantes del primer bloque —el triptófano de la hélice A y la histidina del segundo bloque (la histidina proximal de unión al hemo, F8)— son las posiciones que la biología estructural identifica de manera independiente como esenciales para el plegamiento y para la unión de oxígeno. Las globinas de lamprea y de lupino (vegetal) comparten menos de 20 % de identidad con la hemoglobina humana y no podrían alinearse con confianza de a pares; en el MSA, las secuencias más similares sirven de puente.</p>
+
+<h3>8.3 Por qué el MSA exacto es imposible y se usa el alineamiento progresivo</h3>
+<p>En principio, la programación dinámica se generaliza a <em>N</em> secuencias: la matriz pasa a ser <em>N</em>-dimensional y cada celda tiene 2<sup><em>N</em></sup> − 1 predecesoras. Por lo tanto, el costo es proporcional a <em>L</em><sup><em>N</em></sup> celdas, cada una de las cuales requiere 2<sup><em>N</em></sup> operaciones, donde <em>L</em> es la longitud de las secuencias. La tabla muestra el número de celdas, y el tiempo necesario para llenarlas a un optimista ritmo de 10<sup>9</sup> celdas por segundo, para secuencias de 100 residuos:</p>
+<table class="data"><thead><tr><th>Secuencias (N)</th><th>Celdas de PD, L = 100 (100<sup>N</sup>)</th><th>Tiempo a 10<sup>9</sup> celdas s<sup>-1</sup></th></tr></thead><tbody><tr><td>2</td><td>10<sup>4</sup></td><td>10 µs</td></tr><tr><td>3</td><td>10<sup>6</sup></td><td>1 ms</td></tr><tr><td>4</td><td>10<sup>8</sup></td><td>100 ms</td></tr><tr><td>5</td><td>10<sup>10</sup></td><td>10 s</td></tr><tr><td>6</td><td>10<sup>12</sup></td><td>16.7 min</td></tr><tr><td>7</td><td>10<sup>14</sup></td><td>1.16 días</td></tr><tr><td>8</td><td>10<sup>16</sup></td><td>116 días</td></tr><tr><td>10</td><td>10<sup>20</sup></td><td>3.17e+03 años</td></tr></tbody></table>
+<p>La memoria crece al mismo ritmo. Así, el MSA exacto es factible para tres secuencias, marginal para cuatro o cinco e imposible más allá; el problema es NP-difícil bajo la puntuación de suma de pares (sum-of-pairs). Todos los métodos prácticos son heurísticas, y la dominante desde 1987 es el <strong>alineamiento progresivo</strong>, introducido por Feng y Doolittle y popularizado por los programas Clustal.<sup class="c"><a href="#r16">[16]</a>,<a href="#r17">[17]</a></sup></p>
+<figure>
+<img src="figures/fig07_progressive.png" alt="Tres paneles: una matriz de distancias de a pares de cuatro globinas, el árbol guía derivado de ella y el alineamiento progresivo resultante">
+<figcaption><b>Figura 7. Alineamiento progresivo en tres pasos.</b> (i) Se alinean todos los pares de secuencias y se calcula una distancia (aquí, porcentaje de divergencia; valores ilustrativos) para cada par. (ii) Se construye un árbol guía a partir de las distancias mediante un método de agrupamiento rápido (UPGMA o neighbour-joining); el par más similar se une primero. (iii) Las secuencias se alinean en el orden dado por el árbol: primero las dos cadenas β, luego la cadena α con el perfil β y luego la mioglobina con el perfil de las tres globinas. Los gaps introducidos en un paso temprano se conservan en todos los pasos posteriores.</figcaption>
+</figure>
+<ol>
+<li><strong>Distancias de a pares.</strong> Se alinean todos los <em>N</em>(<em>N</em>−1)/2 pares (rápidamente, a menudo con una heurística de <em>k</em>-mers en lugar de programación dinámica completa) y se convierten en una distancia.</li>
+<li><strong>Árbol guía.</strong> Se construye un árbol a partir de la matriz de distancias. <em>No</em> es una filogenia —es un calendario de trabajo—, pero su topología determina el resultado.</li>
+<li><strong>Alineamiento progresivo.</strong> Siguiendo el árbol desde las hojas hasta la raíz, se alinean secuencias con secuencias, secuencias con perfiles y perfiles con perfiles, usando un alineamiento global por programación dinámica en el que la puntuación de una columna se promedia sobre todos los pares de residuos que contiene (suma de pares). Una vez que dos secuencias han sido alineadas, sus gaps relativos quedan congelados: <em>una vez gap, siempre gap</em>.</li>
+</ol>
+<p>La regla del gap congelado es la fortaleza de la heurística —hace que el problema sea polinomial— y también su debilidad: un error cometido al alinear las dos primeras secuencias, que se alinean con la menor cantidad de información, nunca puede corregirse. Los programas modernos difieren principalmente en cómo mitigan esto.</p>
+<table class="data"><thead><tr><th>Programa</th><th>Año</th><th>Característica distintiva</th><th>Uso</th></tr></thead><tbody>
+<tr><td>ClustalW<sup class="c"><a href="#r17">[17]</a></sup></td><td>1994</td><td>Ponderación de secuencias, penalizaciones por gap específicas de posición, elección de la matriz según la divergencia</td><td>Estándar histórico; superado</td></tr>
+<tr><td>T-Coffee<sup class="c"><a href="#r21">[21]</a></sup></td><td>2000</td><td>Consistencia: una biblioteca de alineamientos de a pares (globales y locales) guía el paso progresivo, de modo que los errores tempranos son menos probables</td><td>Alta exactitud para conjuntos pequeños; puede integrar información estructural (Expresso)</td></tr>
+<tr><td>MAFFT<sup class="c"><a href="#r20">[20]</a></sup></td><td>2002 / 2013</td><td>Transformada rápida de Fourier para encontrar segmentos homólogos; refinamiento iterativo (L-INS-i, G-INS-i)</td><td>Exacto y escalable; la elección habitual para la mayoría de los conjuntos de datos</td></tr>
+<tr><td>MUSCLE<sup class="c"><a href="#r19">[19]</a></sup></td><td>2004</td><td>Distancias rápidas de <em>k</em>-mers, seguidas de refinamiento iterativo por partición del árbol</td><td>Rápido, exacto para conjuntos medianos</td></tr>
+<tr><td>Clustal Omega<sup class="c"><a href="#r18">[18]</a></sup></td><td>2011</td><td>Árboles guía mBed en <em>O</em>(<em>N</em> log <em>N</em>); alineamiento perfil–perfil de HMM (HHalign)</td><td>Cientos de miles de secuencias; opción por defecto del servicio web del EBI</td></tr>
+</tbody></table>
+<p>El <strong>refinamiento iterativo</strong>, usado por MAFFT y MUSCLE, levanta parcialmente la limitación del gap congelado: una vez completado el alineamiento progresivo, este se divide en dos grupos a lo largo de una rama del árbol, los dos perfiles se realinean y el resultado se conserva si la puntuación objetivo mejora; esto se repite para muchas ramas. La <strong>consistencia</strong>, usada por T-Coffee y por el alineador probabilístico ProbCons, utiliza información de todos los alineamientos de a pares al decidir cualquiera de ellos, de modo que el alineamiento de las secuencias A y B se nutre de cómo se alinea cada una con C. Para entre una docena y unos pocos cientos de secuencias proteicas, MAFFT L-INS-i y T-Coffee son las opciones más exactas en evaluaciones comparativas como BAliBASE; Clustal Omega es preferible cuando el conjunto llega a miles.</p>
+<div class="box warn"><h4>Precauciones prácticas</h4><ul>
+<li>Un MSA es una hipótesis. Las columnas en regiones muy variables y cerca de gaps son frecuentemente incorrectas; los análisis posteriores (filogenia, puntuaciones de conservación) deberían recortar esas columnas (trimAl, Gblocks) o reducir su ponderación.</li>
+<li>La composición del conjunto de secuencias importa tanto como el programa. Cincuenta ortólogos de mamíferos casi idénticos aportan menos información que diez secuencias que abarcan vertebrados, invertebrados y plantas; la redundancia de secuencias normalmente se reduce (CD-HIT, UniRef) antes del alineamiento.</li>
+<li>Inspeccionen siempre el alineamiento en un visualizador (Jalview, AliView). Un desplazamiento de un residuo en un elemento de estructura secundaria es inmediatamente visible a simple vista e invisible en una puntuación.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Sección 9</span>Del alineamiento a la estructura: lo que darán por supuesto las próximas clases</h2>
+<p>Las clases que siguen —predicción de estructura de proteínas, docking, diseño de fármacos y dinámica molecular— comienzan todas a partir de comparaciones de secuencias realizadas con las herramientas de esta unidad. Tres relaciones empíricas justifican esa dependencia.</p>
+<h3>9.1 La identidad de secuencia predice la similitud estructural</h3>
+<p>Chothia y Lesk compararon pares de proteínas homólogas de estructura conocida y encontraron que la desviación cuadrática media (RMSD) de su núcleo común aumenta de manera suave, aproximadamente exponencial, con la divergencia de secuencia: los pares con más de 50 % de identidad se superponen con una diferencia de alrededor de 1 Å, mientras que los pares cercanos a 20 % de identidad divergen hasta 2–2.5 Å y comparten un núcleo cada vez más pequeño.<sup class="c"><a href="#r22">[22]</a></sup> Esta relación es la base teórica del <strong>modelado por homología (comparativo)</strong>: si se puede encontrar una plantilla de estructura conocida con suficiente identidad respecto de la secuencia objetivo, el esqueleto peptídico de la secuencia objetivo puede construirse sobre las coordenadas de la plantilla, y la exactitud esperada del modelo puede estimarse solo a partir de la identidad. La calidad del <em>alineamiento</em> entre la secuencia objetivo y la plantilla impone un límite máximo estricto a la calidad del modelo, porque un residuo alineado con la posición incorrecta de la plantilla quedará ubicado en el lugar incorrecto del espacio, por muy bien que se optimicen las cadenas laterales. Por lo tanto, los alineamientos objetivo–plantilla se construyen con la mayor información disponible —perfiles de PSI-BLAST o HMM, predicción de estructura secundaria e inspección manual— y no con un único alineamiento de a pares.</p>
+<h3>9.2 La zona crepuscular</h3>
+<p>Sander y Schneider, y posteriormente Rost, cuantificaron la identidad por debajo de la cual ya no se puede confiar en que el alineamiento de secuencias indique una estructura común.<sup class="c"><a href="#r23">[23]</a>,<a href="#r24">[24]</a></sup> El umbral depende de la longitud del alineamiento: para alineamientos de más de aproximadamente 100 residuos, por encima de ~30–35 % de identidad casi todos los pares comparten el mismo plegamiento; entre ~20 % y ~35 % —la <strong>zona crepuscular</strong> (twilight zone)— los homólogos verdaderos y los alineamientos por azar se superponen y la identidad de secuencia por sí sola no puede discriminarlos; por debajo de ~20 % (la "zona de medianoche") los métodos de secuencia de a pares son esencialmente no informativos, aunque muchos de esos pares sean genuinamente homólogos, como lo demuestra la familia de las globinas. Las consecuencias prácticas son que los umbrales de identidad deben leerse siempre junto con la longitud del alineamiento, que un E-value de BLAST es una guía mucho mejor que un porcentaje y que, en la zona crepuscular, se debe pasar a métodos basados en perfiles y HMM (PSI-BLAST, HHpred, HMMER) o a la comparación basada en estructura. El éxito de AlphaFold descansa en el mismo principio llevado hasta sus últimas consecuencias: un MSA profundo de una familia de proteínas, construido con los métodos de la Sección 8, contiene suficiente señal de covariación para inferir los contactos entre residuos que definen el plegamiento.<sup class="c"><a href="#r30">[30]</a></sup></p>
+<h3>9.3 La conservación localiza la función</h3>
+<p>Los residuos que unen un ligando, catalizan una reacción o estabilizan el plegamiento están sometidos a selección purificadora y aparecen como columnas conservadas en un MSA. Mapear la conservación de las columnas (calculada, por ejemplo, con ConSurf o mediante la entropía de Shannon de cada columna) sobre una estructura tridimensional típicamente resalta el sitio activo y los bolsillos de unión, mientras que la superficie permanece variable. En las clases de docking y de diseño de fármacos esto se usa de dos maneras: para identificar o validar el sitio de unión de un blanco cuando no existe una estructura con un ligando unido, y para evaluar la <em>selectividad</em>: un fármaco que contacta residuos conservados en toda una familia de proteínas inhibirá a todos sus miembros, mientras que un fármaco que aprovecha residuos variables entre parálogos (o entre una enzima de un patógeno y su ortóloga humana) puede hacerse selectivo. A la inversa, cuando se observa una mutación en un paciente o esta surge en un patógeno bajo presión farmacológica, el MSA nos dice de inmediato si la posición afectada tolera variación; así es como se priorizan las mutaciones de resistencia para los estudios mutacionales realizados con dinámica molecular.</p>
+<div class="box bridge"><h4>Lo que se les pedirá hacer con alineamientos en las próximas clases</h4><ul>
+<li>Ejecutar BLASTp de una secuencia objetivo contra el PDB (<code>pdbaa</code>), interpretar el E-value, la identidad y la cobertura, y elegir plantillas.</li>
+<li>Construir e inspeccionar un alineamiento objetivo–plantilla, identificar inserciones/deleciones respecto de la plantilla y anticipar dónde será necesario modelar loops.</li>
+<li>Generar un MSA de una familia de receptores (p. ej., GPCR, canales iónicos, quinasas), calcular la conservación por posición y mapearla sobre una estructura para definir un bolsillo de unión.</li>
+<li>Conciliar la numeración de residuos entre un modelo, una estructura cristalográfica y la literatura: un problema de alineamiento que es trivial en principio y la fuente de muchos errores en la práctica.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Sección 10</span>Trabajo práctico: herramientas y flujos de trabajo mínimos</h2>
+<h3>10.1 Servicios web</h3>
+<table class="data"><thead><tr><th>Tarea</th><th>Herramienta</th><th>Ubicación</th></tr></thead><tbody>
+<tr><td>Alineamiento global / local de a pares</td><td>EMBOSS Needle / Water<sup class="c"><a href="#r27">[27]</a></sup></td><td>https://www.ebi.ac.uk/jdispatcher/psa</td></tr>
+<tr><td>Búsqueda en bases de datos</td><td>NCBI BLAST (BLASTp, BLASTn, BLASTx, tBLASTn, PSI-BLAST)</td><td>https://blast.ncbi.nlm.nih.gov</td></tr>
+<tr><td>Búsqueda en bases de datos de proteínas curadas</td><td>UniProt BLAST</td><td>https://www.uniprot.org/blast</td></tr>
+<tr><td>Identificación de dominios</td><td>CD-Search (RPS-BLAST) · InterProScan</td><td>https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi · https://www.ebi.ac.uk/interpro</td></tr>
+<tr><td>Alineamiento múltiple de secuencias</td><td>Clustal Omega, MAFFT, MUSCLE, T-Coffee</td><td>https://www.ebi.ac.uk/jdispatcher/msa</td></tr>
+<tr><td>Visualización y edición de alineamientos</td><td>Jalview<sup class="c"><a href="#r29">[29]</a></sup> (escritorio o JalviewJS) · AliView</td><td>https://www.jalview.org</td></tr>
+<tr><td>Detección de homología remota / de plantillas</td><td>HHpred (comparación HMM–HMM)</td><td>https://toolkit.tuebingen.mpg.de/tools/hhpred</td></tr>
+<tr><td>Conservación sobre la estructura</td><td>ConSurf</td><td>https://consurf.tau.ac.il</td></tr>
+<tr><td>Herramientas relacionadas del NCBI</td><td>SmartBLAST, Primer-BLAST, Global Align, IgBLAST, VecScreen, CDART, MOLE-BLAST</td><td>https://blast.ncbi.nlm.nih.gov (búsquedas especializadas, Specialized searches)</td></tr>
+</tbody></table>
+<h3>10.2 Alineamiento programático</h3>
+<p>Reproducir los ejemplos resueltos en código es la forma más rápida de verificar que los han comprendido. En Python, el <code>PairwiseAligner</code> de Biopython implementa Needleman–Wunsch, Smith–Waterman y sus variantes con gaps afines:<sup class="c"><a href="#r28">[28]</a></sup></p>
+<pre><code>from Bio import Align
+from Bio.Align import substitution_matrices
+
+# Section 5.3: global alignment under the unit scheme
+aligner = Align.PairwiseAligner(mode="global", match_score=1,
+                                mismatch_score=-1, gap_score=-1)
+aln = aligner.align("GATTACA", "GCATGCG")[0]
+print(aln.score)      # 0
+print(aln)
+
+# Section 6: local alignment, +3 / -3 / -2
+aligner = Align.PairwiseAligner(mode="local", match_score=3,
+                                mismatch_score=-3, gap_score=-2)
+aln = aligner.align("TGTTACGG", "GGTTGACTA")[0]
+print(aln.score)      # 13
+
+# Protein alignment with BLOSUM62 and affine gaps (BLASTp defaults)
+aligner = Align.PairwiseAligner(mode="local")
+aligner.substitution_matrix = substitution_matrices.load("BLOSUM62")
+aligner.open_gap_score = -11
+aligner.extend_gap_score = -1
+hbb = "VHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH"
+mb  = "VLSEGEWQLVLHVWAKVEADVAGHGQDILIRLFKSHPETLEKFDRFKHLKTEAEMKASEDLKKHGVTVLTALGAILKKKGHHEAELKPLAQSHATKHKIPIKYLEFISEAIIHVLHSRHPGDFGADAQGAMNKALELFRKDIAAKYKELGYQG"
+print(aligner.score(hbb, mb))   # 102 (Figure 6)</code></pre>
+<p>En R, el paquete de Bioconductor <code>pwalign</code> (antes parte de <code>Biostrings</code>) ofrece la misma funcionalidad; el script propio del curso cuenta el número de alineamientos globales posibles con la fórmula de la Sección 5.1:</p>
+<pre><code># Alig_global.R (course material): number of global alignments, Torres et al. (2003)
+num_alineamientos_globales &lt;- function(m, n) {
+  suma &lt;- 0
+  for (k in 0:min(m, n)) {
+    suma &lt;- suma + 2^k * choose(m, k) * choose(n, k)
+  }
+  return(suma)
+}
+num_alineamientos_globales(30, 34)   # 2.66e+23
+
+# Pairwise alignment with Bioconductor
+# BiocManager::install("pwalign")
+library(pwalign)
+data(BLOSUM62)
+pairwiseAlignment("GATTACA", "GCATGCG", type = "global",
+                  substitutionMatrix = NULL, gapOpening = 0, gapExtension = 1)</code></pre>
+<p>BLAST+ de línea de comandos se instala con <code>conda install -c bioconda blast</code>; una búsqueda local consiste en <code>makeblastdb -in proteins.fasta -dbtype prot</code> seguido de <code>blastp -query q.fasta -db proteins.fasta -evalue 1e-3 -outfmt 6</code>. La salida tabular (<code>-outfmt 6</code>) es lo que procesarán en trabajos prácticos posteriores.</p>
+<h3>10.3 Un protocolo mínimo de búsqueda de homología</h3>
+<ol>
+<li>Obtener la secuencia consulta en formato FASTA y revisarla: longitud, composición, presencia de segmentos de baja complejidad o transmembrana.</li>
+<li>Ejecutar BLASTp primero contra UniProtKB/Swiss-Prot (pequeña, curada, todos los hits están anotados) y luego contra la base de datos no redundante (<code>nr</code>) o el PDB, según sea necesario.</li>
+<li>Ordenar por E-value; para cada hit de interés, registrar el E-value, el bit score, el porcentaje de identidad, la longitud del alineamiento y la <strong>cobertura de la secuencia consulta</strong>.</li>
+<li>Decidir si la relación es de longitud completa (cobertura &gt; 80 %) o a nivel de dominio; en este último caso, ejecutar CD-Search para identificar los dominios.</li>
+<li>Si ningún hit tiene E &lt; 10<sup>−3</sup>, ejecutar PSI-BLAST (3–5 iteraciones, inspeccionando los hits recién agregados) o HHpred antes de concluir que la proteína no tiene ningún homólogo conocido.</li>
+<li>Para la transferencia funcional, verificar que el mejor hit sea un ortólogo plausible (mejor hit recíproco, distribución coherente entre especies) y no un parálogo con una función diferente.</li>
+<li>Registrar la versión de la base de datos y la fecha: de lo contrario, los E-values y las listas de hits no son reproducibles.</li>
+</ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Sección 11</span>Autoevaluación</h2>
+<p>Intenten responder cada pregunta antes de abrir la respuesta.</p>
+<details><summary>1. Un colega informa que dos proteínas son "45 % homólogas". ¿Qué está mal en la afirmación y cómo debería reformularse?</summary><p>La homología es la inferencia de ascendencia común y es una propiedad de sí/no; la magnitud que puede ser 45 % es la identidad (o la similitud) sobre un alineamiento. Reformúlese como "las proteínas comparten 45 % de identidad de secuencia sobre un alineamiento de <em>N</em> residuos, lo que indica que son homólogas", e infórmense la longitud del alineamiento y el E-value, porque 45 % sobre 20 residuos y 45 % sobre 300 residuos tienen significados muy diferentes.</p></details>
+<details><summary>2. Hemoglobina α humana y hemoglobina α de chimpancé; hemoglobina α humana y hemoglobina β humana; hemoglobina α humana y hemoglobina β de chimpancé. Clasifiquen cada par.</summary><p>Ortólogos (separados por la especiación entre humano y chimpancé); parálogos (separados por la duplicación α/β); parálogos (el último ancestro común de los dos genes es la duplicación α/β, que es anterior a la especiación; el hecho de que estén en especies diferentes no los convierte en ortólogos).</p></details>
+<details><summary>3. Con la matriz de 4 × 4 de la Sección 4.1, una penalización por gap de −5 y el alineamiento de la Sección 4.7, la puntuación fue 1. Recalculen la puntuación con un esquema afín: apertura −5, extensión −1.</summary><p>El único gap, de longitud 3, cuesta ahora −5 − 2 × 1 = −7 en lugar de −15, de modo que la puntuación pasa a ser 1 + 15 − 7 = 9. Las identidades y los desapareamientos aportan lo mismo: −3 + 7 + 10 + 7 − 4 + 0 − 1 + 0 = 16; 16 − 7 = 9.</p></details>
+<details><summary>4. ¿Por qué la diagonal de BLOSUM62 le asigna a W una puntuación de 11, pero a L una puntuación de 4, si ambos están conservados cuando coinciden?</summary><p>La puntuación es un cociente log-odds frente al fondo. El triptófano es poco frecuente (~1 % de los residuos), de modo que es muy improbable que dos triptófanos queden alineados por azar y una coincidencia W–W es una fuerte evidencia de homología. La leucina es el residuo más abundante (~10 %), de modo que las coincidencias L–L surgen a menudo por azar y aportan menos información.</p></details>
+<details><summary>5. En la matriz de Needleman–Wunsch de la Sección 5.3, calculen <em>F</em>(3, 4) a partir de sus vecinas e indiquen qué movimiento la produjo.</summary><p>La fila 3 es T (tercer residuo de GATTACA) y la columna 4 es T (cuarto residuo de GCATGCG). Candidatos: diagonal <em>F</em>(2, 3) + σ(T, T) = 1 + 1 = 2; arriba <em>F</em>(2, 4) + (−1) = 0 − 1 = −1; izquierda <em>F</em>(3, 3) + (−1) = 0 − 1 = −1. <em>F</em>(3, 4) = 2, desde la diagonal (una coincidencia).</p></details>
+<details><summary>6. ¿Qué cambio único convierte la recurrencia de Needleman–Wunsch en la de Smith–Waterman, y qué dos consecuencias tiene para el trazado inverso?</summary><p>Agregar 0 como cuarto candidato en el máximo (y fijar la primera fila y la primera columna en 0). El trazado inverso comienza en la celda más alta de la matriz en lugar de la esquina inferior derecha, y se detiene en la primera celda con valor 0 en lugar de en el origen; por lo tanto, el alineamiento puede comenzar y terminar en cualquier lugar.</p></details>
+<details><summary>7. Un hit de BLASTp tiene E = 2 × 10<sup>−8</sup> contra Swiss-Prot. Repiten la búsqueda contra <code>nr</code>, que es aproximadamente 400 veces más grande, y encuentran el mismo alineamiento. ¿Qué E-value esperan, aproximadamente, y por qué?</summary><p>Alrededor de 400 × 2 × 10<sup>−8</sup> ≈ 8 × 10<sup>−6</sup>, porque E es proporcional a la longitud de la base de datos <em>n</em>; el bit score no cambia. El hit sigue siendo significativo, pero esto ilustra por qué los E-values no son comparables entre bases de datos, mientras que los bit scores sí lo son.</p></details>
+<details><summary>8. Se obtiene un bit score de 40 para una secuencia consulta de 200 residuos contra una base de datos de 5 × 10<sup>10</sup> residuos. Estimen E.</summary><p>E = <em>m n</em> 2<sup>−S′</sup> = 200 × 5 × 10<sup>10</sup> × 2<sup>−40</sup> = 10<sup>13</sup> / 1.1 × 10<sup>12</sup> ≈ 9. Se esperan por azar unos nueve alineamientos así de buenos; el hit no es significativo.</p></details>
+<details><summary>9. Usando la PSSM de frecuencias de la Sección 7.5, puntúen la secuencia D K S W L E I y la secuencia A A A A A A A, y expliquen la diferencia.</summary><p>D K S W L E I: 0.6 + 0.6 + 0.8 + 1.0 + 0.6 + 0.6 + 0.6 = 4.8 / 7 (es la secuencia consenso y obtiene la máxima puntuación posible). A A A A A A A: 0 en cada posición, total 0 / 7, porque la alanina nunca se observó en ninguna columna. Una PSSM log-odds real con pseudoconteos le daría a la secuencia de alaninas una puntuación fuertemente negativa en lugar de cero.</p></details>
+<details><summary>10. ¿Por qué BLASTp puede no detectar un homólogo verdadero incluso con el valor de corte del E-value fijado en 10?</summary><p>Porque el valor de corte se aplica solo a los alineamientos que efectivamente se calcularon. Si las dos secuencias no comparten ninguna palabra de 3 letras con puntuación de vecindad ≥ <em>T</em> (o ningún par de tales palabras en una misma diagonal), no se desencadena ninguna extensión y el alineamiento nunca se produce. Esta es una pérdida de sensibilidad propia de la heurística, independiente de la estadística; se necesitarían Smith–Waterman (SSEARCH) o métodos basados en perfiles.</p></details>
+<details><summary>11. Expliquen "una vez gap, siempre gap" (once a gap, always a gap) y nombren dos estrategias que usan los alineadores modernos para mitigarlo.</summary><p>En el alineamiento progresivo, una vez que dos secuencias (o perfiles) se han alineado, los gaps colocados entre ellas quedan fijos y no pueden moverse cuando se agregan más secuencias, de modo que los errores cometidos al principio se propagan. Mitigaciones: el refinamiento iterativo (MAFFT, MUSCLE: realinear subgrupos después de la primera pasada y conservar las mejoras) y la puntuación basada en consistencia (T-Coffee, ProbCons: usar una biblioteca de todos los alineamientos de a pares para informar cada paso progresivo).</p></details>
+<details><summary>12. Quieren modelar la estructura 3D de una proteína de 320 residuos. BLASTp contra el PDB entrega una plantilla con 28 % de identidad sobre 300 residuos (E = 10<sup>−20</sup>) y otra con 65 % de identidad sobre 90 residuos (E = 10<sup>−30</sup>). Discutan.</summary><p>El segundo hit tiene el E-value más bajo, pero cubre solo el 28 % de la secuencia objetivo: es una plantilla para un dominio. El primero cubre casi toda la proteína, pero está en la zona crepuscular, donde el alineamiento contendrá errores y la exactitud esperada del modelo (según Chothia–Lesk) es de alrededor de 2 Å o peor en el núcleo, con loops poco confiables. Una estrategia sólida sería usar el primero como plantilla global, mejorar el alineamiento con métodos basados en perfiles (PSI-BLAST/HHpred) y predicción de estructura secundaria, y usar el segundo para refinar el dominio que cubre; o, hoy en día, comparar con un modelo de AlphaFold, cuya inferencia basada en MSA está diseñada precisamente para este régimen.</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Apéndice</span>Glosario</h2>
+<dl class="gloss">
+<dt>Penalización afín por gap (affine gap penalty)</dt><dd>Costo de gap de la forma −<em>o</em> − (<em>k</em>−1)<em>e</em>, con un costo de apertura <em>o</em> grande y un costo de extensión <em>e</em> pequeño; modela un indel de <em>k</em> residuos como un único evento.</dd>
+<dt>Bit score (S′)</dt><dd>Puntuación bruta del alineamiento normalizada mediante los parámetros de Karlin–Altschul λ y <em>K</em>, en unidades de bits; comparable entre sistemas de puntuación.</dd>
+<dt>BLOSUM</dt><dd>BLOcks SUbstitution Matrix; matrices log-odds medidas a partir de bloques conservados sin gaps agrupados a una identidad dada (BLOSUM62: 62 %). Número menor = más divergente.</dd>
+<dt>Cobertura (coverage)</dt><dd>Fracción de la secuencia consulta (o de la secuencia sujeto) incluida en el alineamiento.</dd>
+<dt>Programación dinámica</dt><dd>Técnica algorítmica que resuelve un problema combinando soluciones óptimas de sus subproblemas; la base de Needleman–Wunsch y Smith–Waterman.</dd>
+<dt>E-value (valor E)</dt><dd>Número esperado de alineamientos con una puntuación al menos tan alta como la observada que surgirían por azar en una búsqueda de esta secuencia consulta contra esta base de datos.</dd>
+<dt>Distribución de valores extremos (Gumbel)</dt><dd>Distribución del máximo de muchas variables aleatorias; la distribución que siguen las puntuaciones de alineamiento local óptimo de secuencias aleatorias.</dd>
+<dt>Alineamiento global</dt><dd>Alineamiento de dos secuencias a lo largo de toda su longitud (Needleman–Wunsch).</dd>
+<dt>Homología</dt><dd>Descendencia de un ancestro común. Binaria; se infiere, no se mide.</dd>
+<dt>HSP</dt><dd>High-scoring segment pair (par de segmentos de alta puntuación); un alineamiento local maximal sin gaps producido por la etapa de extensión de BLAST.</dd>
+<dt>Identidad</dt><dd>Porcentaje de columnas alineadas que contienen residuos idénticos.</dd>
+<dt>Indel</dt><dd>Inserción o deleción; se representa mediante un gap. El alineamiento de a pares no puede distinguir entre ambas.</dd>
+<dt>Alineamiento local</dt><dd>Alineamiento de las subsecuencias de mayor puntuación de dos secuencias, ignorando los flancos (Smith–Waterman, BLAST).</dd>
+<dt>Puntuación log-odds</dt><dd>Logaritmo del cociente entre la probabilidad de una observación bajo la hipótesis de homología y bajo la hipótesis de azar.</dd>
+<dt>MSA</dt><dd>Multiple sequence alignment (alineamiento múltiple de secuencias); alineamiento de tres o más secuencias.</dd>
+<dt>Ortólogo</dt><dd>Homólogo en otra especie, separado por especiación.</dd>
+<dt>PAM</dt><dd>Point Accepted Mutation (mutación puntual aceptada); matrices de Dayhoff basadas en un modelo evolutivo. 1 PAM = 1 mutación aceptada por cada 100 residuos. Número mayor = más divergente.</dd>
+<dt>Parálogo</dt><dd>Homólogo separado por duplicación génica.</dd>
+<dt>Alineamiento progresivo</dt><dd>Heurística de MSA que alinea las secuencias en el orden dictado por un árbol guía, congelando los gaps una vez colocados.</dd>
+<dt>PSSM / perfil</dt><dd>Matriz de puntuación específica de posición: para cada columna de un alineamiento, una puntuación para cada tipo de residuo.</dd>
+<dt>Sensibilidad</dt><dd>Fracción de homólogos verdaderos detectados (TP / (TP + FN)).</dd>
+<dt>Especificidad</dt><dd>Fracción de no homólogos correctamente rechazados (TN / (TN + FP)).</dd>
+<dt>Similitud</dt><dd>Porcentaje de columnas alineadas con pares de residuos idénticos o con puntuación positiva.</dd>
+<dt>Transición / transversión</dt><dd>Sustitución nucleotídica dentro de la clase de las purinas o de las pirimidinas / entre clases.</dd>
+<dt>Zona crepuscular (twilight zone)</dt><dd>Rango de ~20–35 % de identidad de secuencia en el que la similitud de secuencia por sí sola no puede distinguir de manera confiable los homólogos de los pares no relacionados.</dd>
+<dt>Palabra (k-mer)</dt><dd>Subcadena de longitud fija <em>k</em> utilizada por BLAST para sembrar los alineamientos.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Apéndice</span>Referencias y lecturas complementarias</h2>
+<h3>Literatura primaria citada en el texto</h3>
+<ol class="refs">
+<li id="r1">Needleman SB, Wunsch CD. A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>J Mol Biol</em>. 1970;48(3):443–453. <a href="https://doi.org/10.1016/0022-2836(70)90057-4">doi:10.1016/0022-2836(70)90057-4</a></li>
+<li id="r2">Smith TF, Waterman MS. Identification of common molecular subsequences. <em>J Mol Biol</em>. 1981;147(1):195–197. <a href="https://doi.org/10.1016/0022-2836(81)90087-5">doi:10.1016/0022-2836(81)90087-5</a></li>
+<li id="r3">Gotoh O. An improved algorithm for matching biological sequences. <em>J Mol Biol</em>. 1982;162(3):705–708. <a href="https://doi.org/10.1016/0022-2836(82)90398-9">doi:10.1016/0022-2836(82)90398-9</a></li>
+<li id="r4">Dayhoff MO, Schwartz RM, Orcutt BC. A model of evolutionary change in proteins. In: Dayhoff MO, ed. <em>Atlas of Protein Sequence and Structure</em>, vol. 5, suppl. 3. Washington DC: National Biomedical Research Foundation; 1978. p. 345–352.</li>
+<li id="r5">Henikoff S, Henikoff JG. Amino acid substitution matrices from protein blocks. <em>Proc Natl Acad Sci USA</em>. 1992;89(22):10915–10919. <a href="https://doi.org/10.1073/pnas.89.22.10915">doi:10.1073/pnas.89.22.10915</a></li>
+<li id="r6">Eddy SR. Where did the BLOSUM62 alignment score matrix come from? <em>Nat Biotechnol</em>. 2004;22(8):1035–1036. <a href="https://doi.org/10.1038/nbt0804-1035">doi:10.1038/nbt0804-1035</a></li>
+<li id="r7">Styczynski MP, Jensen KL, Rigoutsos I, Stephanopoulos G. BLOSUM62 miscalculations improve search performance. <em>Nat Biotechnol</em>. 2008;26(3):274–275. <a href="https://doi.org/10.1038/nbt0308-274">doi:10.1038/nbt0308-274</a></li>
+<li id="r8">Altschul SF, Gish W, Miller W, Myers EW, Lipman DJ. Basic local alignment search tool. <em>J Mol Biol</em>. 1990;215(3):403–410. <a href="https://doi.org/10.1016/S0022-2836(05)80360-2">doi:10.1016/S0022-2836(05)80360-2</a></li>
+<li id="r9">Altschul SF, Madden TL, Schäffer AA, Zhang J, Zhang Z, Miller W, Lipman DJ. Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. <em>Nucleic Acids Res</em>. 1997;25(17):3389–3402. <a href="https://doi.org/10.1093/nar/25.17.3389">doi:10.1093/nar/25.17.3389</a></li>
+<li id="r10">Camacho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL. BLAST+: architecture and applications. <em>BMC Bioinformatics</em>. 2009;10:421. <a href="https://doi.org/10.1186/1471-2105-10-421">doi:10.1186/1471-2105-10-421</a></li>
+<li id="r11">Karlin S, Altschul SF. Methods for assessing the statistical significance of molecular sequence features by using general scoring schemes. <em>Proc Natl Acad Sci USA</em>. 1990;87(6):2264–2268. <a href="https://doi.org/10.1073/pnas.87.6.2264">doi:10.1073/pnas.87.6.2264</a></li>
+<li id="r12">Pearson WR, Lipman DJ. Improved tools for biological sequence comparison. <em>Proc Natl Acad Sci USA</em>. 1988;85(8):2444–2448. <a href="https://doi.org/10.1073/pnas.85.8.2444">doi:10.1073/pnas.85.8.2444</a></li>
+<li id="r13">Pearson WR. An introduction to sequence similarity ("homology") searching. <em>Curr Protoc Bioinformatics</em>. 2013;42:3.1.1–3.1.8. <a href="https://doi.org/10.1002/0471250953.bi0301s42">doi:10.1002/0471250953.bi0301s42</a></li>
+<li id="r14">Fitch WM. Distinguishing homologous from analogous proteins. <em>Syst Zool</em>. 1970;19(2):99–113. <a href="https://doi.org/10.2307/2412448">doi:10.2307/2412448</a></li>
+<li id="r15">Koonin EV. Orthologs, paralogs, and evolutionary genomics. <em>Annu Rev Genet</em>. 2005;39:309–338. <a href="https://doi.org/10.1146/annurev.genet.39.073003.114725">doi:10.1146/annurev.genet.39.073003.114725</a></li>
+<li id="r16">Feng DF, Doolittle RF. Progressive sequence alignment as a prerequisite to correct phylogenetic trees. <em>J Mol Evol</em>. 1987;25(4):351–360. <a href="https://doi.org/10.1007/BF02603120">doi:10.1007/BF02603120</a></li>
+<li id="r17">Thompson JD, Higgins DG, Gibson TJ. CLUSTAL W: improving the sensitivity of progressive multiple sequence alignment through sequence weighting, position-specific gap penalties and weight matrix choice. <em>Nucleic Acids Res</em>. 1994;22(22):4673–4680. <a href="https://doi.org/10.1093/nar/22.22.4673">doi:10.1093/nar/22.22.4673</a></li>
+<li id="r18">Sievers F, Wilm A, Dineen D, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG. Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. <em>Mol Syst Biol</em>. 2011;7:539. <a href="https://doi.org/10.1038/msb.2011.75">doi:10.1038/msb.2011.75</a></li>
+<li id="r19">Edgar RC. MUSCLE: multiple sequence alignment with high accuracy and high throughput. <em>Nucleic Acids Res</em>. 2004;32(5):1792–1797. <a href="https://doi.org/10.1093/nar/gkh340">doi:10.1093/nar/gkh340</a></li>
+<li id="r20">Katoh K, Standley DM. MAFFT multiple sequence alignment software version 7: improvements in performance and usability. <em>Mol Biol Evol</em>. 2013;30(4):772–780. <a href="https://doi.org/10.1093/molbev/mst010">doi:10.1093/molbev/mst010</a></li>
+<li id="r21">Notredame C, Higgins DG, Heringa J. T-Coffee: a novel method for fast and accurate multiple sequence alignment. <em>J Mol Biol</em>. 2000;302(1):205–217. <a href="https://doi.org/10.1006/jmbi.2000.4042">doi:10.1006/jmbi.2000.4042</a></li>
+<li id="r22">Chothia C, Lesk AM. The relation between the divergence of sequence and structure in proteins. <em>EMBO J</em>. 1986;5(4):823–826. <a href="https://doi.org/10.1002/j.1460-2075.1986.tb04288.x">doi:10.1002/j.1460-2075.1986.tb04288.x</a></li>
+<li id="r23">Rost B. Twilight zone of protein sequence alignments. <em>Protein Eng</em>. 1999;12(2):85–94. <a href="https://doi.org/10.1093/protein/12.2.85">doi:10.1093/protein/12.2.85</a></li>
+<li id="r24">Sander C, Schneider R. Database of homology-derived protein structures and the structural meaning of sequence alignment. <em>Proteins</em>. 1991;9(1):56–68. <a href="https://doi.org/10.1002/prot.340090107">doi:10.1002/prot.340090107</a></li>
+<li id="r25">Lu S, Wang J, Chitsaz F, et al. CDD/SPARCLE: the conserved domain database in 2020. <em>Nucleic Acids Res</em>. 2020;48(D1):D265–D268. <a href="https://doi.org/10.1093/nar/gkz991">doi:10.1093/nar/gkz991</a></li>
+<li id="r26">Torres A, Cabada A, Nieto JJ. An exact formula for the number of alignments between two DNA sequences. <em>DNA Seq</em>. 2003;14(6):427–430. <a href="https://doi.org/10.1080/10425170310001617894">doi:10.1080/10425170310001617894</a></li>
+<li id="r27">Rice P, Longden I, Bleasby A. EMBOSS: the European Molecular Biology Open Software Suite. <em>Trends Genet</em>. 2000;16(6):276–277. <a href="https://doi.org/10.1016/S0168-9525(00)02024-2">doi:10.1016/S0168-9525(00)02024-2</a></li>
+<li id="r28">Cock PJA, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em>. 2009;25(11):1422–1423. <a href="https://doi.org/10.1093/bioinformatics/btp163">doi:10.1093/bioinformatics/btp163</a></li>
+<li id="r29">Waterhouse AM, Procter JB, Martin DMA, Clamp M, Barton GJ. Jalview Version 2 — a multiple sequence alignment editor and analysis workbench. <em>Bioinformatics</em>. 2009;25(9):1189–1191. <a href="https://doi.org/10.1093/bioinformatics/btp033">doi:10.1093/bioinformatics/btp033</a></li>
+<li id="r30">Jumper J, Evans R, Pritzel A, et al. Highly accurate protein structure prediction with AlphaFold. <em>Nature</em>. 2021;596(7873):583–589. <a href="https://doi.org/10.1038/s41586-021-03819-2">doi:10.1038/s41586-021-03819-2</a></li>
+<li id="r39" value="31">Gribskov M, McLachlan AD, Eisenberg D. Profile analysis: detection of distantly related proteins. <em>Proc Natl Acad Sci USA</em>. 1987;84(13):4355–4358. <a href="https://doi.org/10.1073/pnas.84.13.4355">doi:10.1073/pnas.84.13.4355</a></li>
+<li id="r40">Altschul SF. Amino acid substitution matrices from an information theoretic perspective. <em>J Mol Biol</em>. 1991;219(3):555–565. <a href="https://doi.org/10.1016/0022-2836(91)90193-A">doi:10.1016/0022-2836(91)90193-A</a></li>
+</ol>
+<h3>Libros de texto</h3>
+<ol class="refs" start="33">
+<li id="r31">Durbin R, Eddy SR, Krogh A, Mitchison G. <em>Biological Sequence Analysis: Probabilistic Models of Proteins and Nucleic Acids</em>. Cambridge University Press; 1998. — El tratamiento riguroso del alineamiento de a pares, la estadística de los alineamientos, los perfiles y los HMM; los capítulos 2, 5 y 6 cubren esta unidad.</li>
+<li id="r32">Mount DW. <em>Bioinformatics: Sequence and Genome Analysis</em>. 2nd ed. Cold Spring Harbor Laboratory Press; 2004. — Capítulos 3 (alineamiento de a pares), 4 (estadística), 5 (MSA) y 6 (búsqueda en bases de datos). La exposición más detallada, entre los libros de texto, de la derivación de PAM y BLOSUM.</li>
+<li id="r33">Lesk AM. <em>Introduction to Bioinformatics</em>. 5th ed. Oxford University Press; 2019. — Introducción accesible; capítulo 5 sobre alineamiento y filogenia.</li>
+<li id="r34">Pevsner J. <em>Bioinformatics and Functional Genomics</em>. 3rd ed. Wiley-Blackwell; 2015. — Capítulos 3–6 sobre alineamiento de a pares, BLAST, búsqueda avanzada en bases de datos y MSA, con muchos ejemplos web resueltos.</li>
+<li id="r35">Markel S, León D. <em>Sequence Analysis in a Nutshell: A Guide to Common Tools and Databases</em>. O'Reilly; 2003. — Referencia de línea de comandos para EMBOSS y BLAST.</li>
+</ol>
+<h3>Lecturas de divulgación científica recomendadas en la clase</h3>
+<ol class="refs" start="38">
+<li>Ridley M. <em>Genome: The Autobiography of a Species in 23 Chapters</em>. Fourth Estate / HarperCollins; 1999.</li>
+<li>Carey N. <em>The Epigenetics Revolution: How Modern Biology Is Rewriting Our Understanding of Genetics, Disease and Inheritance</em>. Icon Books; 2011.</li>
+<li>Carey N. <em>Junk DNA: A Journey Through the Dark Matter of the Genome</em>. Icon Books; 2015.</li>
+</ol>
+<h3>Recursos de formación en línea</h3>
+<ul>
+<li>EMBL-EBI Training — <a href="https://www.ebi.ac.uk/training/">https://www.ebi.ac.uk/training/</a> (cursos sobre alineamiento de a pares, BLAST, MSA y Clustal Omega)</li>
+<li>NCBI Learn — <a href="https://www.ncbi.nlm.nih.gov/home/learn/">https://www.ncbi.nlm.nih.gov/home/learn/</a> y las páginas de ayuda de BLAST (BLAST Help), que incluyen los parámetros de Karlin–Altschul tabulados para cada matriz y esquema de gaps</li>
+<li>Galaxy Training Network — <a href="https://training.galaxyproject.org/training-material/">https://training.galaxyproject.org/training-material/</a></li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Material de estudio para BGM324 Bioinformática, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Las Figuras 1–7 fueron generadas para este documento (Python/matplotlib; cálculos de alineamiento con Biopython 1.88) y pueden reutilizarse con atribución. Los ejemplos resueltos siguen las diapositivas de la clase <em>01_AlineamientoDeSecuencias_EN</em>. Última revisión: 17 de octubre de 2026.
+</footer>
+</body>
+</html>

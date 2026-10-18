@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unidad 3 · Docking molecular — BGM324 Bioinformática, Universidad Católica del Maule</title>
+<meta name="description" content="Material de estudio sobre docking molecular: termodinámica de la unión, preparación del receptor y del ligando, algoritmos de búsqueda, funciones de puntuación, validación de poses mediante re-docking, eficiencia de ligando y cribado virtual. BGM324 Bioinformática, Bioingeniería Médica, Universidad Católica del Maule.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+button{font-family:system-ui,sans-serif;font-size:.84rem;padding:.3rem .7rem;border:1px solid var(--line);border-radius:4px;background:var(--panel);cursor:pointer}button:hover{background:#e6ecf3}
+</style>
+</head>
+<body>
+<!-- course-backbar -->
+<nav class="course-backbar" aria-label="Curso" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <span><a href="./" style="color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:6px;padding:2px 10px;margin-right:14px">English</a><a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformática · Bioingeniería Médica · Universidad Católica del Maule</div>
+<h1>Unidad 3 — Docking molecular: predicción de poses, puntuación y cribado virtual</h1>
+<div class="meta">Material de estudio que acompaña la clase 03 (<em>Docking molecular</em>) · Preparado por Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · Tercera unidad del módulo: análisis de secuencias → predicción de estructura de proteínas → <strong>docking molecular</strong> → diseño de fármacos asistido por computador → dinámica molecular</div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contenido</h2>
+<ol>
+<li><a href="#how">Cómo usar este material</a></li>
+<li><a href="#s1">1. Vocabulario</a></li>
+<li><a href="#s2">2. Qué es el docking y por qué importa</a></li>
+<li><a href="#s3">3. La física de la unión</a></li>
+<li><a href="#s4">4. Preparación</a>
+  <ol><li><a href="#s4-1">Receptor</a></li><li><a href="#s4-2">Ligando</a></li><li><a href="#s4-3">Sitio de unión y caja</a></li></ol></li>
+<li><a href="#s5">5. Algoritmos de búsqueda</a>
+  <ol><li><a href="#s5-1">El tamaño del problema</a></li><li><a href="#s5-2">Docking rígido</a></li><li><a href="#s5-3">Ligando flexible</a></li><li><a href="#s5-4">Algoritmos genéticos</a></li><li><a href="#s5-5">Flexibilidad del receptor</a></li></ol></li>
+<li><a href="#s6">6. Funciones de puntuación</a>
+  <ol><li><a href="#s6-1">Cuatro familias</a></li><li><a href="#s6-2">La función de Vina</a></li><li><a href="#s6-3">Lo que la puntuación no puede hacer</a></li></ol></li>
+<li><a href="#s7">7. Validación: un re-docking resuelto</a>
+  <ol><li><a href="#s7-1">El sistema</a></li><li><a href="#s7-2">Resultados</a></li><li><a href="#s7-3">Sesgo de tamaño y eficiencia de ligando</a></li></ol></li>
+<li><a href="#s8">8. Cribado virtual</a></li>
+<li><a href="#s9">9. Más allá del docking proteína–ligando</a></li>
+<li><a href="#s10">10. Software</a></li>
+<li><a href="#s11">11. Trabajo práctico</a></li>
+<li><a href="#s12">12. Autoevaluación</a></li>
+<li><a href="#gloss">Glosario</a></li>
+<li><a href="#refs">Referencias y lecturas complementarias</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">Este documento amplía la tercera clase del módulo. La Unidad 2 terminó con una estructura —experimental o predicha— y con la advertencia de que su calidad acota todo lo que viene después. Esta unidad usa esa estructura para responder una pregunta nueva: dada una molécula pequeña, ¿dónde y cómo se une, y con qué fuerza? La respuesta proviene de dos maquinarias separables, una <em>búsqueda</em> que genera poses candidatas y una <em>función de puntuación</em> (scoring function) que las ordena, y la mayor parte de lo que un usuario necesita saber es cuál de las dos está fallando. Para hacerlo concreto, la Sección 7 reporta un experimento completo de re-docking realizado para este documento —indinavir en la proteasa del VIH-1 (PDB <code>1HSG</code>) con AutoDock Vina— cuyo resultado es instructivo precisamente porque una de las cinco corridas falla.</p>
+<div class="box key"><h4>Objetivos de aprendizaje</h4>
+<ul class="objectives">
+<li>Usar correctamente el vocabulario del docking: ligando, receptor, sitio de unión, pose, modo de unión, función de puntuación, ordenamiento (ranking).</li>
+<li>Explicar la termodinámica de la unión lo suficiente como para saber qué representa y qué no representa un puntaje de docking (ΔG, K<sub>d</sub>, entalpía–entropía, desolvatación).</li>
+<li>Preparar un receptor y un ligando: estados de protonación, tautómeros, aguas, cargas parciales, enlaces rotables, definición de la caja.</li>
+<li>Cuantificar el tamaño combinatorio de la búsqueda y describir las estrategias sistemáticas, incrementales y estocásticas, incluido el funcionamiento de un algoritmo genético.</li>
+<li>Distinguir entre docking rígido, de ligando flexible, de ajuste inducido y de ensamble, y elegir entre ellos para un blanco dado.</li>
+<li>Clasificar las funciones de puntuación en las familias basadas en campos de fuerza, empíricas, basadas en conocimiento y de aprendizaje automático, y señalar los modos de falla conocidos de cada una.</li>
+<li>Validar un protocolo de docking mediante re-docking, calcular el RMSD corregido por simetría e interpretar el criterio de 2 Å.</li>
+<li>Diagnosticar si una falla de docking proviene de la preparación, de la búsqueda o de la puntuación.</li>
+<li>Diseñar una campaña de cribado virtual y evaluarla con el factor de enriquecimiento, el ROC-AUC y el BEDROC.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Sección 1</span>Vocabulario</h2>
+<p>Los términos siguientes se usan con precisión en la literatura, y confundir dos de ellos es la fuente más común de malentendidos en un informe de docking.</p>
+<dl class="gloss">
+<dt>Ligando</dt><dd>La molécula que se ubica —por lo general un compuesto orgánico pequeño (&lt; ~700 g mol⁻¹), pero también un péptido, un metabolito o un fragmento.</dd>
+<dt>Receptor (blanco)</dt><dd>La macromolécula que aporta el sitio —por lo general una proteína, a veces DNA, RNA o un ensamble de proteínas de membrana.</dd>
+<dt>Sitio de unión</dt><dd>El conjunto de residuos que contactan físicamente al ligando; por convención, aquellos con algún átomo pesado a menos de 4–6 Å de un átomo pesado del ligando. Un sitio <strong>ortostérico</strong> es el que ocupa el sustrato o agonista natural; un sitio <strong>alostérico</strong> se encuentra en otra parte y modula la actividad a distancia; un sitio <strong>críptico</strong> no es visible en la estructura apo y solo se abre al unirse el ligando.</dd>
+<dt>Pose</dt><dd>Una ubicación candidata: una posición, una orientación y una conformación interna del ligando. Una corrida de docking produce muchas poses.</dd>
+<dt>Modo de unión</dt><dd>La pose <em>correcta</em>: la orientación y la conformación que el complejo adopta realmente, según se determina experimentalmente. Una pose es una hipótesis; un modo de unión es un hecho.</dd>
+<dt>Función de puntuación</dt><dd>La función que asigna un número a una pose, con la intención de que se correlacione con la energía libre de unión.</dd>
+<dt>Ordenamiento (ranking)</dt><dd>Ordenamiento de las poses (ranking de poses) o de distintos ligandos (ranking de afinidad) según su puntaje. Las dos tareas son diferentes y un programa puede ser bueno en una y deficiente en la otra.</dd>
+<dt>Docking</dt><dd>El procedimiento computacional que muestrea poses y les asigna un puntaje.</dd>
+</dl>
+<div class="box warn"><h4>Tres tareas, tres criterios de éxito diferentes</h4>
+<p>La literatura de docking evalúa tres capacidades distintas, y los artículos que las confunden son la razón por la que el docking tiene una reputación dispar.</p>
+<ul>
+<li><strong>Predicción de poses</strong> (docking power): ¿puede el programa reproducir un modo de unión cristalográfico conocido? Se mide con el RMSD, con un umbral de éxito de 2 Å. Los programas modernos aciertan en aproximadamente un 60–80 % de los casos en conjuntos de referencia (benchmarks) curados.<sup class="c"><a href="#r20">[20]</a></sup></li>
+<li><strong>Predicción de afinidad</strong> (scoring power): ¿se correlaciona el puntaje con el ΔG medido para una serie de complejos? El r de Pearson es típicamente 0.4–0.6 en el benchmark CASF —suficiente para separar ligandos fuertes de débiles, pero muy lejos de bastar para ordenar análogos que difieren en un factor de tres.<sup class="c"><a href="#r20">[20]</a>,<a href="#r21">[21]</a></sup></li>
+<li><strong>Cribado virtual</strong> (screening power): ¿es capaz el puntaje de ubicar a los verdaderos activos por encima de los señuelos (decoys)? Se mide con el enriquecimiento y el ROC-AUC (Sección 8). Esta es la tarea en la que el docking es realmente bueno, y solo requiere que el ordenamiento sea correcto en promedio.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Sección 2</span>Qué es el docking y por qué importa</h2>
+<p>El docking molecular (acoplamiento molecular) predice la geometría preferida de un complejo entre dos moléculas. La imagen clásica es la <strong>llave y cerradura</strong> de Emil Fischer, de 1894: un ligando rígido cuya forma complementa un sitio rígido. Es una primera aproximación útil y la base del primer programa de docking, DOCK (Kuntz <em>et al.</em>, 1982), que hacía coincidir los átomos del ligando con una imagen negativa de la cavidad construida a partir de esferas superpuestas.<sup class="c"><a href="#r1">[1]</a></sup> Pero las proteínas no son rígidas. El <strong>ajuste inducido</strong> (induced fit) de Koshland (1958) describe un sitio que se reorganiza al producirse la unión, y la visión moderna de <strong>selección conformacional</strong> plantea que la proteína apo ya visita la conformación unida como parte de su ensamble térmico y que el ligando simplemente la selecciona y la estabiliza —las dos cuencas del paisaje energético de la Unidad 2. La analogía de la "mano en el guante" usada en clase captura esto: ambos participantes se ajustan. El modelo que implementa un programa de docking determina qué errores comete.</p>
+<p>Dos aplicaciones justifican el esfuerzo.</p>
+<ul>
+<li><strong>Comprender el reconocimiento molecular.</strong> La señalización celular depende de qué moléculas se asocian, en qué orientación y con qué fuerza; la orientación misma puede determinar el resultado biológico, ya que un agonista y un antagonista pueden ocupar el mismo bolsillo y diferir solo en qué residuos contactan y qué cambio conformacional estabilizan. El docking proporciona hipótesis comprobables sobre esos contactos —hipótesis que la mutagénesis puede refutar.</li>
+<li><strong>Diseño de fármacos basado en estructura.</strong> Dada una estructura validada del blanco, el docking se usa para (i) cribar bibliotecas de 10⁵–10⁹ compuestos en busca de candidatos que valga la pena comprar y ensayar, (ii) explicar la relación estructura–actividad de una serie y sugerir qué sustituyente modificar, y (iii) proponer contactos que determinen la selectividad entre un blanco y sus parálogos fuera de blanco (off-target). Lo esencial es la economía: una corrida de docking cuesta segundos de CPU por molécula, un ensayo bioquímico cuesta órdenes de magnitud más por molécula, y un candidato clínico cuesta del orden de 10⁹ dólares estadounidenses. El docking no reemplaza al experimento; decide qué experimentos realizar primero. La Unidad 4 desarrolla esto en un ciclo de diseño completo.</li>
+</ul>
+<p>Entre los éxitos bien documentados se cuentan los inhibidores de la proteasa del VIH-1 (el sistema usado en la Sección 7), los inhibidores de la neuraminidasa, varios inhibidores de quinasas y —en la era de las bibliotecas ultragrandes— ligandos para el receptor de dopamina D<sub>4</sub> y los receptores de melatonina, descubiertos mediante el docking de cientos de millones de compuestos.<sup class="c"><a href="#r22">[22]</a>,<a href="#r23">[23]</a></sup> Igualmente bien documentados están los fracasos, y el resto de esta unidad trata en gran medida de reconocerlos antes de que lleguen a una publicación.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Sección 3</span>La física que un puntaje intenta aproximar</h2>
+<p>La unión es un equilibrio: R + L ⇌ RL, con constante de disociación K<sub>d</sub> = [R][L]/[RL]. La energía libre estándar de unión es</p>
+<div class="eq">ΔG° = −RT ln(1/K<sub>d</sub> · c°) = ΔH° − TΔS°
+<span class="where">R = 1.987 cal mol⁻¹ K⁻¹; a T = 298 K, RT = 0.593 kcal mol⁻¹ y un factor de diez en K<sub>d</sub> corresponde a 1.36 kcal mol⁻¹. Así, K<sub>d</sub> = 1 µM ⇒ ΔG ≈ −8.2 kcal mol⁻¹; K<sub>d</sub> = 1 nM ⇒ ΔG ≈ −12.3 kcal mol⁻¹.</span></div>
+<p>Dos consecuencias merecen énfasis. Primero, todo el rango farmacológicamente relevante —desde un fragmento milimolar hasta un fármaco picomolar— abarca unas 15 kcal mol⁻¹, y distinguir un compuesto de 10 nM de uno de 100 nM requiere una exactitud de 1.4 kcal mol⁻¹, que está por debajo del error de cualquier función de puntuación y es comparable a la energía térmica RT. Segundo, ΔG es una <em>diferencia</em> entre los estados unido y libre, por lo que incluye contribuciones que una sola pose no puede mostrar: tanto el ligando como el sitio deben despojarse de su agua ordenada (<strong>desolvatación</strong>, una gran entalpía positiva para los grupos polares), el ligando pierde entropía traslacional, rotacional y torsional al unirse (aproximadamente 0.5–0.7 kcal mol⁻¹ por cada enlace rotable congelado), y la proteína puede pagar un costo de reorganización. Una pose que se ve perfecta puede aun así corresponder a una unión débil, porque el precio de desolvatarla supera la recompensa de sus contactos.</p>
+<figure>
+<img src="figures/fig06_interactions.png" alt="Barras horizontales que muestran los rangos de distancia y las energías típicas de las interacciones covalente, iónica, puente de hidrógeno, apilamiento pi, catión-pi, enlace de halógeno, van der Waals e hidrofóbica">
+<figcaption><b>Figura 1. Las interacciones que una función de puntuación debe reproducir.</b> Rangos típicos de distancia entre átomos pesados y energías en orden de magnitud en un entorno proteico acuoso. El enlace covalente se muestra solo como escala: cada interacción que modela el docking es entre uno y tres órdenes de magnitud más débil, por lo que deben sumarse decenas de ellas y por lo que los pequeños errores geométricos importan. Los puentes de hidrógeno son fuertemente direccionales (ángulos donor–H···aceptor superiores a ~150°); los contactos hidrofóbicos y de van der Waals no son direccionales pero son numerosos, y en la práctica aportan la mayor parte de la afinidad de un ligando del tamaño de un fármaco. Las energías en agua son mucho menores que en el vacío porque la interacción compite con la solvatación de los mismos grupos.</figcaption>
+</figure>
+<p>En un complejo real estas interacciones se suman sobre decenas de pares de átomos. El complejo de indinavir analizado en la Sección 7 ilustra esta mezcla: el fármaco establece nueve contactos polares cortos, incluido el hidroxilo que hace de puente entre ambos aspartatos catalíticos del dímero de la proteasa, mientras que la mayor parte de su superficie —los grupos fenilo, indanilo, piridilo y <em>terc</em>-butilo— establece contacto hidrofóbico con valinas, isoleucinas y alaninas de ambas subunidades.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Sección 4</span>Preparación: donde se introduce la mayoría de los errores</h2>
+<figure>
+<img src="figures/fig01_workflow.png" alt="Flujo de trabajo: la preparación del receptor y la preparación del ligando alimentan la definición del sitio de unión, luego la búsqueda, luego la puntuación y luego el análisis">
+<figcaption><b>Figura 2. El flujo de trabajo del docking.</b> La preparación, la búsqueda y la puntuación son fuentes de error independientes, y la primera es la que con más frecuencia se culpa en último lugar. Un estado de protonación mal asignado o un agua estructural eliminada no pueden repararse con una mejor búsqueda ni con un mejor puntaje.</figcaption>
+</figure>
+
+<h3 id="s4-1">4.1 Preparación del receptor</h3>
+<ol>
+<li><strong>Elegir la estructura y el estado.</strong> Preferir una estructura experimental de resolución adecuada (≤ 2.5 Å) con un ligando del mismo quimiotipo unido; preferir la forma holo sobre la apo cuando se sabe que el sitio se reorganiza. Revisar los criterios de la Unidad 2: resolución, R-free, factores B del sitio, residuos ausentes en <code>REMARK 465</code> y el ajuste del ligando en el informe de validación. Un modelo de AlphaFold puede usarse cuando no existe nada más, pero hay que recordar que es apo, de un solo estado y sin ligando (Unidad 2, Sección 10.3).</li>
+<li><strong>Seleccionar las cadenas y el ensamble biológico.</strong> Una unidad asimétrica cristalográfica no es necesariamente la unidad biológica. La proteasa del VIH-1 es un homodímero obligado y su sitio se encuentra <em>sobre el eje del dímero</em>: hacer docking en una sola cadena carece de sentido. A la inversa, hacer docking en un sitio formado por un contacto cristalográfico es un artefacto clásico.</li>
+<li><strong>Decidir qué hacer con las aguas.</strong> Por defecto se eliminan, porque un agua que estorba al ligando lo bloquea. Pero las aguas conservadas, enterradas y bien ordenadas que hacen de puente entre el ligando y la proteína forman parte del sitio. El ejemplo canónico es el <em>agua del flap</em> (flap water) de la proteasa del VIH-1, que acepta puentes de hidrógeno de las amidas de Ile50 de ambos flaps y dona a dos carbonilos del inhibidor; está presente en casi todas las estructuras proteasa–inhibidor, y conservarla mejora el re-docking (Sección 7).<sup class="c"><a href="#r26">[26]</a></sup> Criterios para conservar un agua: enterrada, con un factor B comparable al de la proteína, presente en varias estructuras independientes y formando ≥ 2 puentes de hidrógeno con la proteína.</li>
+<li><strong>Agregar hidrógenos y asignar la protonación.</strong> Las estructuras de rayos X no tienen hidrógenos. La mayoría de las posiciones son inequívocas; las que no lo son son exactamente las que importan: Asp/Glu (podrían estar protonados en un sitio enterrado de baja constante dieléctrica), His (cuál de los dos tautómeros, o doblemente protonada), Cys (tiol o tiolato), Lys (rara vez neutra), y la orientación de las amidas de Asn/Gln y de los anillos de His, que los rayos X no pueden distinguir porque N y O tienen casi el mismo número de electrones. Usar PROPKA/PDB2PQR<sup class="c"><a href="#r33">[33]</a></sup> o H++, y verificar el resultado a simple vista frente a la red de puentes de hidrógeno. En la proteasa del VIH-1, la díada catalítica Asp25/Asp25′ se modela ampliamente con un aspartato protonado cuando hay unido un inhibidor que contiene un hidroxilo, y esa elección cambia el puntaje.</li>
+<li><strong>Asignar cargas parciales y tipos de átomo</strong> según lo requiera el programa (cargas de Gasteiger para los programas de la familia AutoDock; cargas de campo de fuerza para otros).</li>
+<li><strong>Conservar cofactores, metales e iones estructurales</strong> que formen parte del sitio, con la carga y la geometría de coordinación correctas. Los sitios de zinc, magnesio y níquel son mal manejados por las funciones de puntuación genéricas y pueden requerir parámetros especializados.</li>
+</ol>
+
+<h3 id="s4-2">4.2 Preparación del ligando</h3>
+<p>Un programa de docking necesita una molécula tridimensional químicamente razonable, no un dibujo. Los pasos son:</p>
+<ul>
+<li><strong>De 2D a 3D.</strong> Generar coordenadas a partir del SMILES con un generador de confórmeros (RDKit ETKDG, OMEGA, CORINA) y relajarlas con un campo de fuerza. <em>Este confórmero inicial no es inocuo</em>: la mayoría de los programas mantienen fijas las conformaciones de los anillos, las longitudes de enlace y los ángulos de enlace, y varían solo las torsiones rotables declaradas, de modo que el confórmero de entrada fija silenciosamente parte de la respuesta. La Sección 7 cuantifica esto con dos confórmeros de la misma molécula que dan resultados completamente distintos.</li>
+<li><strong>Estereoquímica.</strong> Cada estereocentro no definido duplica el número de moléculas por acoplar. Enumerarlos explícitamente; nunca dejar que el programa elija.</li>
+<li><strong>Protonación y tautómeros al pH del ensayo.</strong> Un ácido carboxílico está ionizado a pH 7.4, una amina alifática está protonada, un imidazol puede estar en cualquiera de las dos formas; una 2-hidroxipiridina puede existir como piridona. Cada forma tiene distintos donores y aceptores de puentes de hidrógeno y, por lo tanto, una pose distinta. La clase entrega las dos estrategias aceptables: acoplar la única forma esperada a pH fisiológico, o enumerar todas las formas plausibles, acoplar cada una y quedarse con la mejor, indicando cuál de las dos se hizo.</li>
+<li><strong>Cargas parciales y definición de enlaces rotables.</strong> Los enlaces amida suelen tratarse como no rotables; los grupos terminales como metilo e hidroxilo pueden ignorarse para ahorrar grados de libertad.</li>
+<li><strong>Filtros de sensatez</strong> para bibliotecas: eliminar sales y solventes, conservar una forma por molécula, aplicar reglas de semejanza a fármaco (drug-likeness) o a compuesto líder (lead-likeness) si corresponde, y eliminar las subestructuras conocidas por interferir con los ensayos (PAINS) antes del docking, no después.</li>
+</ul>
+
+<h3 id="s4-3">4.3 Definición del sitio de unión y de la caja</h3>
+<p>Los programas de docking buscan dentro de una región definida por el usuario. Se presentan tres situaciones:</p>
+<ol>
+<li><strong>Ya hay un ligando unido</strong> en la estructura o en una estructura homóloga: centrar la caja en él. Esta es la situación de <em>re-docking</em> o de <em>cross-docking</em>, y es la única en la que un protocolo puede validarse (Sección 7).</li>
+<li><strong>El sitio se conoce por la bioquímica</strong> (residuos catalíticos, mutagénesis): centrar la caja en el centroide de esos residuos.</li>
+<li><strong>El sitio es desconocido.</strong> Usar un algoritmo de detección de cavidades —fpocket, SiteMap, CASTp, DoGSiteScorer—, que ordenan los bolsillos superficiales según volumen, grado de encierro e hidrofobicidad, o realizar un <strong>docking ciego</strong> (blind docking) sobre toda la proteína con una caja grande. El docking ciego es mucho menos confiable: el espacio de búsqueda es mayor, la función de puntuación tiene más oportunidades de ser engañada, y el resultado debe tratarse como una hipótesis que hay que poner a prueba mediante mutagénesis sitio-dirigida.</li>
+</ol>
+<p>La caja (grid box) debe encerrar el sitio con un margen de aproximadamente 5–8 Å más allá de la extensión esperada del ligando; si es demasiado pequeña trunca las poses, y si es demasiado grande degrada tanto la velocidad como la exactitud, porque la búsqueda tiene más espacio de señuelos que explorar. En la Sección 7 la caja mide 26 × 22 × 22 Å y está centrada en el ligando cristalográfico, cuya propia extensión es de 14.9 × 10.2 × 8.6 Å.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Sección 5</span>Algoritmos de búsqueda</h2>
+<h3 id="s5-1">5.1 El tamaño del problema</h3>
+<p>Ubicar un cuerpo rígido requiere seis grados de libertad: tres traslaciones y tres rotaciones. Cada enlace rotable del ligando agrega un grado de libertad torsional, y permitir que se muevan las cadenas laterales del sitio agrega varios más. Si cada torsión se muestrea en pasos de θ grados, un ligando con <em>N</em> enlaces rotables tiene (360/θ)<sup><em>N</em></sup> conformaciones, antes siquiera de considerar los seis grados de libertad de cuerpo rígido.</p>
+<figure>
+<img src="figures/fig02_explosion.png" alt="Gráfico en escala logarítmica de las conformaciones enumeradas frente al número de enlaces rotables para incrementos de 30, 60 y 120 grados, con indinavir marcado en 11 enlaces">
+<figcaption><b>Figura 3. La explosión combinatoria.</b> Número de conformaciones generadas por enumeración sistemática, (360/θ)<sup><em>N</em></sup>. El indinavir, el ligando de la Sección 7, tiene 11 enlaces rotables (AutoDock cuenta 14 grados de libertad torsionales, incluidos los grupos terminales): con un paso de 30° eso equivale a 7.4 × 10<sup>11</sup> conformaciones solo para la geometría interna. A 10<sup>4</sup> evaluaciones de pose por segundo —una cifra realista para una función de puntuación basada en grillas—, enumerar 10<sup>9</sup> poses ya toma alrededor de un día de CPU.</figcaption>
+</figure>
+<p>Por lo tanto, la enumeración exhaustiva está descartada para cualquier cosa más grande que un fragmento, exactamente como en el caso del plegamiento de proteínas de la Unidad 2. Todo algoritmo práctico o bien reduce la dimensionalidad (acoplar confórmeros rígidos generados de antemano) o bien muestrea de manera inteligente (construcción incremental, optimización estocástica).</p>
+<figure>
+<img src="figures/fig05_search.png" alt="Tres paisajes energéticos esquemáticos que ilustran la búsqueda sistemática en grilla, la construcción incremental a partir de un fragmento ancla y la búsqueda estocástica basada en poblaciones">
+<figcaption><b>Figura 4. Tres estrategias de búsqueda sobre un paisaje esquemático.</b> La búsqueda sistemática evalúa una grilla de puntos y es exhaustiva pero exponencial. La construcción incremental acopla un fragmento ancla y hace crecer el resto, explorando solo la región en torno a un buen ancla. La búsqueda estocástica parte de una población aleatoria y usa selección, cruzamiento y mutación (algoritmo genético) o movimientos de aceptación/rechazo (Monte Carlo) para concentrar el muestreo en las cuencas de baja energía; no garantiza el mínimo global, pero encuentra buenas soluciones en un tiempo práctico.</figcaption>
+</figure>
+
+<h3 id="s5-2">5.2 Docking rígido: complementariedad de forma</h3>
+<p>En el docking rígido la conformación del ligando se mantiene fija durante la corrida; la flexibilidad del ligando se maneja generando previamente muchos confórmeros y acoplando cada uno por separado. El algoritmo original de DOCK —descrito en la clase— construye una <em>imagen negativa</em> de la cavidad como un conjunto de esferas superpuestas cuyos centros llenan el espacio vacío; luego hace coincidir los átomos del ligando con los centros de las esferas de modo que las distancias interatómicas reproduzcan las distancias entre centros dentro de una tolerancia, orienta el ligando mediante superposición por mínimos cuadrados de los pares coincidentes, rechaza las ubicaciones con choques estéricos y asigna puntaje al resto.<sup class="c"><a href="#r1">[1]</a></sup> Las nuevas orientaciones provienen de nuevas correspondencias átomo–esfera, de forma exhaustiva. El enfoque es rápido, sigue siendo la base de los métodos basados en forma (y del docking proteína–proteína por correlación de Fourier, Sección 9), y su debilidad es evidente: un ligando cuya conformación unida no está en el conjunto generado previamente nunca podrá ubicarse correctamente.</p>
+
+<h3 id="s5-3">5.3 Docking de ligando flexible</h3>
+<p>El docking de ligando flexible, el estándar actual, genera conformaciones del ligando durante la corrida. Predominan dos estrategias.</p>
+<p>La <strong>construcción incremental</strong> (FlexX, DOCK 4+, el embudo jerárquico de Glide, Surflex) divide el ligando en sus enlaces rotables, acopla un <em>fragmento base</em> rígido elegido por su capacidad de establecer interacciones específicas, y luego agrega los fragmentos restantes uno a la vez, enumerando sus torsiones y conservando las mejores soluciones parciales en cada etapa. Es determinista y rápida, y su modo de falla es un compromiso temprano con una ubicación equivocada del ancla.</p>
+<p>La <strong>optimización estocástica</strong> (AutoDock, AutoDock Vina, GOLD, rDock, ICM) muestrea el espacio de poses con aleatoriedad: Monte Carlo con recocido simulado, algoritmos genéticos, algoritmos genéticos lamarckianos (un AG cuyos descendientes se minimizan energéticamente de forma local, y cuyas coordenadas minimizadas se reescriben en el genoma), enjambres de partículas o —en Vina— una cadena de Monte Carlo de pasos aleatorizados, cada uno seguido de una optimización local cuasi-Newton, ejecutada varias veces en paralelo.<sup class="c"><a href="#r2">[2]</a>,<a href="#r3">[3]</a>,<a href="#r4">[4]</a></sup> Los métodos estocásticos encuentran buenas soluciones en minutos, pero dan una <em>respuesta distinta en cada corrida</em> a menos que se fije la semilla aleatoria, y su exhaustividad está controlada por un parámetro —<code>exhaustiveness</code> en Vina, el número de corridas del AG en AutoDock— que debe aumentarse para ligandos con muchos enlaces rotables.</p>
+
+<h3 id="s5-4">5.4 Cómo funciona un algoritmo genético</h3>
+<p>La clase describe el algoritmo genético usado por GOLD y AutoDock; vale la pena enunciarlo con precisión, ya que es el ejemplo más claro de una búsqueda estocástica.</p>
+<ol>
+<li><strong>Codificación.</strong> Una pose se representa como un <em>cromosoma</em>: una cadena de genes que contiene la traslación (3 números), la orientación (4 números como cuaternión, o 3 ángulos de Euler) y un gen por cada torsión rotable. GOLD agrega genes que emparejan grupos formadores de puentes de hidrógeno del ligando y de la proteína.</li>
+<li><strong>Población inicial.</strong> Se generan al azar unos cuantos cientos de cromosomas dentro de la caja.</li>
+<li><strong>Aptitud (fitness).</strong> Cada cromosoma se decodifica en coordenadas y se le asigna un puntaje; el puntaje es su aptitud.</li>
+<li><strong>Selección.</strong> Los progenitores se extraen preferentemente de la mitad más apta (selección por ruleta o por torneo).</li>
+<li><strong>Cruzamiento.</strong> Dos progenitores intercambian bloques de genes —por ejemplo, la traslación de uno con las torsiones del otro—, produciendo descendientes que combinan una buena posición con una buena conformación.</li>
+<li><strong>Mutación.</strong> Los genes se perturban al azar con una probabilidad pequeña, que es lo que permite a la población escapar de un mínimo local.</li>
+<li><strong>Reemplazo e iteración.</strong> Los descendientes reemplazan a los miembros menos aptos, y los pasos 3–6 se repiten durante un número fijo de generaciones o hasta que la mejor aptitud deja de mejorar.</li>
+</ol>
+<p>La variante <strong>lamarckiana</strong> de AutoDock inserta una minimización local después de la decodificación y reescribe los valores optimizados en el cromosoma, de modo que las mejoras adquiridas se heredan. En la práctica, esto converge con muchas menos evaluaciones de energía que un AG puro.<sup class="c"><a href="#r2">[2]</a></sup></p>
+
+<h3 id="s5-5">5.5 Flexibilidad del receptor: ajuste inducido y ensambles</h3>
+<p>Tratar el receptor como rígido es la aproximación más fuerte del docking de rutina, y a menudo es la razón por la que un activo conocido no logra acoplarse. Existen cuatro niveles de tratamiento, de costo creciente.</p>
+<table class="data">
+<thead><tr><th>Enfoque</th><th>Qué se mueve</th><th>Costo</th><th>Cuándo usarlo</th></tr></thead>
+<tbody>
+<tr><td><strong>Receptor rígido</strong></td><td>Nada</td><td>Línea base</td><td>Opción por defecto; adecuado cuando existe una estructura holo con un ligando similar</td></tr>
+<tr><td><strong>Potenciales suaves</strong></td><td>Nada, pero los choques se penalizan de forma menos abrupta</td><td>Despreciable</td><td>Tolerancia rápida a pequeños ajustes de las cadenas laterales; degrada la discriminación de poses</td></tr>
+<tr><td><strong>Cadenas laterales flexibles</strong> (Vina <code>--flex</code>, GOLD, AutoDock)</td><td>Torsiones de cadenas laterales seleccionadas, por lo general las que están dentro de un radio en torno al sitio</td><td>Cada cadena lateral agregada multiplica el espacio de búsqueda; típicamente ≤ 5–8 residuos</td><td>Flexibilidad rotamérica conocida (p. ej., una tirosina o una metionina que regula el acceso al bolsillo)</td></tr>
+<tr><td><strong>Protocolos de ajuste inducido</strong> (Schrödinger IFD, RosettaLigand)</td><td>Docking iterado → reempaquetamiento de cadenas laterales y minimización del esqueleto → re-docking</td><td>Horas por ligando</td><td>Un puñado de compuestos líderes, no un cribado</td></tr>
+<tr><td><strong>Docking de ensamble</strong></td><td>Nada dentro de una corrida; se acoplan en paralelo varias conformaciones del receptor y se combinan los resultados</td><td>Lineal en el número de estructuras</td><td>Blancos con estados conformacionales documentados; el compromiso práctico para el cribado</td></tr>
+</tbody></table>
+<p>El <strong>docking de ensamble</strong> merece el énfasis que le da la clase. En lugar de una estructura, se usan varias —estructuras cristalinas de la misma proteína con distintos ligandos, modelos de RMN, frames extraídos de una trayectoria de dinámica molecular (Unidad 5) o predicciones alternativas de AlphaFold—, se acopla cada ligando en cada receptor y se conserva, para cada ligando, su mejor puntaje en todo el ensamble.<sup class="c"><a href="#r12">[12]</a>,<a href="#r13">[13]</a></sup> Esta es una implementación directa de la selección conformacional y recupera activos que cualquier estructura individual pierde. Su costo es que cada receptor adicional también da a los señuelos una nueva oportunidad de obtener un buen puntaje, por lo que el enriquecimiento no siempre mejora; el ensamble debe elegirse deliberadamente (estados distintos y respaldados experimentalmente) en lugar de tomar instantáneas arbitrarias de una trayectoria.</p>
+<p>La diapositiva de la clase también señala que AlphaFold ordena modelos de quinasas a través de las cuencas inactiva y activa —un recordatorio de que las estructuras predichas pueden por sí mismas aportar un ensamble, siempre que los estados se contrasten con lo que se sabe del blanco.</p>
+<div class="box key"><h4>Puntos clave — Sección 5</h4><ul>
+<li>Espacio de búsqueda = 6 grados de libertad de cuerpo rígido + <em>N</em> torsionales; la enumeración exhaustiva escala como (360/θ)<sup><em>N</em></sup>.</li>
+<li>El docking rígido fija el confórmero; el docking de ligando flexible lo construye de forma incremental o lo muestrea de forma estocástica.</li>
+<li>Los algoritmos genéticos codifican una pose como un cromosoma y hacen evolucionar una población mediante selección, cruzamiento y mutación; los AG lamarckianos agregan minimización local.</li>
+<li>Las corridas estocásticas no son reproducibles a menos que se fije la semilla, y su exhaustividad es un parámetro (exhaustiveness) que debe escalar con la flexibilidad del ligando.</li>
+<li>La flexibilidad del receptor es la mayor aproximación que persiste; el docking de ensamble es el compromiso práctico.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Sección 6</span>Funciones de puntuación</h2>
+<h3 id="s6-1">6.1 Cuatro familias</h3>
+<p>Una función de puntuación debe evaluarse millones de veces por corrida, por lo que sacrifica rigor a cambio de velocidad. La clasificación de la clase es la estándar.<sup class="c"><a href="#r14">[14]</a></sup></p>
+<table class="data">
+<thead><tr><th>Familia</th><th>Construcción</th><th>Términos</th><th>Ejemplos</th><th>Debilidad característica</th></tr></thead>
+<tbody>
+<tr><td><strong>Basadas en campos de fuerza</strong></td><td>Energía de mecánica molecular del complejo, a veces con un modelo de solvatación</td><td>Van der Waals de Lennard-Jones, electrostática de Coulomb con una constante dieléctrica dependiente de la distancia, término explícito de puente de hidrógeno, tensión torsional</td><td>DOCK, AutoDock 4, GoldScore</td><td>Sin entropía; la electrostática en fase gaseosa sobrepondera los grupos cargados; la desolvatación se trata de forma burda</td></tr>
+<tr><td><strong>Empíricas</strong></td><td>Suma ponderada de términos con motivación física, con pesos ajustados por regresión a las afinidades medidas de un conjunto de entrenamiento de complejos</td><td>Recuentos de puentes de hidrógeno, contactos iónicos, superficie hidrofóbica, enlaces rotables congelados, área enterrada</td><td>ChemScore, PLP, GlideScore, X-Score, AutoDock Vina</td><td>Transferibilidad: la exactitud depende de cuán similar sea el blanco al conjunto de entrenamiento</td></tr>
+<tr><td><strong>Basadas en conocimiento</strong></td><td>Potenciales estadísticos a partir de la distribución observada de distancias entre pares de átomos en el PDB, invertida mediante una relación de Boltzmann</td><td>Potenciales por pares de tipos de átomo en función de la distancia</td><td>PMF, DrugScore, ITScore, DFIRE</td><td>El estado de referencia es arbitrario; favorecen las interacciones frecuentes en lugar de las fuertes</td></tr>
+<tr><td><strong>De aprendizaje automático</strong></td><td>Modelo no lineal (bosque aleatorio, gradient boosting, red convolucional de grafos o 3D) entrenado con estructuras de afinidad medida</td><td>Características aprendidas del complejo</td><td>RF-Score, NNScore, PLEC, Pafnucy, puntajes gnina/CNN, modelos generativos tipo DiffDock</td><td>Sesgo del conjunto de datos: el desempeño puede provenir de memorizar la identidad del ligando o de la proteína en lugar de las interacciones; requiere particiones cuidadosas (Unidad 2, Sección 9)</td></tr>
+</tbody></table>
+<p>La <strong>puntuación de consenso</strong> (consensus scoring) combina varias funciones —por rango, por votación o por puntaje normalizado— bajo el supuesto de que sus errores son parcialmente independientes. Típicamente mejora de forma modesta el enriquecimiento del cribado y es barata, ya que el paso costoso es la generación de poses.<sup class="c"><a href="#r15">[15]</a></sup> No mejora mucho la predicción de poses y no puede corregir un error sistemático compartido por todas las funciones.</p>
+
+<h3 id="s6-2">6.2 Una función concreta: AutoDock Vina</h3>
+<p>Dado que la Sección 7 la utiliza, vale la pena escribir explícitamente la función de Vina. Es empírica y aditiva sobre los pares de átomos pesados ligando–proteína, y cada término es una función simple de la <em>distancia superficial</em> <em>d</em><sub><em>ij</em></sub> = <em>r</em><sub><em>ij</em></sub> − <em>R</em><sub><em>i</em></sub> − <em>R</em><sub><em>j</em></sub> (la distancia interatómica menos los dos radios de van der Waals):<sup class="c"><a href="#r3">[3]</a></sup></p>
+<div class="eq">
+<em>c</em> = Σ<sub><em>i</em>&lt;<em>j</em></sub> [ −0.0356 · gauss<sub>1</sub> − 0.00516 · gauss<sub>2</sub> + 0.840 · repulsion + (−0.0351) · hydrophobic + (−0.587) · H-bond ]
+<span class="where">gauss<sub>1</sub> = e<sup>−(d/0.5)²</sup>; gauss<sub>2</sub> = e<sup>−((d−3)/2)²</sup>; repulsion = d² si d &lt; 0, si no 0; hydrophobic = una rampa lineal de 1 a 0 entre d = 0.5 y 1.5 Å para pares carbono/halógeno; H-bond = una rampa de 1 a 0 entre d = −0.7 y 0 Å para pares donor–aceptor. La afinidad reportada es la parte intermolecular dividida por (1 + 0.0585 · <em>N</em><sub>rot</sub>), una penalización entrópica por los enlaces rotables congelados al producirse la unión.</span></div>
+<p>Tres características son típicas de toda la familia empírica. No hay un término electrostático explícito: las interacciones de carga quedan absorbidas en los términos de puente de hidrógeno y estéricos, razón por la cual Vina maneja mal los metales y los sitios muy cargados. No hay término de desolvatación. Y el puntaje se reporta en kcal mol⁻¹, lo que invita al lector a interpretarlo como una energía libre; los pesos se ajustaron para reproducir las afinidades de un conjunto de entrenamiento, de modo que las unidades tienen sentido en promedio y son engañosas en cualquier caso individual.</p>
+
+<h3 id="s6-3">6.3 Lo que las funciones de puntuación no pueden hacer</h3>
+<div class="box warn"><h4>Limitaciones conocidas y sus consecuencias</h4><ul>
+<li><strong>La entropía se aproxima mediante un recuento.</strong> La entropía torsional entra como una penalización por enlace rotable; la entropía traslacional y rotacional de la unión y la entropía del agua liberada están prácticamente ausentes.</li>
+<li><strong>La desolvatación está mal modelada</strong>, por lo que los ligandos polares y cargados suelen sobrevalorarse y el enterramiento de un grupo cargado no se penaliza como debería.</li>
+<li><strong>Los puntajes crecen con el tamaño molecular.</strong> Más átomos establecen más contactos; por lo tanto, casi todas las funciones de puntuación prefieren las moléculas más grandes, independientemente de su afinidad real. La Sección 7.3 mide este sesgo y muestra la corrección estándar, la <strong>eficiencia de ligando</strong> = −ΔG/átomo pesado.<sup class="c"><a href="#r16">[16]</a></sup></li>
+<li><strong>La reorganización de la proteína y el costo de la conformación unida del ligando</strong> suelen ignorarse.</li>
+<li><strong>Las interacciones mediadas por agua</strong> se pierden, a menos que las aguas relevantes se conserven explícitamente.</li>
+<li><strong>Consecuencia.</strong><sup class="c"><a href="#r24">[24]</a></sup> Tratar un puntaje de docking como un clasificador —probable ligando / improbable ligando— y nunca como una afinidad medida. No reportar un puntaje como "ΔG predicho" ni convertirlo en una K<sub>d</sub>. No comparar puntajes obtenidos con distintos programas, receptores o definiciones de caja. Para estimaciones cuantitativas, usar los métodos más costosos de la Unidad 5 (MM/PBSA, MM/GBSA, perturbación de energía libre).</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Sección 7</span>Validación: un experimento de re-docking realizado para este documento</h2>
+<p>Un protocolo de docking solo es creíble si puede reproducir una respuesta conocida. La prueba estándar es el <strong>re-docking</strong>: tomar una estructura cristalina de un complejo, retirar el ligando, volver a acoplarlo y medir cuán lejos está la pose predicha de la experimental. El criterio de éxito convencional es un RMSD inferior a <strong>2.0 Å</strong>, aproximadamente la resolución a la que puede considerarse que la orientación de un ligando se ha reproducido correctamente.<sup class="c"><a href="#r17">[17]</a></sup> El experimento que se reporta aquí se ejecutó específicamente para este documento; cada número es reproducible con el código de la Sección 11.</p>
+
+<h3 id="s7-1">7.1 El sistema</h3>
+<p>El blanco es la <strong>proteasa del VIH-1</strong> en complejo con <strong>indinavir</strong> (PDB <code>1HSG</code>, rayos X, 2.0 Å), la estructura que respaldó el desarrollo de uno de los primeros fármacos antirretrovirales.<sup class="c"><a href="#r27">[27]</a></sup> La proteasa es un homodímero obligado de 99 residuos por cadena cuyo sitio activo se encuentra sobre el eje binario, con la tríada catalítica Asp25–Thr26–Gly27 aportada por ambas subunidades y cubierta por dos flaps móviles en horquilla β. El indinavir (componente químico del PDB <code>MK1</code>) es un peptidomimético de 613.8 g mol⁻¹ con 45 átomos pesados, 11 enlaces rotables, 4 donores de puentes de hidrógeno, 7 aceptores, cLogP 2.87 y TPSA 118 Å² (calculados aquí con RDKit).</p>
+<p>El análisis del complejo cristalográfico entrega la referencia con la que se juzga el docking. Veintiséis residuos tienen un átomo pesado a menos de 4 Å del ligando, trece de cada subunidad —el sitio está estrictamente compartido entre las dos copias—, y cuarenta residuos a menos de 6 Å. Hay nueve contactos polares más cortos que 3.5 Å:</p>
+<table class="data"><thead><tr><th>Átomo del indinavir</th><th>Átomo de la proteína</th><th>Distancia (Å)</th></tr></thead><tbody><tr><td><code>O2</code></td><td>A:Asp25 OD1</td><td>2.77</td></tr><tr><td><code>O2</code></td><td>A:Asp25 OD2</td><td>2.93</td></tr><tr><td><code>O2</code></td><td>B:Asp25 OD1</td><td>2.63</td></tr><tr><td><code>O2</code></td><td>B:Asp25 OD2</td><td>3.04</td></tr><tr><td><code>N4</code></td><td>B:Gly27 O</td><td>3.03</td></tr><tr><td><code>O4</code></td><td>B:Gly27 O</td><td>3.16</td></tr><tr><td><code>O4</code></td><td>B:Asp29 N</td><td>3.23</td></tr><tr><td><code>O4</code></td><td>B:Asp29 OD2</td><td>3.06</td></tr><tr><td><code>N5</code></td><td>B:Arg8 NH2</td><td>3.46</td></tr></tbody></table>
+<p>El hidroxilo central (<code>O2</code>) hace de puente con los cuatro oxígenos carboxilato de los dos aspartatos catalíticos a 2.63–3.04 Å, lo que constituye el sello distintivo del diseño de esta clase de fármacos como miméticos del estado de transición. Seis moléculas de agua se encuentran a menos de 3.5 Å de un nitrógeno u oxígeno del ligando, entre ellas <strong>HOH 308</strong>, el agua conservada del flap. Los contactos restantes son hidrofóbicos, como muestra la Figura 5.</p>
+<figure>
+<img src="figures/fig03_contacts.png" alt="Mapa de calor de las distancias mínimas entre cada átomo del indinavir y cada residuo del sitio de unión de ambas cadenas de la proteasa, con puntos que marcan los contactos inferiores a 3.5 angstrom">
+<figcaption><b>Figura 5. Mapa de contactos del complejo cristalográfico (calculado aquí a partir de <code>1HSG</code>).</b> Distancia mínima entre átomos pesados de cada átomo del indinavir (filas, nombres de átomo del PDB) y cada residuo del sitio de unión (columnas, cadena:residuo); las distancias superiores a 8 Å se dejan en blanco y los puntos marcan contactos ≤ 3.5 Å. Contribuyen ambas cadenas, A y B, lo que confirma que el sitio se encuentra sobre el eje del dímero. Los contactos polares se agrupan en los dos residuos catalíticos Asp25 y en Gly27/Asp29 de la cadena B; la gran superficie hidrofóbica del fármaco contacta Leu23, Val32, Ile47, Gly48/Gly49, Pro81, Val82 e Ile84 de ambas subunidades.</figcaption>
+</figure>
+<p>La preparación siguió la Sección 4: solo átomos de la proteína, hidrógenos agregados a pH 7.4 con cargas de Gasteiger, el agua del flap <code>HOH 308</code> conservada como parte del receptor, los órdenes de enlace del ligando restaurados a partir del SMILES del componente químico del PDB, y una caja de 26 × 22 × 22 Å centrada en el centroide del ligando cristalográfico. Se usó AutoDock Vina 1.2.7 en todo momento, con una semilla aleatoria fija.</p>
+
+<h3 id="s7-2">7.2 Resultados: lo que falla es la búsqueda, no el puntaje</h3>
+<p>Primero se realizan dos cálculos de control. Asignar puntaje a la pose cristalográfica exactamente tal como fue depositada da <strong>−11.30 kcal mol⁻¹</strong>; permitir una optimización local de esa pose, que alivia los pequeños choques inevitables al agregar hidrógenos a una estructura de 2.0 Å, da <strong>−11.73 kcal mol⁻¹</strong>. Este es el valor al que debería acercarse una corrida de docking exitosa. (Sin el agua del flap, esos mismos dos números son −10.95 y −11.34, por lo que el agua aporta alrededor de 0.35–0.40 kcal mol⁻¹ al puntaje de la pose nativa.)</p>
+<p>Luego se realizaron cinco corridas de docking que difieren solo en el confórmero de entrada y en la exhaustividad. Todos los valores de RMSD están corregidos por simetría: corresponden al mínimo sobre la propia simetría topológica de la molécula (<code>CalcRMS</code> de RDKit) y sobre la simetría C<sub>2</sub> del dímero de la proteasa, que superpone la cadena A sobre la cadena B con un RMSD de Cα de 0.52 Å; sin esta corrección, una pose correcta pero relacionada con la referencia por el eje del dímero se calificaría como una falla.</p>
+<table class="data"><thead><tr><th>Corrida</th><th>Confórmero de entrada</th><th>Exhaustividad</th><th>Mejor puntaje (kcal mol⁻¹)</th><th>RMSD de la pose de rango 1 (Å)</th><th>Mejor RMSD entre las 20 primeras (Å)</th><th>Rango de esa pose</th><th>Tiempo de CPU</th></tr></thead><tbody><tr><td>1</td><td>Confórmero cristalográfico (unido)</td><td>64</td><td>−11.95</td><td>0.45</td><td>0.43</td><td>2</td><td>157 s</td></tr><tr><td>2</td><td>Confórmero de novo B (a 3.36 Å del unido)</td><td>16</td><td>−11.94</td><td>0.48</td><td>0.48</td><td>1</td><td>46 s</td></tr><tr><td>3</td><td>Confórmero de novo A (a 4.20 Å del unido)</td><td>32</td><td>−9.96</td><td>4.36</td><td>2.93</td><td>10</td><td>121 s</td></tr><tr><td>4</td><td>Confórmero de novo A</td><td>128</td><td>−9.95</td><td>4.36</td><td>1.93</td><td>7</td><td>354 s</td></tr><tr><td>5</td><td>Confórmero de novo A, otra semilla</td><td>128</td><td>−9.93</td><td>4.37</td><td>1.92</td><td>9</td><td>368 s</td></tr></tbody></table>
+<figure>
+<img src="figures/fig04_funnel.png" alt="Gráfico de dispersión del puntaje de Vina frente al RMSD para 100 poses de cinco corridas; las poses cercanas a la nativa, de bajo RMSD, obtienen unos 2 kcal/mol mejores, pero tres corridas nunca las alcanzan">
+<figcaption><b>Figura 6. Puntaje frente a RMSD para las 100 poses de las cinco corridas.</b> Cada punto es una pose de salida. Las corridas que alcanzan la cuenca nativa (naranja, verde) encuentran poses a 0.4–0.6 Å con puntajes de −11.9 a −12.0 kcal mol⁻¹, cercanos al de la pose cristalina minimizada localmente (línea punteada) y unos 2 kcal mol⁻¹ mejores que cualquier otra del gráfico. Las corridas iniciadas desde el confórmero A (azules) nunca alcanzan esa cuenca: sus mejores poses se sitúan a 4.4 Å y −9.9 kcal mol⁻¹, y cuadruplicar la exhaustividad o cambiar la semilla no ayuda. Por lo tanto, la función de puntuación <em>no</em> es el factor limitante en este caso —ordena correctamente la pose nativa y con un amplio margen—, sino que la búsqueda, restringida por la geometría interna fija del confórmero de entrada, no logra generarla.</figcaption>
+</figure>
+<p>La comparación decisiva es entre la corrida 2 y las corridas 4–5, que difieren solo en el confórmero tridimensional entregado al programa. El confórmero B, generado por RDKit con una semilla aleatoria, difiere de la conformación unida en 3.36 Å tras el alineamiento óptimo; el confórmero A, generado con otra semilla, en 4.20 Å. A partir del confórmero B, Vina reproduce la pose cristalográfica con <strong>0.48 Å</strong> con una exhaustividad de solo 16, en 46 s. A partir del confórmero A, la pose de rango 1 está a <strong>4.36 Å</strong> —una falla según el criterio de 2 Å— y sigue así con exhaustividad 128 y dos semillas distintas, aunque una pose cercana a la nativa, a 1.9 Å, sí aparece más abajo en la lista, en el rango 7.</p>
+<div class="box key"><h4>Lo que enseña este experimento</h4><ul>
+<li><strong>El re-docking a partir del confórmero unido no es una validación.</strong> La corrida 1 reproduce la pose con 0.45 Å, pero se le entregó la respuesta: Vina varía solo las torsiones declaradas y mantiene las conformaciones de los anillos, las longitudes de enlace y los ángulos de enlace exactamente como se entregaron. Un artículo que reporta el RMSD de re-docking sin indicar cómo se generó el confórmero de entrada ha demostrado muy poco.<sup class="c"><a href="#r25">[25]</a></sup></li>
+<li><strong>La generación de confórmeros forma parte del protocolo de docking.</strong> La misma molécula, el mismo programa y el mismo receptor dieron 0.48 Å y 4.36 Å según qué confórmero se ingresó. Generar varios confórmeros, o usar un programa que muestree la geometría de anillos y ángulos.</li>
+<li><strong>Distinguir una falla de búsqueda de una falla de puntuación.</strong> Aquí el puntaje de la pose nativa es 2 kcal mol⁻¹ mejor que el de cualquier señuelo, de modo que la puntuación es adecuada y la búsqueda es el cuello de botella. El diagnóstico es exactamente el que se realizó arriba: asignar puntaje a la pose experimental. Si obtiene un mejor puntaje que todo lo que produjo la búsqueda, falló la búsqueda; si la búsqueda produjo una pose cercana a la nativa pero la ubicó por debajo de una equivocada, falló la puntuación; si la pose experimental obtiene un mal puntaje, la preparación es incorrecta.</li>
+<li><strong>La exhaustividad no es una cura.</strong> Multiplicarla por cuatro cambió el RMSD de rango 1 de 4.36 a 4.36 Å. Más muestreo no puede crear un grado de libertad que el programa no tiene.</li>
+<li><strong>Reportar la lista completa de poses, no solo la de rango 1.</strong> En las corridas 4 y 5 existía una pose cercana a la nativa en los rangos 7 y 9. En el trabajo prospectivo, inspeccionar las cinco a diez primeras poses, y agruparlas, es una práctica estándar.</li>
+</ul></div>
+
+<h3 id="s7-3">7.3 Sesgo de tamaño y eficiencia de ligando</h3>
+<p>El segundo experimento acopla ocho moléculas en el mismo sitio preparado: cinco inhibidores de la proteasa del VIH-1 (amprenavir, darunavir, indinavir, saquinavir, ritonavir) y tres fármacos no relacionados como controles negativos (aspirina, cafeína, ibuprofeno). Todos se construyeron a partir de los SMILES de sus componentes químicos del PDB, se les generaron coordenadas tridimensionales (embedding) y se optimizaron de forma idéntica, y se acoplaron con exhaustividad 16.</p>
+<table class="data"><thead><tr><th>Ligando</th><th>Comp. quím. PDB</th><th>Átomos pesados</th><th>PM (g mol⁻¹)</th><th>Enlaces rotables</th><th>Puntaje de Vina (kcal mol⁻¹)</th><th>Eficiencia de ligando</th><th>Tiempo de CPU</th></tr></thead><tbody><tr><td>aspirina</td><td><code>AIN</code></td><td>13</td><td>180.2</td><td>2</td><td>-5.82</td><td>0.447</td><td>2 s</td></tr><tr><td>cafeína</td><td><code>CFF</code></td><td>14</td><td>194.2</td><td>0</td><td>-5.80</td><td>0.414</td><td>1 s</td></tr><tr><td>ibuprofeno</td><td><code>IBP</code></td><td>15</td><td>206.3</td><td>4</td><td>-7.16</td><td>0.477</td><td>2 s</td></tr><tr style="background:#eafaf1"><td>amprenavir</td><td><code>478</code></td><td>35</td><td>505.6</td><td>11</td><td>-8.93</td><td>0.255</td><td>28 s</td></tr><tr style="background:#eafaf1"><td>darunavir</td><td><code>017</code></td><td>38</td><td>547.7</td><td>11</td><td>-9.64</td><td>0.254</td><td>34 s</td></tr><tr style="background:#eafaf1"><td>indinavir</td><td><code>MK1</code></td><td>45</td><td>613.8</td><td>11</td><td>-11.93</td><td>0.265</td><td>46 s</td></tr><tr style="background:#eafaf1"><td>saquinavir</td><td><code>ROC</code></td><td>49</td><td>670.9</td><td>12</td><td>-11.12</td><td>0.227</td><td>71 s</td></tr><tr style="background:#eafaf1"><td>ritonavir</td><td><code>RIT</code></td><td>50</td><td>721.0</td><td>17</td><td>-10.03</td><td>0.201</td><td>110 s</td></tr></tbody></table>
+<figure>
+<img src="figures/fig07_size_bias.png" alt="Izquierda: puntaje de Vina frente al número de átomos pesados, fuertemente correlacionados. Derecha: eficiencia de ligando frente a átomos pesados, con los pequeños fármacos de control por encima de los inhibidores de la proteasa">
+<figcaption><b>Figura 7. El sesgo de tamaño de un puntaje de docking, medido en ocho ligandos en el sitio de la proteasa del VIH-1.</b> Izquierda: el puntaje de Vina se correlaciona casi perfectamente con el número de átomos pesados (r de Pearson = −0.94, p = 5 × 10⁻⁴; pendiente −0.14 kcal mol⁻¹ por átomo pesado). Derecha: dividir por el número de átomos pesados da la eficiencia de ligando, que invierte el ordenamiento: los tres fármacos de control, que no son inhibidores de la proteasa, son las moléculas más "eficientes" del conjunto. Ninguna de las dos métricas por sí sola identifica a los verdaderos activos; el puntaje los separa por tamaño, y la eficiencia los separa por tamaño en la dirección opuesta.</figcaption>
+</figure>
+<p>La interpretación requiere cuidado, y es la razón de incluir el experimento. Los cinco inhibidores verdaderos obtienen todos mejores puntajes que los tres controles (−8.9 a −11.9 frente a −5.8 a −7.2), de modo que la función de puntuación los habría enriquecido en un cribado, la tarea en la que el docking es bueno. Pero dentro de los inhibidores el ordenamiento es incorrecto: el ritonavir, un inhibidor picomolar, obtiene un peor puntaje que el indinavir, y el orden refleja el número de átomos pesados más que la potencia. Y la columna de eficiencia de ligando, que es la métrica correcta para comparar moléculas de distinto tamaño en una campaña basada en fragmentos o de búsqueda de hits, hace que la aspirina y el ibuprofeno se vean mejores que todos los fármacos antirretrovirales, porque la eficiencia de ligando solo tiene sentido entre moléculas que efectivamente se unen. La lección es que un puntaje, una eficiencia de ligando y una afinidad experimental responden tres preguntas diferentes, y que una campaña de docking debe declarar qué pregunta está planteando.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Sección 8</span>Cribado virtual</h2>
+<p>El <strong>cribado virtual basado en estructura</strong> (structure-based virtual screening) aplica el docking a una biblioteca de compuestos para ordenarlos y comprar o sintetizar solo la fracción superior. Las bibliotecas comerciales alcanzan hoy 10⁹–10¹⁰ moléculas de síntesis a pedido (make-on-demand; Enamine REAL, ZINC-22), y campañas a esa escala han entregado ligandos potentes directamente a partir de los resultados del docking.<sup class="c"><a href="#r22">[22]</a>,<a href="#r23">[23]</a></sup> Dos cosas hacen que funcione: la tarea solo requiere que los activos estén <em>enriquecidos</em> cerca de la parte superior, no correctamente ordenados; y la tasa de aciertos del docking (típicamente 1–20 % en el punto de corte elegido, según el blanco) está uno a dos órdenes de magnitud por encima del cribado aleatorio.</p>
+<h3>Diseño de una campaña</h3>
+<ol>
+<li><strong>Validar primero el protocolo</strong> mediante re-docking (Sección 7) y, mejor aún, mediante <em>cribado retrospectivo</em>: acoplar un conjunto de activos conocidos junto con señuelos y verificar que los activos queden enriquecidos. Los señuelos deben estar emparejados en propiedades (PM, logP, carga y enlaces rotables similares) pero ser topológicamente disímiles, como en los conjuntos DUD-E y LIT-PCBA; los señuelos no emparejados producen un enriquecimiento halagador y carente de significado.<sup class="c"><a href="#r18">[18]</a>,<a href="#r19">[19]</a></sup></li>
+<li><strong>Preparar la biblioteca</strong>: desalar, enumerar estados de protonación y estereoisómeros, filtrar por semejanza a fármaco o a compuesto líder y eliminar PAINS y grupos reactivos.</li>
+<li><strong>Acoplar por etapas</strong>: una pasada rápida y gruesa sobre toda la biblioteca, luego una pasada más exhaustiva sobre el 1–5 % superior, y luego una nueva puntuación (rescoring) con una función ortogonal o con MM/GBSA.</li>
+<li><strong>Agrupar e inspeccionar manualmente.</strong> La diversidad química del conjunto seleccionado importa más que exprimir los últimos 0.2 kcal mol⁻¹, y la inspección visual de las poses todavía detecta artefactos que ningún filtro detecta: un ligando que no interactúa con ningún residuo conservado, una carga enterrada no satisfecha, una pose encajada en un artefacto cristalográfico.</li>
+<li><strong>Ensayar experimentalmente</strong> y retroalimentar con el resultado. Una campaña que nunca se ensaya no ha producido información.</li>
+</ol>
+<h3>Métricas</h3>
+<table class="data">
+<thead><tr><th>Métrica</th><th>Definición</th><th>Interpretación</th></tr></thead>
+<tbody>
+<tr><td><strong>Factor de enriquecimiento</strong> EF<sub>x %</sub></td><td>(activos encontrados en el <em>x</em> % superior / total de activos) ÷ (<em>x</em>/100)</td><td>EF<sub>1 %</sub> = 20 significa veinte veces más activos en el 1 % superior que al azar. Es el número de mayor relevancia práctica, porque solo se compra la fracción superior.</td></tr>
+<tr><td><strong>ROC-AUC</strong></td><td>Área bajo la curva de verdaderos positivos frente a falsos positivos</td><td>0.5 = aleatorio, 1.0 = perfecto. Es insensible a <em>dónde</em> se ubican los activos en el ordenamiento, por lo que puede verse respetable con un 1 % superior inútil.</td></tr>
+<tr><td><strong>BEDROC</strong> (α = 20)</td><td>ROC ponderada exponencialmente que enfatiza el reconocimiento temprano</td><td>Diseñada para el problema del "reconocimiento temprano"; se reporta junto al AUC en los artículos cuidadosos.</td></tr>
+<tr><td><strong>Tasa de aciertos</strong> (hit rate)</td><td>Fracción de los compuestos comprados cuya actividad se confirma experimentalmente</td><td>La única métrica que importa de forma prospectiva.</td></tr>
+</tbody></table>
+<p>Finalmente, se aplica la contraparte práctica de la discusión sobre sensibilidad/especificidad de la Unidad 1: bajar el punto de corte del puntaje compra sensibilidad a costa de precisión, y como la asimetría de costos en el cribado es extrema —un activo perdido no tiene un costo visible, mientras que un falso positivo comprado cuesta dinero y tiempo—, las campañas se ajustan para lograr precisión en la fracción superior más que sensibilidad (recall).</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Sección 9</span>Más allá del docking proteína–ligando</h2>
+<p>El <strong>docking proteína–proteína</strong> aborda una geometría distinta: dos cuerpos grandes, mayormente rígidos, con una interfaz amplia y plana y sin un bolsillo profundo. Los algoritmos clásicos recorren exhaustivamente los seis grados de libertad de cuerpo rígido usando la correlación por transformada rápida de Fourier de grillas de forma y electrostáticas (ZDOCK, FTDock, ClusPro), y luego vuelven a puntuar y refinan los miles de orientaciones superiores. <strong>HADDOCK</strong> toma otra ruta: convierte la información experimental o predicha sobre qué residuos están en la interfaz —mutagénesis, perturbación del desplazamiento químico, entrecruzamiento, coevolución— en <em>restricciones de interacción ambiguas</em> que guían un docking flexible en CNS.<sup class="c"><a href="#r11">[11]</a></sup> Desde 2021 el campo ha sido transformado por AlphaFold-Multimer y AlphaFold 3, que predicen muchos complejos con mayor exactitud que el docking, aunque siguen siendo más débiles para las interacciones transitorias, anticuerpo–antígeno y con péptidos.</p>
+<p>El <strong>docking covalente</strong> maneja ligandos que forman un enlace con un residuo (grupos reactivos (warheads) de acrilamida dirigidas a cisteína, β-lactámicos dirigidos a serina) anclando el ligando al nucleófilo y muestreando en torno al enlace que se forma; el puntaje reporta entonces solo la parte no covalente y debe complementarse con la química del grupo reactivo. El <strong>docking de fragmentos</strong> trata con moléculas de 10–20 átomos pesados, en las que los puntajes son pequeños y la discriminación es pobre, por lo que normalmente se combina con un cribado experimental de fragmentos (rayos X, RMN, SPR). El <strong>docking en ácidos nucleicos</strong> y en proteínas de membrana requiere parámetros propios: ambos entornos están dominados por interacciones que las funciones genéricas describen mal —los esqueletos de fosfato cargados en un caso, un interior lipídico de baja constante dieléctrica en el otro.</p>
+<p>Por último, la <strong>predicción de poses mediante aprendizaje profundo</strong> (EquiBind, TankBind, DiffDock y AlphaFold 3, que considera ligandos) trata el docking como un problema generativo en lugar de una búsqueda, y produce poses en segundos. Los benchmarks muestran un alto éxito aparente en el conjunto de prueba de PDBBind, pero una caída marcada en proteínas disímiles al conjunto de entrenamiento, y una tendencia a producir poses con geometría no física; constituyen un área de investigación activa más que un reemplazo de los métodos de esta unidad.<sup class="c"><a href="#r34">[34]</a>,<a href="#r35">[35]</a></sup></p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Sección 10</span>Software</h2>
+<table class="data">
+<thead><tr><th>Programa</th><th>Búsqueda</th><th>Puntuación</th><th>Licencia</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td><strong>AutoDock 4</strong><sup class="c"><a href="#r2">[2]</a></sup></td><td>Algoritmo genético lamarckiano</td><td>Basada en campo de fuerza, con desolvatación</td><td>Gratuito, código abierto</td><td>Mapas de grilla por tipo de átomo; cadenas laterales flexibles; la implementación de referencia para la docencia</td></tr>
+<tr><td><strong>AutoDock Vina / Vina 1.2</strong><sup class="c"><a href="#r3">[3]</a>,<a href="#r4">[4]</a></sup></td><td>Monte Carlo + optimización local BFGS, multihilo</td><td>Empírica (Sección 6.2); también las funciones AD4 y Vinardo</td><td>Gratuito, código abierto</td><td>Dos órdenes de magnitud más rápido que AutoDock 4; API de Python; el programa de docking más usado en la literatura</td></tr>
+<tr><td><strong>Smina / gnina</strong></td><td>Búsqueda de Vina</td><td>Puntuación personalizada y basada en CNN</td><td>Gratuito, código abierto</td><td>Práctico para volver a puntuar (rescoring) y para puntajes de aprendizaje automático</td></tr>
+<tr><td><strong>DOCK 6</strong><sup class="c"><a href="#r1">[1]</a></sup></td><td>Coincidencia de esferas, construcción incremental</td><td>Campo de fuerza, con GB/SA opcional</td><td>Gratuito para académicos</td><td>El programa original; sólida coincidencia basada en forma</td></tr>
+<tr><td><strong>GOLD</strong><sup class="c"><a href="#r5">[5]</a></sup></td><td>Algoritmo genético con genes de emparejamiento de puentes H</td><td>GoldScore, ChemScore, ChemPLP, ASP</td><td>Comercial (CCDC)</td><td>Flexibilidad de cadenas laterales, docking de ensamble, sistemáticamente alto en los benchmarks</td></tr>
+<tr><td><strong>Glide</strong><sup class="c"><a href="#r6">[6]</a></sup></td><td>Embudo de filtrado jerárquico</td><td>GlideScore (empírica), modos SP y XP</td><td>Comercial (Schrödinger)</td><td>El modo XP agrega términos de desolvatación y de forma; se combina con el protocolo Induced Fit Docking</td></tr>
+<tr><td><strong>FlexX</strong><sup class="c"><a href="#r7">[7]</a></sup></td><td>Construcción incremental</td><td>Empírica (derivada de Böhm)</td><td>Comercial (BioSolveIT)</td><td>Determinista y rápido</td></tr>
+<tr><td><strong>rDock</strong></td><td>Algoritmo genético + Monte Carlo + minimización</td><td>Empírica, con términos de farmacóforo y de ácidos nucleicos</td><td>Gratuito, código abierto</td><td>Diseñado también para blancos de RNA y DNA</td></tr>
+<tr><td><strong>SwissDock / AutoDock Vina web</strong><sup class="c"><a href="#r8">[8]</a></sup></td><td>Interfaces de servidor</td><td>—</td><td>Servicio web gratuito</td><td>Práctico para unos pocos ligandos y para la docencia; control limitado de la preparación</td></tr>
+<tr><td><strong>ZDOCK, ClusPro, HADDOCK</strong><sup class="c"><a href="#r9">[9]</a>,<a href="#r10">[10]</a>,<a href="#r11">[11]</a></sup></td><td>Cuerpo rígido por FFT / flexible guiado por restricciones</td><td>Forma, electrostática, desolvatación / energías de CNS</td><td>Servicios web gratuitos</td><td>Complejos proteína–proteína y proteína–ácido nucleico</td></tr>
+</tbody></table>
+<p>Herramientas de apoyo usadas en esta unidad: <strong>Open Babel</strong><sup class="c"><a href="#r29">[29]</a></sup> para la conversión de formatos y la adición de hidrógenos, <strong>Meeko</strong> para la preparación de archivos PDBQT, <strong>RDKit</strong><sup class="c"><a href="#r30">[30]</a></sup> para la generación de confórmeros, descriptores y RMSD corregido por simetría, <strong>PDB2PQR/PROPKA</strong><sup class="c"><a href="#r33">[33]</a></sup> para la protonación, <strong>fpocket</strong><sup class="c"><a href="#r32">[32]</a></sup> para la detección de cavidades, <strong>PLIP</strong><sup class="c"><a href="#r31">[31]</a></sup> y <strong>Arpeggio</strong> para las huellas de interacción (interaction fingerprints), y <strong>PyMOL</strong> o <strong>ChimeraX</strong> para la inspección. AutoDockTools sigue siendo la interfaz gráfica clásica para la preparación con AutoDock, aunque la API de Python usada más abajo es hoy la ruta más reproducible; el artículo de protocolo de la suite AutoDock es la referencia estándar para todo el flujo de trabajo.<sup class="c"><a href="#r28">[28]</a></sup></p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Sección 11</span>Trabajo práctico</h2>
+<h3>11.1 Vista interactiva del sistema</h3>
+<p>El visor carga <code>1HSG</code> desde el RCSB (se requiere conexión a internet). El indinavir se muestra como barras verdes, los dos aspartatos catalíticos en naranja y el agua del flap como una esfera roja.</p>
+<div id="viewer" style="width:100%;height:420px;position:relative;border:1px solid var(--line);border-radius:6px;background:#fff"></div>
+<p style="font-family:system-ui,sans-serif;font-size:.86rem"><button onclick="vChains()">Cadenas y ligando</button> <button onclick="vSite()">Residuos del sitio de unión</button> <button onclick="vSurf()">Superficie del bolsillo</button></p>
+<script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+<script>
+var viewer=null;
+var SITE={resi:[8,23,25,27,28,29,30,32,47,48,49,50,81,82,84]};
+function base(){ viewer.removeAllSurfaces(); viewer.setStyle({},{cartoon:{colorscheme:{prop:'chain',map:{A:'#2b5d9b',B:'#c0392b'}},opacity:0.85}});
+  viewer.setStyle({resn:'MK1'},{stick:{colorscheme:'greenCarbon',radius:0.18}});
+  viewer.setStyle({resn:'HOH',resi:308},{sphere:{radius:0.45,color:'#c0392b'}}); }
+function vChains(){ if(!viewer)return; base(); viewer.render(); }
+function vSite(){ if(!viewer)return; base(); viewer.addStyle(SITE,{stick:{colorscheme:'whiteCarbon',radius:0.1}});
+  viewer.addStyle({resi:25},{stick:{colorscheme:'orangeCarbon',radius:0.2}}); viewer.render(); }
+function vSurf(){ if(!viewer)return; base(); viewer.addSurface($3Dmol.SurfaceType.MS,{opacity:0.75,colorscheme:'whiteCarbon'},SITE); viewer.render(); }
+(function(){ try{ viewer=$3Dmol.createViewer('viewer',{backgroundColor:'white'});
+  $3Dmol.download('pdb:1HSG',viewer,{},function(){ base(); viewer.zoomTo({resn:'MK1'}); viewer.zoom(0.55); viewer.render(); }); }
+  catch(e){ document.getElementById('viewer').innerHTML='<p style="padding:1rem;color:#777">3D viewer unavailable offline. Open https://www.rcsb.org/3d-view/1HSG instead.</p>'; } })();
+</script>
+
+<h3>11.2 Reproducción del re-docking de la Sección 7</h3>
+<p>El experimento usa la API de Python de Vina, RDKit y Meeko. Se instalan con <code>conda install -c conda-forge vina rdkit openbabel</code> y <code>pip install meeko</code>.</p>
+<pre><code>import json, urllib.request, numpy as np, subprocess
+from rdkit import Chem
+from rdkit.Chem import AllChem, rdMolAlign
+from Bio.PDB import PDBParser, Superimposer
+from vina import Vina
+
+# ---- 1. Receptor: protein + the conserved flap water, hydrogens at pH 7.4 ----
+urllib.request.urlretrieve("https://files.rcsb.org/download/1HSG.pdb", "1HSG.pdb")
+keep = [l for l in open("1HSG.pdb")
+        if l.startswith("ATOM") or (l.startswith("HETATM") and l[17:20] == "HOH"
+                                    and int(l[22:26]) == 308)]
+open("rec.pdb", "w").write("".join(keep) + "END\n")
+subprocess.run("obabel rec.pdb -xr -O rec.pdbqt -h -p 7.4 --partialcharge gasteiger",
+               shell=True, check=True)
+
+# ---- 2. Ligand: bond orders from the PDB chemical component, then a de-novo conformer ----
+cc = json.loads(urllib.request.urlopen(
+        "https://data.rcsb.org/rest/v1/core/chemcomp/MK1").read())
+smiles = cc["rcsb_chem_comp_descriptor"]["SMILES_stereo"]
+open("lig_xtal.pdb", "w").write("".join(l for l in open("1HSG.pdb")
+                                        if l.startswith("HETATM") and l[17:20] == "MK1"))
+xtal = AllChem.AssignBondOrdersFromTemplate(Chem.MolFromSmiles(smiles),
+                                            Chem.MolFromPDBFile("lig_xtal.pdb"))
+m = Chem.AddHs(Chem.MolFromSmiles(smiles))
+AllChem.EmbedMolecule(m, randomSeed=7)          # change this seed and the result changes
+AllChem.MMFFOptimizeMolecule(m)
+Chem.MolToMolFile(m, "lig.sdf")
+subprocess.run("mk_prepare_ligand.py -i lig.sdf -o lig.pdbqt", shell=True, check=True)
+
+# ---- 3. Box centred on the crystallographic ligand ----
+centre = np.array(xtal.GetConformer().GetPositions()).mean(0).tolist()
+
+# ---- 4. Control: score the experimental pose, then dock ----
+v = Vina(sf_name="vina", cpu=8, seed=2026)
+v.set_receptor("rec.pdbqt")
+v.set_ligand_from_file("lig.pdbqt")
+v.compute_vina_maps(center=centre, box_size=[26, 22, 22])
+v.dock(exhaustiveness=16, n_poses=10)
+v.write_poses("poses.pdbqt", n_poses=10, overwrite=True)
+print(v.energies(n_poses=10)[:, 0])
+subprocess.run("mk_export.py poses.pdbqt -s poses.sdf", shell=True, check=True)
+
+# ---- 5. Symmetry-corrected RMSD: molecular symmetry AND the C2 axis of the dimer ----
+model = PDBParser(QUIET=True).get_structure("x", "1HSG.pdb")[0]
+caA = [r["CA"] for r in model["A"] if "CA" in r]; caB = [r["CA"] for r in model["B"] if "CA" in r]
+sup = Superimposer(); sup.set_atoms(caB + caA, caA + caB)      # A->B and B->A at once
+rot, tran = sup.rotran
+xtal_sym = Chem.Mol(xtal); conf = xtal_sym.GetConformer()
+for i, p in enumerate(np.array(xtal.GetConformer().GetPositions()) @ rot + tran):
+    conf.SetAtomPosition(i, p.tolist())
+for i, pose in enumerate(Chem.SDMolSupplier("poses.sdf", removeHs=False)):
+    p = Chem.RemoveHs(pose)
+    rmsd = min(rdMolAlign.CalcRMS(p, xtal), rdMolAlign.CalcRMS(p, xtal_sym))
+    print(f"pose {i+1}: RMSD {rmsd:.2f} A")</code></pre>
+<p>Equivalente en línea de comandos, para la misma caja: <code>vina --receptor rec.pdbqt --ligand lig.pdbqt --center_x 13.07 --center_y 22.47 --center_z 5.56 --size_x 26 --size_y 22 --size_z 22 --exhaustiveness 16 --seed 2026 --out poses.pdbqt</code>.</p>
+<h3>11.3 Lista de verificación del protocolo</h3>
+<ol>
+<li>Registrar la procedencia del receptor (ID del PDB y fecha, o fuente y versión del modelo) y de cada ligando (fuente, SMILES, protonación).</li>
+<li>Indicar explícitamente: qué aguas se conservaron y por qué; cómo se asignaron los estados de protonación; cómo se definió la caja; cómo se generaron los confórmeros; el programa, la versión, la función de puntuación, la exhaustividad y la semilla aleatoria.</li>
+<li>Validar mediante re-docking a partir de un confórmero <em>generado de forma independiente</em>, y reportar la definición de RMSD utilizada (átomos pesados, corrección por simetría).</li>
+<li>Asignar puntaje a la pose experimental como control, de modo que una falla pueda atribuirse a la búsqueda o a la puntuación.</li>
+<li>Repetir las corridas estocásticas con varias semillas y reportar la dispersión, no un único número.</li>
+<li>Inspeccionar visualmente las mejores poses y enumerar las interacciones que cada una establece con residuos identificados por su nombre.</li>
+<li>Nunca convertir un puntaje en una afinidad; comparar puntajes solo dentro de un mismo protocolo.</li>
+<li>Para el cribado, agregar una prueba retrospectiva de enriquecimiento con señuelos emparejados en propiedades antes de la corrida prospectiva.</li>
+</ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="s12">
+<h2><span class="num">Sección 12</span>Autoevaluación</h2>
+<p>Intente responder cada pregunta antes de abrir la respuesta.</p>
+<details><summary>1. Distinga entre "pose" y "modo de unión", y explique por qué la distinción importa al redactar una sección de resultados.</summary><p>Una pose es cualquier ubicación candidata producida por el programa; el modo de unión es la ubicación que el complejo adopta realmente, conocida solo a partir del experimento. Escribir "el ligando se une en el siguiente modo" cuando solo se tiene una pose de docking afirma un hecho experimental que no ha sido establecido. La redacción correcta es que la pose con mejor puntaje <em>sugiere</em> interacciones con residuos identificados, que la mutagénesis o una estructura podrían poner a prueba.</p></details>
+<details><summary>2. Un ligando con 8 enlaces rotables se muestrea en incrementos de 30°. ¿Cuántas conformaciones internas genera la enumeración sistemática, y qué implica esto?</summary><p>(360/30)<sup>8</sup> = 12<sup>8</sup> = 429,981,696 ≈ 4.3 × 10<sup>8</sup>, antes de cualquier ubicación de cuerpo rígido. A 10<sup>4</sup> evaluaciones por segundo, eso equivale a unas doce horas para un solo ligando, razón por la cual la búsqueda sistemática se abandona en favor de las estrategias incrementales o estocásticas.</p></details>
+<details><summary>3. Su docking de un inhibidor nanomolar conocido da un mejor puntaje de −6.2 kcal mol⁻¹ y una pose que no hace contacto con los residuos catalíticos. Enumere, en orden, lo que revisaría.</summary><p>(i) La preparación del receptor: ensamble biológico y cadenas correctos, ausencia de loops faltantes que bordeen el sitio, estados de protonación, presencia de aguas esenciales, metales o cofactores. (ii) La caja: ¿encierra realmente el sitio, con margen? (iii) La preparación del ligando: protonación y tautómero al pH del ensayo, estereoquímica, confórmero 3D razonable. (iv) Asignar puntaje a la pose experimental si existe una para un complejo relacionado: si obtiene un buen puntaje, falló la búsqueda; si obtiene un mal puntaje, la culpa es de la preparación o de la función de puntuación. (v) Solo entonces aumentar la exhaustividad, permitir flexibilidad de cadenas laterales o probar un ensamble.</p></details>
+<details><summary>4. ¿Por qué el re-docking del confórmero cristalográfico es una validación débil, y cuál es la prueba más exigente?</summary><p>La mayoría de los programas mantienen fijas, tal como vienen en la entrada, las conformaciones de los anillos, las longitudes de enlace y los ángulos de enlace, y varían solo las torsiones declaradas, de modo que entregar el confórmero unido revela parte de la respuesta; la Sección 7 obtuvo 0.45 Å de esta forma y 4.36 Å a partir de un confórmero generado de forma independiente de la misma molécula. Las pruebas más exigentes son el re-docking a partir de un confórmero de novo (reportado junto con el método de generación), el <em>cross-docking</em> —acoplar el ligando en una estructura resuelta con un ligando distinto— y el enriquecimiento retrospectivo frente a señuelos emparejados en propiedades.</p></details>
+<details><summary>5. En la Sección 7, el puntaje de la pose cristalina minimizada localmente es −11.73 kcal mol⁻¹ y la mejor pose a partir del confórmero A es −9.95 kcal mol⁻¹ a 4.36 Å. ¿Se trata de una falla de puntuación o de búsqueda? Justifique.</summary><p>Una falla de búsqueda. La función de puntuación ordena correctamente la pose nativa casi 2 kcal mol⁻¹ por delante del mejor señuelo; por lo tanto, si la búsqueda hubiera generado la pose nativa, el puntaje la habría seleccionado. La falla consiste en que la búsqueda, restringida por la geometría interna del confórmero A, nunca produjo una pose en esa cuenca, y cuatro veces más muestreo no cambió esto.</p></details>
+<details><summary>6. ¿Por qué el RMSD de la Sección 7 debe corregirse por la simetría del dímero de la proteasa además de por la simetría del ligando?</summary><p>Simetría del ligando: los átomos topológicamente equivalentes (los dos metilos de un <em>terc</em>-butilo, los carbonos de un fenilo) pueden emparejarse de varias maneras, y un RMSD ingenuo átomo por átomo penalizaría una pose correcta que simplemente los etiqueta de forma distinta. Simetría del dímero: la proteasa del VIH-1 es un homodímero C<sub>2</sub> cuyo sitio se encuentra sobre el eje de simetría, de modo que una pose relacionada con la referencia por ese eje es físicamente el mismo modo de unión en una copia indistinguible del sitio. Sin ambas correcciones, las poses correctas se registran como fallas.</p></details>
+<details><summary>7. ¿Por qué el puntaje de Vina se correlaciona con el número de átomos pesados, y cuándo es la eficiencia de ligando la corrección adecuada?</summary><p>El puntaje es una suma sobre pares de átomos ligando–proteína, por lo que agregar átomos que establezcan cualquier contacto favorable lo mejora; la única penalización dependiente del tamaño es el pequeño término torsional. La eficiencia de ligando (−ΔG o −puntaje por átomo pesado) corrige esto y es la métrica apropiada al comparar moléculas de distinto tamaño que se sabe o se supone que se unen todas: cribado de fragmentos, optimización de hit a líder (hit-to-lead). Carece de sentido cuando se aplica a moléculas que no se unen en absoluto, como muestra la Figura 7: la alta "eficiencia" de la aspirina en el sitio de la proteasa refleja una molécula pequeña que establece unos pocos contactos, no afinidad.</p></details>
+<details><summary>8. ¿Qué es el docking de ensamble, qué problema aborda y cuál es su costo?</summary><p>Acoplar cada ligando en varias conformaciones del receptor —estructuras cristalinas con distintos ligandos, modelos de RMN, frames de MD o modelos predichos alternativos— y conservar el mejor resultado por ligando. Aborda la flexibilidad del receptor e implementa la selección conformacional, recuperando activos que una única estructura rígida no puede acomodar. Su costo es lineal en el número de estructuras y, como cada receptor adicional también da a los señuelos otra oportunidad de obtener un buen puntaje, el enriquecimiento puede degradarse si los miembros del ensamble no son estados genuinos y respaldados experimentalmente.</p></details>
+<details><summary>9. Una campaña de cribado reporta un ROC-AUC de 0.78, pero una tasa de aciertos de 2 % entre los 50 compuestos comprados de la parte superior del ordenamiento. ¿Son coherentes estos valores, y qué número debería guiar la próxima campaña?</summary><p>Son coherentes: el AUC mide el ordenamiento completo y es insensible a la composición del extremo superior, que es donde se realizan las compras. Un AUC respetable con un reconocimiento temprano deficiente es común. Reportar el EF<sub>1 %</sub> o el BEDROC junto con el AUC, y dejar que la tasa de aciertos confirmada experimentalmente guíe la próxima campaña, ya que es la única medida prospectiva.</p></details>
+<details><summary>10. Nombre tres situaciones en las que no confiaría en absoluto en un puntaje de docking, e indique qué haría en su lugar.</summary><p>(i) Un sitio que contiene un metal (proteasa de zinc, ureasa de níquel): las funciones genéricas carecen de términos de coordinación adecuados; usar parámetros especializados, un tratamiento QM/MM, o basarse en la geometría de la pose más que en el puntaje. (ii) Una unión dominada por redes mediadas por agua o por grandes penalizaciones de desolvatación: conservar las aguas explícitamente y pasar a MM/GBSA o a métodos de energía libre (Unidad 5). (iii) La comparación de análogos congenéricos que difieren en un metilo o un halógeno, donde el ΔΔG real es de unas pocas décimas de kcal mol⁻¹: usar perturbación de energía libre relativa, o simplemente sintetizar y ensayar los compuestos.</p></details>
+<details><summary>11. Su blanco no tiene estructura experimental; usted dispone de un modelo de AlphaFold con pLDDT &gt; 90 en todo el dominio. ¿Cuáles son los dos riesgos principales al hacer docking en él?</summary><p>Primero, el modelo es apo y está en un solo estado conformacional: el bolsillo puede estar colapsado, ocupado por cadenas laterales que se moverían al producirse la unión, o en el estado equivocado (inactivo frente a activo) para los ligandos de interés. Segundo, faltan los cofactores, metales y aguas estructurales, de modo que un sitio que los requiere está incompleto. Un pLDDT alto indica que el esqueleto es confiable, no que el bolsillo esté listo para el docking. Medidas de mitigación: comparar con estructuras holo de homólogos, relajar el bolsillo, usar un ensamble (frames de MD o predicciones alternativas) y validar con activos conocidos antes de confiar en cualquier resultado prospectivo.</p></details>
+<details><summary>12. Escriba, en dos oraciones, lo que reportaría sobre el experimento de la Sección 7 en la sección de métodos de un artículo.</summary><p>Ejemplo: "El indinavir se sometió a re-docking en la estructura de la proteasa del VIH-1 1HSG (2.0 Å; proteína más el agua conservada del flap HOH 308, hidrógenos agregados a pH 7.4 con cargas de Gasteiger) usando AutoDock Vina 1.2.7 en una caja de 26 × 22 × 22 Å centrada en el ligando cristalográfico, con confórmeros del ligando generados de forma independiente con RDKit ETKDG y una exhaustividad de 16–128 con semillas fijas. La pose cristalográfica minimizada localmente obtuvo un puntaje de −11.73 kcal mol⁻¹; el docking la reprodujo con 0.48 Å a partir de un confórmero de novo, pero falló (RMSD de rango 1 de 4.36 Å) a partir de otro, con todos los valores de RMSD corregidos por la simetría del ligando y por la simetría C<sub>2</sub> del dímero."</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Apéndice</span>Glosario</h2>
+<dl class="gloss">
+<dt>Sitio alostérico</dt><dd>Sitio distinto del ortostérico cuya ocupación modula la actividad a distancia.</dd>
+<dt>Modo de unión</dt><dd>La orientación y la conformación, determinadas experimentalmente, de un ligando unido.</dd>
+<dt>Docking ciego (blind docking)</dt><dd>Docking sobre toda la superficie de un receptor cuando el sitio es desconocido.</dd>
+<dt>BEDROC</dt><dd>Boltzmann-enhanced discrimination of ROC (discriminación de ROC potenciada por Boltzmann); una métrica de cribado ponderada hacia el reconocimiento temprano.</dd>
+<dt>Puntuación de consenso (consensus scoring)</dt><dd>Combinación de varias funciones de puntuación por rango, por votación o por puntaje normalizado.</dd>
+<dt>Cross-docking</dt><dd>Docking de un ligando en una estructura del receptor resuelta con un ligando distinto; una validación realista.</dd>
+<dt>Sitio críptico</dt><dd>Bolsillo ausente en la estructura apo que solo se abre al unirse el ligando.</dd>
+<dt>Desolvatación</dt><dd>Eliminación del agua ordenada del ligando y del sitio al producirse la unión; una contribución energética importante y mal modelada.</dd>
+<dt>Factor de enriquecimiento</dt><dd>Cociente entre la proporción de activos en una fracción superior de un ordenamiento y la proporción en toda la biblioteca.</dd>
+<dt>Docking de ensamble</dt><dd>Docking en varias conformaciones del receptor y combinación de los resultados.</dd>
+<dt>Exhaustividad (exhaustiveness)</dt><dd>Parámetro de Vina que controla el número de corridas de búsqueda independientes; la minuciosidad del muestreo.</dd>
+<dt>Algoritmo genético</dt><dd>Optimización estocástica mediante selección, cruzamiento y mutación de una población de poses codificadas.</dd>
+<dt>Ajuste inducido</dt><dd>Reorganización del sitio al unirse el ligando (Koshland); se contrapone a la selección conformacional.</dd>
+<dt>AG lamarckiano</dt><dd>Algoritmo genético en el que las coordenadas minimizadas localmente se reescriben en el cromosoma.</dd>
+<dt>Eficiencia de ligando</dt><dd>−ΔG (o −puntaje) dividido por el número de átomos pesados; corrige el sesgo de tamaño de los puntajes.</dd>
+<dt>PAINS</dt><dd>Pan-assay interference compounds (compuestos de interferencia pan-ensayo); subestructuras que producen falsos positivos en muchos ensayos.</dd>
+<dt>PDBQT</dt><dd>Formato de archivo de AutoDock: coordenadas más cargas parciales (Q), tipos de átomo (T) y el árbol de torsiones.</dd>
+<dt>Pose</dt><dd>Una ubicación candidata de un ligando: posición, orientación y conformación.</dd>
+<dt>Re-docking</dt><dd>Docking de un ligando de vuelta en la estructura con la que fue cristalizado; la validación mínima de un protocolo.</dd>
+<dt>RMSD (pose)</dt><dd>Desviación cuadrática media (root-mean-square deviation) entre los átomos pesados del ligando predicho y del experimental; umbral de éxito de 2 Å.</dd>
+<dt>Función de puntuación</dt><dd>Función que aproxima la energía libre de unión de una pose.</dd>
+<dt>Cribado virtual</dt><dd>Ordenamiento computacional de una biblioteca de compuestos para seleccionar candidatos para ensayos experimentales.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Apéndice</span>Referencias y lecturas complementarias</h2>
+<h3>Literatura primaria citada en el texto</h3>
+<ol class="refs">
+<li id="r1">Kuntz ID, Blaney JM, Oatley SJ, Langridge R, Ferrin TE. A geometric approach to macromolecule–ligand interactions. <em>J Mol Biol</em>. 1982;161(2):269–288. <a href="https://doi.org/10.1016/0022-2836(82)90153-X">doi:10.1016/0022-2836(82)90153-X</a></li>
+<li id="r2">Morris GM, Huey R, Lindstrom W, et al. AutoDock4 and AutoDockTools4: automated docking with selective receptor flexibility. <em>J Comput Chem</em>. 2009;30(16):2785–2791. <a href="https://doi.org/10.1002/jcc.21256">doi:10.1002/jcc.21256</a></li>
+<li id="r3">Trott O, Olson AJ. AutoDock Vina: improving the speed and accuracy of docking with a new scoring function, efficient optimization, and multithreading. <em>J Comput Chem</em>. 2010;31(2):455–461. <a href="https://doi.org/10.1002/jcc.21334">doi:10.1002/jcc.21334</a></li>
+<li id="r4">Eberhardt J, Santos-Martins D, Tillack AF, Forli S. AutoDock Vina 1.2.0: new docking methods, expanded force field, and Python bindings. <em>J Chem Inf Model</em>. 2021;61(8):3891–3898. <a href="https://doi.org/10.1021/acs.jcim.1c00203">doi:10.1021/acs.jcim.1c00203</a></li>
+<li id="r5">Jones G, Willett P, Glen RC, Leach AR, Taylor R. Development and validation of a genetic algorithm for flexible docking. <em>J Mol Biol</em>. 1997;267(3):727–748. <a href="https://doi.org/10.1006/jmbi.1996.0897">doi:10.1006/jmbi.1996.0897</a></li>
+<li id="r6">Friesner RA, Banks JL, Murphy RB, et al. Glide: a new approach for rapid, accurate docking and scoring. 1. Method and assessment of docking accuracy. <em>J Med Chem</em>. 2004;47(7):1739–1749. <a href="https://doi.org/10.1021/jm0306430">doi:10.1021/jm0306430</a></li>
+<li id="r7">Rarey M, Kramer B, Lengauer T, Klebe G. A fast flexible docking method using an incremental construction algorithm. <em>J Mol Biol</em>. 1996;261(3):470–489. <a href="https://doi.org/10.1006/jmbi.1996.0477">doi:10.1006/jmbi.1996.0477</a></li>
+<li id="r8">Bugnon M, Röhrig UF, Goullieux M, et al. SwissDock 2024: major enhancements for small-molecule docking with Attracting Cavities and AutoDock Vina. <em>Nucleic Acids Res</em>. 2024;52(W1):W324–W332. <a href="https://doi.org/10.1093/nar/gkae300">doi:10.1093/nar/gkae300</a></li>
+<li id="r9">Pierce BG, Wiehe K, Hwang H, Kim BH, Vreven T, Weng Z. ZDOCK server: interactive docking prediction of protein–protein complexes and symmetric multimers. <em>Bioinformatics</em>. 2014;30(12):1771–1773. <a href="https://doi.org/10.1093/bioinformatics/btu097">doi:10.1093/bioinformatics/btu097</a></li>
+<li id="r10">Kozakov D, Hall DR, Xia B, et al. The ClusPro web server for protein–protein docking. <em>Nat Protoc</em>. 2017;12(2):255–278. <a href="https://doi.org/10.1038/nprot.2016.169">doi:10.1038/nprot.2016.169</a></li>
+<li id="r11">Dominguez C, Boelens R, Bonvin AMJJ. HADDOCK: a protein–protein docking approach based on biochemical or biophysical information. <em>J Am Chem Soc</em>. 2003;125(7):1731–1737. <a href="https://doi.org/10.1021/ja026939x">doi:10.1021/ja026939x</a></li>
+<li id="r12">Amaro RE, Baudry J, Chodera J, et al. Ensemble docking in drug discovery. <em>Biophys J</em>. 2018;114(10):2271–2278. <a href="https://doi.org/10.1016/j.bpj.2018.02.038">doi:10.1016/j.bpj.2018.02.038</a></li>
+<li id="r13">Lin JH, Perryman AL, Schames JR, McCammon JA. Computational drug design accommodating receptor flexibility: the relaxed complex scheme. <em>J Am Chem Soc</em>. 2002;124(20):5632–5633. <a href="https://doi.org/10.1021/ja0260162">doi:10.1021/ja0260162</a></li>
+<li id="r14">Liu J, Wang R. Classification of current scoring functions. <em>J Chem Inf Model</em>. 2015;55(3):475–482. <a href="https://doi.org/10.1021/ci500731a">doi:10.1021/ci500731a</a></li>
+<li id="r15">Charifson PS, Corkery JJ, Murcko MA, Walters WP. Consensus scoring: a method for obtaining improved hit rates from docking databases of three-dimensional structures into proteins. <em>J Med Chem</em>. 1999;42(25):5100–5109. <a href="https://doi.org/10.1021/jm990352k">doi:10.1021/jm990352k</a></li>
+<li id="r16">Hopkins AL, Keserü GM, Leeson PD, Rees DC, Reynolds CH. The role of ligand efficiency metrics in drug discovery. <em>Nat Rev Drug Discov</em>. 2014;13(2):105–121. <a href="https://doi.org/10.1038/nrd4163">doi:10.1038/nrd4163</a></li>
+<li id="r17">Warren GL, Andrews CW, Capelli AM, et al. A critical assessment of docking programs and scoring functions. <em>J Med Chem</em>. 2006;49(20):5912–5931. <a href="https://doi.org/10.1021/jm050362n">doi:10.1021/jm050362n</a></li>
+<li id="r18">Mysinger MM, Carchia M, Irwin JJ, Shoichet BK. Directory of useful decoys, enhanced (DUD-E): better ligands and decoys for better benchmarking. <em>J Med Chem</em>. 2012;55(14):6582–6594. <a href="https://doi.org/10.1021/jm300687e">doi:10.1021/jm300687e</a></li>
+<li id="r19">Tran-Nguyen VK, Jacquemard C, Rognan D. LIT-PCBA: an unbiased data set for machine learning and virtual screening. <em>J Chem Inf Model</em>. 2020;60(9):4263–4273. <a href="https://doi.org/10.1021/acs.jcim.0c00155">doi:10.1021/acs.jcim.0c00155</a></li>
+<li id="r20">Su M, Yang Q, Du Y, et al. Comparative assessment of scoring functions: the CASF-2016 update. <em>J Chem Inf Model</em>. 2019;59(2):895–913. <a href="https://doi.org/10.1021/acs.jcim.8b00545">doi:10.1021/acs.jcim.8b00545</a></li>
+<li id="r21">Li Y, Han L, Liu Z, Wang R. Comparative assessment of scoring functions on an updated benchmark: 2. Evaluation methods and general results. <em>J Chem Inf Model</em>. 2014;54(6):1717–1736. <a href="https://doi.org/10.1021/ci500081m">doi:10.1021/ci500081m</a></li>
+<li id="r22">Lyu J, Wang S, Balius TE, et al. Ultra-large library docking for discovering new chemotypes. <em>Nature</em>. 2019;566(7743):224–229. <a href="https://doi.org/10.1038/s41586-019-0917-9">doi:10.1038/s41586-019-0917-9</a></li>
+<li id="r23">Stein RM, Kang HJ, McCorvy JD, et al. Virtual discovery of melatonin receptor ligands to modulate circadian rhythms. <em>Nature</em>. 2020;579(7800):609–614. <a href="https://doi.org/10.1038/s41586-020-2027-0">doi:10.1038/s41586-020-2027-0</a></li>
+<li id="r24">Chen H, Xu H, Deng Y, et al. Beware of docking! <em>Trends Pharmacol Sci</em>. 2015;36(2):78–95. <a href="https://doi.org/10.1016/j.tips.2014.12.001">doi:10.1016/j.tips.2014.12.001</a></li>
+<li id="r25">Corbeil CR, Williams CI, Labute P. Variability in docking success rates due to dataset preparation. <em>J Comput Aided Mol Des</em>. 2012;26(6):775–786. <a href="https://doi.org/10.1007/s10822-012-9570-1">doi:10.1007/s10822-012-9570-1</a></li>
+<li id="r26">Hong L, Zhang XC, Hartsuck JA, Tang J. Crystal structure of an in vivo HIV-1 protease mutant in complex with saquinavir: insights into the mechanisms of drug resistance. <em>Protein Sci</em>. 2000;9(10):1898–1904. <a href="https://doi.org/10.1110/ps.9.10.1898">doi:10.1110/ps.9.10.1898</a></li>
+<li id="r27">Chen Z, Li Y, Chen E, et al. Crystal structure at 1.9-Å resolution of human immunodeficiency virus (HIV) II protease complexed with L-735,524, an orally bioavailable inhibitor of the HIV proteases. <em>J Biol Chem</em>. 1994;269(42):26344–26348. <a href="https://doi.org/10.1016/S0021-9258(18)47199-2">doi:10.1016/S0021-9258(18)47199-2</a></li>
+<li id="r28">Forli S, Huey R, Pique ME, Sanner MF, Goodsell DS, Olson AJ. Computational protein–ligand docking and virtual drug screening with the AutoDock suite. <em>Nat Protoc</em>. 2016;11(5):905–919. <a href="https://doi.org/10.1038/nprot.2016.051">doi:10.1038/nprot.2016.051</a></li>
+<li id="r29">O'Boyle NM, Banck M, James CA, Morley C, Vandermeersch T, Hutchison GR. Open Babel: an open chemical toolbox. <em>J Cheminform</em>. 2011;3:33. <a href="https://doi.org/10.1186/1758-2946-3-33">doi:10.1186/1758-2946-3-33</a></li>
+<li id="r30">Landrum G, et al. RDKit: open-source cheminformatics. <a href="https://www.rdkit.org">https://www.rdkit.org</a> · <a href="https://doi.org/10.5281/zenodo.591637">doi:10.5281/zenodo.591637</a></li>
+<li id="r31">Adasme MF, Linnemann KL, Bolz SN, et al. PLIP 2021: expanding the scope of the protein–ligand interaction profiler to DNA and RNA. <em>Nucleic Acids Res</em>. 2021;49(W1):W530–W534. <a href="https://doi.org/10.1093/nar/gkab294">doi:10.1093/nar/gkab294</a></li>
+<li id="r32">Le Guilloux V, Schmidtke P, Tuffery P. Fpocket: an open source platform for ligand pocket detection. <em>BMC Bioinformatics</em>. 2009;10:168. <a href="https://doi.org/10.1186/1471-2105-10-168">doi:10.1186/1471-2105-10-168</a></li>
+<li id="r33">Dolinsky TJ, Czodrowski P, Li H, et al. PDB2PQR: expanding and upgrading automated preparation of biomolecular structures for molecular simulations. <em>Nucleic Acids Res</em>. 2007;35(suppl 2):W522–W525. <a href="https://doi.org/10.1093/nar/gkm276">doi:10.1093/nar/gkm276</a></li>
+<li id="r34">Corso G, Stärk H, Jing B, Barzilay R, Jaakkola T. DiffDock: diffusion steps, twists, and turns for molecular docking. <em>Proceedings of ICLR 2023</em>. <a href="https://doi.org/10.48550/arXiv.2210.01776">doi:10.48550/arXiv.2210.01776</a></li>
+<li id="r35">Buttenschoen M, Morris GM, Deane CM. PoseBusters: AI-based docking methods fail to generate physically valid poses or generalise to novel sequences. <em>Chem Sci</em>. 2024;15(9):3130–3139. <a href="https://doi.org/10.1039/D3SC04185A">doi:10.1039/D3SC04185A</a></li>
+</ol>
+<h3>Revisiones y libros de texto</h3>
+<ol class="refs" start="36">
+<li>Singh DB, ed. <em>Computer-Aided Drug Design</em>. Springer; 2020. — Recomendado en la clase; capítulos sobre docking, puntuación y cribado virtual.</li>
+<li>Zhang W, ed. <em>Computer-Aided Drug Discovery</em>. Methods in Pharmacology and Toxicology. Humana Press; 2016. — Recomendado en la clase; orientado a protocolos.</li>
+<li>Saharan VA, ed. <em>Computer Aided Pharmaceutics and Drug Delivery</em>. Springer; 2022. — Recomendado en la clase.</li>
+<li>Leach AR. <em>Molecular Modelling: Principles and Applications</em>. 2nd ed. Prentice Hall; 2001. — Capítulo 12 sobre docking y el problema de la búsqueda conformacional; el tratamiento de los algoritmos más claro entre los libros de texto.</li>
+<li>Gilson MK, Zhou HX. Calculation of protein–ligand binding affinities. <em>Annu Rev Biophys Biomol Struct</em>. 2007;36:21–42. <a href="https://doi.org/10.1146/annurev.biophys.36.040306.132550">doi:10.1146/annurev.biophys.36.040306.132550</a> — La termodinámica detrás de la Sección 3.</li>
+<li>Pagadala NS, Syed K, Tuszynski J. Software for molecular docking: a review. <em>Biophys Rev</em>. 2017;9(2):91–102. <a href="https://doi.org/10.1007/s12551-016-0247-1">doi:10.1007/s12551-016-0247-1</a></li>
+<li>Meng XY, Zhang HX, Mezei M, Cui M. Molecular docking: a powerful approach for structure-based drug discovery. <em>Curr Comput Aided Drug Des</em>. 2011;7(2):146–157. <a href="https://doi.org/10.2174/157340911795677602">doi:10.2174/157340911795677602</a></li>
+</ol>
+<h3>Recursos en línea y tutoriales</h3>
+<ul>
+<li>Documentación y tutoriales de AutoDock Vina — <a href="https://autodock-vina.readthedocs.io">https://autodock-vina.readthedocs.io</a> (el tutorial básico de docking usa este mismo sistema 1HSG)</li>
+<li>Suite AutoDock y AutoDockTools — <a href="https://autodock.scripps.edu">https://autodock.scripps.edu</a></li>
+<li>Entrada 1HSG del RCSB PDB y su página del ligando — <a href="https://www.rcsb.org/structure/1HSG">https://www.rcsb.org/structure/1HSG</a></li>
+<li>Perfilador de interacciones PLIP — <a href="https://plip-tool.biotec.tu-dresden.de">https://plip-tool.biotec.tu-dresden.de</a></li>
+<li>TeachOpenCADD, una plataforma docente para el diseño de fármacos asistido por computador en Python — <a href="https://projects.volkamerlab.org/teachopencadd/">https://projects.volkamerlab.org/teachopencadd/</a></li>
+<li>EMBL-EBI Training, cursos "Protein–ligand interactions" y de ChEMBL — <a href="https://www.ebi.ac.uk/training/">https://www.ebi.ac.uk/training/</a></li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Material de estudio para BGM324 Bioinformática, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Las Figuras 1–7 se generaron para este documento; los experimentos de docking de la Sección 7 se ejecutaron con AutoDock Vina 1.2.7, RDKit 2026.03.1, Meeko 0.8.0, Open Babel 3.2.1 y Biopython 1.88 sobre la estructura PDB 1HSG, y pueden reutilizarse citando la fuente. Los ejemplos resueltos siguen las diapositivas de la clase <em>03_DockingMolecular_EN</em>. Última revisión: 17 de octubre de 2026.
+</footer>
+
+</body>
+</html>
