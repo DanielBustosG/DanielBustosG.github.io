@@ -589,3 +589,5 @@ a.pub-title:hover { color: var(--accent); }
 :root[data-theme="dark"] .badge-supp { color: #c3a6ee; }
 .teaching-legend { font-size: .86rem; color: var(--text-soft); line-height: 2; margin: -4px 0 18px; }
 .teaching-legend .badge { margin: 0 4px 0 2px; white-space: nowrap; }
+.project-head .badge { white-space: nowrap; flex-shrink: 0; }
+.project-head .project-years { text-align: right; }
