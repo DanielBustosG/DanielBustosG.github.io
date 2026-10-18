@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eje (e) · Intentos de inhibición de las bombas RND — Compendio RND</title>
+<meta name="description" content="Qué se ha intentado, con qué fuerza de evidencia (escala N1–N5) y por qué se detuvo cada programa.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Intentos de inhibición de las bombas RND">
+<meta property="og:description" content="Qué se ha intentado, con qué fuerza de evidencia (escala N1–N5) y por qué se detuvo cada programa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Intentos de inhibición de las bombas RND</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#e-0-como-leer-las-tablas-de-este-eje-y-por-que-la-columna-de">e.0 Cómo leer las tablas de este eje, y por qué la columna de nivel de evidenc</a></li><li><a href="#e-1-bloque-1-inhibidores-clasicos-de-sitio-de-sustrato-el-co">e.1 BLOQUE 1 — Inhibidores clásicos de sitio de sustrato: el comparador, no el</a><ol><li><a href="#e-1-1-que-se-ha-hecho-y-con-que-respaldo-estructural">e.1.1 Qué se ha hecho, y con qué respaldo estructural</a></li><li><a href="#e-1-2-por-que-ninguno-llego-a-la-clinica">e.1.2 Por qué ninguno llegó a la clínica</a></li><li><a href="#e-1-3-tabla-del-bloque-1">e.1.3 Tabla del bloque 1</a></li></ol></li><li><a href="#e-2-bloque-2-inhibidores-de-ensamblaje-propiamente-dichos">e.2 BLOQUE 2 — Inhibidores de ensamblaje propiamente dichos</a><ol><li><a href="#e-2-1-el-criterio-de-admision-y-por-que-casi-nada-lo-cumple">e.2.1 El criterio de admisión, y por qué casi nada lo cumple</a></li><li><a href="#e-2-2-la-mfp-si-es-una-diana-farmacologizable-pero-no-se-ha-">e.2.2 La MFP sí es una diana farmacologizable, pero no se ha atacado en su int</a></li><li><a href="#e-2-3-el-precedente-peptidico-mas-cercano-interfaz-de-trimer">e.2.3 El precedente peptídico más cercano: interfaz de trimerización, no inter</a></li><li><a href="#e-2-4-el-resultado-que-corta-en-contra-las-dominantes-negati">e.2.4 El resultado que corta en contra: las dominantes negativas no funcionan</a></li><li><a href="#e-2-5-lo-que-si-bloquea-una-interaccion-entre-componentes-un">e.2.5 Lo que sí bloquea una interacción entre componentes: un DARPin</a></li><li><a href="#e-2-6-construcciones-y-mutantes-que-ensenan-sobre-la-interfa">e.2.6 Construcciones y mutantes: qué enseñan sobre la interfaz y qué advierten</a></li><li><a href="#e-2-7-un-hallazgo-de-2026-que-cambia-el-argumento-y-una-cont">e.2.7 Un hallazgo de 2026 que cambia el argumento, y una contradicción con los</a></li><li><a href="#e-2-8-tabla-del-bloque-2">e.2.8 Tabla del bloque 2</a></li></ol></li><li><a href="#e-3-bloque-3-modalidades-biologicas">e.3 BLOQUE 3 — Modalidades biológicas</a><ol><li><a href="#e-3-1-peptidos-los-antecedentes-del-planteamiento-inicial-y-">e.3.1 Péptidos: los antecedentes del planteamiento inicial y lo que realmente </a></li><li><a href="#e-3-2-nanobodies-y-anticuerpos-la-pregunta-binaria-respondid">e.3.2 Nanobodies y anticuerpos: la pregunta binaria, respondida</a></li><li><a href="#e-3-3-aptameros-peptidos-antimicrobianos-nombrados-y-antisen">e.3.3 Aptámeros, péptidos antimicrobianos nombrados y antisentido</a></li><li><a href="#e-3-4-tabla-del-bloque-3">e.3.4 Tabla del bloque 3</a></li></ol></li><li><a href="#e-4-bloque-4-inhibicion-por-congelacion-del-registro-el-prec">e.4 BLOQUE 4 — Inhibición por congelación del registro: el precedente conceptu</a><ol><li><a href="#e-4-1-la-pregunta-y-la-convencion-del-angulo">e.4.1 La pregunta, y la convención del ángulo</a></li><li><a href="#e-4-2-nivel-1-dentro-de-la-propia-familia-rnd-congelar-el-gr">e.4.2 Nivel 1: dentro de la propia familia RND, congelar el grado de libertad </a></li><li><a href="#e-4-3-nivel-2-atp-sintasa-donde-bloquear-el-rotor-llego-a-la">e.4.3 Nivel 2: ATP sintasa, donde bloquear el rotor llegó a la clínica</a></li><li><a href="#e-4-4-nivel-3-motores-flagelares-donde-se-bloquea-lo-que-ali">e.4.4 Nivel 3: motores flagelares, donde se bloquea lo que alimenta la rotació</a></li><li><a href="#e-4-5-tabla-del-bloque-4">e.4.5 Tabla del bloque 4</a></li></ol></li><li><a href="#e-5-sintesis-del-eje-e">e.5 Síntesis del eje (e)</a></li><li><a href="#archivos-de-datos-de-este-eje">Archivos de datos de este eje</a></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<p><strong>Compendio-review RND, proyecto ANID-Fondecyt Regular 1260886.</strong>
+<strong>FECHA DE CORTE: 2026-09-11.</strong> Todo dato de este archivo se verificó o se midió en esa fecha.
+<strong>Verificación de esta revisión:</strong> 132 DOI resueltos por el autor de este eje contra <code>https://api.crossref.org/works/{DOI}</code> el 2026-09-11 (0 fallos); 59 de ellos además con PMID resuelto contra PubMed E-utilities; 60 de los 132 con resumen o texto completo consultado, y los 72 restantes citados solo por título y metadatos de Crossref, marcados como tales en <code>tabla_referencias_inhibicion.csv</code>.
+<strong>Etiquetas de evidencia:</strong> EXP (experimental directa), EXP-IND (experimental indirecta), COMP (predicción computacional), INF (inferencia del autor), POR VERIFICAR.
+<strong>Sistemas de numeración.</strong> Conversiones verificadas en los datos previos del proyecto: MexA UniProt P52477 = PDB (cadena madura) + 23; MexB UniProt P52002 = PDB + 0; OprM UniProt Q51487 = PDB (cadena madura) + 17. Toda numeración de residuo de este archivo declara su sistema en la misma cláusula.</p>
+<blockquote>
+<p><strong>ADVERTENCIA DE TRANSFERENCIA POR ANALOGÍA (se repite en cada transferencia de este archivo).</strong>
+Identidades medidas en el proyecto el 2026-09-11: MexB/AcrB 70,14 %; MexA/AcrA 59,63 %; <strong>OprM/TolC 23,06 %</strong>.
+El componente sobre el que se quiere diseñar el inhibidor es el menos conservado entre los dos sistemas modelo.
+Todo lo que se sabe de la interfaz AcrA–TolC se transfiere a MexA–OprM por un puente de 23 %.</p>
+</blockquote>
+<hr />
+<h2 id="e-0-como-leer-las-tablas-de-este-eje-y-por-que-la-columna-de"><span class="num">Secci&oacute;n 1</span>e.0 Cómo leer las tablas de este eje, y por qué la columna de nivel de evidencia no es decorativa</h2>
+<p>Las cuatro tablas de este eje comparten las dieciséis columnas exactas de <code>tabla_intentos_inhibicion.csv</code> y se presentan divididas por bloque solo para que quepan en la página. La columna <strong>nivel_evidencia</strong> usa la escala N1–N5 de este compendio: N1 solo <em>in silico</em>; N2 actividad bioquímica <em>in vitro</em>; N3 actividad en célula con mecanismo controlado, lo que exige potenciación de CIM <strong>más</strong> control de permeabilización <strong>más</strong> control en cepa de deleción; N4 evidencia estructural o bioquímica directa del mecanismo declarado; N5 eficacia <em>in vivo</em> en modelo animal.</p>
+<p>La escala no es un adorno bibliográfico. La reevaluación comparativa más completa que existe tomó 38 inhibidores de AcrB publicados y los midió con una sola metodología y un panel definido de antibióticos sustrato: <strong>solo 17 mostraron potenciación de al menos cuatro veces con más de 2 de 10 fármacos de prueba</strong> (doi 10.1128/spectrum.03045-23, verificado 2026-09-11). Es decir, más de la mitad de la literatura de inhibidores de bomba no se replica cuando se mide con un criterio único. Un compuesto N1 y un compuesto N4 en la misma lista sin esa columna producen exactamente el error que este compendio debe evitar: tratar una puntuación de acoplamiento como si fuese un resultado.</p>
+<p>Conviene además fijar de entrada la regla R5, que se aplica varias veces en este eje. Una puntuación de acoplamiento, un ΔΔG predicho y un valor de MM/PBSA <strong>no son energías libres de unión</strong>, no se convierten a Kd y no se comparan entre programas. El caso más reciente está en el bloque 3: un trabajo de 2026 informa afinidades predichas de −7,1 a −14,1 kcal mol⁻¹ para péptidos acoplados contra MexA, MexB y OprM (doi 10.1007/s12602-026-11192-7). Expresar una puntuación de acoplamiento en kcal mol⁻¹ invita a leerla como una energía libre; no lo es, y el propio trabajo declara que no hay validación experimental.</p>
+<hr />
+<h2 id="e-1-bloque-1-inhibidores-clasicos-de-sitio-de-sustrato-el-co"><span class="num">Secci&oacute;n 2</span>e.1 BLOQUE 1 — Inhibidores clásicos de sitio de sustrato: el comparador, no el blanco</h2>
+<h3 id="e-1-1-que-se-ha-hecho-y-con-que-respaldo-estructural">e.1.1 Qué se ha hecho, y con qué respaldo estructural</h3>
+<p>Cuarenta años de química medicinal sobre bombas RND se han concentrado casi por completo en un solo sitio: el bolsillo de unión de sustrato del transportador de membrana interna. La lista canónica es corta y se agrupa en cuatro familias reales, más una cabeza de serie inespecífica.</p>
+<p><strong>PAβN (MC-207,110)</strong> es la cabeza de serie histórica y sigue siendo el comparador universal. Su linaje es peptidomimético: los derivados que potencian levofloxacino en <em>P. aeruginosa</em> se publicaron como «peptidomiméticos de inhibidores de bomba de eflujo» (doi 10.1016/s0960-894x(02)00006-9). El dato que cambia su interpretación es posterior y es experimental: al evolucionar resistencia a la actividad sensibilizante de PAβN por mutagénesis aleatoria, las mutaciones de pérdida de función no cayeron en <code>acrB</code> sino en <strong><code>lpxM</code></strong>, el gen del último paso de acilación del lipopolisacárido, y una cepa con <code>lpxM</code> inactivado mostró hasta 16 veces menos actividad de PAβN con fármacos lipofílicos grandes mientras su capacidad de eflujo y la eficacia de otros inhibidores permanecían sin cambio (doi 10.3390/molecules24030470, EXP). Hay además una demostración independiente de que PAβN permeabiliza la membrana externa de bacterias Gram-negativas (doi 10.1371/journal.pone.0060666, EXP). La lectura honesta es que <strong>PAβN tiene al menos una diana en la capa de LPS y su potenciación no es atribuible únicamente a inhibición de bomba</strong>. Esto no es un detalle histórico: es el motivo por el que la columna «control de permeabilización» aparece en la definición de N3.</p>
+<p><strong>NMP, 1-(naftalen-1-ilmetil)piperazina</strong>, es una arilpiperazina y aquí ocurre el hallazgo estructural que este compendio pide explotar. La entrada <strong>PDB 9J3E</strong> contiene el complejo tripartito <strong>completo</strong> TMexCD1–TOprJ1 de <em>Klebsiella pneumoniae</em> con tres copias del ligando A1EAN, que es NMP (doi 10.1038/s41467-025-65038-x; ligando verificado en los datos previos del proyecto, 2026-09-11).</p>
+<p>Qué demuestra 9J3E: que NMP se une, con densidad, dentro de un ensamblaje tripartito intacto y no solo sobre un transportador aislado. Eso elimina la objeción de que la unión de un inhibidor de bolsillo pudiera ser un artefacto de la proteína extraída de su contexto.</p>
+<p><strong>Qué NO demuestra 9J3E, y hay que escribirlo así.</strong> Primero, la estequiometría del ligando —tres copias en un ensamblaje con tres protómeros RND— no informa sobre cooperatividad ni sobre ocupación necesaria para inhibir: es lo que se modela, no lo que se mide. Segundo, y esto es lo decisivo para este proyecto, <strong>la estructura no contiene ninguna información sobre la interfaz OMF–MFP como sitio de unión</strong>, porque el ligando no está allí. Tercero, una estructura con inhibidor unido demuestra unión, no inhibición: el vínculo causal entre ocupación del bolsillo y pérdida de transporte es una inferencia respaldada por ensayos separados, no una observación de la estructura. Cuarto, el sistema es TMexCD1–TOprJ1 de <em>K. pneumoniae</em>: la transferencia a MexAB–OprM pasa por identidades medidas en el proyecto de 43,73 % (MexA frente a TMexC1) y 48,70 % (MexB frente a TMexD1), y en el eje del OMF la transferencia a <em>P. aeruginosa</em> es aún peor.</p>
+<p>El segundo complejo tripartito completo con un inhibidor de eflujo unido <strong>no estaba registrado como estructura con ligando en los datos previos del proyecto y es un hallazgo de esta revisión</strong>: la entrada <strong>PDB 5NG5</strong>, AcrABZ–TolC de <em>E. coli</em>, contiene tres copias del ligando 5QF, una piranopiridina de la clase MBX (doi 10.7554/eLife.24905; ligando verificado en los datos previos del proyecto, 2026-09-11). Las dos entradas deben tratarse juntas porque juntas cambian el argumento de novedad estructural: <strong>hay dos complejos tripartitos completos con inhibidor de eflujo unido, no uno</strong>, y en los dos el inhibidor está en el bolsillo del transportador RND, no en una interfaz de ensamblaje. La afirmación defendible en la fecha de corte es: <em>ninguna estructura publicada de un ensamblaje tripartito contiene un ligando unido en la interfaz OMF–MFP</em>. Esa es la frase que sostiene la novedad del proyecto; «9J3E es el único complejo completo con EPI» no lo es.</p>
+<p><strong>D13-9001 y la familia ABI-PP (pirido-pirimidinas)</strong> constituyen el programa más avanzado. La base estructural está en <strong>PDB 3W9J</strong>, MexB con el inhibidor P9D, cuyo control del mismo artículo, <strong>3W9I, contiene solo detergente LMT</strong> (doi 10.1038/nature12300). <strong>Los datos previos del proyecto tenían estas dos entradas invertidas y la corrección es material</strong>: 3W9I es el cuerpo aislado «limpio» que las mediciones previas del proyecto eligió como cuerpo B1 de MexB precisamente por no tener inhibidor, y 3W9J es la estructura con inhibidor. Conviene añadir la corrección paralela: el ligando <strong>AV0 de 6IIA es Lauryl Maltose Neopentyl Glycol (LMNG), un detergente y no un inhibidor</strong> (verificado en los datos previos del proyecto, 2026-09-11), de modo que la exclusión de 6IIA del brazo primario en las mediciones previas del proyecto se justifica por conformación sesgada por detergente, no por inhibidor. En la misma línea, <strong>21FP contiene cloranfenicol, que es sustrato</strong>, y <strong>21FO contiene CYMAL-7, que es detergente</strong> (doi 10.1093/jb/mvag012), y <strong>20YY contiene triclosán en MexJK, también sustrato</strong> (sin artículo de revista asociado en la fecha de corte). Ninguna de estas cinco entradas es una estructura con inhibidor.</p>
+<p>D13-9001 llegó a candidato preclinico con actividad <em>in vivo</em> en neumonía por <em>P. aeruginosa</em> en rata (doi 10.1016/j.bmc.2007.07.039, N5). Y su fracaso está documentado con precisión inusual, en un trabajo que es el más útil de todo este bloque para el proyecto: los mutantes con susceptibilidad reducida a la inhibición de MexAB-OprM por D13-9001 caen en dos categorías, mutación de la diana (MexB F628L y ΔV177, numeración de MexB, donde UniProt = PDB + 0) y alteración de una cinasa sensora, PA1438 L172P, que produce una regulación al alza de más de 150 veces de los genes de la bomba <strong>MexMN</strong>; MexMN se asoció con el canal de membrana externa <strong>OprM</strong> y bombeó varios β-lactámicos, monobactámicos y tazobactam, reemplazando funcionalmente a MexAB–OprM <strong>sin ser susceptible a D13-9001</strong> (doi 10.1128/AAC.01718-18, EXP).</p>
+<p><em>Conclusión del autor, separada de la fuente:</em> ese experimento es, hasta donde alcanza esta revisión, el argumento experimental más fuerte <strong>a favor</strong> de atacar el OMF en lugar del transportador. La fuente reporta que el escape a un inhibidor de MexB consistió en cambiar de transportador manteniendo el mismo OprM. La inferencia del autor es que un inhibidor dirigido a OprM no habría sido esquivado por esa ruta concreta, porque la ruta de escape usó el componente que se estaría atacando. La inferencia tiene un límite igualmente claro, que se desarrolla en el eje (f): <em>P. aeruginosa</em> posee OprJ y OprN, con 46,85 % y 33,41 % de identidad frente a OprM (medido en el proyecto), y existe evidencia de que una sola mutación en la horquilla de MexA basta para ensamblar con OMF no cognados.</p>
+<p><strong>Las piranopiridinas de la serie MBX</strong> son, con la metodología unificada más reciente, los inhibidores más potentes reportados (doi 10.1128/spectrum.03045-23). MBX2319 reduce 2, 4 y 8 veces la CIM de ciprofloxacino, levofloxacino y piperacilina en <em>E. coli</em> AB1157, no tiene actividad antibacteriana propia, no actúa en cepas deficientes en AcrAB-TolC, aumenta la acumulación de Hoechst 33342 solo en cepas silvestres y no perturba el gradiente de protones; a 3,13 µM con 0,016 µg/mL de ciprofloxacino reduce la viabilidad 10 000 veces en 4 h, mientras que <strong>PAβN no aumentó la actividad bactericida de la misma concentración de ciprofloxacino ni a 100 µM</strong> (doi 10.1128/AAC.01866-13, EXP). Ese contraste, medido en el mismo experimento, es la mejor justificación disponible de por qué PAβN no debe usarse como referencia de potencia. La base estructural llegó con un dominio periplásmico soluble de ingeniería, AcrBper (doi 10.1073/pnas.1602472113), y con 5NG5 en el complejo completo. La serie no entró en clínica: su espectro está restringido a enterobacterias y su actividad es muy sensible a la doble mutación AcrB G141D_N282Y, que en cambio no afecta a las piridilpiperazinas (doi 10.1128/spectrum.03045-23).</p>
+<p><strong>Las novedades posteriores a 2020</strong> son tres y las tres se apartan del sitio de sustrato clásico, lo que es en sí mismo un dato sobre hacia dónde se movió el campo. Las <strong>piridilpiperazinas</strong> son inhibidores <strong>alostéricos</strong>: se unen a un sitio único en el <strong>dominio transmembrana del protómero L de AcrB</strong>, rodeado por residuos catalíticos del relevo de protones, y las simulaciones indican acceso desde el citoplasma por un canal exclusivo de ese protómero (doi 10.1038/s41467-021-27726-2). El derivado optimizado BDM91288 se administró <strong>por vía oral</strong> y potenció levofloxacino <em>in vivo</em> en infección pulmonar murina por <em>K. pneumoniae</em>, con crio-EM que confirma la unión al dominio transmembrana (doi 10.1038/s44321-023-00007-9, N5). Los <strong>inhibidores de estado de transición</strong> son el segundo grupo (doi 10.1038/s44259-026-00207-6); su mecanismo no se describe aquí más allá del título porque <strong>el texto completo no se consultó en esta revisión</strong> y la fila correspondiente queda marcada POR VERIFICAR. El tercero es <strong>TXA11114</strong>, de 2026, con reducciones de más de 1 log₁₀ UFC en muslo y pulmón murinos por encima de levofloxacino en monoterapia, y con medidas de permeabilidad de membrana externa como control explícito (doi 10.3390/antibiotics15040346, N5).</p>
+<p><strong>Corrección de un supuesto de este compendio.</strong> Este compendio nombra «las pirido-piridinas y pirazolopiridinas» entre los EPI clásicos. La búsqueda documentada en PubMed el 2026-09-11 con <code>(pyrazolopyridine[Title/Abstract] OR "pyrazolo[3,4-b]pyridine"[Title/Abstract]) AND (efflux[Title/Abstract] OR AcrB[Title/Abstract] OR MexB[Title/Abstract] ...)</code> devolvió <strong>0 resultados</strong>. No existe una serie de pirazolopiridinas ensayada como inhibidor de bomba RND localizable con esa cadena. Las tres familias heterocíclicas reales son <strong>pirido-pirimidinas</strong> (D13-9001/ABI-PP), <strong>piranopiridinas</strong> (serie MBX) y <strong>piridilpiperazinas</strong> (serie BDM). El resultado negativo queda registrado en <code>tabla_busquedas_negativas_inhibicion.csv</code>.</p>
+<h3 id="e-1-2-por-que-ninguno-llego-a-la-clinica">e.1.2 Por qué ninguno llegó a la clínica</h3>
+<p>Esta subsección es obligatoria porque define el riesgo del proyecto, y la respuesta no es una sola causa sino cinco, todas documentadas.</p>
+<ol>
+<li><strong>Mecanismo inespecífico de membrana en la cabeza de serie.</strong> PAβN tiene un determinante de actividad en el LPS (<code>lpxM</code>) y permeabiliza la membrana externa (doi 10.3390/molecules24030470; doi 10.1371/journal.pone.0060666). Una molécula cuya potenciación depende en parte de dañar la envoltura tiene una ventana terapéutica acotada por la toxicidad de ese mismo efecto, que no es selectivo de bacteria.</li>
+<li><strong>Escape por paralogía, no por mutación de la diana.</strong> El caso de D13-9001 y MexMN–OprM demuestra que una célula puede conservar el fenotipo de eflujo cambiando de transportador (doi 10.1128/AAC.01718-18). Un inhibidor que ataca un transportador entre doce compite contra la redundancia genómica del organismo.</li>
+<li><strong>Espectro estrecho.</strong> Las piranopiridinas, las más potentes, actúan sobre RND de enterobacterias y poco en <em>P. aeruginosa</em>. Un potenciador de espectro estrecho necesita diagnóstico rápido para su indicación, lo que multiplica el coste de desarrollo.</li>
+<li><strong>Artefactos de ensayo que inflan la literatura.</strong> Las 4-(3-aminociclobutil)pirimidin-2-aminas descritas como aglutinantes de bomba son <strong>agregadores coloidales</strong> (doi 10.3390/biom13061000), y la reevaluación de 38 compuestos con una metodología única descartó a más de la mitad (doi 10.1128/spectrum.03045-23). Parte del atractivo histórico del campo se construyó sobre medidas no replicables.</li>
+<li><strong>La aritmética del potenciador.</strong> Un inhibidor de bomba no es un antibiótico: se aprueba en combinación, lo que exige demostrar seguridad y farmacocinética compatibles con el antibiótico acompañante en cada indicación, y el beneficio se mide contra alternativas ya disponibles.</li>
+</ol>
+<p><em>Inferencia del autor para el proyecto.</em> Cuatro de las cinco causas afectan igual o más a un péptido dirigido a interfaz que a una molécula pequeña de bolsillo. La quinta —el espectro estrecho— es peor para el proyecto, porque OprM no existe fuera de <em>Pseudomonas</em> y los OMF de otros patógenos comparten con él una identidad baja. La única causa que el proyecto mitiga estructuralmente es la segunda, y la mitiga por la razón expuesta arriba: atacar el OMF compartido en lugar de uno de los doce transportadores.</p>
+<h3 id="e-1-3-tabla-del-bloque-1">e.1.3 Tabla del bloque 1</h3>
+<table class="data">
+<thead>
+<tr>
+<th>compuesto_o_construccion</th>
+<th>modalidad</th>
+<th>blanco_declarado</th>
+<th>sitio_de_union_declarado</th>
+<th>mecanismo_declarado</th>
+<th>mecanismo_respaldado</th>
+<th>organismo</th>
+<th>evidencia_disponible</th>
+<th>nivel_evidencia</th>
+<th>potenciacion_reportada</th>
+<th>toxicidad_reportada</th>
+<th>estado_de_desarrollo</th>
+<th>por_que_se_detuvo</th>
+<th>referencia_doi</th>
+<th>etiqueta_evidencia</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PAbetaN (MC-207,110)</td>
+<td>molecula pequena (dipeptido-amida)</td>
+<td>MexAB-OprM; AcrB</td>
+<td>sitio de sustrato</td>
+<td>competencia con el sustrato en el bolsillo de union de AcrB/MexB</td>
+<td>no: la mutagenesis aleatoria localiza el determinante de su actividad en lpxM (ultima acilación del LPS), no en acrB; es actividad de membrana</td>
+<td>P. aeruginosa, E. coli, Salmonella</td>
+<td>CIM, acumulación de colorante, mutagenesis aleatoria + secuenciación, permeabilización de ME</td>
+<td>N3</td>
+<td>potencia levofloxacino en P. aeruginosa (Renau 2002); NO aumenta la actividad bactericida de ciprofloxacino 0,016 ug/mL hasta 100 uM en E. coli AB1157 (Opperman 2014)</td>
+<td>permeabiliza la membrana externa; efecto inespecifico de membrana documentado</td>
+<td>abandonado como candidato clinico</td>
+<td>ventana terapeutica estrecha y mecanismo no específico de bomba: parte de la potenciación es permeabilización de ME</td>
+<td>10.1016/s0960-894x(02)00006-9; 10.1371/journal.pone.0060666; 10.3390/molecules24030470; 10.1128/AAC.01866-13</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>NMP (1-(naftalen-1-ilmetil)piperazina, arilpiperazina)</td>
+<td>molecula pequena</td>
+<td>AcrB; MexB; TMexD1</td>
+<td>sitio de sustrato (bolsillo distal / hendidura periplásmica)</td>
+<td>ocupación del bolsillo de union de sustrato del transportador RND</td>
+<td>si, para la union: el ligando A1EAN x3 esta resuelto en el complejo tripartito COMPLETO TMexCD1-TOprJ1 (PDB 9J3E); parcial para el mecanismo de inhibición, que no se mide en la estructura</td>
+<td>E. coli, Salmonella, K. pneumoniae (TMexCD1-TOprJ1)</td>
+<td>estructura (crio-EM 9J3E), CIM, acumulación</td>
+<td>N4</td>
+<td>potencia levofloxacino y otros sustratos en E. coli y Salmonella (Bina 2008); en P. aeruginosa la potenciación es menor que en enterobacterias</td>
+<td>no se reporta desarrollo clinico; usado como herramienta</td>
+<td>herramienta de laboratorio</td>
+<td>potencia insuficiente y falta de programa de desarrollo; además su actividad es sensible a la doble mutación AcrB G141D_N282Y de modo dependiente de sustrato</td>
+<td>10.1038/s41467-025-65038-x; 10.1093/jac/dkn466; 10.1128/spectrum.03045-23</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>D13-9001 (pirido-pirimidina; la familia ABI-PP)</td>
+<td>molecula pequena</td>
+<td>MexB (y AcrB)</td>
+<td>sitio de sustrato (bolsillo hidrofóbico de union, 'hydrophobic trap')</td>
+<td>union al bolsillo hidrofóbico del protomero e inmovilización del ciclo de transporte</td>
+<td>si: co-estructura MexB-P9D (PDB 3W9J) del mismo articulo cuyo control 3W9I contiene solo detergente LMT; las mutaciones de resistencia MexB F628L y delV177 caen donde predice la estructura</td>
+<td>P. aeruginosa</td>
+<td>estructura (rayos X 3W9J), CIM, acumulación, in vivo (neumonia en rata), secuenciación de mutantes</td>
+<td>N5</td>
+<td>actividad in vivo en modelo de neumonia por P. aeruginosa en rata (Yoshida 2007); potencia levofloxacino y aztreonam in vitro</td>
+<td>no publicada en los articulos consultados; se declaro candidato preclinico</td>
+<td>detenido en preclinica/clinica temprana</td>
+<td>escape documentado por dos vías: mutación de la diana (MexB F628L, delV177) y sobreexpresión de MexMN-OprM, una bomba parologa insensible a D13-9001 que usa EL MISMO OprM</td>
+<td>10.1038/nature12300; 10.1016/j.bmc.2007.07.039; 10.1128/AAC.01718-18</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Pirido-pirimidinas, serie MexAB-OprM-específica (Nakayama, partes 1-7)</td>
+<td>molecula pequena</td>
+<td>MexAB-OprM</td>
+<td>sitio de sustrato</td>
+<td>inhibición específica de MexAB-OprM</td>
+<td>parcial: la serie se optimizo por potenciación; la evidencia estructural llega después con 3W9J</td>
+<td>P. aeruginosa</td>
+<td>CIM, potenciación, química medicinal iterativa, in vivo (parte 7)</td>
+<td>N5</td>
+<td>potenciación de levofloxacino y aztreonam; la parte 7 declara buena actividad in vivo</td>
+<td>problemas de solubilidad resueltos con sal de amonio cuaternario; toxicidad no reportada en los resumenes consultados</td>
+<td>detenido</td>
+<td>el programa no progreso mas alla de candidato preclinico; la literatura posterior documenta el escape por bombas parologas</td>
+<td>10.1016/j.bmcl.2003.07.024; 10.1016/j.bmcl.2003.10.060; 10.1016/j.bmcl.2004.03.007; 10.1016/j.bmc.2007.07.039</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Piranopiridinas serie MBX (MBX2319, MBX3132, MBX3135)</td>
+<td>molecula pequena</td>
+<td>AcrB (RND de enterobacterias)</td>
+<td>sitio de sustrato (bolsillo hidrofóbico distal)</td>
+<td>ocupación del bolsillo hidrofóbico e interferencia con el ciclo de transporte</td>
+<td>si: co-cristal con el dominio periplásmico soluble AcrBper y, de forma independiente, ligando 5QF x3 resuelto en el complejo tripartito COMPLETO AcrABZ-TolC (PDB 5NG5)</td>
+<td>E. coli y Enterobacteriaceae; poca actividad en P. aeruginosa</td>
+<td>estructura (rayos X AcrBper; crio-EM 5NG5), CIM, acumulación (Hoechst 33342), viabilidad</td>
+<td>N4</td>
+<td>MBX2319 reduce la CIM de ciprofloxacino, levofloxacino y piperacilina en E. coli AB1157 2, 4 y 8 veces; 3,13 uM con 0,016 ug/mL de ciprofloxacino reduce la viabilidad 10.000 veces a las 4 h</td>
+<td>sin actividad antibacteriana propia; no perturba el gradiente de protones</td>
+<td>optimización de cabeza de serie; sin entrada en clinica</td>
+<td>espectro restringido a enterobacterias y propiedades tipo farmaco insuficientes; su actividad es muy sensible a la doble mutación AcrB G141D_N282Y</td>
+<td>10.1128/AAC.01866-13; 10.1016/j.bmc.2015.03.016; 10.1016/j.mib.2016.05.007; 10.1073/pnas.1602472113; 10.7554/eLife.24905; 10.1128/spectrum.03045-23</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Piridilpiperazinas (BDM88855, BDM91288)</td>
+<td>molecula pequena</td>
+<td>AcrB de E. coli y de K. pneumoniae</td>
+<td>otro: dominio transmembrana del protomero L (sitio alosterico, no el sitio de sustrato)</td>
+<td>inhibición alosterica del ciclo catalitico por union en el dominio TM junto a los residuos del relevo de protones</td>
+<td>si: mutantes resistentes mapean al sitio, crio-EM del complejo con AcrB de K. pneumoniae y MD que describe la ruta de acceso citoplasmica</td>
+<td>E. coli, K. pneumoniae, A. baumannii</td>
+<td>estructura (crio-EM), CIM, mutantes resistentes, MD, in vivo (pulmon murino, vía oral)</td>
+<td>N5</td>
+<td>revierte la resistencia mediada por sobreexpresión de acrAB-tolC en K. pneumoniae y potencia levofloxacino in vivo por vía oral</td>
+<td>propiedades tipo farmaco caracterizadas; toxicidad no reportada en los resumenes consultados</td>
+<td>optimización de cabeza de serie / prueba de concepto in vivo</td>
+<td>no detenido en la fecha de corte; sin entrada clinica declarada</td>
+<td>10.1038/s41467-021-27726-2; 10.1038/s44321-023-00007-9; 10.1016/j.ejmech.2023.115630; 10.1093/jacamr/dlad112</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Inhibidores de estado de transición de bombas de eflujo</td>
+<td>molecula pequena</td>
+<td>bombas RND</td>
+<td>otro (estado de transición del ciclo de transporte)</td>
+<td>estabilización de un estado de transición del transportador</td>
+<td>[POR VERIFICAR] resumen unicamente -- texto completo no consultado en esta revisión</td>
+<td>bacterias Gram-negativas</td>
+<td>según el titulo: mecanismo molecular</td>
+<td>[POR VERIFICAR]</td>
+<td>[POR VERIFICAR]</td>
+<td>[POR VERIFICAR]</td>
+<td>publicación 2026</td>
+<td>no aplica (novedad de 2026)</td>
+<td>10.1038/s44259-026-00207-6</td>
+<td>POR VERIFICAR</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>TXA11114</td>
+<td>molecula pequena</td>
+<td>bombas RND de P. aeruginosa</td>
+<td>desconocido (no se reporta estructura)</td>
+<td>inhibición de eflujo que restaura la actividad de levofloxacino</td>
+<td>parcial: hay acumulación de levofloxacino y de bromuro de etidio, medida de permeabilidad de ME como control y secuenciación de mutantes, pero no hay estructura con el compuesto unido</td>
+<td>P. aeruginosa MDR</td>
+<td>CIM, acumulación, permeabilidad de ME, secuenciación completa de genomas, in vivo (muslo y pulmon murinos), citotoxicidad, ADME in vitro</td>
+<td>N5</td>
+<td>reducciones de mas de 1 log10 UFC en muslo y pulmon murinos por encima de levofloxacino en monoterapia; potencia también beta-lactamicos, tetraciclinas, cloranfenicol y trimetoprim-sulfametoxazol</td>
+<td>citotoxicidad y ADME in vitro evaluados como seguridad preliminar (valores no extraidos: resumen unicamente)</td>
+<td>descubrimiento/optimización, 2026</td>
+<td>no detenido en la fecha de corte</td>
+<td>10.3390/antibiotics15040346</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>4-(3-aminociclobutil)pirimidin-2-aminas</td>
+<td>molecula pequena</td>
+<td>bombas de eflujo</td>
+<td>otro</td>
+<td>inhibición de eflujo por union a la bomba</td>
+<td>no: se demuestra que son agregadores coloidales, de modo que la actividad aparente no requiere union específica</td>
+<td>E. coli</td>
+<td>ensayos de agregación coloidal, CIM</td>
+<td>N1</td>
+<td>la potenciación aparente se atribuye a agregación</td>
+<td>no aplica</td>
+<td>descartado</td>
+<td>artefacto de ensayo: agregación coloidal. Se incluye como control de calidad de la literatura de EPI</td>
+<td>10.3390/biom13061000</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Productos naturales como EPI (berberina, conesina, piperina, eugenol, carvacrol y similares)</td>
+<td>molecula pequena</td>
+<td>MexAB-OprM, AcrB, NorA y otras</td>
+<td>desconocido en la mayoria de los casos</td>
+<td>inhibición de eflujo inferida de potenciación y de acumulación de colorante</td>
+<td>no en general: en la reevaluación comparativa de 38 compuestos publicados solo 17 mostraron potenciación de al menos 4 veces con mas de 2 de 10 farmacos de prueba</td>
+<td>varios</td>
+<td>CIM, acumulación de colorante</td>
+<td>N1-N3</td>
+<td>muy variable entre publicaciones; la reevaluación con metodología única reduce drasticamente el número de compuestos activos</td>
+<td>raramente evaluada</td>
+<td>literatura dispersa; ningún candidato en desarrollo</td>
+<td>metodologias heterogeneas y falta de replicación; se documenta como riesgo de la literatura de EPI, no como EPI</td>
+<td>10.1128/spectrum.03045-23; 10.1002/med.21591; 10.1016/j.drudis.2020.07.011</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Triclosan en MexJK (PDB 20YY)</td>
+<td>molecula pequena</td>
+<td>MexJK de P. aeruginosa</td>
+<td>sitio de sustrato</td>
+<td>ninguno declarado como inhibidor: el triclosan es SUSTRATO de MexJK</td>
+<td>no aplica: no es un inhibidor. Se lista para impedir que la entrada se cuente como estructura con inhibidor</td>
+<td>P. aeruginosa</td>
+<td>estructura (crio-EM 2,57 A, EMD-67423, liberada 2026-07-08)</td>
+<td>N4 (para la union, no para inhibición)</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>estructura sin articulo de revista asociado en la fecha de corte</td>
+<td>no aplica</td>
+<td>sin DOI de revista [DOI NO VERIFICADO -- solo DOI de depósito]</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Cloranfenicol (21FP), CYMAL-7 (21FO), LMNG (6IIA, ligando AV0)</td>
+<td>molecula pequena / detergente</td>
+<td>MexB</td>
+<td>sitio de sustrato (cloranfenicol) u ocupación por detergente</td>
+<td>ninguno como inhibidor de ensamblaje</td>
+<td>no aplica: cloranfenicol es sustrato y CYMAL-7 y LMNG son detergentes. Se listan porque los datos previos del proyecto clasificaban AV0 como inhibidor</td>
+<td>P. aeruginosa</td>
+<td>estructura (rayos X 2,30 y 2,89 A; 2,91 A)</td>
+<td>N4 (para la union)</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>10.1093/jb/mvag012; 10.1038/s41598-019-40232-2</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="e-2-bloque-2-inhibidores-de-ensamblaje-propiamente-dichos"><span class="num">Secci&oacute;n 3</span>e.2 BLOQUE 2 — Inhibidores de ensamblaje propiamente dichos</h2>
+<h3 id="e-2-1-el-criterio-de-admision-y-por-que-casi-nada-lo-cumple">e.2.1 El criterio de admisión, y por qué casi nada lo cumple</h3>
+<p>Un compuesto entra en este bloque si su mecanismo <strong>declarado</strong> es impedir la formación del complejo, no bloquear el sitio de sustrato. La columna <strong>mecanismo_respaldado</strong> exige algo más estricto: evidencia de que el compuesto realmente impide el ensamblaje —un pull-down o un entrecruzamiento en presencia del compuesto, o una medida directa de interacción entre componentes— y no solamente que potencie un antibiótico. La justificación de cada valor sí/no/parcial está en la propia celda de la tabla, una frase por fila, como pide este compendio.</p>
+<p>Aplicado el criterio, el resultado es escueto y hay que decirlo sin adornos: <strong>en la fecha de corte, ningún compuesto ha demostrado que disocie un ensamblaje tripartito RND en células</strong>. Lo que existe es un conjunto de resultados adyacentes, algunos muy informativos y uno abiertamente desfavorable.</p>
+<h3 id="e-2-2-la-mfp-si-es-una-diana-farmacologizable-pero-no-se-ha-">e.2.2 La MFP sí es una diana farmacologizable, pero no se ha atacado en su interfaz con el OMF</h3>
+<p>Dos trabajos establecen que la proteína adaptadora periplásmica se puede atacar con moléculas pequeñas. El primero identificó inhibidores que <strong>se unen a AcrA</strong>, cambian su estructura <em>in vivo</em>, inhiben el eflujo de sondas fluorescentes y potencian antibióticos en <em>E. coli</em> y en otros Gram-negativos; los autores enmarcan el hallazgo como la apertura de un sitio farmacologizable nuevo asociado a «la activación del transportador y el reclutamiento del canal de membrana externa» (doi 10.1021/acsinfecdis.6b00167, EXP, N2). Hay unión medida y hay cambio estructural, pero <strong>no hay pull-down ni entrecruzamiento en presencia del compuesto</strong>, de modo que el mecanismo queda como <em>parcial</em>: no se muestra disociación.</p>
+<p>El segundo es más informativo sobre el mecanismo y, leído con cuidado, menos favorable a la hipótesis del proyecto de lo que parece. Mediante intercambio hidrógeno/deuterio acoplado a espectrometría de masas, ensayos celulares de eflujo y dinámica molecular, se estableció que un inhibidor forma una <strong>cuña molecular en la hendidura entre los dominios lipoilo y barril αβ de AcrA</strong>, provocando estabilización de largo alcance en los cuatro dominios de la proteína, un efecto que un sustrato de eflujo no produce; el resultado se interpreta como disminución de la transmisión conformacional de las señales evocadas por fármaco desde AcrB hacia TolC (doi 10.1038/s41467-023-39615-x, EXP, N2). El sitio <strong>no es la interfaz con el OMF</strong>: es una hendidura interdominio de la propia MFP, y el mecanismo no es competencia estérica sino restricción conformacional.</p>
+<p><em>Inferencia del autor.</em> Este trabajo señala una tercera vía que el proyecto no ha considerado y que es geométricamente más tratable que la interfaz: una hendidura interdominio de MexA, con volumen y con residuos de cadena lateral, en lugar de una superficie plana de 483 Å² dominada por puentes de hidrógeno de cadena principal. La observación pertenece al eje de huecos de conocimiento, no a este, pero se consigna aquí porque emerge de esta literatura.</p>
+<h3 id="e-2-3-el-precedente-peptidico-mas-cercano-interfaz-de-trimer">e.2.3 El precedente peptídico más cercano: interfaz de trimerización, no interfaz OMF–MFP</h3>
+<p>Existe un único trabajo que diseña <strong>péptidos</strong> para desestabilizar una interfaz de <strong>ensamblaje</strong> de una bomba RND. Se diseñaron péptidos que mimetizan las hélices TM1 o TM8 de AcrB —las dos hélices cuyos contactos helice-helice estabilizan de forma no covalente el trímero— con etiquetas peptoide N-terminales y colas de lisinas que ayudan a dirigirlos a su diana embebida en la membrana. Los péptidos redujeron el eflujo del sustrato fluorescente rojo Nilo y potenciaron cloranfenicol y bromuro de etidio; la dimerización TM1–TM8 diana se demostró por FRET, y con péptidos mutantes seleccionados se señalaron residuos que podrían aumentar potencia y especificidad (doi 10.1021/acs.biochem.0c00417, EXP, N2). Los autores presentan el trabajo como un enfoque nuevo sobre interacciones proteína-proteína embebidas en membrana.</p>
+<p>Tres precisiones, porque este es el precedente que el proyecto debe citar y también acotar. <strong>Uno:</strong> la interfaz atacada es <strong>RND–RND intramembrana</strong>, no OMF–MFP periplásmica. <strong>Dos:</strong> el mecanismo queda <em>parcial</em> porque no se muestra disociación del trímero de AcrB en células en presencia del péptido; lo que se mide es efecto funcional más dimerización de los fragmentos diana en un sistema separado. <strong>Tres:</strong> una interfaz helice-helice dentro de la membrana es el caso favorable del diseño de péptidos de interfaz —superficie hidrofóbica, geometría helicoidal, precedente abundante en péptidos transmembrana— y no se parece a una superficie polar extendida en el periplasma.</p>
+<h3 id="e-2-4-el-resultado-que-corta-en-contra-las-dominantes-negati">e.2.4 El resultado que corta en contra: las dominantes negativas no funcionan</h3>
+<p>Este es el hallazgo más desfavorable de todo el compendio para la estrategia competitiva, y por eso se escribe entero.</p>
+<p>Se probó el efecto de sobreexpresar componentes de bomba funcionalmente defectuosos en células silvestres de <em>E. coli</em> para sondear el proceso de ensamblaje. La expectativa mecanística es directa: incorporar un componente defectuoso debería reducir la eficiencia de eflujo del complejo, es decir, producir un efecto dominante negativo. Se examinaron <strong>cinco grupos de mutantes de AcrB y de AcrA</strong>, defectuosos en distintos aspectos del ensamblaje y del eflujo de sustrato. El resultado: <strong>ninguno mostró el efecto dominante negativo esperado, ni siquiera expresado a concentraciones muchas veces superiores a su contraparte genómica</strong>. Los autores concluyen que el ensamblaje del complejo AcrAB–TolC parece tener un mecanismo de corrección de lectura que elimina eficazmente la formación de complejos futiles (doi 10.3390/antibiotics10070830, EXP, N3 como resultado negativo bien controlado).</p>
+<p><em>Inferencia del autor, explícitamente separada.</em> La fuente no habla de péptidos ni de este proyecto. La inferencia es la siguiente, y es incómoda: si una <strong>MFP completa, defectuosa y sobreexpresada</strong> —un competidor con la geometría exacta, los seis sitios de contacto y la avidez completa— no consigue envenenar el complejo, la probabilidad de que un fragmento peptídico monovalente de 15–31 residuos lo consiga es menor, no mayor. El proyecto tiene dos respuestas posibles y ninguna es gratuita. La primera es que el mecanismo propuesto no es envenenar el complejo ensamblado sino <strong>secuestrar OprM libre antes del ensamblaje</strong>, que es un blanco distinto y compatible con el resultado negativo; esa respuesta obliga a diseñar el ensayo durante el crecimiento y no sobre células crecidas, lo que coincide con la barrera f3 del eje siguiente. La segunda es que el mecanismo de corrección de lectura postulado por los autores es una hipótesis, no una medición, y podría no operar sobre un ligando no proteico; esa respuesta obliga a medirlo. Cualquiera de las dos es una tarea experimental, no un argumento.</p>
+<h3 id="e-2-5-lo-que-si-bloquea-una-interaccion-entre-componentes-un">e.2.5 Lo que sí bloquea una interacción entre componentes: un DARPin</h3>
+<p>La única entidad que ha demostrado bloquear una interacción entre componentes de una bomba RND es una proteína de andamio diseñada. Por resonancia de plasmón superficial se reconstituyó el ensamblaje de AcrAB–TolC y se encontró que AcrA y TolC forman complejos de alta afinidad con AcrB <strong>de forma independiente entre sí</strong>; que el antibiótico novobiocina y el inhibidor <strong>MC-207,110 se unen a AcrB inmovilizado pero no afectan las interacciones entre los componentes del complejo</strong>; y que, en cambio, <strong>un DARPin sí inhibe la interacción entre AcrA y AcrB</strong>. Los autores añaden que la conformación del dominio membrana-proximal de AcrA es crítica para la formación del complejo y <strong>podría atacarse para desarrollar inhibidores nuevos</strong> (doi 10.1016/j.chembiol.2011.02.011, EXP, N4 combinado con la co-estructura). La estructura correspondiente existe: AcrB trimérico en complejo con un DARPin inhibidor a 2,5 Å, con los tres protómeros en conformaciones distintas (doi 10.1371/journal.pbio.0050007).</p>
+<p>Dos consecuencias. La primera, favorable: <strong>el concepto de inhibir por interfaz en una bomba RND está validado</strong>, con estructura y con medida de interacción. La segunda, desfavorable y desarrollada en el eje (f): un DARPin de 14–18 kDa no atraviesa la membrana externa de un Gram-negativo, y por eso ninguno de estos reactivos se convirtió nunca en terapia. La observación de que PAβN se une a AcrB sin alterar las interacciones entre componentes es, además, la demostración experimental directa de que <strong>inhibir el transporte e inhibir el ensamblaje son mecanismos separables</strong>.</p>
+<h3 id="e-2-6-construcciones-y-mutantes-que-ensenan-sobre-la-interfa">e.2.6 Construcciones y mutantes: qué enseñan sobre la interfaz y qué advierten</h3>
+<p>Cinco resultados genéticos y estructurales delimitan la interfaz mejor que cualquier compuesto.</p>
+<p><strong>A favor del proyecto.</strong> La quimera MacA–MexA que porta la horquilla α de MexA (PDB 4DK1) demuestra que <strong>la horquilla determina el reconocimiento del OMF</strong>: transplantarla transfiere la especificidad (doi 10.1074/jbc.m111.329375). La mutagénesis de la punta de la horquilla en tres sistemas independientes muestra que los residuos conservados de la punta son esenciales: en AcrA frente a TolC (doi 10.1128/JB.00334-10), en MacA frente a TolC (doi 10.1016/j.bbrc.2010.03.097) y en MacA frente a TolCV1 y TolCV2 de <em>Vibrio vulnificus</em>, con <strong>51,3 % y 29,6 % de identidad frente a TolC</strong> (doi 10.1007/s12275-013-2699-3). Ese último dato merece subrayarse porque es el mejor puente disponible sobre la advertencia del 23 %: la interacción punta-a-punta se conserva funcionalmente entre OMF con identidad tan baja como el 29,6 %, y sigue dependiendo de residuos concretos de la punta. Y hay una confirmación estructural independiente de 2026, discutida en e.2.7.</p>
+<p><strong>En contra, o al menos como límite.</strong> Primero, el mismo trabajo que establece la esencialidad de la punta de AcrA aporta datos funcionales <em>in vivo</em> de que <strong>tanto la longitud como la secuencia de aminoácidos de la horquilla α de AcrA pueden ser flexibles</strong> para formar una bomba funcional (doi 10.1128/JB.00334-10). Una interfaz que tolera variación de longitud y de secuencia no se describe bien como un conjunto de hotspots puntuales. Segundo, en OprM, las deleciones G199–A209 y A278–N286 (numeración de <strong>cadena madura de OprM</strong>; = G216–A226 y A295–N303 en <strong>UniProt Q51487</strong>, conversión UniProt = madura + 17) abolieron la capacidad de restaurar resistencia, pero <strong>la mutación de varios residuos conservados dentro de esas mismas regiones no afectó la función de OprM</strong> (doi 10.1128/JB.183.1.12-27.2001, EXP). El tramo G199–A209 (madura) solapa con siete de los veinticuatro residuos de contacto de MexA medidos en el proyecto (198–204, madura). Tercero, hay determinantes de ensamblaje <strong>fuera</strong> del contacto: quitar hasta 19 residuos del extremo C-terminal de OprM no afecta el eflujo, pero quitar más de 20 o alterar el motivo ₄₆₃LGGG₄₆₆ (numeración de cadena madura de OprM; = ₄₈₀LGGG₄₈₃ en UniProt Q51487) abate estabilidad y actividad, y una sola sustitución en la horquilla de la MFP VceA suprime el fenotipo (doi 10.1016/j.micres.2013.08.006). Cuarto, la interfaz admite mutaciones que <strong>mejoran</strong> el ensamblaje: la sustitución <strong>Q93R en el dominio de horquilla α de MexA</strong> aumenta la resistencia y promueve la formación de complejos tripartitos con los OMF <strong>no cognados</strong> OprN y TolC, con el péptido C-terminal de OprM como segundo determinante, todo verificado por microscopía electrónica de partícula única y CIM (doi 10.3390/antibiotics11020126, EXP, N4). Quinto, la desestabilización de una interfaz de ensamblaje de estas bombas se <strong>rescata genéticamente con facilidad</strong>: la pérdida de función de AcrB por trimerización comprometida (P223G) se recupera con nueve mutaciones supresoras de un solo sitio, ocho de ellas en la región de acoplamiento del dominio periplásmico (doi 10.3389/fmicb.2015.00004).</p>
+<p>Dos datos finales sobre el contexto del ensamblaje. La crio-tomografía <em>in situ</em> de AcrAB–TolC indica un <strong>ensamblaje secuencial</strong> que comienza por el subcomplejo AcrAB, con intermediarios sin TolC observados, y muestra que AcrA contacta el peptidoglicano (doi 10.1038/s41467-019-10512-6). Y el peptidoglicano <strong>estabiliza el complejo MexA–OprM</strong>, demostrado por pull-down con peptidoglicanos purificados de <em>E. coli</em> y de <em>P. aeruginosa</em> (doi 10.3390/ijms22105328). El primero es favorable: si el reclutamiento del OMF es un paso discreto y tardío, es un paso interceptable. El segundo es desfavorable: el complejo tiene un estabilizador adicional que un competidor peptídico no desplaza.</p>
+<h3 id="e-2-7-un-hallazgo-de-2026-que-cambia-el-argumento-y-una-cont">e.2.7 Un hallazgo de 2026 que cambia el argumento, y una contradicción con los datos previos del proyecto</h3>
+<p>En esta revisión se localizó y se leyó <strong>el texto completo</strong> de una estructura de OprM que no figura en los datos previos del proyecto: crio-EM de partícula única de OprM a <strong>2,08 Å</strong>, la mayor resolución publicada de esta proteína (doi 10.1016/j.yjsbx.2026.100152, verificado en Crossref y PubMed el 2026-09-11; texto completo consultado). Cuatro puntos importan a este eje.</p>
+<p><strong>Uno. La fuente propone explícitamente la interfaz de unión a MexA como diana terapéutica.</strong> El título completo es «...provides target for rational inhibitor design» y la conclusión afirma que la conservación de la interfaz de unión a MexA entre múltiples proteínas Mex apunta a un mecanismo compartido de acoplamiento de OprM «que puede explotarse terapéuticamente». Esto es decisivo para la evaluación de novedad del eje (f) y se trata allí.</p>
+<p><strong>Dos. Los residuos de contacto que nombra caen todos dentro del conjunto medido en el proyecto.</strong> La fuente describe, para el estado abierto, que Gln104 de MexA une Ala220 o Tyr428 de OprM; que Lys108 de MexA une Gly216 o Gly424 de OprM; que la cadena principal de Ala105 de MexA forma un puente de hidrógeno con Arg420 de OprM; y que Leu100 de MexA forma interacciones hidrofóbicas con Val215 y Val217 de OprM. <strong>La fuente mezcla dos sistemas de numeración sin declararlo</strong>, que es exactamente el defecto que la regla R7 previene: los números de MexA (L100, Q104, A105, K108) son de <strong>cadena madura</strong> y los de OprM (V215, G216, V217, A220, R420, G424, Y428) son de <strong>UniProt Q51487</strong>. La comprobación se hizo por secuencia en esta revisión: el tramo 96–110 de MexA madura es <code>RYKLLVADQAVSKQQ</code>, de modo que 100 = L, 104 = Q, 105 = A y 108 = K, que coinciden; y restando 17 a los números de OprM se obtiene 198, 199, 200, 203, 403, 407 y 411 de cadena madura, todos con la identidad correcta en Q51487. Con esa conversión, <strong>los 7 de 7 residuos de OprM y los 4 de 4 residuos de MexA que la fuente nombra están dentro de los conjuntos de contacto medidos en el proyecto</strong> (OprM 190, 191, 194–196, 198–204, 395, 399, 402–404, 406–412 madura; MexA 96, 97, 99, 100, 103–110 madura). Es una validación externa e independiente del epítopo medido.</p>
+<p><strong>Tres. La leucina de compuerta es un residuo de interfaz.</strong> La fuente describe tres Leu429 que forman un poro hidrofóbico en el extremo periplásmico, con las cadenas laterales a ~3 Å entre sí y Asn427 como barrera adicional, y una red de puentes de hidrógeno Arg436–Asp433 y Gln225–Tyr413 entre monómeros; al abrir el poro, las tres Leu429 se apartan por completo y el dominio coiled-coil se ensancha hasta los 25 Å del barril α. En numeración de cadena madura de OprM (UniProt = madura + 17) esas posiciones son L412, N410, R419, D416, Q208 y Y396. <strong>L412 y N410 (madura) están dentro de los 24 residuos de contacto de MexA medidos en el proyecto.</strong> Y, comparando con los datos previos del proyecto: las mutaciones no declaradas que el proyecto midió sobre coordenadas en <strong>6ZRE</strong> (R403L, Y404F, D416A, R419A, madura) y <strong>7AKZ</strong> (las cuatro más L412G) corresponden en UniProt a R420L, Y421F, D433A, R436A y L429G, es decir, <strong>precisamente la red de compuerta y la leucina de compuerta que esta fuente describe</strong>. <em>Inferencia del autor:</em> esas dos entradas no son depósitos con mutaciones accidentales sino mutantes deliberados de las constricciones del canal, lo que es coherente con su propio título depositado; la fuente de 2026 no las cita en el texto consultado, de modo que la correspondencia es una inferencia del autor y no una afirmación de la fuente.</p>
+<p><strong>Cuatro. Contradicción parcial con los datos previos del proyecto y un dato negativo verificado.</strong> Los datos previos del proyecto establecen, correctamente, que solo cuatro entradas de PDB se liberaron después del 2026-04-08 y que no hay ninguna nueva de OprM. Esta revisión confirma ese punto y añade el motivo: <strong>la estructura de 2,08 Å no tiene coordenadas públicas</strong>. Se verificó de tres maneras el 2026-09-11: la búsqueda en RCSB por la accesión UniProt Q51487 devuelve nueve entradas, todas conocidas y ninguna posterior a 2022; la búsqueda por el DOI del artículo en <code>rcsb_primary_citation.pdbx_database_id_DOI</code> devuelve cero entradas; y el propio artículo declara en su apartado de disponibilidad de datos que los datos «se pondrán a disposición a petición». La consecuencia operativa para el proyecto es concreta: <strong>la estructura de mayor resolución de OprM no es utilizable como cuerpo de modelado en la fecha de corte</strong>, y cualquier plan que la incorpore debe contemplar una solicitud a los autores. Se marca POR VERIFICAR el número de accesión.</p>
+<p><em>Discrepancia menor detectada en la fuente, consignada por R12.</em> El artículo atribuye la entrada 6TA5 a «Tsutsumi et al., 2019». Según los datos previos del proyecto verificados, 6TA5 y 6TA6 corresponden a Glavier y colaboradores, 2020 (doi 10.1038/s41467-020-18770-5), mientras que Tsutsumi y colaboradores, 2019 (doi 10.1038/s41467-019-09463-9) corresponde a 6IOK y 6IOL. La atribución correcta es la de los datos previos del proyecto, que se verificó contra RCSB en las fases 1 y 2. Quien reutilice la comparación abierto/cerrado de esa fuente debe corregir la cita.</p>
+<h3 id="e-2-8-tabla-del-bloque-2">e.2.8 Tabla del bloque 2</h3>
+<table class="data">
+<thead>
+<tr>
+<th>compuesto_o_construccion</th>
+<th>modalidad</th>
+<th>blanco_declarado</th>
+<th>sitio_de_union_declarado</th>
+<th>mecanismo_declarado</th>
+<th>mecanismo_respaldado</th>
+<th>organismo</th>
+<th>evidencia_disponible</th>
+<th>nivel_evidencia</th>
+<th>potenciacion_reportada</th>
+<th>toxicidad_reportada</th>
+<th>estado_de_desarrollo</th>
+<th>por_que_se_detuvo</th>
+<th>referencia_doi</th>
+<th>etiqueta_evidencia</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EPI que se unen a AcrA (serie identificada por cribado, Abdali 2017)</td>
+<td>molecula pequena</td>
+<td>AcrA (MFP/PAP de AcrAB-TolC)</td>
+<td>interfaz OMF-MFP (declarado como sitio en la MFP responsable de reclutar el canal de ME)</td>
+<td>union a la MFP que altera su estructura in vivo y bloquea la activación del transportador y el reclutamiento del canal de ME</td>
+<td>parcial: se demuestra union a AcrA y cambio estructural in vivo, y se mide inhibición de eflujo y potenciación, pero NO se muestra disociación del complejo (sin pull-down ni entrecruzamiento en presencia del compuesto)</td>
+<td>E. coli y otros Gram-negativos</td>
+<td>union in vitro a AcrA, cambio estructural in vivo, inhibición de sonda fluorescente, CIM</td>
+<td>N2</td>
+<td>potencia antibioticos en E. coli y otros Gram-negativos (valores no extraidos: resumen unicamente)</td>
+<td>no reportada</td>
+<td>descubrimiento; sin desarrollo posterior localizado</td>
+<td>no detenido formalmente; no se localiza continuación en la fecha de corte</td>
+<td>10.1021/acsinfecdis.6b00167</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Inhibidor tipo 'cuna molecular' de AcrA (Russell Lewis 2023)</td>
+<td>molecula pequena</td>
+<td>AcrA (MFP/PAP)</td>
+<td>otro: hendidura entre los dominios lipoilo y barril alfa-beta de la MFP, NO la interfaz con el OMF</td>
+<td>restricción conformacional de la MFP que reduce la transmisión del acoplamiento alosterico entre AcrB y TolC</td>
+<td>si para el mecanismo declarado: intercambio hidrogeno/deuterio por espectrometria de masas muestra estabilización de largo alcance en los cuatro dominios de AcrA, efecto ausente con un sustrato; ensayos celulares de eflujo y MD lo respaldan. NO es un inhibidor de interfaz</td>
+<td>E. coli</td>
+<td>HDX-MS, ensayos celulares de eflujo, MD</td>
+<td>N2</td>
+<td>inhibición de eflujo celular (valores no extraidos: resumen unicamente)</td>
+<td>no reportada</td>
+<td>investigación basica de mecanismo</td>
+<td>no aplica</td>
+<td>10.1038/s41467-023-39615-x</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptidos mimeticos de TM1 y TM8 de AcrB con etiqueta peptoide N-terminal y cola de lisinas (Jesin 2020)</td>
+<td>peptido</td>
+<td>AcrB (transportador RND)</td>
+<td>otro: interfaz de TRIMERIZACION de AcrB dentro de la membrana, no la interfaz OMF-MFP</td>
+<td>desestabilización de la interfaz de trimerización por competencia con los contactos helice-helice TM1-TM8</td>
+<td>parcial: hay FRET que demuestra la dimerización TM1-TM8 diana y hay reducción de eflujo de rojo Nilo mas potenciación, pero NO se muestra disociación del trimero de AcrB en celulas en presencia del peptido</td>
+<td>E. coli</td>
+<td>FRET, eflujo de rojo Nilo, CIM (cloranfenicol, bromuro de etidio), mutantes de peptido</td>
+<td>N2</td>
+<td>potencia cloranfenicol y bromuro de etidio; disminuye el eflujo de rojo Nilo (valores no extraidos: resumen unicamente)</td>
+<td>no reportada</td>
+<td>prueba de concepto</td>
+<td>no detenido formalmente; ES EL PRECEDENTE MAS CERCANO al proyecto y no esta en la interfaz OMF-MFP</td>
+<td>10.1021/acs.biochem.0c00417</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MFP y RND dominantes negativas sobreexpresadas (cinco grupos de mutantes de AcrA y AcrB, Rajapaksha 2021)</td>
+<td>otro (construcción genetica)</td>
+<td>AcrAB-TolC</td>
+<td>interfaz OMF-MFP e interfaz MFP-RND (según el mutante)</td>
+<td>envenenamiento del complejo por incorporación de un componente defectuoso (efecto dominante negativo)</td>
+<td>no: NINGUNO de los cinco grupos mostro efecto dominante negativo, ni expresado a concentraciones muchas veces superiores a la copia genomica. Los autores proponen un mecanismo de corrección de lectura que elimina complejos futiles</td>
+<td>E. coli</td>
+<td>sobreexpresión de mutantes, eflujo, CIM</td>
+<td>N3 (resultado negativo bien controlado)</td>
+<td>ninguna: resultado negativo</td>
+<td>no aplica</td>
+<td>concluido como resultado negativo</td>
+<td>no aplica: es el resultado mas desfavorable para cualquier estrategia competitiva sobre el ensamblaje</td>
+<td>10.3390/antibiotics10070830</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>DARPin anti-AcrB (Sennhauser 2007; Tikhonova 2011)</td>
+<td>otro (proteína de andamio disenada, ankyrin-repeat)</td>
+<td>AcrB</td>
+<td>interfaz MFP-RND (bloquea la interacción AcrA-AcrB) y superficie periplásmica de AcrB</td>
+<td>inhibición de la bomba por union a AcrB; en SPR, bloqueo de la interacción AcrA-AcrB</td>
+<td>si: co-cristal AcrB-DARPin a 2,5 A (estructura con el inhibidor unido) y SPR que muestra que el DARPin inhibe la interacción AcrA-AcrB mientras que novobiocina y MC-207,110 se unen a AcrB SIN afectar las interacciones entre componentes</td>
+<td>E. coli</td>
+<td>estructura (rayos X 2,5 A), SPR, LILBID-MS</td>
+<td>N4</td>
+<td>no aplica (no se usa como potenciador de antibiotico en celula: no atraviesa la ME)</td>
+<td>no aplica</td>
+<td>herramienta estructural y de mecanismo</td>
+<td>no es un farmaco: una proteína de 14-18 kDa no atraviesa la membrana externa. Responde afirmativamente a la pregunta binaria sobre DARPins como inhibidores</td>
+<td>10.1371/journal.pbio.0050007; 10.1016/j.chembiol.2011.02.011; 10.1016/j.bbamem.2011.05.009</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Quimera MacA-MexA portadora de la horquilla alfa de MexA (PDB 4DK1)</td>
+<td>otro (construcción quimerica)</td>
+<td>reconocimiento del OMF</td>
+<td>interfaz OMF-MFP</td>
+<td>la horquilla alfa de la MFP determina la especificidad de reconocimiento del OMF</td>
+<td>si como demostración del determinante, no como inhibidor: transplantar la horquilla transfiere la especificidad de OMF</td>
+<td>E. coli / P. aeruginosa (quimera)</td>
+<td>estructura (rayos X 3,50 A), función in vivo</td>
+<td>N4 (para el determinante)</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>no aplica: no es un inhibidor</td>
+<td>no aplica. Es el respaldo estructural mas directo de que la horquilla es el elemento de reconocimiento</td>
+<td>10.1074/jbc.m111.329375</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Truncamientos C-terminales de OprM y permuta del peptido C-terminal (Bai 2014)</td>
+<td>otro (construcción)</td>
+<td>OprM</td>
+<td>otro: extremo C-terminal, fuera del contacto con la MFP</td>
+<td>el extremo C-terminal y el motivo 463LGGG466 (numeración de cadena madura de OprM; = 480LGGG483 en UniProt Q51487, conversión UniProt = madura + 17) son necesarios para la estabilidad y el ensamblaje funcional</td>
+<td>si para el efecto declarado: quitar hasta 19 residuos no afecta; quitar mas de 20 o alterar el motivo LGGG abate estabilidad y actividad; una sustitución en la horquilla de la MFP VceA suprime el fenotipo</td>
+<td>E. coli con OprM heterologa</td>
+<td>mutagenesis, estabilidad de proteína, actividad de eflujo, supresión genetica</td>
+<td>N3</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica. Advertencia para el proyecto: hay determinantes de ensamblaje FUERA de la interfaz de contacto</td>
+<td>10.1016/j.micres.2013.08.006; 10.1128/JB.183.1.12-27.2001</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MexA Q93R (Boyer 2022)</td>
+<td>otro (construcción/mutante puntual)</td>
+<td>interfaz OMF-MFP de MexAB-OprM</td>
+<td>interfaz OMF-MFP (dominio de horquilla alfa de MexA)</td>
+<td>una sola sustitución en el dominio de la horquilla aumenta la eficacia de ensamblaje y PERMITE formar complejos tripartitos con OMF no cognados (OprN y TolC)</td>
+<td>si: análisis de particula única por microscopía electronica de los complejos formados, mas CIM aumentada en la cepa que expresa MexA(Q93R)-MexB-OprM; el peptido C-terminal de OprM es un segundo determinante</td>
+<td>P. aeruginosa (componentes) en E. coli</td>
+<td>microscopía electronica de particula única, CIM, reconstitución con componentes no cognados</td>
+<td>N4</td>
+<td>no aplica (aumenta resistencia, no la reduce)</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica. Es evidencia de riesgo: la interfaz admite mutaciones que AUMENTAN el ensamblaje y amplian la promiscuidad de OMF, es decir, una ruta de escape plausible frente a un competidor de interfaz</td>
+<td>10.3390/antibiotics11020126</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Mutagenesis dirigida de la punta de la horquilla de AcrA y de la punta de apertura de TolC (Kim 2010)</td>
+<td>otro (mutantes puntuales y variantes de longitud)</td>
+<td>interfaz AcrA-TolC</td>
+<td>interfaz OMF-MFP</td>
+<td>los residuos conservados de la punta de la horquilla de la MFP son esenciales para la función de la bomba</td>
+<td>parcial y con un matiz que corta en contra: los residuos conservados de la punta SI son esenciales, pero los autores muestran que TANTO la longitud COMO la secuencia de la horquilla alfa de AcrA pueden ser flexibles para formar una bomba funcional</td>
+<td>E. coli</td>
+<td>mutagenesis dirigida, complementación genetica, función in vivo</td>
+<td>N3</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica. La flexibilidad de longitud y secuencia observada limita la interpretación de la punta como un hotspot puntual</td>
+<td>10.1128/JB.00334-10</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Mutagenesis de la punta de la horquilla de MacA y de la punta de TolCV1/TolCV2 (Xu 2010; Lee 2013)</td>
+<td>otro (mutantes puntuales)</td>
+<td>interfaz MacA-TolC; MacA-TolCV1/V2</td>
+<td>interfaz OMF-MFP</td>
+<td>interacción punta-a-punta conservada entre la MFP y el OMF</td>
+<td>si en dos sistemas independientes: los residuos conservados de la punta son esenciales para la union y para formar una bomba funcional, incluso con OMF de Vibrio vulnificus de solo 29,6-51,3 por ciento de identidad con TolC</td>
+<td>E. coli; V. vulnificus</td>
+<td>mutagenesis dirigida, union bioquimica, función in vivo</td>
+<td>N3</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica. Es el argumento a favor mas solido: la interacción punta-a-punta tolera identidad baja de OMF y sigue dependiendo de residuos concretos de la punta</td>
+<td>10.1016/j.bbrc.2010.03.097; 10.1007/s12275-013-2699-3</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Mutagenesis de OprM (deleciones y sustituciones, Li y Poole 2001)</td>
+<td>otro (deleciones y mutantes puntuales)</td>
+<td>OprM</td>
+<td>interfaz OMF-MFP y regiones conservadas</td>
+<td>identificar regiones conservadas de OprM necesarias para la resistencia</td>
+<td>parcial, con un resultado que corta en contra: las deleciones G199-A209 y A278-N286 (numeración de cadena MADURA de OprM; = G216-A226 y A295-N303 en UniProt Q51487) abolieron la función, pero la mutación de varios residuos CONSERVADOS dentro de esas regiones NO afecto la función</td>
+<td>P. aeruginosa</td>
+<td>mutagenesis dirigida, expresión, CIM</td>
+<td>N3</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica. G199-A209 (madura) solapa con 7 de los 24 residuos de contacto de MexA medidos en el proyecto (198-204, madura), y aún así sus residuos conservados toleran sustitución puntual</td>
+<td>10.1128/JB.183.1.12-27.2001</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Supresores de la desestabilización del trimero de AcrB (AcrB P223G y nueve supresores, Wang 2015)</td>
+<td>otro (mutantes)</td>
+<td>AcrB</td>
+<td>otro: interfaz de trimerización RND-RND</td>
+<td>desestabilizar la trimerización reduce el eflujo; identificar como se recupera la función</td>
+<td>si como advertencia: la perdida de función por trimerización comprometida se RECUPERA por nueve mutaciones supresoras de un solo sitio, ocho de ellas en la región de acoplamiento del dominio periplásmico</td>
+<td>E. coli</td>
+<td>mutagenesis aleatoria, purificación, estabilidad de trimero, interacción con AcrA, union de sustrato</td>
+<td>N3</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica. Evidencia de que una interfaz de ensamblaje de estas bombas se rescata geneticamente con facilidad: ruta de escape</td>
+<td>10.3389/fmicb.2015.00004</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Mutagenesis de la interfaz en el ensamblaje completo MexAB-OprM (Tsutsumi 2019)</td>
+<td>otro (mutantes)</td>
+<td>MexAB-OprM</td>
+<td>interfaz OMF-MFP</td>
+<td>definir los residuos esenciales de la interfaz en la estructura del ensamblaje completo (6IOK/6IOL)</td>
+<td>si: la mutagenesis acompana a las dos estructuras de crio-EM del ensamblaje completo en dos registros separados 60 grados</td>
+<td>P. aeruginosa</td>
+<td>estructura (crio-EM 3,64 y 3,76 A), mutagenesis</td>
+<td>N4</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica</td>
+<td>10.1038/s41467-019-09463-9</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptidoglicano como estabilizador del complejo MexA-OprM (Ma 2021)</td>
+<td>otro (interactor endogeno)</td>
+<td>MexAB-OprM</td>
+<td>otro: contacto MFP-peptidoglicano</td>
+<td>el peptidoglicano estabiliza el complejo MexA-OprM</td>
+<td>si para el efecto: experimentos de pull-down con peptidoglicanos purificados de E. coli y de P. aeruginosa; además la crio-tomografia in situ muestra que AcrA contacta el peptidoglicano</td>
+<td>E. coli y P. aeruginosa</td>
+<td>pull-down con peptidoglicano purificado; crio-tomografia in situ (sistema homólogo)</td>
+<td>N2</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica. Barrera anadida: el complejo tiene un estabilizador adicional que un competidor peptidico no desplaza</td>
+<td>10.3390/ijms22105328; 10.1038/s41467-019-10512-6</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="e-3-bloque-3-modalidades-biologicas"><span class="num">Secci&oacute;n 4</span>e.3 BLOQUE 3 — Modalidades biológicas</h2>
+<h3 id="e-3-1-peptidos-los-antecedentes-del-planteamiento-inicial-y-">e.3.1 Péptidos: los antecedentes del planteamiento inicial y lo que realmente demuestran</h3>
+<p>Los antecedentes que el planteamiento inicial del proyecto cita están verificados y son pertinentes, pero conviene ser exacto sobre su alcance. Los péptidos contra la interfaz de <strong>YeaZ</strong> de <em>P. aeruginosa</em> impiden una interacción proteína-proteína esencial del complejo de modificación de tRNA (doi 10.1002/psc.3658), y el trabajo hermano muestra que un péptido derivado de una interfaz proteica de <em>P. aeruginosa</em> <strong>se autoensambla</strong> en estructuras supramoleculares con conmutación conformacional (doi 10.3389/fchem.2022.1038796). Ese segundo dato es una advertencia transferible y no un adorno: un péptido de interfaz que se autoensambla compite consigo mismo por la unión a la diana, y el diseño debe medir agregación antes de interpretar cualquier falta de actividad. El <strong>péptido biomimético contra la placa base del sistema de secreción de tipo VI</strong> inhibe la actividad del sistema (doi 10.1128/mbio.01348-21) y es el antecedente conceptual más cercano de un péptido anti-ensamblaje en una maquinaria bacteriana multicomponente. La revisión de <strong>interacciones proteína-proteína como blanco antibiótico</strong> (doi 10.1002/med.21519) y los <strong>inhibidores de la interacción NusB–NusE</strong> (doi 10.1021/acsomega.7b00273) completan el marco.</p>
+<p><strong>El trabajo de Castillo-Juárez sobre péptidos contra el sistema de secreción de tipo II no se localizó.</strong> Búsquedas documentadas en PubMed el 2026-09-11: <code>(Castillo-Juarez[Author]) AND (peptide[Title/Abstract] OR secretion[Title/Abstract] OR Pseudomonas[Title/Abstract])</code> devolvió 18 registros, todos sobre detección de quorum, antivirulencia de remedios herbales mayas y afines; <code>(Castillo-Juarez I[Author]) AND (peptide[Title/Abstract])</code> devolvió 1 registro, una revisión sobre propiedades de los péptidos antimicrobianos más allá de la inhibición del crecimiento (doi 10.7717/peerj.12667). Se marca <strong>[DOI NO VERIFICADO — no localizado]</strong>. Lo que sí se sabe y se verificó es que ese grupo publica sobre antivirulencia y detección de quorum en <em>P. aeruginosa</em>; no se le atribuye aquí ningún trabajo sobre péptidos anti-T2SS.</p>
+<p>Dos precedentes peptídicos que <strong>no</strong> están en el planteamiento inicial son más importantes para ella que los que sí están.</p>
+<p><strong>El tetrapéptido FIRL (Phe-Ile-Arg-Leu-CONH₂), derivado de secuencias conservadas de la región de BamD que se supone une a BamA.</strong> Sin actividad antimicrobiana propia, redujo al menos cuatro veces la CIM de colistina, levofloxacino, eritromicina, vancomicina y rifampicina frente a <em>P. aeruginosa</em> PAO1; en presencia del péptido <strong>la expresión de OprM se redujo a un tercio</strong> y la permeabilidad de membrana externa aumentó; y la combinación de péptido a 2,08 mg/kg con colistina a 1,25 mg/kg redujo <em>P. aeruginosa</em> en más de 1 log UFC/mL en un modelo murino de neumonía (doi 10.1093/jac/dks174, EXP, <strong>N5</strong>). Este es el precedente más importante del bloque: <strong>un péptido de cuatro residuos derivado de una interfaz proteína-proteína periplásmica de <em>P. aeruginosa</em> alcanza eficacia in vivo.</strong> Y también ilustra el problema: como el péptido aumenta la permeabilidad de la membrana externa y a la vez baja la cantidad de OprM, la potenciación observada no se puede atribuir a un mecanismo único. La fila lleva mecanismo_respaldado = <em>parcial</em> por esa razón.</p>
+<p><strong>El péptido sintético P4-9, de 13 residuos.</strong> Induce un retraso de crecimiento de 1,3 h, la sensibilización a ceftazidima, fosfomicina y eritromicina <strong>persiste al menos 2 h después de retirar el péptido</strong>, la permeabilización dura 20 h, y —el punto crítico— durante ese período los mutantes de <em>P. aeruginosa</em> que <strong>sobreexpresan MexAB-OprM</strong> y los que sobreexpresan la β-lactamasa AmpC se vuelven sensibles a antibióticos que son sustrato de esos mecanismos (doi 10.1186/s12929-020-00678-3, EXP, N3). <em>Conclusión del autor:</em> este resultado es el <strong>control obligatorio</strong> del proyecto. Un péptido de longitud comparable a la que el proyecto planea sintetizar revierte el fenotipo de sobreexpresión de MexAB-OprM <strong>sin tocar la bomba</strong>. Cualquier péptido del proyecto que potencie un antibiótico en una cepa que sobreexpresa MexAB-OprM y que no se acompañe de un control de permeabilización y de un control en cepa de deleción <strong>no puede distinguirse de P4-9</strong>, y por tanto no alcanza N3.</p>
+<p>Dos ejemplos más completan el panorama peptídico. Hay <strong>inhibidores peptídicos de la proteína SMR</strong> de <em>P. aeruginosa</em> (doi 10.1128/aac.00730-19), que demuestran que la modalidad se ha ensayado contra bombas bacterianas, aunque no de la familia RND; la fila queda POR VERIFICAR porque solo se consultó el título. Y hay un caso de atribución mecanística no respaldada que sirve de contraejemplo metodológico: <strong>Mastoparán-B</strong> reduce 20 veces la expresión de <code>adeB</code> con CIM de 1 µg/mL en <em>A. baumannii</em> MDR, pero la localización de su sitio en AdeB proviene de modelado por homología y acoplamiento con AutoDock/Vina, no de medición (doi 10.1002/prot.26539, COMP). Un péptido anfifílico con actividad antimicrobiana propia no puede declararse inhibidor de bomba sin control de permeabilización.</p>
+<p>Finalmente, el trabajo de 2026 que más importa a la evaluación de novedad: un cribado de ~18 000 secuencias con modelos de red neuronal y bosque aleatorio produjo nueve candidatos, cinco no hemolíticos por predicción, y se acoplaron <strong>contra los tres componentes de MexAB-OprM: MexA, MexB y OprM</strong>; el candidato 2ANN fue el único al que se predijo un puente de hidrógeno con MexA, entre su Lys15 y Asp61 de MexA, y el complejo se mantuvo estable en 200 ns de dinámica molecular (doi 10.1007/s12602-026-11192-7, COMP, N1). Los propios autores declaran que todo es predicción y piden validación experimental. <strong>Numeración:</strong> el resumen no declara el sistema de numeración de «Asp61 de MexA»; en cualquiera de los dos sistemas plausibles —61 de cadena madura o 61 de UniProt P52477— la posición queda <strong>fuera</strong> del epítopo de contacto medido, MexA 96–110 (madura) = 119–133 (UniProt P52477). Se marca POR VERIFICAR el sistema de numeración.</p>
+<h3 id="e-3-2-nanobodies-y-anticuerpos-la-pregunta-binaria-respondid">e.3.2 Nanobodies y anticuerpos: la pregunta binaria, respondida</h3>
+<p>Este compendio pide una respuesta binaria a si algún nanobody o DARPin se ha ensayado como <strong>inhibidor</strong> y no solo como herramienta estructural. <strong>La respuesta es SÍ, en tres formas distintas.</strong></p>
+<p><strong>Un DARPin como inhibidor de una bomba RND, con estructura.</strong> La entrada de 2,5 Å de AcrB trimérico en complejo con un DARPin está publicada explícitamente como «inhibidores DARPin» (doi 10.1371/journal.pbio.0050007), y el mismo reactivo <strong>inhibe la interacción AcrA–AcrB</strong> en resonancia de plasmón superficial, a diferencia de novobiocina y MC-207,110 (doi 10.1016/j.chembiol.2011.02.011). Hay caracterización adicional de los complejos AcrB/DARPin por espectrometría de masas LILBID (doi 10.1016/j.bbamem.2011.05.009). Nivel de evidencia: N4.</p>
+<p><strong>Un nanobody que revierte resistencia en <em>P. aeruginosa</em>, con eficacia in vivo.</strong> Se construyó una biblioteca de VHH camélidos contra <em>P. aeruginosa</em> y se aisló PsC23; la espectrometría de masas identificó la diana como un componente del <strong>transportador de C4-dicarboxilato</strong> que alimenta la derivación del glioxilato en condiciones de estrés oxidativo. PsC23 es bacteriostático a 1,66 µM (25 µg/mL) y muestra sinergia con carbapenémicos y β-lactámicos a 100–200 nM (1,5–3,0 µg/mL); en combinación con meropenem <strong>eliminó por completo la infección en un ratón neutropénico con infección sistémica por <em>P. aeruginosa</em> resistente a carbapenémicos</strong>. El bloqueo de la derivación del glioxilato desorganiza la transducción de energía y, como consecuencia declarada, <strong>inhibe el eflujo</strong> (doi 10.1038/s41429-024-00748-w, EXP, N5). La diana <strong>no</strong> es un componente de la bomba y la inhibición del eflujo es indirecta; la fuente lo declara así.</p>
+<p><strong>Los DARPins de las entradas verificadas son, en efecto, fiduciales.</strong> Las entradas 4C48, 6SGR, 6SGS, 7B8R, 7B8S y 7B8T contienen DARPin sin mecanismo inhibitorio declarado (doi 10.1038/s41467-021-27146-2 para 7B8P–7B8T).</p>
+<p><em>Conclusión del autor, que corta en las dos direcciones.</em> A favor: existe prueba estructural y bioquímica de que un ligando proteico dirigido a la superficie periplásmica de un componente de bomba inhibe una interacción entre componentes; el concepto de inhibición por interfaz en una bomba RND está validado. En contra: <strong>ninguno de esos reactivos se convirtió en terapia, y el motivo es la barrera f1</strong>. Un DARPin o un VHH pesa 14–18 kDa y no atraviesa la membrana externa de <em>P. aeruginosa</em>; el único nanobody con eficacia <em>in vivo</em> de esta lista actúa sobre una diana a la que llega sin cruzar la membrana externa hacia el periplasma en concentración funcional. El proyecto propone un péptido de 15–31 residuos, de 2–4 kDa, precisamente porque el formato proteico no pasa. Esa es la razón correcta para elegir péptidos, y conviene escribirla como tal en el planteamiento inicial.</p>
+<h3 id="e-3-3-aptameros-peptidos-antimicrobianos-nombrados-y-antisen">e.3.3 Aptámeros, péptidos antimicrobianos nombrados y antisentido</h3>
+<p><strong>Aptámeros: resultado negativo.</strong> Búsqueda documentada en PubMed el 2026-09-11, <code>(aptamer[Title/Abstract]) AND (efflux[Title/Abstract] OR "multidrug resistance"[Title/Abstract]) AND (bacteria*[Title/Abstract])</code>: 15 registros, <strong>0 retenidos como inhibidores de bomba</strong>. Los aptámeros publicados contra Gram-negativos multirresistentes son de <strong>detección</strong> (doi 10.3389/fcimb.2022.818737) o de vehiculización de péptidos antimicrobianos. La modalidad no tiene precedente como inhibidor de bomba y añade la barrera de permeabilidad de un polianión.</p>
+<p><strong>Los tres péptidos antimicrobianos que este compendio nombra no son inhibidores de eflujo.</strong> <strong>Bac2A</strong> y <strong>HHC-36</strong> son bactenecinas sintéticas cuyo mecanismo es perturbación de membrana; su literatura es mayoritariamente de ingeniería de actividad y de recubrimientos de materiales (doi 10.1021/ci400477e). El dato duro que aportan es de coste de modalidad y pertenece al eje (f): <strong>HHC-10 y HHC-36 tienen baja estabilidad tríptica</strong>, determinada por la longitud de la cadena lateral de los residuos catiónicos y por la conformación del giro, y los isómeros todo-D no perdieron mucha actividad antimicrobiana (doi 10.1021/acs.jmedchem.5b01740, EXP). La <strong>apidaecina</strong> tiene un mecanismo resuelto y es ribosomal, no de eflujo: Api137 y Api88 se unen al túnel de salida del polipéptido y atrapan factores de liberación, con sitios adicionales resueltos por crio-EM (doi 10.1038/s41467-024-48027-4; doi 10.1093/nar/gkae567).</p>
+<p><strong>Antisentido y PNA: la alternativa que sí llegó a N5.</strong> Dirigiendo oligómeros morfolino fosforodiamidato conjugados a péptido (PPMO) contra los componentes de AcrAB-TolC se identificó una secuencia contra <code>acrA</code> como la más eficaz para reducir el eflujo; el acrA-PPMO potencia levofloxacino y azitromicina en un panel de enterobacterias clínicas y <strong>potencia azitromicina in vivo en un modelo de septicemia por <em>K. pneumoniae</em></strong>; y los PPMO dirigidos al sistema RND homólogo de <em>P. aeruginosa</em>, <strong>MexAB-OprM</strong>, también potencian varias clases de antibióticos en paneles de cepas y en un modelo de infección en cultivo celular (doi 10.1021/acsinfecdis.9b00123, EXP, N5). En paralelo, conjugados de <strong>péptido penetrante de célula con ácido nucleico peptídico</strong> (CPP-PNA) contra <code>bamB</code> y <code>tolC</code> sensibilizaron células <strong>silvestres</strong> de <em>E. coli</em> y de <em>P. aeruginosa</em> a varios antibióticos (doi 10.1038/s41598-022-09635-6), y existe silenciamiento secuencia-específico de <code>acrA</code> (doi 10.1007/s12033-022-00585-y).</p>
+<p><em>Conclusión del autor.</em> La modalidad antisentido esquiva por construcción la barrera f3 del eje siguiente: atacar la síntesis del componente hace irrelevante la vida media del complejo preformado. Y el precedente CPP-PNA demuestra que <strong>un péptido penetrante sí entrega carga al interior de <em>P. aeruginosa</em></strong>, lo que acota, sin eliminar, la barrera f1. Para el proyecto esto tiene una lectura incómoda y una útil: la incómoda es que existe ya una modalidad con N5 que consigue el mismo efecto fenotípico que el proyecto persigue; la útil es que el proyecto puede usarla como comparador positivo y como vehículo de entrega.</p>
+<h3 id="e-3-4-tabla-del-bloque-3">e.3.4 Tabla del bloque 3</h3>
+<table class="data">
+<thead>
+<tr>
+<th>compuesto_o_construccion</th>
+<th>modalidad</th>
+<th>blanco_declarado</th>
+<th>sitio_de_union_declarado</th>
+<th>mecanismo_declarado</th>
+<th>mecanismo_respaldado</th>
+<th>organismo</th>
+<th>evidencia_disponible</th>
+<th>nivel_evidencia</th>
+<th>potenciacion_reportada</th>
+<th>toxicidad_reportada</th>
+<th>estado_de_desarrollo</th>
+<th>por_que_se_detuvo</th>
+<th>referencia_doi</th>
+<th>etiqueta_evidencia</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Peptidos contra la interfaz de YeaZ de P. aeruginosa (Bollati 2024; Fasola 2022)</td>
+<td>peptido</td>
+<td>YeaZ (complejo TsaBDE de modificación de tRNA), NO una bomba de eflujo</td>
+<td>interfaz proteína-proteína (no de bomba)</td>
+<td>impedir una interacción proteína-proteína esencial del complejo de modificación de tRNA</td>
+<td>si para el mecanismo declarado en SU sistema: se disena sobre la interfaz y se mide la interferencia; además el peptido derivado de interfaz se autoensambla en estructuras supramoleculares con conmutación conformacional</td>
+<td>P. aeruginosa</td>
+<td>diseno sobre interfaz, ensayos de interacción, caracterización estructural del peptido</td>
+<td>N2</td>
+<td>no aplica (no es un potenciador de antibiotico)</td>
+<td>no reportada</td>
+<td>investigación academica; antecedente citado por el planteamiento inicial del proyecto</td>
+<td>no aplica. Advertencia transferible: el propio peptido de interfaz se autoensambla, lo que compite con la union a la diana</td>
+<td>10.1002/psc.3658; 10.3389/fchem.2022.1038796</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptido biomimetico contra la placa base del sistema de secreción de tipo VI (Cherrak 2021)</td>
+<td>peptido</td>
+<td>placa base del T6SS, NO una bomba de eflujo</td>
+<td>interfaz proteína-proteína (no de bomba)</td>
+<td>mimetizar un elemento de la placa base para impedir el ensamblaje del T6SS</td>
+<td>si en su sistema: se demuestra inhibición de la actividad del T6SS con el peptido biomimetico</td>
+<td>E. coli / enterobacterias</td>
+<td>diseno biomimetico, ensayos de actividad del T6SS</td>
+<td>N2</td>
+<td>no aplica</td>
+<td>no reportada</td>
+<td>investigación academica; antecedente citado por el planteamiento inicial del proyecto</td>
+<td>no aplica. Es el antecedente conceptual mas cercano de peptido-anti-ensamblaje en una maquinaria bacteriana multicomponente</td>
+<td>10.1128/mbio.01348-21</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Inhibidores de molecula pequena de la interacción NusB-NusE (Cossar 2017)</td>
+<td>molecula pequena</td>
+<td>interacción NusB-NusE, NO una bomba</td>
+<td>interfaz proteína-proteína (no de bomba)</td>
+<td>bloqueo de una interacción proteína-proteína esencial con actividad antibiotica resultante</td>
+<td>parcial: hay actividad antibiotica y diseno sobre la interfaz; el respaldo mecanistico directo no se extrajo (resumen unicamente)</td>
+<td>E. coli</td>
+<td>química medicinal, actividad antibacteriana</td>
+<td>N2</td>
+<td>no aplica</td>
+<td>no reportada</td>
+<td>investigación academica</td>
+<td>no aplica. Antecedente de que una PPI bacteriana puede inhibirse con molecula pequena</td>
+<td>10.1021/acsomega.7b00273; 10.1002/med.21519</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptidos contra el sistema de secreción de tipo II del grupo de Castillo-Juarez</td>
+<td>peptido</td>
+<td>sistema de secreción de tipo II</td>
+<td>[POR VERIFICAR]</td>
+<td>[POR VERIFICAR]</td>
+<td>[POR VERIFICAR]: no se pudo evaluar porque no se localizo el trabajo</td>
+<td>[POR VERIFICAR]</td>
+<td>ninguna consultada</td>
+<td>[POR VERIFICAR]</td>
+<td>[POR VERIFICAR]</td>
+<td>[POR VERIFICAR]</td>
+<td>[POR VERIFICAR]</td>
+<td>no aplica. Búsqueda documentada en PubMed el 2026-09-11 con (Castillo-Juarez[Author]) AND (peptide OR secretion OR Pseudomonas): 18 registros, todos de detección de quorum, antivirulencia de productos vegetales o revisiones de peptidos antimicrobianos; con (Castillo-Juarez I[Author]) AND (peptide): 1 registro, una revisión de propiedades de peptidos antimicrobianos. Ningún trabajo sobre peptidos contra el T2SS</td>
+<td>[DOI NO VERIFICADO -- no localizado]</td>
+<td>POR VERIFICAR</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptido FIRL (Phe-Ile-Arg-Leu-CONH2) derivado de BamD (Mori 2012)</td>
+<td>peptido (tetrapeptido)</td>
+<td>BamA/BamD (maquinaria BAM de biogenesis de OMP), NO la interfaz OMF-MFP</td>
+<td>interfaz proteína-proteína (región de BamD que une BamA)</td>
+<td>competir con la interacción BamD-BamA y comprometer la biogenesis de proteínas de membrana externa</td>
+<td>parcial: SI baja la expresión de OprM a un tercio y aumenta la permeabilidad de la ME, pero el efecto sobre la permeabilidad confunde la atribución: no se distingue potenciación por menos OprM de potenciación por mas entrada</td>
+<td>P. aeruginosa PAO1</td>
+<td>tablero de ajedrez, curvas de muerte, SDS-PAGE y western de OMP, nitrocefina (permeabilidad), neumonia murina</td>
+<td>N5</td>
+<td>reduce al menos 4 veces la CIM de colistina, levofloxacino, eritromicina, vancomicina y rifampicina; peptido 2,08 mg/kg con colistina 1,25 mg/kg reduce mas de 1 log UFC/mL en neumonia murina</td>
+<td>sin actividad antimicrobiana propia; toxicidad no reportada</td>
+<td>prueba de concepto in vivo, sin continuación localizada</td>
+<td>no detenido formalmente. ES EL PRECEDENTE MAS IMPORTANTE PARA EL PROYECTO: un peptido de 4 residuos derivado de una interfaz proteína-proteína periplásmica de P. aeruginosa alcanza N5. También muestra la confusión mecanistica que hay que evitar</td>
+<td>10.1093/jac/dks174</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptido sintetico P4-9 (13 residuos) (Razquin-Olazaran 2020)</td>
+<td>peptido</td>
+<td>envoltura de P. aeruginosa</td>
+<td>otro: membrana (no una interfaz proteica)</td>
+<td>permeabilización de la envoltura que sensibiliza a antibioticos</td>
+<td>si para el mecanismo declarado, que es permeabilización, NO inhibición de bomba: microscopía de fuerza atomica y confocal muestran alteración de superficie</td>
+<td>P. aeruginosa MDR clinico</td>
+<td>captación de antibioticos y sondas, confocal, AFM, CIM</td>
+<td>N3</td>
+<td>efecto post-antibiotico de 1,3 h; la sensibilización persiste al menos 2 h sin el peptido y la permeabilización 20 h; sensibiliza mutantes que sobreexpresan MexAB-OprM y mutantes de AmpC</td>
+<td>peptido perturbador de membrana; los supervivientes se caracterizan</td>
+<td>investigación academica</td>
+<td>no aplica. ES EL CONTROL OBLIGATORIO del proyecto: un peptido de 13 residuos sensibiliza a antibioticos en cepas que sobreexpresan MexAB-OprM SIN tocar la bomba</td>
+<td>10.1186/s12929-020-00678-3</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptidos inhibidores de la proteína SMR (familia de resistencia a multiples farmacos pequena) de P. aeruginosa</td>
+<td>peptido</td>
+<td>transportador SMR (no RND)</td>
+<td>otro: transportador SMR</td>
+<td>inhibición peptidica de un transportador de eflujo distinto de los RND</td>
+<td>parcial: resumen unicamente -- texto completo no consultado</td>
+<td>P. aeruginosa</td>
+<td>según el titulo: inhibición de eflujo</td>
+<td>N2 [POR VERIFICAR]</td>
+<td>[POR VERIFICAR]</td>
+<td>no reportada</td>
+<td>investigación academica</td>
+<td>no aplica. Se lista porque demuestra que la modalidad peptidica se ha ensayado contra bombas de eflujo bacterianas, aunque no de la familia RND</td>
+<td>10.1128/aac.00730-19</td>
+<td>POR VERIFICAR</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Mastoparan-B (peptido anfifilico) contra AdeB</td>
+<td>peptido</td>
+<td>AdeB (RND de A. baumannii)</td>
+<td>sitio de sustrato (poro rico en Phe y Ala, según acoplamiento)</td>
+<td>union al poro del transportador RND y regulación a la baja de adeB</td>
+<td>no: la localización del sitio proviene de modelado por homología y acoplamiento con AutoDock/Vina, no de medición; lo que SI se mide es CIM y expresión genica, que no distinguen union a AdeB de acción sobre la membrana</td>
+<td>A. baumannii MDR</td>
+<td>acoplamiento, MD (GROMACS), CIM, expresión de adeB por qPCR</td>
+<td>N1 mas expresión genica</td>
+<td>CIM de 1 ug/mL y reducción de 20 veces de la expresión de adeB a concentración sub-CIM</td>
+<td>es un peptido anfifilico con actividad antimicrobiana propia</td>
+<td>investigación academica</td>
+<td>no aplica. Ejemplo de atribución mecanistica no respaldada: un peptido lítico con actividad propia no puede declararse inhibidor de bomba sin control de permeabilización</td>
+<td>10.1002/prot.26539</td>
+<td>COMP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptido antimicrobiano 2ANN diseñado por ANN/RF contra MexA, MexB y OprM (Parambi 2026)</td>
+<td>peptido</td>
+<td>MexA, MexB y OprM de MexAB-OprM</td>
+<td>otro: sitios de acoplamiento predichos en cada componente, NO la interfaz OMF-MFP</td>
+<td>doble acción: union a componentes de la bomba y desorganización de la membrana</td>
+<td>no: todo el trabajo es computacional. Los autores lo declaran explicitamente y piden validación experimental</td>
+<td>P. aeruginosa MDR (in silico)</td>
+<td>cribado de ~18.000 secuencias, acoplamiento, MD 200 ns, simulación de membrana, predicción de hemolisis</td>
+<td>N1</td>
+<td>ninguna medida. Los valores informados son PUNTUACIONES DE ACOPLAMIENTO de -7,1 a -14,1 kcal/mol; presentarlas en kcal/mol invita a leerlas como energias libres de union y NO lo son (regla R5)</td>
+<td>hemolisis PREDICHA, no medida</td>
+<td>publicación computacional 2026</td>
+<td>no aplica. ES EL TRABAJO QUE MATIZA LA NOVEDAD DEL PROYECTO: propone peptidos dirigidos a MexA y a OprM, aunque el único contacto declarado (puente de hidrogeno entre Lys15 del peptido y Asp61 de MexA, sistema de numeración no declarado en el resumen) NO esta en el epitopo de contacto MexA 96-110 (madura) = 119-133 (UniProt P52477)</td>
+<td>10.1007/s12602-026-11192-7</td>
+<td>COMP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>VHH camelido PsC23 (Nagraj 2024)</td>
+<td>nanobody (fragmento VHH)</td>
+<td>componente del transportador de C4-dicarboxilato de P. aeruginosa, NO la bomba de eflujo</td>
+<td>otro: transportador metabolico</td>
+<td>bloqueo de la derivación del glioxilato que colapsa la transducción de energía y, de forma indirecta, el eflujo</td>
+<td>si para el mecanismo declarado: identificación de la diana por espectrometria de masas y demostración del desplazamiento respiratorio; el efecto sobre el eflujo es INDIRECTO y así se declara</td>
+<td>P. aeruginosa resistente a carbapenemicos</td>
+<td>biblioteca de VHH, identificación de diana por MS, sinergia, raton neutropenico</td>
+<td>N5</td>
+<td>bacteriostatico a 1,66 uM (25 ug/mL); sinergia con carbapenemicos y beta-lactamicos a 100-200 nM (1,5-3,0 ug/mL); con meropenem elimino por completo la infección sistemica en raton neutropenico</td>
+<td>no reportada</td>
+<td>prueba de concepto in vivo</td>
+<td>no detenido en la fecha de corte. Responde afirmativamente a la pregunta binaria sobre nanobodies como INHIBIDORES en P. aeruginosa, pero el blanco NO es un componente de la bomba</td>
+<td>10.1038/s41429-024-00748-w</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>DARPins como fiduciales estructurales (4C48, 6SGR, 6SGS, 7B8R, 7B8S, 7B8T)</td>
+<td>otro (proteína de andamio)</td>
+<td>AcrB/AcrBZ</td>
+<td>otro: superficie periplásmica</td>
+<td>ninguno: uso declarado como marcador fiducial para crio-EM y cristalografia</td>
+<td>no aplica: no se declara mecanismo inhibitorio en esas entradas. La pregunta binaria se responde en la fila del DARPin de Sennhauser/Tikhonova, que SI inhibe</td>
+<td>E. coli</td>
+<td>estructura</td>
+<td>N4 (para la union, no para inhibición)</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>herramienta</td>
+<td>no aplica</td>
+<td>10.1038/s41467-021-27146-2</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Aptameros contra componentes de bombas de eflujo</td>
+<td>aptamero</td>
+<td>ninguno localizado</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>no: no se localizo ningún aptamero dirigido a un componente de bomba de eflujo. Los aptameros publicados contra Gram-negativos MDR son de DETECCION o de vehiculización de peptidos</td>
+<td>no aplica</td>
+<td>ninguna</td>
+<td>no aplica</td>
+<td>ninguna</td>
+<td>no aplica</td>
+<td>no existe</td>
+<td>no aplica. Búsqueda documentada: PubMed, (aptamer) AND (efflux OR multidrug resistance) AND (bacteria*), 2026-09-11, 15 registros, 0 retenidos como inhibidores de bomba</td>
+<td>10.3389/fcimb.2022.818737; 10.3390/ijms21072485</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Peptidos antimicrobianos citados por el proyecto: Bac2A, HHC-36 (bactenecinas sinteticas) y apidaecina</td>
+<td>peptido</td>
+<td>membrana bacteriana (bactenecinas) o ribosoma 70S (apidaecina)</td>
+<td>otro: no una bomba de eflujo</td>
+<td>actividad antimicrobiana por perturbación de membrana (bactenecinas) o por atrapamiento del factor de liberación en el ribosoma (apidaecina/Api137)</td>
+<td>no como inhibidores de eflujo: ninguno de los tres tiene mecanismo declarado ni respaldado sobre una bomba de eflujo. Para Api137 y Api88 el mecanismo ribosomal esta resuelto por crio-EM</td>
+<td>varios Gram-negativos</td>
+<td>CIM, estructura (crio-EM del ribosoma con Api137/Api88), estabilidad triptica</td>
+<td>N4 (apidaecina, para su mecanismo ribosomal)</td>
+<td>no aplica al eflujo</td>
+<td>HHC-10 y HHC-36 tienen BAJA estabilidad triptica, determinada por la longitud de la cadena lateral de los residuos cationicos y por la conformación del giro</td>
+<td>Bac2A y HHC-36 se usan sobre todo en recubrimientos de materiales; Api137/Api88 en desarrollo antibacteriano</td>
+<td>no aplica. Se documentan porque este compendio los nombra y porque la estabilidad triptica de HHC-36 es un dato duro de coste de la modalidad peptidica</td>
+<td>10.1021/ci400477e; 10.1021/acs.jmedchem.5b01740; 10.1038/s41467-024-48027-4; 10.1093/nar/gkae567</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>PPMO antisentido contra acrA y contra mexAB (Sturge 2019)</td>
+<td>antisentido (oligomero morfolino fosforodiamidato conjugado a peptido)</td>
+<td>acrA, acrB, tolC; mexAB-oprM</td>
+<td>otro: ARN mensajero, no la proteína</td>
+<td>reducir la SINTESIS del componente en lugar de bloquear el ensamblaje</td>
+<td>si: la selección de secuencia identifico acrA como la diana mas eficaz y el efecto es sobre expresión, no sobre interfaz</td>
+<td>Enterobacteriaceae clinicas, K. pneumoniae, P. aeruginosa</td>
+<td>CIM en paneles clinicos, eflujo, septicemia murina, modelo de infección en cultivo celular</td>
+<td>N5</td>
+<td>potencia levofloxacino y azitromicina en paneles clinicos; acrA-PPMO potencia azitromicina in vivo en septicemia por K. pneumoniae; los PPMO contra mexAB-oprM potencian varias clases en P. aeruginosa</td>
+<td>no reportada</td>
+<td>prueba de concepto in vivo</td>
+<td>no detenido en la fecha de corte. ES LA ALTERNATIVA DIRECTA al inhibidor de ensamblaje y esquiva la barrera f3 por construcción: atacar la síntesis, no el complejo preformado</td>
+<td>10.1021/acsinfecdis.9b00123; 10.1371/journal.pbio.1002552</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Conjugados CPP-PNA contra bamB y tolC (Yamamoto 2022); silenciamiento de acrA</td>
+<td>antisentido (acido nucleico peptidico conjugado a peptido penetrante)</td>
+<td>bamB, tolC (y homólogos)</td>
+<td>otro: ARN mensajero</td>
+<td>silenciamiento genico para aumentar la captación y reducir el eflujo</td>
+<td>si para el efecto declarado: los mutantes de deleción reproducen el fenotipo y el tratamiento con CPP-PNA sensibiliza celulas silvestres de E. coli y de P. aeruginosa</td>
+<td>E. coli y P. aeruginosa</td>
+<td>deleción genica, silenciamiento con CPP-PNA, captación de compuestos, sensibilidad a antibioticos</td>
+<td>N3</td>
+<td>alta sensibilidad a varios antibioticos tras el tratamiento con CPP-PNA (valores no extraidos: resumen unicamente)</td>
+<td>no reportada</td>
+<td>investigación academica y biotecnologica</td>
+<td>no aplica. Demuestra que un peptido penetrante SI entrega carga al interior de P. aeruginosa, lo que acota la barrera f1</td>
+<td>10.1038/s41598-022-09635-6; 10.1007/s12033-022-00585-y</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="e-4-bloque-4-inhibicion-por-congelacion-del-registro-el-prec"><span class="num">Secci&oacute;n 5</span>e.4 BLOQUE 4 — Inhibición por congelación del registro: el precedente conceptual existe</h2>
+<h3 id="e-4-1-la-pregunta-y-la-convencion-del-angulo">e.4.1 La pregunta, y la convención del ángulo</h3>
+<p>La pregunta de este compendio es si existe precedente, en cualquier sistema, de inhibir un complejo bloqueando un <strong>grado de libertad rotacional</strong> en lugar de una interfaz. La respuesta es que sí, en tres niveles de proximidad, y que el precedente más fuerte es un fármaco aprobado.</p>
+<p><strong>Convención angular.</strong> Toda medida de registro citada desde los datos previos del proyecto usa la convención verificada allí: eje definido como el vector centroide del trímero RND → centroide del trímero OMF, ángulo módulo 120°, y los valores reportados son los del propio archivo de hechos verificados (6IOK 101,86°; 6IOL 41,90°; 9J3D 45,38°; 9J3E 45,99°). La relación entre los dos estados de MexAB-OprM se midió como una <strong>rotación de 59,9° sobre un eje a 0,4° del eje del ensamblaje</strong> (mediciones previas del proyectomedido en el proyecto, 2026-09-11). El sentido y la quiralidad de esa rotación <strong>no están declarados en los datos previos del proyecto y no se midieron en esta revisión: [POR VERIFICAR]</strong>. Es una omisión que importa, porque un inhibidor que bloquea un sentido de giro no es el mismo que bloquea el otro.</p>
+<h3 id="e-4-2-nivel-1-dentro-de-la-propia-familia-rnd-congelar-el-gr">e.4.2 Nivel 1: dentro de la propia familia RND, congelar el grado de libertad inhibe la bomba</h3>
+<p>Este es el precedente más directo y, sorprendentemente, no figura en los datos previos del proyecto. Se introdujeron cisteínas en las interfaces de subdominios potencialmente móviles del dominio poro periplásmico de AcrB, cuantificando la formación del disulfuro por alquilación de las cisteínas libres y análisis MALDI-TOF. <strong>La inhibición de la función de la bomba como resultado del entrecruzamiento causó mayor susceptibilidad a compuestos tóxicos y reducción del eflujo de N-fenilnaftilamina, y la función se recuperó al exponer los mutantes afectados al agente reductor DTT</strong> (doi 10.1038/nsmb.1379, EXP, N2–N3). La reversión con DTT es lo que convierte la observación en causalidad: la pérdida de función se debe al enlace covalente que restringe el movimiento, no a la mutación.</p>
+<p>Dos trabajos lo complementan. Un <strong>trímero de AcrB covalentemente enlazado</strong> por un gen de fusión se expresa como una proteína de ~300 kDa que migra igual que el trímero silvestre y funciona en células intactas; <strong>al inactivar solo uno de los tres protómeros</strong>, por mutaciones del relevo de protones o por entrecruzamiento con disulfuro de la hendidura externa, se comprueba la hipótesis de rotación funcional (doi 10.1128/JB.01441-08, EXP, N3). Y seis disulfuros intersubunidad en el dominio periplásmico de AcrB producen dobles mutantes de cisteína con susceptibilidad igual o mayor que sus mutantes simples correspondientes (doi 10.1021/acsomega.0c02921).</p>
+<p><em>Conclusión del autor, con su límite.</em> El precedente demuestra que <strong>congelar un grado de libertad conformacional de una bomba RND la inhibe</strong>, y que inactivar <strong>uno de tres protómeros</strong> basta para comprometer el conjunto, lo que es aritmética favorable para una estrategia de estequiometría parcial. El límite es de definición: el grado de libertad congelado en estos tres trabajos es el ciclo L→T→O de los protómeros <strong>dentro</strong> del transportador, no el <strong>registro rotacional entre el trímero OMF y el trímero RND</strong> que el proyecto quiere congelar. Son dos grados de libertad distintos y la transferencia no es automática. Lo que sí se transfiere es el diseño experimental: entrecruzamiento covalente reversible con control de reducción es el ensayo que convertiría la hipótesis del registro en una medición.</p>
+<h3 id="e-4-3-nivel-2-atp-sintasa-donde-bloquear-el-rotor-llego-a-la">e.4.3 Nivel 2: ATP sintasa, donde bloquear el rotor llegó a la clínica</h3>
+<p><strong>Bedaquilina</strong> es el precedente que el proyecto necesita citar. Se resolvieron las estructuras de rayos X del anillo c9 micobacteriano sin y con el fármaco a 1,55 y 1,7 Å; las estructuras y los ensayos funcionales de apoyo revelan cómo el compuesto interactúa específicamente con el anillo rotor mediante numerosas interacciones y <strong>cubre por completo los sitios de unión de ion del anillo c, lo que impide que el anillo rotor actúe como transbordador de iones y detiene el funcionamiento de la ATP sintasa</strong> (doi 10.1126/sciadv.1500106, EXP, N5: fármaco aprobado para tuberculosis multirresistente). Hay además evidencia de que bedaquilina actúa sobre la <strong>subunidad ε</strong> de la misma enzima (doi 10.1128/AAC.01291-16), de modo que el sistema tiene dos sitios propuestos y la discusión no está cerrada; los inhibidores de segunda generación (escuaramidas, TBAJ-876) se caracterizaron sobre esa base (doi 10.15252/embj.2023113687).</p>
+<p>El mecanismo es exactamente el que el proyecto postula por analogía: <strong>no se rompe una interfaz, se inmoviliza un grado de libertad</strong>. Y funciona hasta la aprobación regulatoria. Un segundo precedente independiente en una ATPasa rotatoria distinta: un inhibidor de la <strong>Na⁺-V-ATPasa</strong> frena el crecimiento de enterococos resistentes a vancomicina y reveló la ruta del Na⁺ (doi 10.1038/s41594-024-01419-y), con crio-EM del complejo Vo de levadura que resuelve sitios de unión distintos para macrólidos inhibidores de V-ATPasa (doi 10.1021/acschembio.1c00894).</p>
+<p><em>Advertencia del autor sobre esta analogía.</em> La ATP sintasa y el motor flagelar son <strong>motores rotatorios continuos</strong>: giran muchas vueltas por segundo y su grado de libertad rotacional es una coordenada de reacción del ciclo catalítico. El registro OMF–RND de un ensamblaje tripartito es, según los datos previos del proyecto, <strong>una diferencia de 59,9° entre dos estados observados</strong>, no un giro continuo demostrado; los datos previos del proyecto advierten además que 6IOK y 6IOL son dos estados del <strong>mismo</strong> sistema y no observaciones independientes, y que los tres protómeros de OprM y las seis copias de MexA de un mismo ensamblaje tampoco lo son. Que dos estructuras difieran en 60° no demuestra que exista rotación funcional entre ellas, ni que esa rotación sea necesaria para el transporte. <strong>Ese es el hueco de conocimiento que el proyecto debería medir antes de invertir en congelarlo.</strong></p>
+<h3 id="e-4-4-nivel-3-motores-flagelares-donde-se-bloquea-lo-que-ali">e.4.4 Nivel 3: motores flagelares, donde se bloquea lo que alimenta la rotación</h3>
+<p>El motor flagelar bacteriano se detiene con inhibidores del canal de iones del estátor, no con inhibidores de la interfaz rotor-estátor. Los estátores impulsados por sodio, como el complejo PomA/PomB de <em>Vibrio</em> spp., se inhiben con inhibidores de canal de sodio, en particular con fenamil; se caracterizaron dos derivados de amilorida, HM2-16F y BB2-50F, con tres enfoques —rotación de células ancladas, nado libre y rotación de microesferas marcadoras— y ambos <strong>detienen la rotación</strong> en múltiples cepas y tipos de estátor (doi 10.1128/JB.00367-21, EXP). Existe además un ensayo de cribado de alto rendimiento para inhibidores de motilidad bacteriana (doi 10.1128/AAC.00482-11).</p>
+<p><em>Inferencia del autor.</em> En los tres niveles el patrón es el mismo y es instructivo para el diseño: <strong>la rotación se bloqueó siempre atacando el elemento que la alimenta o el que la ejecuta —el anillo rotor, el canal de iones del estátor, los subdominios móviles— y nunca la interfaz entre las dos piezas que rotan una respecto de la otra.</strong> Un proyecto que quiera congelar el registro OMF–MFP por la interfaz estaría intentando algo que, hasta donde alcanza esta revisión, no tiene precedente en ninguno de los tres sistemas. Eso es novedad, y también es riesgo; el eje (f) lo cuantifica.</p>
+<h3 id="e-4-5-tabla-del-bloque-4">e.4.5 Tabla del bloque 4</h3>
+<table class="data">
+<thead>
+<tr>
+<th>compuesto_o_construccion</th>
+<th>modalidad</th>
+<th>blanco_declarado</th>
+<th>sitio_de_union_declarado</th>
+<th>mecanismo_declarado</th>
+<th>mecanismo_respaldado</th>
+<th>organismo</th>
+<th>evidencia_disponible</th>
+<th>nivel_evidencia</th>
+<th>potenciacion_reportada</th>
+<th>toxicidad_reportada</th>
+<th>estado_de_desarrollo</th>
+<th>por_que_se_detuvo</th>
+<th>referencia_doi</th>
+<th>etiqueta_evidencia</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bedaquilina (diarilquinolina)</td>
+<td>molecula pequena</td>
+<td>anillo c (rotor Fo) de la F-ATP sintasa de Mycobacterium</td>
+<td>otro: anillo rotor, un GRADO DE LIBERTAD ROTACIONAL, no una interfaz</td>
+<td>cubrir los sitios de union de ion del anillo c para que el rotor deje de funcionar como transportador de iones y la sintasa se detenga</td>
+<td>si, y con el respaldo mas fuerte que existe para esta idea: estructuras de rayos X del anillo c9 micobacteriano sin y con bedaquilina a 1,55 y 1,7 A, mas ensayos funcionales. Hay un segundo trabajo que sitúa la diana en la subunidad epsilon, de modo que hay dos sitios propuestos</td>
+<td>M. tuberculosis</td>
+<td>estructura (rayos X 1,55/1,7 A), ensayos funcionales, uso clinico</td>
+<td>N5 (farmaco aprobado)</td>
+<td>no aplica (es un antibiotico, no un potenciador)</td>
+<td>toxicidad cardiaca (prolongación de QT) documentada en la literatura clinica; no extraida de los resumenes consultados en esta revisión</td>
+<td>aprobado para tuberculosis multirresistente</td>
+<td>no detenido. ES EL PRECEDENTE CONCEPTUAL QUE BUSCA EL PROYECTO: bloquear un grado de libertad rotacional, no una interfaz, funciona hasta la clinica</td>
+<td>10.1126/sciadv.1500106; 10.1128/AAC.01291-16</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Escuaramidas y TBAJ-876 (inhibidores de segunda generación de la ATP sintasa micobacteriana)</td>
+<td>molecula pequena</td>
+<td>F-ATP sintasa micobacteriana (anillo c y subunidad epsilon)</td>
+<td>otro: rotor / subunidad epsilon</td>
+<td>inhibición del mecanismo rotatorio por union en el rotor o en la subunidad epsilon</td>
+<td>si para la union: hay caracterización estructural y de mecanismo; TBAJ-876 conserva actividad sobre las subunidades c y epsilon</td>
+<td>M. tuberculosis</td>
+<td>estructura, bioquimica, CIM</td>
+<td>N3-N4</td>
+<td>no aplica</td>
+<td>TBAJ-876 se desarrollo para reducir la actividad sobre hERG respecto de bedaquilina</td>
+<td>desarrollo clinico</td>
+<td>no detenido</td>
+<td>10.15252/embj.2023113687</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Inhibidor de la Na+-V-ATPasa de enterococos; bafilomicina y macrolidos del sector Vo</td>
+<td>molecula pequena</td>
+<td>V-ATPasa (rotatoria)</td>
+<td>otro: rotor / sector Vo</td>
+<td>inhibición de una ATPasa rotatoria por union al sector de membrana</td>
+<td>si para la union: crio-EM del complejo Vo de levadura resuelve sitios de union distintos para macrolidos inhibidores de V-ATPasa; el inhibidor de Na+-V-ATPasa frena el crecimiento de enterococos resistentes a vancomicina y revela la ruta del Na+</td>
+<td>Enterococcus (VRE); levadura (para los sitios)</td>
+<td>estructura (crio-EM), crecimiento bacteriano</td>
+<td>N3-N4</td>
+<td>no aplica</td>
+<td>no reportada en los resumenes consultados</td>
+<td>investigación / prueba de concepto</td>
+<td>no aplica. Segundo precedente independiente de inhibición de un motor rotatorio por union al rotor</td>
+<td>10.1038/s41594-024-01419-y; 10.1021/acschembio.1c00894</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Enlaces disulfuro de ingenieria entre subdominios de AcrB (Seeger 2008)</td>
+<td>otro (entrecruzamiento covalente por ingenieria)</td>
+<td>AcrB</td>
+<td>otro: subdominios moviles del dominio poro periplásmico, es decir el GRADO DE LIBERTAD del ciclo L-T-O</td>
+<td>impedir el movimiento de subdominios y con ello la ROTACION FUNCIONAL de los protomeros</td>
+<td>si, y es la prueba mas limpia del concepto dentro de la propia familia RND: el entrecruzamiento inhibe la función (mayor sensibilidad a compuestos toxicos y menor eflujo de N-fenilnaftilamina) y la función se RECUPERA con DTT, que reduce el disulfuro</td>
+<td>E. coli</td>
+<td>alquilación de cisteinas libres y MALDI-TOF para cuantificar el disulfuro, CIM, eflujo, reversión con DTT</td>
+<td>N2-N3</td>
+<td>no aplica (inhibición, no potenciación)</td>
+<td>no aplica</td>
+<td>investigación basica de mecanismo</td>
+<td>no aplica. ES EL PRECEDENTE DIRECTO: en una bomba RND, congelar un grado de libertad conformacional-rotacional inhibe la bomba, y la reversión con DTT es el control que convierte la observación en causalidad</td>
+<td>10.1038/nsmb.1379</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Trimero de AcrB covalentemente enlazado con inactivación de un solo protomero (Takatsuka 2009)</td>
+<td>otro (construcción covalente)</td>
+<td>AcrB</td>
+<td>otro: ciclo de rotación funcional</td>
+<td>comprobar la rotación funcional inactivando un protomero de tres dentro de un trimero enlazado</td>
+<td>si: el trimero enlazado (~300 kDa) funciona en celulas intactas y la inactivación de un solo protomero, por mutaciones del relevo de protones o por entrecruzamiento con disulfuro de la hendidura externa, comprueba la hipótesis</td>
+<td>E. coli</td>
+<td>gen de fusión, PAGE nativa, CIM, entrecruzamiento</td>
+<td>N3</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica. Demuestra que inactivar UNO de tres protomeros basta para comprometer el conjunto: aritmetica favorable para una estrategia de estequiometría parcial</td>
+<td>10.1128/JB.01441-08</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Disulfuros intersubunidad en el dominio periplásmico de AcrB (Rajapaksha 2020)</td>
+<td>otro (entrecruzamiento por ingenieria)</td>
+<td>AcrB</td>
+<td>otro: interfaz intersubunidad y su flexibilidad</td>
+<td>restringir la flexibilidad intersubunidad para probar si la rotación funcional es necesaria</td>
+<td>parcial: los dobles mutantes de cisteina dan sensibilidad igual o mayor que los mutantes simples y se forman oligomeros enlazados por disulfuro, pero atribuir la perdida a la restricción conformacional requiere el control de reducción</td>
+<td>E. coli</td>
+<td>mutagenesis dirigida, western blot, CIM, acumulación de bromuro de etidio</td>
+<td>N2-N3</td>
+<td>no aplica</td>
+<td>no aplica</td>
+<td>investigación basica</td>
+<td>no aplica</td>
+<td>10.1021/acsomega.0c02921</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Fenamil y derivados de amilorida (HM2-16F, BB2-50F) sobre el estator del motor flagelar</td>
+<td>molecula pequena</td>
+<td>estator PomA/PomB del motor flagelar bacteriano</td>
+<td>otro: canal de iones del estator, que alimenta la ROTACION</td>
+<td>bloquear el canal de Na+ del estator y con ello detener la rotación del motor</td>
+<td>si para el efecto: se mide rotación de celulas ancladas, nado libre y rotación de microesferas marcadoras; los dos derivados detienen la rotación</td>
+<td>Vibrio spp. y multiples cepas y tipos de estator</td>
+<td>rotación de celulas ancladas, nado libre, rotación de microesferas</td>
+<td>N2-N3</td>
+<td>no aplica</td>
+<td>no reportada</td>
+<td>herramientas de laboratorio / antivirulencia</td>
+<td>no aplica. Tercer precedente de otro sistema: la rotación se bloquea atacando el elemento que la alimenta, no la interfaz entre rotor y estator</td>
+<td>10.1128/JB.00367-21; 10.1128/AAC.00482-11</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="e-5-sintesis-del-eje-e"><span class="num">Secci&oacute;n 6</span>e.5 Síntesis del eje (e)</h2>
+<ol>
+<li>La inhibición de bombas RND se ha intentado casi exclusivamente en el sitio de sustrato del transportador, con dos complejos tripartitos completos que contienen un inhibidor unido —9J3E con NMP y <strong>5NG5 con una piranopiridina</strong>, este último un hallazgo de esta revisión— y en los dos el ligando está en el bolsillo del transportador. <strong>Ninguna estructura publicada contiene un ligando en la interfaz OMF–MFP.</strong></li>
+<li>Ninguno de los inhibidores clásicos llegó a la clínica, y las cinco causas documentadas —mecanismo inespecífico de membrana, escape por paralogía, espectro estrecho, artefactos de ensayo y la aritmética del potenciador— afectan en su mayoría igual o más a un péptido de interfaz.</li>
+<li>La MFP <strong>sí</strong> es una diana farmacologizable, con dos series de moléculas pequeñas y un mecanismo resuelto por HDX-MS, pero el sitio atacado es una hendidura interdominio, no la interfaz con el OMF.</li>
+<li>El único péptido diseñado contra una interfaz de ensamblaje de una bomba RND ataca la trimerización intramembrana de AcrB, no la interfaz OMF–MFP, y su mecanismo está respaldado solo parcialmente.</li>
+<li><strong>El resultado más desfavorable del compendio</strong> es que MFP y RND defectuosas sobreexpresadas no producen efecto dominante negativo: un competidor con geometría y avidez completas no envenena el complejo.</li>
+<li>Un DARPin <strong>sí</strong> inhibe una interacción entre componentes, con co-estructura a 2,5 Å; y un nanobody <strong>sí</strong> revierte resistencia en <em>P. aeruginosa</em> con eficacia <em>in vivo</em>, aunque su diana no sea la bomba. La razón por la que ninguno es terapia es la permeabilidad de la membrana externa, que es precisamente el argumento correcto para elegir el formato peptídico.</li>
+<li>El precedente de congelar un grado de libertad rotacional <strong>existe y es fuerte</strong>: disulfuros de ingeniería en AcrB con reversión por DTT, un trímero covalente con un protómero inactivado, y bedaquilina cubriendo los sitios de ion del anillo c9 hasta detener el rotor, con aprobación clínica. La novedad del proyecto no puede sostenerse en la ausencia de precedente conceptual, sino en la aplicación de la idea a un grado de libertad —el registro entre dos trímeros de un ensamblaje tripartito— que aún no está demostrado como coordenada funcional.</li>
+</ol>
+<hr />
+<h2 id="archivos-de-datos-de-este-eje"><span class="num">Secci&oacute;n 7</span>Archivos de datos de este eje</h2>
+<ul>
+<li><code>tabla_intentos_inhibicion.csv</code> — 48 filas, 16 columnas exactas del apartado 10.4, con nivel_evidencia N1–N5 y mecanismo_respaldado justificado por fila.</li>
+<li><code>tabla_referencias_inhibicion.csv</code> — 132 referencias verificadas en Crossref el 2026-09-11.</li>
+<li><code>tabla_busquedas_negativas_inhibicion.csv</code> — ocho preguntas con resultado negativo o binario, con cadena literal, base, fecha y número de resultados.</li>
+</ul></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

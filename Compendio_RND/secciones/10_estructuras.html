@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estructuras · Síntesis de estructuras PDB — Compendio RND</title>
+<meta name="description" content="112 entradas verificadas: cuál sirve de receptor, cuál de control y cuál no debe usarse.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Síntesis de estructuras PDB">
+<meta property="og:description" content="112 entradas verificadas: cuál sirve de receptor, cuál de control y cuál no debe usarse.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Síntesis de estructuras PDB</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#sintesis-de-estructuras-pdb">Síntesis de estructuras PDB</a><ol><li><a href="#s-1-alcance-alcanzado-y-su-comparacion-con-el-alcance-previs">S.1 Alcance alcanzado y su comparación con el alcance previsto</a></li><li><a href="#s-2-cual-es-el-mejor-receptor-para-trabajo-de-interfaz-mexao">S.2 ¿Cuál es el mejor receptor para trabajo de interfaz MexA–OprM?</a></li><li><a href="#s-3-que-estructura-sirve-como-control-independiente-de-cada-">S.3 ¿Qué estructura sirve como control independiente de cada afirmación de int</a></li><li><a href="#s-4-que-se-puede-afirmar-de-mexxyoprm-mexcdoprj-y-mexefoprn-">S.4 ¿Qué se puede afirmar de MexXY–OprM, MexCD–OprJ y MexEF–OprN a partir de e</a></li><li><a href="#s-5-cuanta-de-la-superficie-de-interfaz-esta-realmente-model">S.5 ¿Cuánta de la superficie de interfaz está realmente modelada?</a></li><li><a href="#s-6-existe-alguna-estructura-de-complejo-tripartito-con-un-i">S.6 ¿Existe alguna estructura de complejo tripartito con un inhibidor unido en</a></li></ol></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<h2 id="sintesis-de-estructuras-pdb"><span class="num">Secci&oacute;n 1</span>Síntesis de estructuras PDB</h2>
+<p><strong>Fecha de corte: 2026-09-11.</strong> Todas las entradas de esta sección fueron consultadas contra la API de datos
+de RCSB (<code>https://data.rcsb.org/graphql</code>) el 2026-09-11; los mapas, contra la API de EMDB
+(<code>https://www.ebi.ac.uk/emdb/api/entry/</code>) la misma fecha. La tabla completa, con las 29 columnas del esquema
+acordado, está en <code>tablas/tabla_estructuras_PDB.csv</code>.</p>
+<h3 id="s-1-alcance-alcanzado-y-su-comparacion-con-el-alcance-previs">S.1 Alcance alcanzado y su comparación con el alcance previsto</h3>
+<p>Este compendio nombraba 33 entradas. La tabla entregada contiene <strong>112 entradas con las 29 columnas resueltas o
+marcadas explícitamente</strong>, de las cuales <strong>79 fueron descubiertas en esta revisión</strong> mediante las cinco rutas
+de búsqueda del apartado 7.3. Es decir: la lista congelada cubría el 29 % de las entradas relevantes.</p>
+<table class="data">
+<thead>
+<tr>
+<th>Ruta de búsqueda</th>
+<th>Consultas</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Por accesión UniProt</td>
+<td>20 accesiones</td>
+<td>0 entradas para MexX, MexC, MexD, MexE, MexF, Q9ZNG9 y Q9ZNG8</td>
+</tr>
+<tr>
+<td>Por texto</td>
+<td>49 términos</td>
+<td>44 entradas para <code>OprM</code>, 51 para <code>RND efflux pump</code>, 0 para <code>OprA</code>, <code>MexD</code>, <code>MexE</code>, <code>MexF</code>, <code>MexX</code>, <code>MexGHI</code>, <code>OpmD</code>, <code>OpmH</code></td>
+</tr>
+<tr>
+<td>Por organismo</td>
+<td><em>P. aeruginosa</em> + <code>efflux</code></td>
+<td>52 entradas, de las que 27 no estaban en la lista congelada</td>
+</tr>
+<tr>
+<td>Por similitud de secuencia (≥30 % id.)</td>
+<td>MexA, OprM, MexB completas</td>
+<td>18 / 23 / 185 entradas</td>
+</tr>
+<tr>
+<td>Por fecha (&gt; 2026-04-08)</td>
+<td>sobre 280 candidatos</td>
+<td><strong>4 entradas</strong>: 21FO, 21FP, 20YY, 9XWG</td>
+</tr>
+</tbody>
+</table>
+<p><code>EXP</code>. El filtro por fecha es el que detecta lo nuevo, y su resultado es pequeño y limpio: en los cinco meses
+transcurridos desde el cierre de la lista de este compendio se liberaron cuatro entradas de interés y <strong>ninguna es un
+ensamblaje tripartito completo</strong>. La lista de ensamblajes completos de MexAB–OprM sigue siendo de cuatro
+entradas (6IOK, 6IOL, 6TA5, 6TA6).</p>
+<p>Las cuatro entradas nuevas, no obstante, no son irrelevantes:</p>
+<ul>
+<li><strong>20YY</strong> (crio-EM 2,57 Å, liberada 2026-07-08, EMD-67423): <strong>MexJK de <em>P. aeruginosa</em></strong>, con MexK ×3
+  (cadenas A, B, C) y MexJ ×6 (D–I) — es decir, OMF 0 : MFP 6 : RND 3 — y <strong>triclosán unido (ligando TCL ×3)</strong>.
+  Es la primera estructura de un subcomplejo adaptador–transportador de <em>P. aeruginosa</em> <strong>sin componente de
+  membrana externa</strong>, y con sustrato. <code>EXP</code>. Sin artículo de revista asociado a la fecha de corte.</li>
+<li><strong>9XWG</strong> (crio-EM 3,38 Å, 2026-07-08, EMD-67335): trímero de MexK aislado. <code>EXP</code>.</li>
+<li><strong>21FO</strong> y <strong>21FP</strong> (rayos X 2,30 y 2,89 Å, 2026-05-06, DOI 10.1093/jb/mvag012, verificado en Crossref):
+  MexB con CYMAL-7 y MexB con <strong>cloranfenicol</strong>, respectivamente. <code>EXP</code>.</li>
+</ul>
+<p>Reducción de alcance declarada: la búsqueda por similitud de secuencia devolvió <strong>185 entradas</strong> con ≥30 % de
+identidad frente a MexB y <strong>122</strong> referenciadas a la accesión de AcrB (P31224). Enumerar cada una de ellas con
+las 29 columnas no aporta a la decisión de interfaz y no se hizo. La tabla incluye los transportadores RND
+aislados que sirven de control mecanístico (AcrB con AcrZ y con DARPin, AdeB, MtrD, CusA) y el inventario
+completo de identificadores queda en <code>log_de_busqueda.md</code>. <code>INF</code>.</p>
+<h3 id="s-2-cual-es-el-mejor-receptor-para-trabajo-de-interfaz-mexao">S.2 ¿Cuál es el mejor receptor para trabajo de interfaz MexA–OprM?</h3>
+<p><strong>Respuesta: 6TA5, con tres reservas explícitas, y con 6IOK como control obligatorio de toda afirmación
+mutacional.</strong> El razonamiento, con los datos medidos:</p>
+<p><strong>a) Las cuatro entradas completas no son cuatro observaciones.</strong> 6IOK y 6IOL son <strong>dos estados del mismo
+sistema</strong> separados por una rotación azimutal pura de 59,96° (cálculo intrínseco) / 60,10° (superposición de
+componentes), que se reproduce con DockQ mediano OMF–MFP de 0,9395 al rotar el trímero de OprM de 6IOK +60°
+sobre el eje del ensamblaje. <code>EXP</code>, medido en el proyecto. Y <strong>6TA6 no es una réplica independiente del
+ensamblaje</strong>: su mapa asociado, EMD-10395, está titulado literalmente «MexA-MexB cryoEM map», mientras que el
+de 6TA5 es EMD-10372, «CryoEM structure of MexAB-OprM in nanodisc». <code>EXP</code>, verificado en EMDB el 2026-09-11.
+6TA6 es un refinamiento <strong>enfocado en el subcomplejo MexA–MexB</strong>. En consecuencia, las observaciones
+independientes de la interfaz OprM–MexA son <strong>tres modelos procedentes de dos laboratorios</strong>, no cuatro de
+cuatro. Toda estadística que trate las cuatro entradas como <em>n</em> = 4 es incorrecta.</p>
+<p><strong>b) 6TA5 tiene la mejor resolución global y la MexA más completa</strong>, pero su resolución no es uniforme. Los
+factores B por componente, medidos sobre las coordenadas el 2026-09-11, son: OprM 79,6 · MexA 79,7 ·
+<strong>MexB 132,6</strong>. <code>EXP</code>. Esta advertencia debe repetirse cada vez que se recomiende 6TA5: la densidad de MexB es
+sustancialmente peor, y cualquier trabajo que toque la interfaz MFP–RND en esta entrada hereda ese problema.
+Para la interfaz OMF–MFP, en cambio, la penalización no aplica.</p>
+<p><strong>c) La región de interfaz está mejor ordenada que la media de su propio componente.</strong> Restringiendo el
+cálculo de factores B a los 12 residuos de contacto de MexA y los 24 de OprM:</p>
+<table class="data">
+<thead>
+<tr>
+<th>Entrada</th>
+<th>OprM: B interfaz / B componente</th>
+<th>MexA: B interfaz / B componente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6TA5</td>
+<td>51,8 / 79,6 = <strong>0,65</strong></td>
+<td>51,1 / 79,7 = <strong>0,64</strong></td>
+</tr>
+<tr>
+<td>6IOK</td>
+<td>3,0 / 22,3 = <strong>0,14</strong></td>
+<td>3,2 / 15,9 = <strong>0,20</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>EXP</code>, medido en esta revisión. Las escalas absolutas de los dos depósitos no son comparables entre sí (6IOK
+usa valores muy pequeños), pero los cocientes sí lo son, y los dos apuntan en la misma dirección: <strong>la interfaz
+no es la parte mal resuelta del ensamblaje, sino una de las mejor ordenadas.</strong> Esto refuerza la decisión de
+usar 6TA5 como receptor y contradice la intuición razonable de que una interfaz periplásmica de un complejo de
+crio-EM a 3,2 Å estaría modelada sobre densidad débil.</p>
+<p><strong>d) 6IOK es el depósito del laboratorio que hizo la mutagénesis.</strong> Cada afirmación que combine geometría de
+interfaz con fenotipo mutacional debe poder reproducirse sobre 6IOK, porque es la estructura sobre la que se
+interpretaron esos mutantes. Usar sólo 6TA5 y citar la mutagénesis de 6IOK introduce un desacople silencioso
+entre la geometría y el fenotipo. <code>INF</code>.</p>
+<p><strong>e) Está prohibido usar OprM aislada como receptor de la interfaz, y el compendio confirma esa decisión del
+grupo.</strong> Las mediciones del proyecto (2026-09-11), hechas superponiendo el barril de membrana, dan el
+desplazamiento de la punta periplásmica respecto del estado unido:</p>
+<table class="data">
+<thead>
+<tr>
+<th>Entrada de OprM aislada</th>
+<th>Desplazamiento de la punta (RMSD, Å)</th>
+<th>Máximo (Å)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3D5K (trímero completo, 2,40 Å)</td>
+<td>6,98–7,72</td>
+<td>12,07</td>
+</tr>
+<tr>
+<td>4Y1K (palmitoilada, 3,80 Å)</td>
+<td>7,05–7,23</td>
+<td>—</td>
+</tr>
+<tr>
+<td>1WP1 (cerrada, 2,56 Å)</td>
+<td>7,05–7,23</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6ZRE / 7AKZ (mutantes de constricción)</td>
+<td>5,43–5,62</td>
+<td>—</td>
+</tr>
+<tr>
+<td><em>Referencia: entre laboratorios independientes en estado unido</em></td>
+<td><strong>0,65–0,71</strong></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><code>EXP</code>, medido en el proyecto. El error de piso de usar una OprM aislada como receptor rígido es de ~7 Å en la
+región que define el sitio, un orden de magnitud por encima de la reproducibilidad interlaboratorio en estado
+unido. <strong>El sitio de unión de MexA en OprM no existe en ninguna estructura aislada de OprM</strong>: es
+conformacionalmente condicional. La decisión de no hacer docking contra 1WP1 queda <strong>confirmada</strong>, y la
+confirmación se extiende a 3D5K, 4Y1K, 6ZRE y 7AKZ.</p>
+<p><strong>f) 6ZRE y 7AKZ quedan además descalificadas por una razón independiente y más grave.</strong> Comparando sus
+coordenadas con la cadena madura de Q51487 se midieron en esta revisión sustituciones que <strong>el campo
+<code>pdbx_mutation</code> de RCSB deja vacío</strong>: 6ZRE porta R403L, Y404F, D416A y R419A; 7AKZ porta esas cuatro más
+L412G (numeración de cadena madura = numeración PDB de autor; en UniProt Q51487: R420L, Y421F, D433A, R436A y
+L429G). <code>EXP</code>, medido. <strong>Tres de esas posiciones — 403, 404 y 412 — son residuos de contacto de MexA.</strong> Es
+decir: las dos entradas que la literatura del proyecto trata como evidencia del mecanismo de apertura del canal
+tienen el epítopo mutado, y el desplazamiento de 5,43–5,62 Å que se les midió se midió sobre una punta mutada.
+No pueden usarse como referencia del epítopo silvestre. Y su evidencia no está publicada: RCSB declara «To Be
+Published» y la búsqueda en Crossref y PubMed del 2026-09-11, por título y por autor, no localizó artículo de
+revista; sólo existen los DOI de depósito 10.2210/pdb6zre/pdb y 10.2210/pdb7akz/pdb. <code>[DOI NO VERIFICADO]</code>.</p>
+<h3 id="s-3-que-estructura-sirve-como-control-independiente-de-cada-">S.3 ¿Qué estructura sirve como control independiente de cada afirmación de interfaz?</h3>
+<table class="data">
+<thead>
+<tr>
+<th>Afirmación que se quiere sostener</th>
+<th>Control independiente disponible</th>
+<th>Grado de independencia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Los 12 residuos de MexA contactan OprM</td>
+<td>6IOK (otro laboratorio, otro entorno)</td>
+<td><strong>Alto</strong>: dos laboratorios, dos entornos de membrana (nanodisco frente a detergente)</td>
+</tr>
+<tr>
+<td>La interfaz es de ~483 Å² y polar</td>
+<td>6IOK y 6IOL</td>
+<td><strong>Medio</strong>: 6IOL no es independiente de 6IOK</td>
+</tr>
+<tr>
+<td>El epítopo de MexA es contiguo (96–110)</td>
+<td>1T5E, 1VF7, 2V4D (39 cadenas de MexA libre)</td>
+<td><strong>Alto</strong> para la conformación de la punta; <strong>nulo</strong> para la interfaz, que no está presente</td>
+</tr>
+<tr>
+<td>La arquitectura OMF–MFP es tipo punta-contra-punta</td>
+<td>9J3D / 9J3E (<em>K. pneumoniae</em>), 5O66 / 5NG5 / 5V5S / 9V53 / 9TG4 (<em>E. coli</em>)</td>
+<td><strong>Medio a bajo</strong>: puente de identidad OprM/TolC de sólo 23,06 %</td>
+</tr>
+<tr>
+<td>La estequiometría es OMF 3 : MFP 6 : RND 3</td>
+<td>9J3D, 5V5S, 9V53</td>
+<td><strong>Medio</strong>, y con los contraejemplos de 5NIK (MacB 2) y 8ZAL (EmrB 1)</td>
+</tr>
+<tr>
+<td>El registro es un grado de libertad real</td>
+<td>6IOL frente a 6IOK; 9J3D/9J3E frente a 6TA5</td>
+<td><strong>Bajo</strong>: ningún par es de réplicas biológicas</td>
+</tr>
+<tr>
+<td>La punta de la horquilla está preorganizada</td>
+<td>39 cadenas cristalográficas de MexA libre</td>
+<td><strong>Alto</strong>: es el mayor muestreo experimental del conjunto</td>
+</tr>
+<tr>
+<td>El acoplamiento OMF–RND pasa por la MFP</td>
+<td>6IOK: cero contactos OprM–MexB a &lt; 5 Å</td>
+<td><strong>Fuente única</strong> (medición del proyecto)</td>
+</tr>
+</tbody>
+</table>
+<p><code>INF</code> sobre datos <code>EXP</code>. La conclusión estructural de esta tabla es incómoda y hay que declararla: <strong>para la
+afirmación central del proyecto — la geometría de la interfaz OprM–MexA — existen dos laboratorios
+independientes y ningún tercero.</strong></p>
+<h3 id="s-4-que-se-puede-afirmar-de-mexxyoprm-mexcdoprj-y-mexefoprn-">S.4 ¿Qué se puede afirmar de MexXY–OprM, MexCD–OprJ y MexEF–OprN a partir de estructuras experimentales?</h3>
+<p>Sin suavizarlo:</p>
+<ul>
+<li><strong>MexXY–OprM.</strong> Existe estructura del transportador MexY (9E9F, crio-EM 3,63 Å; 8Z1U, rayos X 2,89 Å) y de
+  OprM (en el ensamblaje y aislada). <strong>De MexX no existe ninguna estructura</strong>: cero entradas de PDB para
+  G3XD21 y cero para Q9ZNG9, verificado en RCSB el 2026-09-11. La interfaz OprM–MexX es <strong>enteramente
+  modelado</strong>. Las quimeras MexBYB (22XK, 22XM; DOI 10.1107/S2053230X26001202, verificado) no son MexY
+  silvestre — 75,65 % de identidad frente a MexB P52002 y 74,35 % frente a MexY G3XCW2, medido — y <strong>nunca</strong>
+  pueden usarse como estructura de MexY. <code>EXP</code>.</li>
+<li><strong>MexCD–OprJ.</strong> Existe OprJ (5AZS, rayos X 3,10 Å, trímero, única entrada experimental). <strong>De MexC y MexD no
+  existe ninguna estructura.</strong> El único molde de complejo completo es el homólogo plasmídico de
+  <em>K. pneumoniae</em> TMexCD1–TOprJ1 (9J3D/9J3E), con identidades medidas de 66,06 % (MexC/TMexC1), 77,95 %
+  (MexD/TMexD1) y 70,23 % (OprJ/TOprJ1). Un modelo construido sobre ese molde <strong>no puede reclamar haber
+  reproducido la asimetría funcional A/B/E</strong>, porque el molde no la tiene: sus protómeros RND distan
+  0,26–0,29 Å (9J3D) y 0,18–0,20 Å (9J3E), frente a 2,07–2,72 Å en MexAB. <code>EXP</code>.</li>
+<li><strong>MexEF–OprN.</strong> Existe OprN con el mejor muestreo de todo el conjunto (5AZP a <strong>1,69 Å</strong>, 5AZO, 5IUY a
+  2,29 Å, 5NSW con xenón). <strong>De MexE y MexF no existe ninguna estructura.</strong> La interfaz OprN–MexE es
+  enteramente modelado. <code>EXP</code>.</li>
+<li><strong>MexAB–OprM</strong> es la única de las cuatro con estructura completa, y por eso es el único sistema en el que
+  «residuo de interfaz» significa algo medido y no inferido.</li>
+</ul>
+<p><code>INF</code>: el compendio debe llevar esta asimetría al resumen ejecutivo. <strong>Tres de las cuatro bombas del proyecto
+tienen al menos un componente sin ninguna estructura experimental</strong>, y en los tres casos el componente que
+falta es precisamente la MFP — la proteína cuyo epítopo se quiere imitar.</p>
+<h3 id="s-5-cuanta-de-la-superficie-de-interfaz-esta-realmente-model">S.5 ¿Cuánta de la superficie de interfaz está realmente modelada?</h3>
+<p>Medido sobre las 12 entradas que contienen MexA u OprM, contando qué residuos de contacto tienen coordenadas
+en cada cadena:</p>
+<table class="data">
+<thead>
+<tr>
+<th>Componente</th>
+<th>Residuos de contacto</th>
+<th>Entradas comprobadas</th>
+<th>Cadenas</th>
+<th>Residuos sin coordenadas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexA (96, 97, 99, 100, 103–110 PDB madura = 119, 120, 122, 123, 126–133 UniProt P52477)</td>
+<td>12</td>
+<td>1T5E, 1VF7, 2V4D, 6IOK, 6IOL, 6TA5, 6TA6</td>
+<td>13+13+13+6+6+6+6</td>
+<td><strong>ninguno</strong></td>
+</tr>
+<tr>
+<td>OprM (190, 191, 194–196, 198–204, 395, 399, 402–404, 406–412 PDB madura = +17 en UniProt Q51487)</td>
+<td>24</td>
+<td>1WP1, 3D5K, 4Y1K, 6ZRE, 7AKZ, 6IOK, 6IOL, 6TA5, 6TA6</td>
+<td>2+3+6+2+2+3+3+3+3</td>
+<td><strong>ninguno</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>EXP</code>, medido en esta revisión. <strong>La región de interfaz está completa en todas las estructuras relevantes.</strong> Lo
+que falta modelado está fuera de ella: el extremo C-terminal de OprM (residuos 456–474 de la cadena madura en
+6IOK) y la región N-terminal y el dominio proximal a membrana de MexA — 1T5E y 1VF7 omiten el dominio MP por
+completo, y 2V4D lo modela en once de sus trece cadenas a 5,08 átomos por residuo con B ≈ 131 Å², frente a 7,50
+átomos por residuo y B ≈ 60 Å² en el núcleo 13–259.</p>
+<p><strong>Distinción obligatoria: tener coordenadas no es tener densidad.</strong> A 3,2–3,76 Å un modelo puede construirse
+sobre densidad débil. El indicador disponible es el factor B local, y su resultado (§S.2c) es favorable: la
+interfaz está mejor ordenada que la media de su componente en los dos depósitos. No se dispone de mapas de
+resolución local ni de valores de ocupancia por residuo, de modo que la afirmación «la interfaz está bien
+resuelta» descansa en un indicador indirecto y así queda etiquetada. <code>INF</code> sobre <code>EXP</code>.</p>
+<h3 id="s-6-existe-alguna-estructura-de-complejo-tripartito-con-un-i">S.6 ¿Existe alguna estructura de complejo tripartito con un inhibidor unido en la interfaz?</h3>
+<p><strong>No. El resultado negativo se mantiene, y es parte del argumento de novedad del proyecto.</strong> Pero la respuesta
+completa es más matizada de lo que este compendio anticipaba, porque en esta revisión se verificaron <strong>dos</strong>
+estructuras de complejo tripartito completo con un inhibidor de bomba unido — no una:</p>
+<table class="data">
+<thead>
+<tr>
+<th>Entrada</th>
+<th>Sistema</th>
+<th>Inhibidor</th>
+<th>Dónde se une</th>
+<th>DOI verificado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9J3E</td>
+<td>TMexCD1–TOprJ1 (<em>K. pneumoniae</em>)</td>
+<td>A1EAN ×3 = 1-(naftalen-1-ilmetil)piperazina (<strong>NMP</strong>)</td>
+<td>transportador</td>
+<td>10.1038/s41467-025-65038-x</td>
+</tr>
+<tr>
+<td><strong>5NG5</strong></td>
+<td>AcrABZ–TolC (<em>E. coli</em>)</td>
+<td>5QF ×3 = piranopiridina de la clase MBX</td>
+<td>transportador (bolsillo de AcrB)</td>
+<td>10.7554/eLife.24905</td>
+</tr>
+</tbody>
+</table>
+<p><code>EXP</code>. La segunda no estaba registrada como estructura con ligando en los datos previos del proyecto: es un hallazgo
+de esta revisión. <strong>Ninguna de las dos tiene el ligando en la interfaz OMF–MFP</strong>; las dos lo tienen en el
+transportador. La afirmación defendible, por tanto, es precisa: <em>existen estructuras de complejos tripartitos
+completos con inhibidores unidos, y en las dos el inhibidor está en el sitio de sustrato del transportador; no
+existe ninguna con un ligando en la interfaz OMF–MFP ni en la interfaz MFP–RND.</em> <code>EXP</code> para la parte positiva,
+<code>EXP-IND</code> para la negativa (ausencia en el barrido del 2026-09-11 sobre 112 entradas con ligandos inventariados).</p>
+<p>Corrección asociada, porque afecta a cómo se cita esta evidencia: <strong>3W9I no contiene inhibidor</strong> — sólo
+detergente LMT ×16. La entrada con inhibidor del mismo artículo (<em>Nature</em>, DOI 10.1038/nature12300) es <strong>3W9J</strong>,
+con el ligando P9D ×2, una pirido-pirimidina. Los datos previos del proyecto tenían las dos entradas invertidas. Y el
+ligando AV0 de 6IIA, descrito en las mediciones previas del proyecto del proyecto como inhibidor, es <strong>Lauryl Maltose Neopentyl Glycol
+(LMNG), un detergente</strong>: la exclusión de 6IIA del brazo primario sigue siendo defendible —un detergente en el
+bolsillo también sesga la conformación— pero no por la razón que se había escrito. <code>EXP</code>, verificado en RCSB.</p></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

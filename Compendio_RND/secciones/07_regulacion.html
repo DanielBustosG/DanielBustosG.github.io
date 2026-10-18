@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eje (g) · Regulación, en lo que cambia un experimento — Compendio RND</title>
+<meta name="description" content="Reguladores, cepas y marcadores: lo que hay que controlar para que un ensayo de potenciación signifique algo.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Regulación, en lo que cambia un experimento">
+<meta property="og:description" content="Reguladores, cepas y marcadores: lo que hay que controlar para que un ensayo de potenciación signifique algo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Regulación, en lo que cambia un experimento</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#g-0-alcance-declarado-y-lo-que-este-eje-no-es">g.0 Alcance declarado, y lo que este eje NO es</a></li><li><a href="#g-1-mexr-nalc-nald-y-la-sobreexpresion-de-mexab-oprm-las-cep">g.1 mexR, nalC, nalD y la sobreexpresión de MexAB-OprM: las cepas nalB</a><ol><li><a href="#g-1-1-las-cuatro-vias-de-entrada-a-un-mismo-operon">g.1.1 Las cuatro vías de entrada a un mismo operón</a></li><li><a href="#g-1-2-que-cambia-en-el-ensayo">g.1.2 Qué cambia en el ensayo</a></li></ol></li><li><a href="#g-2-nfxb-y-la-sobreexpresion-de-mexcd-oprj-las-cepas-nfxb">g.2 nfxB y la sobreexpresión de MexCD-OprJ: las cepas nfxB</a></li><li><a href="#g-3-mext-mexs-cmra-y-las-cepas-nfxc-la-advertencia-critica-d">g.3 mexT, mexS, cmrA y las cepas nfxC — la advertencia crítica del alelo inact</a><ol><li><a href="#g-3-1-lo-que-dicen-las-fuentes">g.3.1 Lo que dicen las fuentes</a></li><li><a href="#g-3-2-el-alelo-inactivo-que-se-pudo-cerrar-y-que-no">g.3.2 El alelo inactivo: qué se pudo cerrar y qué no</a></li><li><a href="#g-3-3-lo-que-no-se-puede-cerrar-y-por-que-se-escribe-asi">g.3.3 Lo que NO se puede cerrar, y por qué se escribe así</a></li></ol></li><li><a href="#g-4-mexz-armz-amgrs-y-los-aislados-de-fibrosis-quistica">g.4 mexZ, armZ, AmgRS y los aislados de fibrosis quística</a></li><li><a href="#g-5-compensacion-cruzada-por-que-el-ensayo-debe-medir-las-cu">g.5 Compensación cruzada: por qué el ensayo debe medir las cuatro bombas</a><ol><li><a href="#g-5-1-la-fuente-y-lo-que-dice-exactamente">g.5.1 La fuente y lo que dice exactamente</a></li><li><a href="#g-5-2-lo-que-este-compendio-concluye-marcado-como-conclusion">g.5.2 Lo que este compendio concluye, marcado como conclusión propia</a></li></ol></li><li><a href="#g-6-cepas-de-delecion-y-complementacion-que-existe-verificad">g.6 Cepas de deleción y complementación: qué existe, verificado, y qué no</a><ol><li><a href="#g-6-1-fondos-multiples-publicados-verificados">g.6.1 Fondos múltiples publicados, verificados</a></li><li><a href="#g-6-2-bibliotecas-de-transposon">g.6.2 Bibliotecas de transposón</a></li><li><a href="#g-6-3-busqueda-negativa-explicita-sobre-cepas">g.6.3 Búsqueda negativa explícita sobre cepas</a></li></ol></li><li><a href="#g-7-sustratos-indicadores-por-bomba">g.7 Sustratos indicadores por bomba</a></li><li><a href="#g-8-composicion-de-cada-bomba-del-proyecto-y-que-se-sabe-de-">g.8 Composición de cada bomba del proyecto y qué se sabe de su interfaz OMF–MF</a><ol><li><a href="#g-8-1-las-cuatro-bombas-con-sus-accesiones-verificadas-en-es">g.8.1 Las cuatro bombas, con sus accesiones verificadas en esta revisión</a></li><li><a href="#g-8-2-el-resultado-negativo-reproducido-en-esta-revision">g.8.2 El resultado negativo, reproducido en esta revisión</a></li><li><a href="#g-8-3-que-se-sabe-de-la-interfaz-omfmfp-de-cada-bomba-la-res">g.8.3 Qué se sabe de la interfaz OMF–MFP de cada bomba: la respuesta sin suavi</a></li><li><a href="#g-8-4-cuanto-vale-la-transferencia-dentro-de-la-propia-p-aer">g.8.4 Cuánto vale la transferencia dentro de la propia P. aeruginosa (medición</a></li><li><a href="#g-8-5-nomenclatura-cognada-frente-a-nomenclatura-promiscua-l">g.8.5 Nomenclatura cognada frente a nomenclatura promiscua: la distinción que </a></li><li><a href="#g-8-6-la-trampa-de-numeracion-en-la-literatura-genetica-medi">g.8.6 La trampa de numeración en la literatura genética (medición de esta revi</a></li><li><a href="#g-8-7-opra-el-caso-especial-y-la-quimera-prohibida">g.8.7 OprA: el caso especial, y la quimera prohibida</a></li></ol></li><li><a href="#g-9-sintesis-operativa-las-nueve-cosas-que-este-eje-cambia-e">g.9 Síntesis operativa: las nueve cosas que este eje cambia en el protocolo</a></li><li><a href="#g-10-tabla-del-eje-g">g.10 Tabla del eje (g)</a></li><li><a href="#g-11-busquedas-de-este-eje-que-no-devolvieron-nada-registrad">g.11 Búsquedas de este eje que no devolvieron nada, registradas como resultado</a></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<p><strong>Proyecto:</strong> ANID-Fondecyt Regular 1260886 — péptidos que bloqueen el ensamblaje de las bombas RND de <em>Pseudomonas aeruginosa</em> interfiriendo la interfaz OprM–MFP.
+<strong>FECHA DE CORTE: 2026-09-11.</strong> Todo DOI de este archivo fue resuelto contra <code>api.crossref.org</code> en esta revisión (94 DOI, 94 resueltos, 0 fallos). Toda accesión de UniProt, toda búsqueda en RCSB y las dos accesiones de NCBI de OprA fueron verificadas en esta revisión. Las identidades de secuencia que aparecen aquí fueron <strong>medidas</strong> en esta revisión con la convención declarada en §g.8.4.</p>
+<hr />
+<h2 id="g-0-alcance-declarado-y-lo-que-este-eje-no-es"><span class="num">Secci&oacute;n 1</span>g.0 Alcance declarado, y lo que este eje NO es</h2>
+<p>Este eje <strong>no</strong> es una revisión de regulación transcripcional de bombas de eflujo. Es la lista de lo que un regulador obliga a cambiar en un experimento de validación fenotípica de un péptido inhibidor de ensamblaje. El criterio de inclusión fue binario: un hecho regulatorio entra si cambia una cepa, un antibiótico marcador, un control o una lectura; si no, no entra, por interesante que sea.</p>
+<p><strong>Reducción de alcance declarada.</strong> Quedan fuera, con su magnitud: (i) la regulación de las 8 bombas RND de <em>P. aeruginosa</em> que no son las cuatro del proyecto, salvo cuando su emparejamiento con OprM es informativo (§g.8.5) — son 8 de 12 operones RND del genoma; (ii) los circuitos de quorum sensing, hierro y biopelícula, que se mencionan sólo cuando producen un artefacto de ensayo; (iii) la regulación postranscripcional y por sRNA, sobre la que no se hizo ninguna búsqueda en esta revisión y que por tanto queda <strong>[POR VERIFICAR]</strong> en su totalidad.</p>
+<p><strong>Etiquetas de evidencia.</strong> EXP = experimental directa; EXP-IND = experimental indirecta; COMP = predicción computacional; INF = inferencia del autor de este documento; POR VERIFICAR = no comprobado en esta revisión.</p>
+<p><strong>Convención de numeración.</strong> En todo este archivo, cada residuo lleva su sistema en la misma cláusula. Conversiones verificadas en el material de partida y reproducidas aquí sobre las secuencias de UniProt descargadas en esta revisión: <strong>MexA UniProt = PDB (cadena madura) + 23; MexB UniProt = PDB + 0; OprM UniProt = PDB (cadena madura) + 17.</strong> La comprobación se hizo residuo a residuo (§g.8.6) y descubrió una trampa de numeración en la literatura genética que se documenta allí.</p>
+<p><strong>Advertencia de transferencia por analogía (obligatoria en cada transferencia).</strong> Identidades medidas: MexB/AcrB 70,14 %; MexA/AcrA 59,63 %; <strong>OprM/TolC 23,06 %</strong>. El componente sobre el que se quiere diseñar el inhibidor es el menos conservado entre los dos sistemas modelo. En esta revisión se midió además la identidad restringida a los <strong>24 residuos de OprM que contactan MexA</strong> (madura 190, 191, 194–196, 198–204, 395, 399, 402–404, 406–412 = UniProt 207, 208, 211–213, 215–221, 412, 416, 419–421, 423–429; conjunto medido sobre 6IOK en el material de partida): <strong>TolC conserva 5 de 24, es decir 20,83 %</strong>. El puente de analogía en la superficie exacta que se quiere atacar es aún más estrecho que el puente global. Esto se repite en cada sección donde se transfiere algo desde <em>E. coli</em>.</p>
+<hr />
+<h2 id="g-1-mexr-nalc-nald-y-la-sobreexpresion-de-mexab-oprm-las-cep"><span class="num">Secci&oacute;n 2</span>g.1 mexR, nalC, nalD y la sobreexpresión de MexAB-OprM: las cepas nalB</h2>
+<h3 id="g-1-1-las-cuatro-vias-de-entrada-a-un-mismo-operon">g.1.1 Las cuatro vías de entrada a un mismo operón</h3>
+<p><code>mexAB-oprM</code> se expresa en la célula silvestre y su nivel está fijado por al menos cuatro vías independientes, cada una con su propio genotipo de cepa:</p>
+<ol>
+<li><strong>MexR</strong> (PA0424, familia MarR) es el represor directo. Su pérdida de función produce el fenotipo <strong>nalB</strong>: MexAB-OprM alto y multirresistencia. Hay evidencia de que basta una terminación prematura de MexR para producirlo (Choudhury <em>et al.</em> 2016, doi 10.1371/journal.pone.0149156; verificado en Crossref 2026-09-11, registro únicamente). EXP.</li>
+<li><strong>NalC</strong> (PA3721, familia TetR) reprime <code>armR</code> (PA3719); al perderse NalC, ArmR se acumula y antagoniza a MexR, de modo que el resultado es MexAB-OprM alto pero por una vía indirecta de dos pasos (Cao, Srikumar y Poole 2004, doi 10.1111/j.1365-2958.2004.04210.x; registro únicamente). Braz <em>et al.</em> 2016 (doi 10.1093/femsle/fnw166) informan resistencia alta a aztreonam en mutantes de NalC. EXP.</li>
+<li><strong>NalD</strong> (PA3574, familia TetR) es un <strong>segundo</strong> represor directo del operón, independiente de MexR (Sobel <em>et al.</em> 2005, doi 10.1128/aac.49.5.1782-1786.2005; Morita <em>et al.</em> 2006, doi 10.1128/jb.01342-06). EXP.</li>
+<li><strong>CpxR</strong> activa la expresión de MexAB-OprM tanto en cepas de laboratorio como clínicas (Tian <em>et al.</em> 2016, doi 10.1371/journal.ppat.1005932; registro únicamente). EXP-IND para lo que aquí importa.</li>
+</ol>
+<p>Aguilar-Rodea <em>et al.</em> 2022 (doi 10.1371/journal.pone.0266742) documentan sustituciones en los tres genes <code>mexR</code>, <code>nalC</code> y <code>nalD</code> asociadas a sobreexpresión en aislados. EXP.</p>
+<p>Entradas de PDB verificadas en RCSB que el compendio puede citar para esta sección: <strong>1LNW</strong> y <strong>4ZZL</strong> (MexR; 4ZZL es el derepresor R21W), <strong>5DAJ</strong> y <strong>5H9T</strong> (NalD), <strong>8KE8</strong> (NalC). Verificadas en el material de partida <code>tabla_estructuras_PDB.csv</code>. Ninguna de ellas dice nada sobre la interfaz OprM–MFP: son estructuras de reguladores, y su utilidad para este proyecto es exclusivamente la de diseñar controles de derepresión con base estructural. INF.</p>
+<h3 id="g-1-2-que-cambia-en-el-ensayo">g.1.2 Qué cambia en el ensayo</h3>
+<p><strong>Consecuencia 1: un fondo nalB no sirve para medir potenciación, sirve para medir reversión.</strong> En un fondo con MexAB-OprM alto, la CIM basal del antibiótico marcador ya está desplazada hacia arriba. El efecto de un péptido se mide entonces como caída de CIM desde un valor alto, no como potenciación desde el silvestre. Los dos diseños no son equivalentes: el segundo tiene mayor rango dinámico y el primero es más parecido al escenario clínico. La recomendación operativa es correr <strong>el par silvestre / nalB en la misma placa</strong>, porque un péptido que sólo funciona en el fondo sobreexpresor está diciendo algo distinto de uno que funciona en el silvestre. INF.</p>
+<p><strong>Consecuencia 2: hay cuatro loci que secuenciar antes de atribuir un cambio de CIM al péptido.</strong> <code>mexR</code>, <code>nalC</code>, <code>nalD</code> y, si aparece resistencia inesperada, <code>cpxR</code>. Un mutante espontáneo en cualquiera de ellos durante el ensayo produce exactamente el fenotipo contrario al que se busca y es indistinguible de un fallo del péptido. INF, apoyada en las cuatro vías EXP de §g.1.1.</p>
+<p><strong>Consecuencia 3: la vía NalC es un riesgo de falso positivo mecanístico.</strong> Como NalC actúa a través de ArmR y MexR, cualquier cosa que altere el estado de derepresión —incluido un estrés de envoltura provocado por el propio péptido catiónico— baja o sube MexAB-OprM sin tocar la bomba. La única forma de separar esto de una inhibición de ensamblaje es medir <strong>expresión de <code>mexB</code> por RT-qPCR en paralelo a la CIM</strong>, en la misma condición y a la misma concentración de péptido. INF.</p>
+<hr />
+<h2 id="g-2-nfxb-y-la-sobreexpresion-de-mexcd-oprj-las-cepas-nfxb"><span class="num">Secci&oacute;n 3</span>g.2 nfxB y la sobreexpresión de MexCD-OprJ: las cepas nfxB</h2>
+<p><code>mexCD-oprJ</code> no se expresa en la célula silvestre. Su represor es <strong>NfxB</strong> (PA4600) y su pérdida produce el fenotipo <strong>nfxB</strong>: resistencia a ciprofloxacino con hipersusceptibilidad a betalactámicos (Poole <em>et al.</em> 1996, doi 10.1046/j.1365-2958.1996.281397.x; registro únicamente). EXP.</p>
+<p>Dos hechos cambian el diseño del ensayo, y los dos son incómodos.</p>
+<p><strong>g.2.1 Los mutantes nfxB aparecen durante el propio experimento.</strong> Zaborskyte <em>et al.</em> (2017, doi 10.1128/aac.02292-16; resumen consultado) construyeron reporteros cromosómicos con fusión P<em>mexCD</em>–<em>gfp</em> y etiqueta mCherry constitutiva en fondo PAO1, y siguieron biopelículas en cámara de flujo por microscopía confocal. Bajo <strong>1/10 de la CIM de ciprofloxacino</strong>, los mutantes nfxB alcanzan <strong>80–90 % de la población</strong>. EXP. La consecuencia es directa: en un ensayo de varios días con ciprofloxacino subinhibitorio —exactamente el diseño que un ensayo de potenciación invita a hacer— el genotipo del cultivo cambia bajo el propio ensayo. <strong>Hay que secuenciar <code>nfxB</code> al final del experimento, no sólo al principio.</strong> INF.</p>
+<p><strong>g.2.2 MexCD-OprJ es una bomba inducible, y sus inductores son los colorantes del ensayo de acumulación.</strong> Morita <em>et al.</em> (2001, doi 10.1111/j.1574-6968.2001.tb10794.x; resumen consultado) construyeron la serie de mutantes de PAO1 que carecen de los cuatro operones <code>mex</code> o portan sólo uno, y encontraron que MexCD-OprJ es <strong>inducible</strong>, y que sus inductores son cloruro de tetrafenilfosfonio, <strong>bromuro de etidio</strong>, <strong>rodamina 6G</strong> y acriflavina, mientras que las fluoroquinolonas, el cloranfenicol, la eritromicina y la tetraciclina son <strong>sustratos pero no inductores</strong>. EXP.</p>
+<p>Esto es un conflicto de ensayo que hay que escribir explícitamente en el protocolo: <strong>el bromuro de etidio y la rodamina 6G son a la vez la sonda de los ensayos de acumulación y los inductores de la bomba que se pretende medir.</strong> Un ensayo de acumulación prolongado con etidio sobre MexCD-OprJ induce su blanco. La salida es usar <strong>Hoechst 33342</strong> o <strong>rojo Nilo</strong> como sonda cuando el blanco es MexCD-OprJ, y en todo caso medir la expresión de <code>mexD</code> al final del ensayo. INF, sobre EXP de Morita 2001.</p>
+<p><strong>g.2.3</strong> MexCD-OprJ tiene además un papel en quorum sensing (Alcalde-Rico <em>et al.</em> 2018, doi 10.3389/fmicb.2018.02752; registro únicamente), lo que significa que un fondo nfxB no es un fondo neutro para fenotipos de virulencia. Relevante si el proyecto piensa medir algo más que CIM. EXP-IND.</p>
+<hr />
+<h2 id="g-3-mext-mexs-cmra-y-las-cepas-nfxc-la-advertencia-critica-d"><span class="num">Secci&oacute;n 4</span>g.3 mexT, mexS, cmrA y las cepas nfxC — la advertencia crítica del alelo inactivo</h2>
+<h3 id="g-3-1-lo-que-dicen-las-fuentes">g.3.1 Lo que dicen las fuentes</h3>
+<p><code>mexEF-oprN</code> es el único de los cuatro operones del proyecto con <strong>regulación positiva</strong>: requiere el activador <strong>MexT</strong> (LysR) y se expresa a nivel bajo en cepas silvestres (Köhler <em>et al.</em> 1997, doi 10.1046/j.1365-2958.1997.2281594.x; Köhler <em>et al.</em> 1999, doi 10.1128/jb.181.20.6300-6305.1999). El fenotipo <strong>nfxC</strong> —resistencia a cloranfenicol, fluoroquinolonas y trimetoprima— se obtiene por alteración de <code>mexS</code> (PA2491), que activa la vía dependiente de MexT (Sobel, Neshat y Poole 2005, doi 10.1128/jb.187.4.1246-1253.2005). EXP. Juárez <em>et al.</em> (2017, doi 10.1128/aac.00585-17; resumen consultado) identificaron una <strong>clase adicional</strong>, los mutantes <strong>nfxC2</strong>, con alteraciones en <code>cmrA</code> (PA14_38040, homólogo de PA2047 en PAO1), un regulador tipo AraC que actúa a través de MexS y MexT. EXP. Es un tercer locus a secuenciar.</p>
+<p>La entrada de PDB verificada para esta sección es <strong>6L33</strong>, el dominio regulador de MexT.</p>
+<h3 id="g-3-2-el-alelo-inactivo-que-se-pudo-cerrar-y-que-no">g.3.2 El alelo inactivo: qué se pudo cerrar y qué no</h3>
+<p>La advertencia de este compendio es correcta y su fuente primaria es <strong>Maseda, Saito, Nakajima y Nakae 2000</strong> (FEMS Microbiol Lett, doi 10.1111/j.1574-6968.2000.tb09367.x; PMID 11040437; resumen consultado). Lo que dice la fuente, literalmente en su estructura: encontraron <strong>tres tipos de cepas silvestres</strong> según el alelo <code>mexT</code>:</p>
+<ul>
+<li><strong>Tipo I</strong>: el gen <code>mexT</code> de la cepa silvestre codifica <strong>MexT inactiva</strong>, y el mutante nfxC derivado de ese parental porta una mutación adicional en <code>mexT</code> que convierte MexT de la forma inactiva a la activa.</li>
+<li><strong>Tipo II</strong>: el <code>mexT</code> de la cepa silvestre tiene un <strong>inserto de 8 pb</strong> que produce MexT inactiva, y el mutante nfxC pierde ese inserto de 8 pb, lo que reactiva MexT.</li>
+<li><strong>Tipo III</strong>: tanto la cepa silvestre como su derivado nfxC producen MexT idéntica y <strong>activa</strong>; el mutante nfxC de ese parental debe portar una mutación adicional en otro sitio.</li>
+</ul>
+<p>Los autores añaden que el mutante nfxC original aislado en 1990 podría derivar de un parental de tipo I. EXP, <strong>fuente única</strong> para la tipología.</p>
+<p>Una segunda fuente, independiente y más reciente, documenta el problema en su forma operativa: <strong>Liu <em>et al.</em> 2022</strong> (doi 10.3389/fmicb.2022.821895; resumen consultado) analizaron <strong>cinco sublíneas de PAO1 de un mismo laboratorio</strong> por fenotipo, secuenciación de genoma completo y bioinformática, y mapearon la mayor parte de la variación fenotípica a mutaciones en <strong><code>lasR</code> y <code>mexT</code></strong>; introdujeron esas mutaciones en la sublínea <strong>PAO1-E</strong>, que carece de ellas, y confirmaron su efecto. EXP.</p>
+<h3 id="g-3-3-lo-que-no-se-puede-cerrar-y-por-que-se-escribe-asi">g.3.3 Lo que NO se puede cerrar, y por qué se escribe así</h3>
+<p><strong>Este compendio pide determinar qué linajes concretos portan <code>mexT</code> inactivo y qué expresión basal de MexEF-OprN cabe esperar en el fondo genético que use el grupo. Con la literatura localizada en esta revisión eso NO se puede cerrar. [POR VERIFICAR]</strong></p>
+<p>Las razones son verificables: la búsqueda <code>vg23</code> ("MexT functional activation 8-bp insertion mexT allele nfxC PAO1 restoration", OpenAlex, 2026-09-11) devolvió <strong>1 resultado, una tesis sin DOI de revista</strong>; la búsqueda <code>vg06</code> ("mexT inactive allele PAO1 laboratory strain lineage MexEF-OprN expressión") devolvió 15 resultados, ninguno que asigne alelos a linajes nombrados. Maseda 2000 describe la tipología pero no publica un censo de qué cepa de colección es de qué tipo, y Liu 2022 nombra sus propias sublíneas de un solo laboratorio. No existe, en lo localizado, una tabla "linaje → alelo de <code>mexT</code> → expresión basal de <code>mexEF-oprN</code>".</p>
+<p><strong>Consecuencia operativa, que sustituye al dato que no existe:</strong> la única salida es <strong>secuenciar <code>mexT</code> del stock propio del grupo antes de diseñar el ensayo de MexEF-OprN</strong>, y buscar específicamente (i) el inserto de 8 pb del tipo II y (ii) las sustituciones que inactivan MexT del tipo I. El costo es de un par de reacciones de PCR y una secuenciación de Sanger, y es incomparablemente menor que el de descubrir a los dos años que el fondo genético nunca expresó la bomba blanco. Si el resultado es "MexT inactiva", el ensayo de MexEF-OprN <strong>no puede</strong> hacerse en ese fondo sin introducir un alelo activo o un mutante <code>mexS</code>/<code>nfxC</code>, y el compendio debe decir que la expresión basal esperada es baja. INF, sobre EXP de Maseda 2000 y Liu 2022.</p>
+<p><strong>Nota de honestidad sobre el DOI.</strong> El artículo de Maseda 2000 aparece con <strong>dos DOI distintos que ambos resuelven en Crossref al mismo título y la misma revista</strong>: 10.1111/j.1574-6968.2000.tb09367.x (Wiley, con la lista de autores completa) y 10.1016/s0378-1097(00)00419-5 (Elsevier, con un solo autor en el registro). Es un duplicado de la migración de <em>FEMS Microbiology Letters</em>. Se recomienda citar el primero, que tiene el registro de autoría completo, y se documenta el segundo para que nadie lo interprete como un trabajo distinto. EXP (verificado en Crossref 2026-09-11 en los dos casos).</p>
+<hr />
+<h2 id="g-4-mexz-armz-amgrs-y-los-aislados-de-fibrosis-quistica"><span class="num">Secci&oacute;n 5</span>g.4 mexZ, armZ, AmgRS y los aislados de fibrosis quística</h2>
+<p><strong>MexZ</strong> (PA2020, TetR) reprime <code>mexXY</code>. Matsuo <em>et al.</em> (2004, doi 10.1016/j.femsle.2004.07.010; resumen consultado) mostraron por retardo en gel que MexZ purificada se une directamente a un sitio específico del DNA intergénico <code>mexZ</code>–<code>mexX</code>, y por entrecruzamiento químico <em>in vitro</em> y dos híbridos <em>in vivo</em> que la forma activa capaz de unir ese DNA es un <strong>dímero</strong>. Y añadieron un resultado negativo que importa: la presencia del antibiótico inductor en la mezcla de retardo <strong>no</strong> alteró la interacción MexZ–DNA, lo que implica la participación de un regulador adicional. EXP.</p>
+<p>Ese regulador adicional se identificó: <strong>ArmZ</strong> (PA5471). Hay <em>et al.</em> (2013, doi 10.1371/journal.pone.0056858; resumen consultado) mostraron que la espectinomicina induce <code>mexXY</code> <strong>18 veces</strong> en PAO1 silvestre y que esa inducción <strong>depende por completo</strong> de PA5471/ArmZ, que funciona como antirrepresor de MexZ; en un mutante <code>mexZ</code> la expresión sube modestamente (<strong>5 veces</strong>) y sigue respondiendo a espectinomicina (18 veces) pero ya de forma <strong>independiente</strong> de ArmZ. EXP.</p>
+<p><strong>Este par de resultados cambia el diseño del ensayo de MexXY de forma concreta y favorable.</strong> Un mutante <code>mexZ</code> <strong>no</strong> es un fondo de expresión máxima: sólo aporta 5 veces y deja intacta la inducibilidad. La forma más limpia de tener MexXY expresada sin tocar el genotipo es <strong>PAO1 silvestre más espectinomicina subinhibitoria</strong>, que da 18 veces con <code>mexAB-oprM</code> en su nivel basal. Eso separa el blanco (MexXY) del principal competidor por OprM (MexAB) mejor que cualquier mutante. INF, sobre EXP de Hay 2013.</p>
+<p><strong>AmgRS</strong> añade un riesgo: la expresión de <code>mexXY</code> es inducible por estrés de envoltura vía AmgRS (Lau <em>et al.</em> 2014, doi 10.1002/mbo3.226; registro únicamente). EXP-IND para este proyecto. Un péptido catiónico que perturbe la envoltura puede <strong>inducir</strong> <code>mexXY</code> por esta vía. El control de péptido <em>scrambled</em> debe por tanto medirse también por <strong>RT-qPCR de <code>mexY</code></strong>, no sólo por CIM: si el <em>scrambled</em> induce <code>mexY</code> tanto como el péptido diseñado, la diferencia de CIM no se puede atribuir a la interfaz.</p>
+<p><strong>Aislados de fibrosis quística.</strong> Las mutaciones en <code>mexZ</code> son de las más frecuentes en aislados de fibrosis quística y la resistencia a aminoglucósidos en esa población resulta de evolución convergente (Prickett <em>et al.</em> 2016, Thorax, doi 10.1136/thoraxjnl-2015-208027; Greipel <em>et al.</em> 2016, doi 10.1128/aac.00724-16; López-Causapé <em>et al.</em> 2017, doi 10.1038/s41598-017-05621-5; los tres verificados en Crossref, registro únicamente). EXP. Para este proyecto la consecuencia es doble: (i) hay una población clínica real donde MexXY está desreprimida, que es el escenario de uso del péptido anti-MexXY; (ii) esos aislados portan además decenas de otras mutaciones de resistencia, de modo que <strong>no</strong> son un fondo limpio para atribuir un efecto a la interfaz. Sirven como validación terminal, nunca como sistema de descubrimiento. INF.</p>
+<hr />
+<h2 id="g-5-compensacion-cruzada-por-que-el-ensayo-debe-medir-las-cu"><span class="num">Secci&oacute;n 6</span>g.5 Compensación cruzada: por qué el ensayo debe medir las cuatro bombas</h2>
+<h3 id="g-5-1-la-fuente-y-lo-que-dice-exactamente">g.5.1 La fuente y lo que dice exactamente</h3>
+<p>Li, Zhang y Poole (2000, <em>J Antimicrob Chemother</em> 46:885, doi 10.1093/jac/46.6.885; PMID 11102405; resumen consultado) midieron la expresión de los tres sistemas en mutantes definidos y en cepas "silvestres". Lo que informan:</p>
+<ul>
+<li>MexAB-OprM se expresa en la célula silvestre; MexCD-OprJ no; MexEF-OprN muestra expresión <strong>variable y dependiente de cepa</strong> (lo que es la otra cara del problema del alelo <code>mexT</code> de §g.3).</li>
+<li>En mutantes definidos, la expresión de MexCD-OprJ <strong>aumenta al disminuir</strong> MexAB-OprM, y en general es <strong>inversamente</strong> proporcional a ella.</li>
+<li>En cepas silvestres que expresan MexEF-OprN, la hiperexpresión de MexAB-OprM se correlaciona con caída de MexEF-OprN, y la pérdida de MexAB-OprM con aumento de MexEF-OprN: de nuevo relación inversa.</li>
+<li><strong>Y lo que los propios autores subrayan, que es lo que este compendio no puede suavizar:</strong> los aumentos de MexCD-OprJ y MexEF-OprN <strong>fallaron en compensar</strong> la pérdida de MexAB-OprM en términos de resistencia a antibióticos.</li>
+</ul>
+<p>EXP, <strong>fuente única</strong> para la cuantificación de la relación inversa entre los tres sistemas. Srikumar <em>et al.</em> 1998 (doi 10.1128/aac.42.1.65) documentan la expresión conjunta de MexAB-OprM y MexCD-OprJ en un mutante multirresistente (registro únicamente). Horna <em>et al.</em> 2018 (doi 10.1038/s41598-018-34694-z) documentan la interacción entre MexAB-OprM y MexEF-OprN en aislados clínicos (registro únicamente). EXP-IND.</p>
+<h3 id="g-5-2-lo-que-este-compendio-concluye-marcado-como-conclusion">g.5.2 Lo que este compendio concluye, marcado como conclusión propia</h3>
+<p><strong>Lo que dice la fuente:</strong> existe compensación de <strong>expresión</strong> entre las tres bombas, y esa compensación <strong>no</strong> se traduce en compensación de <strong>fenotipo de resistencia</strong>.</p>
+<p><strong>Lo que concluye este documento (INF):</strong> la consecuencia para el ensayo es la opuesta a la que sugiere la intuición. La compensación cruzada <strong>no</strong> es principalmente un riesgo de que el péptido "deje de funcionar" porque otra bomba tome el relevo —Li 2000 muestra que el relevo no alcanza para restaurar la resistencia—, sino un riesgo de <strong>mala interpretación mecanística</strong>: si el péptido inhibe MexAB-OprM y la célula sube <code>mexCD-oprJ</code>, un panel que sólo mida ciprofloxacino verá "el péptido no funciona" cuando en realidad funcionó y la célula respondió. Por eso el panel debe medir simultáneamente <strong>aztreonam</strong> (MexAB), <strong>ciprofloxacino</strong> (MexCD), <strong>cloranfenicol</strong> (MexEF) y <strong>tobramicina</strong> (MexXY), y acompañarlos de RT-qPCR de <code>mexB</code>, <code>mexD</code>, <code>mexF</code> y <code>mexY</code>. Ése es el diseño mínimo, y es de cuatro antibióticos y cuatro transcritos, no de uno.</p>
+<p><strong>Búsqueda negativa relevante:</strong> el corpus heredado de 956 DOI de OpenAlex no contenía <strong>ningún</strong> trabajo que coincidiera con el patrón de "compensación / co-regulación / <em>trade-off</em>" (0 de 956 por cribado de título). Esa literatura hubo que buscarla en esta revisión (consultas <code>vg08</code>, <code>vg19</code>, <code>vg30</code>).</p>
+<hr />
+<h2 id="g-6-cepas-de-delecion-y-complementacion-que-existe-verificad"><span class="num">Secci&oacute;n 7</span>g.6 Cepas de deleción y complementación: qué existe, verificado, y qué no</h2>
+<p>Esta sección es la más expuesta a inventar, y por eso es la más conservadora. Se listan sólo las cepas cuya existencia está documentada en un artículo cuyo DOI se resolvió en esta revisión, y se marca <strong>[POR VERIFICAR]</strong> todo canal de obtención que no se comprobó. <strong>En esta revisión no se verificó ningún catálogo, ningún número de ATCC y ninguna dirección de contacto: escribir un correo o un número de catálogo aquí sería exactamente el tipo de dato inventado que este compendio prohíbe.</strong></p>
+<h3 id="g-6-1-fondos-multiples-publicados-verificados">g.6.1 Fondos múltiples publicados, verificados</h3>
+<table class="data">
+<thead>
+<tr>
+<th>Fondo</th>
+<th>Qué carece</th>
+<th>Fuente verificada</th>
+<th>Uso en este proyecto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serie de PAO1 de Morita 2001</td>
+<td>las cuatro operones <code>mex</code> principales deletadas, o sólo una presente</td>
+<td>doi 10.1111/j.1574-6968.2001.tb10794.x (resumen consultado)</td>
+<td>es el juego canónico para aislar una bomba a la vez</td>
+</tr>
+<tr>
+<td><strong>YM44</strong></td>
+<td>MexAB, MexCD-OprJ, MexEF-OprN y MexXY</td>
+<td>doi 10.1093/jac/dkg390 (resumen consultado)</td>
+<td>fondo de las cuatro bombas para probar emparejamientos forzados</td>
+</tr>
+<tr>
+<td><strong>PAO509</strong></td>
+<td>ΔmexAB-oprM ΔmexCD-oprJ ΔmexEF-oprN ΔmexJK ΔmexXY (quíntuple)</td>
+<td>doi 10.1128/jb.00850-07 (resumen consultado)</td>
+<td>el fondo más vacío verificado en esta revisión</td>
+</tr>
+<tr>
+<td><strong>PAO509.5</strong></td>
+<td>derivada de PAO509 con mutación promotor-<em>up</em> de <code>triABC</code></td>
+<td>doi 10.1128/jb.00850-07</td>
+<td>control de que un RND puede funcionar sin OprM</td>
+</tr>
+<tr>
+<td>Mutantes ΔmexXY, ΔmexAB, doble</td>
+<td>según nombre</td>
+<td>doi 10.2323/jgam.47.27 (resumen consultado)</td>
+<td>fuente del resultado "OprM es esencial para MexXY"</td>
+</tr>
+</tbody>
+</table>
+<p>Los laboratorios de origen, tal como figuran en los artículos verificados, son el de <strong>T. Nakae</strong> (serie de Morita 2001 y Morita 2001 <em>roles</em>), el de <strong>T. Tsuchiya / T. Kuroda</strong> (YM44, Li 2003) y el de <strong>H. P. Schweizer</strong> (PAO509 y PAO509.5, Mima 2007; y las cepas de MexJK de Chuanchuen 2002). EXP para la atribución; <strong>el canal de solicitud concreto queda [POR VERIFICAR]</strong>.</p>
+<h3 id="g-6-2-bibliotecas-de-transposon">g.6.2 Bibliotecas de transposón</h3>
+<p>Existen dos recursos verificados: la biblioteca completa de mutantes por transposón de <em>P. aeruginosa</em> PAO1 (Jacobs <em>et al.</em> 2003, doi 10.1073/pnas.2036282100) y la <strong>biblioteca de dos alelos verificada por secuencia</strong> (Held, Ramage, Jacobs, Gallagher y Manoil 2012, doi 10.1128/jb.01479-12), las dos de la Universidad de Washington. EXP para su existencia. Limitación que hay que decir: <strong>dan mutantes simples, no dobles ni triples.</strong> Para los fondos múltiples de §g.6.1 hay que construirlos o pedirlos a los laboratorios que los publicaron.</p>
+<h3 id="g-6-3-busqueda-negativa-explicita-sobre-cepas">g.6.3 Búsqueda negativa explícita sobre cepas</h3>
+<p>La consulta <code>vg29</code> ("Pseudomonas aeruginosa multidrug efflux pump knockout panel hypersusceptible strain PAO750 PAO1100", OpenAlex, 2026-09-11) devolvió <strong>CERO resultados</strong>. <strong>Los nombres de cepa "PAO750" y "PAO1100" no se confirmaron en esta revisión y no deben escribirse en un protocolo sin verificación independiente.</strong> Los fondos hipersusceptibles que sí se verificaron son los tres de §g.6.1. Registrado en <code>tabla_busquedas_negativas_validacion.csv</code>.</p>
+<hr />
+<h2 id="g-7-sustratos-indicadores-por-bomba"><span class="num">Secci&oacute;n 8</span>g.7 Sustratos indicadores por bomba</h2>
+<p>La fuente primaria es <strong>Masuda <em>et al.</em> 2000</strong> (doi 10.1128/aac.44.12.3322-3327.2000; PMID 11083635; resumen consultado), que es el diseño correcto para esta pregunta: construyeron mutantes isogénicos que <strong>sobreproducen constitutivamente una sola</strong> de las tres bombas y <strong>carecen de las otras dos</strong>, más los mutantes isogénicos que carecen de todas, y compararon la susceptibilidad a <strong>52 agentes antimicrobianos</strong>. Lo que informan:</p>
+<ul>
+<li>Las tres bombas extruyen un rango amplio compartido: quinolonas, macrólidos, tetraciclinas, lincomicina, cloranfenicol, la mayoría de penicilinas (todas menos carbenicilina y sulbenicilina), la mayoría de cefemas (todas menos cefsulodina y ceftazidima), meropenem y S-4661.</li>
+<li><strong>Ninguna</strong> de las tres extruye <strong>polimixina B</strong> ni <strong>imipenem</strong>.</li>
+<li>La extrusión de <strong>aminoglucósidos es específica de MexXY-OprM</strong>.</li>
+<li>La extrusión de un grupo de betalactámicos —<strong>carbenicilina, sulbenicilina, ceftazidima, moxalactam y aztreonam</strong>— es <strong>específica de MexAB-OprM</strong>.</li>
+<li>MexAB-OprM y MexCD-OprJ, y no MexXY-OprM, extruyen novobiocina y cefsulodina.</li>
+</ul>
+<p>EXP. Para MexEF-OprN la fuente es <strong>Maseda, Yoneyama y Nakae 2000</strong> (doi 10.1128/aac.44.3.658-664.2000; resumen consultado), que introdujo <code>mexEF-oprN</code> en un fondo sin <code>mexAB-oprM</code> y observó resistencia a <strong>fluoroquinolonas, trimetoprima y cloranfenicol</strong>, más tetraciclina, y —a diferencia de la mayoría de los mutantes tipo nfxC— <strong>sin</strong> hipersusceptibilidad a betalactámicos. EXP. Morita <em>et al.</em> 2001 (doi 10.2323/jgam.47.27; resumen consultado) confirman de forma independiente que la pérdida de MexXY aumenta la susceptibilidad a aminoglucósidos, eritromicina y tetraciclina pero no a betalactámicos, cloranfenicol ni quinolonas, y que la pérdida de MexAB aumenta la susceptibilidad a betalactámicos, cloranfenicol y ácido nalidíxico pero no a aminoglucósidos. EXP, y es una <strong>segunda fuente concordante</strong> para la asignación de aminoglucósidos a MexXY.</p>
+<p><strong>Asignación recomendada de antibiótico marcador, con su nivel de evidencia:</strong></p>
+<table class="data">
+<thead>
+<tr>
+<th>Bomba</th>
+<th>Marcador primario</th>
+<th>Marcador secundario</th>
+<th>Evidencia</th>
+<th>Nota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexAB-OprM</td>
+<td><strong>aztreonam</strong></td>
+<td>carbenicilina, ceftazidima</td>
+<td>EXP (Masuda 2000, Morita 2001)</td>
+<td>específico: ninguna otra de las tres lo extruye</td>
+</tr>
+<tr>
+<td>MexXY-OprM</td>
+<td><strong>tobramicina</strong> o amikacina</td>
+<td>eritromicina</td>
+<td>EXP (Masuda 2000, Morita 2001, dos fuentes)</td>
+<td>específico: los aminoglucósidos sólo los extruye MexXY</td>
+</tr>
+<tr>
+<td>MexCD-OprJ</td>
+<td><strong>ciprofloxacino</strong></td>
+<td>cefpiroma, novobiocina</td>
+<td>EXP (Masuda 2000)</td>
+<td>NO específico: MexAB también extruye quinolonas; el marcador sólo discrimina en fondo Δ<em>mexAB</em></td>
+</tr>
+<tr>
+<td>MexEF-OprN</td>
+<td><strong>cloranfenicol</strong> y <strong>trimetoprima</strong></td>
+<td>fluoroquinolonas</td>
+<td>EXP (Maseda 2000)</td>
+<td>trimetoprima es el más discriminante frente a MexAB</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Advertencia que sale de la propia tabla (INF):</strong> sólo dos de las cuatro bombas tienen un marcador verdaderamente específico. Para MexCD-OprJ y MexEF-OprN el marcador <strong>exige el fondo de deleción correspondiente</strong> para significar algo. Esto no es un detalle de conveniencia: es la razón por la que los fondos de §g.6.1 son parte del presupuesto del experimento y no un extra.</p>
+<p><strong>Segunda advertencia (INF, sobre EXP de Masuda 2000):</strong> que ninguna de las tres bombas extruya <strong>polimixina B</strong> convierte a la polimixina B en un <strong>control interno de permeabilización</strong> casi ideal. Si un péptido "potencia" polimixina B, lo que está haciendo es permeabilizar la envoltura, no inhibir una bomba.</p>
+<hr />
+<h2 id="g-8-composicion-de-cada-bomba-del-proyecto-y-que-se-sabe-de-"><span class="num">Secci&oacute;n 9</span>g.8 Composición de cada bomba del proyecto y qué se sabe de su interfaz OMF–MFP</h2>
+<h3 id="g-8-1-las-cuatro-bombas-con-sus-accesiones-verificadas-en-es">g.8.1 Las cuatro bombas, con sus accesiones verificadas en esta revisión</h3>
+<table class="data">
+<thead>
+<tr>
+<th>Bomba</th>
+<th>MFP</th>
+<th>RND</th>
+<th>OMF</th>
+<th>Estequiometría documentada</th>
+<th>Condiciones de expresión</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexAB-OprM</td>
+<td>MexA P52477 (383 aa, señal 1–23, madura 360; lipidación anotada en Cys24)</td>
+<td>MexB P52002 (1046 aa, sin señal)</td>
+<td>OprM Q51487 (485 aa, señal 1–17, madura 468)</td>
+<td><strong>3:6:3 observada</strong> en 6IOK, 6IOL, 6TA5, 6TA6 (12 cadenas)</td>
+<td>constitutiva en silvestre; alta en nalB/nalC/nalD</td>
+</tr>
+<tr>
+<td>MexXY-OprM</td>
+<td>MexX G3XD21 (396 aa, señal 1–23)</td>
+<td>MexY G3XCW2 (1045 aa)</td>
+<td>OprM Q51487</td>
+<td><strong>no observada</strong>: no hay estructura de MexX; MexY sólo como trímero aislado (8Z1U, 9E9F)</td>
+<td>inducible (espectinomicina, 18×, vía ArmZ); alta en <code>mexZ</code> mutado</td>
+</tr>
+<tr>
+<td>MexCD-OprJ</td>
+<td>MexC G3XD25 (387 aa, señal 1–21)</td>
+<td>MexD Q9HVI9 (1043 aa)</td>
+<td>OprJ Q51397 (479 aa, señal 1–19)</td>
+<td><strong>no observada</strong>: cero estructuras de MexC y MexD; sólo OprJ (5AZS)</td>
+<td>silente en silvestre; inducible por TPP/etidio/rodamina/acriflavina; alta en <code>nfxB</code></td>
+</tr>
+<tr>
+<td>MexEF-OprN</td>
+<td>MexE Q9I0Y9 (414 aa, señal 1–23)</td>
+<td>MexF Q9I0Y8 (1062 aa)</td>
+<td>OprN Q9I0Y7 (472 aa, señal 1–25)</td>
+<td><strong>no observada</strong>: cero estructuras de MexE y MexF; sólo OprN (5AZO, 5AZP, 5IUY, 5NSW)</td>
+<td>baja en silvestre y <strong>dependiente del alelo de <code>mexT</code></strong>; alta en nfxC/nfxC2</td>
+</tr>
+</tbody>
+</table>
+<p>Las 13 accesiones fueron verificadas en UniProt el 2026-09-11. La ausencia de estructura se verificó en esta revisión de dos formas independientes (§g.8.2).</p>
+<h3 id="g-8-2-el-resultado-negativo-reproducido-en-esta-revision">g.8.2 El resultado negativo, reproducido en esta revisión</h3>
+<p>Búsqueda en RCSB Search API v2 por <code>reference_sequence_identifiers.database_accession</code> con <code>database_name = UniProt</code>, 2026-09-11:</p>
+<table class="data">
+<thead>
+<tr>
+<th>Accesión</th>
+<th>Proteína</th>
+<th>Entradas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G3XD21</td>
+<td>MexX</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>G3XD25</td>
+<td>MexC</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Q9HVI9</td>
+<td>MexD</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Q9I0Y9</td>
+<td>MexE</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Q9I0Y8</td>
+<td>MexF</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Q9ZNG9 / Q9ZNG8</td>
+<td>MexX / MexY (versión del planteamiento inicial)</td>
+<td><strong>0</strong> / <strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Control positivo en la misma ejecución y con el mismo método: MexA 8 entradas, MexB 13, OprM 9, OprJ 1, OprN 4, MexY 2. El método funciona, de modo que los ceros son ceros reales. Corroboración independiente por búsqueda de <strong>texto completo</strong> en RCSB: <code>"MexC" Pseudomonas</code> = 0, <code>"MexD" Pseudomonas</code> = 0, <code>"MexE" Pseudomonas</code> = 0, <code>"MexF" Pseudomonas</code> = 0, <code>"MexX" Pseudomonas</code> = 0, <code>"OprA" Pseudomonas</code> = 0. EXP.</p>
+<p><strong>Advertencia metodológica que descubrió esta revisión y que hay que escribir.</strong> La búsqueda por accesión puede dar un <strong>cero engañoso</strong>: para MtrD de <em>N. gonorrhoeae</em> (Q51073) la búsqueda por accesión da 0, pero la búsqueda de texto <code>"MtrD" Neisseria</code> devuelve <strong>6 entradas</strong> (4MT1, 6VKS, 6VKT, 8DEU, 8DEV, 8DEW), porque los depósitos referencian otra accesión de cepa. Un cero por accesión significa "ninguna entrada referencia esa accesión", no "la proteína no tiene estructura". Para las cinco proteínas de las bombas del proyecto el cero <strong>sí</strong> está corroborado por texto; para el resto de la tabla de cobertura (<code>tabla_sistemas_cubiertos.csv</code>) el lector debe leer cada celda con el método declarado en la columna correspondiente.</p>
+<h3 id="g-8-3-que-se-sabe-de-la-interfaz-omfmfp-de-cada-bomba-la-res">g.8.3 Qué se sabe de la interfaz OMF–MFP de cada bomba: la respuesta sin suavizar</h3>
+<p><strong>MexAB-OprM.</strong> Es la única con evidencia directa, y es genética, no sólo estructural. Nehme y Poole (2004, doi 10.1128/jb.186.10.2973-2983.2004; resumen consultado) confirmaron la interacción MexA–MexB <em>in vivo</em> por entrecruzamiento y la multimerización de MexA por un ensayo tipo LexA, y mapearon mutaciones que comprometen la función de MexA sin reducir su nivel a dos regiones: <strong>P68, G72, L91, A108, L110 y V129</strong> en la mitad N, y <strong>V264, N270, H279, V286 y G297</strong> en la mitad C. Nehme y Poole (2007, doi 10.1128/jb.00718-07; resumen consultado) fueron más allá con supresores extragénicos: la hipersusceptibilidad causada por <strong>V129M</strong>, en la horquilla α de MexA implicada en la interacción con OprM, <strong>se suprime por mutaciones T198I y F439I en el barril α-helicoidal periplásmico de OprM</strong>. EXP. Esto es un par de residuos funcionalmente acoplados entre la MFP y el OMF, obtenido por genética: es la evidencia más fuerte que existe hoy a favor de la premisa de "residuos de interfaz que actúan como puntos calientes".</p>
+<p><strong>MexXY-OprM.</strong> <strong>Nada directo.</strong> La única evidencia de interfaz es el requerimiento funcional: Morita <em>et al.</em> 2001 (doi 10.2323/jgam.47.27) concluyen que <strong>OprM es esencial no sólo para la función de MexAB sino también para la de MexXY</strong>, y Mine <em>et al.</em> 1999 (doi 10.1128/aac.43.2.415; PMID 9925549, resumen consultado) mostraron que <strong>TolC de <em>E. coli</em> u OprM de <em>P. aeruginosa</em> son necesarios</strong> para la función de MexXY expresado en <em>E. coli</em>. EXP para el requerimiento; <strong>cero</strong> estudios de contacto residuo a residuo. Todo lo que se diga sobre la interfaz MexX–OprM es homología.</p>
+<p><strong>MexCD-OprJ.</strong> <strong>Nada directo, y menos que nada.</strong> No hay estructura de MexC ni de MexD (§g.8.2), no hay estudio de contacto, y OprJ sólo existe como estructura aislada (5AZS). Todo es homología.</p>
+<p><strong>MexEF-OprN.</strong> <strong>Nada directo.</strong> OprN tiene cuatro estructuras aisladas, MexE y MexF ninguna, y no existe estudio de contacto OprN–MexE. Todo es homología.</p>
+<p>Escrito sin suavizar: <strong>de las cuatro bombas del proyecto, tres no tienen ni una sola observación experimental de su interfaz OMF–MFP.</strong> El diseño de péptidos para MexXY, MexCD y MexEF se apoya enteramente en transferencia desde MexAB-OprM, y la calidad de esa transferencia es la que se mide en §g.8.4.</p>
+<h3 id="g-8-4-cuanto-vale-la-transferencia-dentro-de-la-propia-p-aer">g.8.4 Cuánto vale la transferencia dentro de la propia <em>P. aeruginosa</em> (medición de esta revisión)</h3>
+<p><strong>Método declarado:</strong> alineamiento global de Needleman-Wunsch (Biopython <code>PairwiseAligner</code>), BLOSUM62, apertura de hueco −11, extensión −1, identidad calculada sobre columnas alineadas <strong>sin hueco</strong>, secuencias <strong>UniProt completas</strong> en los dos lados. Esta convención reproduce exactamente los valores heredados del material de partida(AcrA 59,63; AcrB 70,14; TolC 23,06; MacA 27,59; OprJ 46,85; OprN 33,41), lo que valida el procedimiento antes de usarlo para valores nuevos. <strong>Epítopo</strong>: los 12 residuos de MexA que contactan OprM (madura 96, 97, 99, 100, 103–110 = UniProt 119, 120, 122, 123, 126–133) y los 24 de OprM que contactan MexA (madura 190, 191, 194–196, 198–204, 395, 399, 402–404, 406–412 = UniProt 207, 208, 211–213, 215–221, 412, 416, 419–421, 423–429), conjuntos medidos sobre 6IOK en el material de partida de estructuras.</p>
+<table class="data">
+<thead>
+<tr>
+<th>Componente</th>
+<th>Bomba</th>
+<th>Identidad global frente a MexA/OprM</th>
+<th>Identidad <strong>en el epítopo de contacto</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexA (referente)</td>
+<td>MexAB-OprM</td>
+<td>100 %</td>
+<td>100 % (12/12)</td>
+</tr>
+<tr>
+<td>MexC</td>
+<td>MexCD-OprJ</td>
+<td>46,63 %</td>
+<td><strong>66,67 %</strong> (8/12)</td>
+</tr>
+<tr>
+<td>MexX</td>
+<td>MexXY-OprM</td>
+<td>39,42 %</td>
+<td><strong>50,00 %</strong> (6/12)</td>
+</tr>
+<tr>
+<td>MexE</td>
+<td>MexEF-OprN</td>
+<td>32,45 %</td>
+<td><strong>33,33 %</strong> (4/12)</td>
+</tr>
+<tr>
+<td>OprM (referente)</td>
+<td>MexAB-OprM</td>
+<td>100 %</td>
+<td>100 % (24/24)</td>
+</tr>
+<tr>
+<td>OprJ</td>
+<td>MexCD-OprJ</td>
+<td>46,85 %</td>
+<td><strong>58,33 %</strong> (14/24)</td>
+</tr>
+<tr>
+<td>OprA</td>
+<td>MexXY-OprA (PA7)</td>
+<td>47,84 %</td>
+<td><strong>54,17 %</strong> (13/24)</td>
+</tr>
+<tr>
+<td>OprN</td>
+<td>MexEF-OprN</td>
+<td>33,41 %</td>
+<td><strong>33,33 %</strong> (8/24)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lo que esta medición dice, como conclusión propia (INF):</strong> el orden de dificultad de la transferencia dentro del propio proyecto es <strong>MexCD-OprJ &lt; MexXY-OprM &lt; MexEF-OprN</strong>, y no es un orden trivial: en el epítopo, MexC conserva dos tercios de los residuos de contacto de MexA y MexE sólo un tercio. <strong>Un péptido diseñado sobre la interfaz MexA–OprM tiene el peor pronóstico contra MexEF-OprN</strong>, donde las dos caras de la interfaz están a un tercio de identidad a la vez. Si hay que sacrificar un blanco de los cuatro por restricción de presupuesto, la medición dice cuál.</p>
+<p><strong>Discrepancia con el material de partida, resuelta explícitamente.</strong> El material de partida <code>el archivo de hechos verificados</code> §5 informa, para el mismo epítopo, MexC 60,0 %, MexX 40,0 % y MexE 33,3 %. Los valores de esta tabla son 66,67, 50,00 y 33,33. <strong>No es una contradicción: son dos conjuntos de residuos distintos.</strong> El material de partida mide el tramo <strong>contiguo</strong> de 15 residuos MexA 119–133 (UniProt); esta tabla mide los <strong>12 residuos que realmente contactan OprM a menos de 5 Å</strong> dentro de ese tramo, excluyendo 121, 124 y 125 (UniProt), que están en el tramo pero no contactan. Ambos números son correctos en su propia definición y el de esta tabla es el pertinente para diseñar un péptido, porque un péptido compite por los contactos, no por el tramo. Se recomienda que el compendio use los dos con su definición explícita y nunca uno sin la otra.</p>
+<h3 id="g-8-5-nomenclatura-cognada-frente-a-nomenclatura-promiscua-l">g.8.5 Nomenclatura cognada frente a nomenclatura promiscua: la distinción que el proyecto debe escribir</h3>
+<p>El planteamiento inicial del proyecto escribe los cuatro blancos como <strong>MexAB-OprM, MexXY-OprM, MexCD-OprM y MexEF-OprM</strong>, porque su hipótesis de trabajo es que OprM es promiscuo. La literatura escribe <strong>MexAB-OprM, MexXY-OprM, MexCD-OprJ y MexEF-OprN</strong>, que son los emparejamientos cognados. Las dos nomenclaturas conviven en los documentos del proyecto y <strong>no significan lo mismo</strong>: la primera describe un emparejamiento <strong>forzado</strong> en un fondo genético de deleción; la segunda, el emparejamiento <strong>fisiológico</strong>. Confundirlas convierte una hipótesis en un supuesto.</p>
+<p><strong>Evidencia verificada de cada emparejamiento, incluida la que va en contra:</strong></p>
+<table class="data">
+<thead>
+<tr>
+<th>Emparejamiento</th>
+<th>Evidencia</th>
+<th>Etiqueta</th>
+<th>Fuente verificada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexAB–<strong>OprM</strong></td>
+<td>cognado; cuatro estructuras del ensamblaje completo</td>
+<td>EXP</td>
+<td>material de partida</td>
+</tr>
+<tr>
+<td>MexXY–<strong>OprM</strong></td>
+<td>forzado y <strong>documentado</strong>: OprM es esencial para la función de MexXY en <em>P. aeruginosa</em>; TolC u OprM lo son en <em>E. coli</em></td>
+<td>EXP</td>
+<td>doi 10.2323/jgam.47.27; doi 10.1128/aac.43.2.415</td>
+</tr>
+<tr>
+<td>MexXY–<strong>OprA</strong></td>
+<td>cognado sólo en <em>P. paraeruginosa</em> PA7; sin estructura y sin entrada UniProt (§g.8.7)</td>
+<td>EXP-IND</td>
+<td>doi 10.1128/aac.01825-24 (material de partida)</td>
+</tr>
+<tr>
+<td>MexEF–<strong>OprM</strong></td>
+<td><strong>parcial</strong>: Maseda 2000 expresó MexEF en un fondo Δ<em>mexAB</em> y obtuvo función tipo MexEF-OprN con OprM presente. Es evidencia de que MexEF <strong>puede</strong> funcionar con OprM, no de que MexEF-OprM sea un ensamblaje fisiológico</td>
+<td>EXP-IND</td>
+<td>doi 10.1128/aac.44.3.658-664.2000</td>
+</tr>
+<tr>
+<td>MexCD–<strong>OprM</strong></td>
+<td><strong>NO hay evidencia publicada localizada.</strong> Consulta <code>vn01</code>, OpenAlex, 2026-09-11: 2 resultados, ninguno pertinente</td>
+<td><strong>POR VERIFICAR / negativo</strong></td>
+<td><code>tabla_busquedas_negativas_validacion.csv</code></td>
+</tr>
+<tr>
+<td>MexVW–<strong>OprM</strong></td>
+<td>forzado y documentado: "OprM fue capaz de cooperar con MexVW" en el fondo YM44</td>
+<td>EXP</td>
+<td>doi 10.1093/jac/dkg390</td>
+</tr>
+<tr>
+<td>MexJK–<strong>OprM</strong></td>
+<td>forzado y documentado, <strong>y selectivo</strong>: MexJK extruye tetraciclina y eritromicina <strong>sólo</strong> con OprM; <strong>OprJ y OprN NO funcionan con MexJK</strong></td>
+<td>EXP</td>
+<td>doi 10.1128/jb.184.18.5036-5044.2002</td>
+</tr>
+<tr>
+<td>MexJK–<strong>ningún OMF</strong></td>
+<td>el eflujo de triclosán por MexJK no requirió ninguno de los canales probados</td>
+<td>EXP</td>
+<td>doi 10.1128/jb.184.18.5036-5044.2002</td>
+</tr>
+<tr>
+<td>TriABC–<strong>OpmH</strong>, no OprM</td>
+<td>"TriABC se asoció con OpmH, pero no con OprM"; y TriABC usa <strong>dos</strong> MFP (TriA y TriB), las dos necesarias</td>
+<td>EXP</td>
+<td>doi 10.1128/jb.00850-07</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lo que este documento concluye (INF), y es el hallazgo más incómodo del eje:</strong> la promiscuidad de OprM es <strong>real pero selectiva</strong>, y hay dos contraejemplos publicados y directos dentro de la propia <em>P. aeruginosa</em>. MexJK funciona con OprM y <strong>no</strong> con OprJ ni con OprN, lo que demuestra que el emparejamiento OMF–MFP tiene determinantes de especificidad, no es un acoplamiento genérico. Y TriABC se asocia a OpmH y <strong>no</strong> a OprM, lo que demuestra que hay RND de <em>P. aeruginosa</em> para los que OprM no es un canal utilizable. La versión fuerte de la hipótesis del proyecto —"OprM es el canal común de las cuatro bombas y por tanto un péptido anti-OprM las apaga todas"— <strong>no está respaldada para MexCD-OprJ (sin evidencia alguna) y está sólo parcialmente respaldada para MexEF (evidencia de compatibilidad, no de fisiología)</strong>. Para MexXY sí está respaldada, y con dos fuentes.</p>
+<p><strong>Consecuencia para el diseño (INF):</strong> si el argumento de que un solo péptido cubre cuatro bombas es lo que justifica el proyecto, ese argumento hoy se sostiene con firmeza para <strong>dos</strong> de las cuatro (MexAB y MexXY). Conviene reescribirlo así antes de que lo haga un revisor.</p>
+<h3 id="g-8-6-la-trampa-de-numeracion-en-la-literatura-genetica-medi">g.8.6 La trampa de numeración en la literatura genética (medición de esta revisión)</h3>
+<p>Nehme y Poole escriben sus mutantes de MexA como P68, G72, L91, A108, L110, V129, V66, V259, y los de OprM como T198 y F439. <strong>Esta revisión comprobó residuo a residuo, contra las secuencias de UniProt descargadas hoy, en qué sistema están escritos:</strong></p>
+<ul>
+<li>MexA: en P52477 (UniProt, precursor) las posiciones 68, 72, 91, 108, 110, 129, 66 y 259 son <strong>P, G, L, A, L, V, V y V</strong> — coinciden <strong>todas</strong>. Si se leyeran como numeración de cadena madura (UniProt = madura + 23), las mismas posiciones serían L, D, Q, K, Q, R, Q y L — <strong>no coincide ninguna</strong>.</li>
+<li>OprM: en Q51487 las posiciones 198 y 439 son <strong>T</strong> y <strong>F</strong> — coinciden. Leídas como madura darían V y E — no coinciden.</li>
+</ul>
+<p><strong>Conclusión medida:</strong> <strong>Nehme 2004 y Nehme 2007 usan numeración de precursor, que equivale a la de UniProt</strong>, mientras que las estructuras, el material de partida del proyecto y este compendio usan <strong>numeración de cadena madura</strong>. La consecuencia es concreta y cara: <strong>MexA V129 (UniProt P52477) = V106 (cadena madura, PDB)</strong>, y el residuo 106 de la cadena madura <strong>está dentro</strong> del conjunto de 12 residuos de contacto medido en 6IOK {96, 97, 99, 100, 103–110}. Es decir, la mutación cuyo defecto se suprime por cambios en OprM <strong>cae exactamente sobre un contacto medido</strong>: la genética y la estructura coinciden. Si en cambio alguien leyera "V129" como numeración madura, apuntaría a R152 (UniProt), un residuo distinto y fuera de la interfaz.</p>
+<p>Del lado de OprM el resultado es menos favorable y hay que decirlo: <strong>T198 (UniProt) = T181 (madura)</strong> y <strong>F439 (UniProt) = F422 (madura)</strong>, y <strong>ninguno de los dos pertenece</strong> al conjunto de 24 contactos medido. Los supresores de OprM están en el barril α-helicoidal periplásmico pero <strong>fuera</strong> de la superficie de contacto a menos de 5 Å, de modo que su efecto es conformacional o alostérico, no un contacto directo restaurado. INF sobre EXP.</p>
+<p>Y una comprobación final del mismo tipo, porque este compendio la exige: los residuos que el proyecto propone como controles negativos —<strong>MexA L100; OprM G199, G407, R403</strong>— coinciden con la secuencia <strong>sólo</strong> en numeración de cadena madura (L100 madura = L123 UniProt; G199 madura = G216 UniProt; R403 madura = R420 UniProt; G407 madura = G424 UniProt) y <strong>no</strong> coinciden en UniProt. La numeración de este compendio es correcta y es madura. EXP (medido en esta revisión).</p>
+<h3 id="g-8-7-opra-el-caso-especial-y-la-quimera-prohibida">g.8.7 OprA: el caso especial, y la quimera prohibida</h3>
+<p>Verificado en esta revisión con NCBI E-utilities el 2026-09-11:</p>
+<ul>
+<li><strong>ABR81584.1</strong>: 467 aa, <code>DEFINITION</code> = "outer membrane efflux protein OprA [Pseudomonas paraeruginosa PA7]", <code>SOURCE</code>/<code>ORGANISM</code> = <em>Pseudomonas paraeruginosa</em> PA7, <code>/db_xref="taxon:381754"</code>, <code>/gene="oprA"</code>, <code>/locus_tag="PSPA7_3271"</code>.</li>
+<li><strong>WP_012076019.1</strong>: 467 aa, <code>DEFINITION</code> = "MULTISPECIES: multidrug efflux transporter outer membrane subunit", <code>ORGANISM</code> = <em>Pseudomonas aeruginosa</em> group, <code>/db_xref="taxon:136841"</code>, <code>/gene="oprA"</code>.</li>
+<li>Las dos secuencias son <strong>idénticas</strong>.</li>
+<li><strong>No existe entrada UniProt</strong> y <strong>no existe estructura</strong>: la búsqueda de texto <code>"OprA" Pseudomonas</code> en RCSB devolvió <strong>0</strong> entradas.</li>
+</ul>
+<p>Dos precisiones que cambian cómo se cita:</p>
+<ol>
+<li>El registro <strong>RefSeq WP_012076019 es MULTISPECIES y está anclado al grupo taxonómico 136841, no a la cepa PA7</strong>. Si el proyecto quiere una accesión específica de cepa, la correcta es <strong>ABR81584.1 / PSPA7_3271 (taxid 381754)</strong>. Citar WP_012076019 como "OprA de PA7" es impreciso. EXP.</li>
+<li><strong>Identidad medida en esta revisión: OprA frente a OprM (Q51487) = 47,84 % global (222/464 columnas sin hueco) y 54,17 % (13/24) en el epítopo de contacto de MexA.</strong> Es decir, OprA está <strong>más</strong> conservado que OprN en la superficie que importa, y prácticamente al mismo nivel que OprJ y que TOprJ1. Ese dato es nuevo en esta revisión.</li>
+</ol>
+<p><strong>La quimera prohibida, escrita como tal.</strong> Una bomba MexXY-OprA coherente exige que MexX y MexY sean <strong>también de PA7</strong>, porque difieren de los de PAO1 en 5,05 % y 3,44 % respectivamente (valores del material de partida). <strong>Mezclar OprA de PA7 con MexX/MexY de PAO1 es una quimera que no existe en ninguna célula y su interfaz no es la interfaz de ningún organismo.</strong> Si el proyecto modela MexXY-OprA, los tres componentes deben ser de PA7 y hay que declararlo en la leyenda de cada figura. INF, sobre datos EXP.</p>
+<hr />
+<h2 id="g-9-sintesis-operativa-las-nueve-cosas-que-este-eje-cambia-e"><span class="num">Secci&oacute;n 10</span>g.9 Síntesis operativa: las nueve cosas que este eje cambia en el protocolo</h2>
+<ol>
+<li>Correr <strong>el par silvestre / sobreexpresor</strong> en la misma placa; un fondo nalB mide reversión, no potenciación (§g.1.2).</li>
+<li><strong>Secuenciar <code>mexT</code> del stock propio</strong> antes de diseñar cualquier ensayo de MexEF-OprN, buscando el inserto de 8 pb y las sustituciones inactivantes (§g.3.3).</li>
+<li><strong>Secuenciar <code>nfxB</code> al final</strong> del ensayo, no sólo al principio: los mutantes llegan a 80–90 % de la población bajo ciprofloxacino subinhibitorio (§g.2.1).</li>
+<li><strong>No usar bromuro de etidio ni rodamina 6G</strong> como sonda cuando el blanco es MexCD-OprJ: son sus inductores (§g.2.2).</li>
+<li>Para encender MexXY sin cambiar el genotipo, usar <strong>PAO1 silvestre más espectinomicina subinhibitoria</strong> (18×) en lugar de un mutante <code>mexZ</code> (5×) (§g.4).</li>
+<li>El panel mínimo es de <strong>cuatro antibióticos</strong> (aztreonam, ciprofloxacino, cloranfenicol, tobramicina) <strong>y cuatro transcritos</strong> (<code>mexB</code>, <code>mexD</code>, <code>mexF</code>, <code>mexY</code>): la compensación cruzada es de expresión y produce errores de interpretación, no de eficacia (§g.5.2).</li>
+<li>Incluir <strong>polimixina B</strong> como control interno: ninguna de las bombas la extruye, de modo que toda "potenciación" de polimixina B es permeabilización (§g.7).</li>
+<li>Medir <strong>RT-qPCR de <code>mexY</code> también en el péptido <em>scrambled</em></strong>, porque AmgRS induce <code>mexXY</code> por estrés de envoltura (§g.4).</li>
+<li>Al escribir residuos, declarar el sistema en la misma cláusula: la literatura genética de referencia (Nehme 2004, 2007) usa numeración de <strong>precursor = UniProt</strong> y el resto del proyecto usa <strong>cadena madura</strong> (§g.8.6).</li>
+</ol>
+<hr />
+<h2 id="g-10-tabla-del-eje-g"><span class="num">Secci&oacute;n 11</span>g.10 Tabla del eje (g)</h2>
+<p>Misma estructura de columnas que <code>tabla_regulacion_y_cepas.csv</code>.</p>
+<table class="data">
+<thead>
+<tr>
+<th>regulador</th>
+<th>gen</th>
+<th>efecto_sobre_que_bomba</th>
+<th>fenotipo_de_cepa</th>
+<th>cepa_disponible_y_procedencia</th>
+<th>sustrato_indicador</th>
+<th>consecuencia_para_el_ensayo</th>
+<th>etiqueta_evidencia</th>
+<th>referencia_doi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexR (represor, MarR)</td>
+<td>mexR / PA0424</td>
+<td>Represor de mexAB-oprM; su perdida de función sobreexpresa MexAB-OprM</td>
+<td>nalB (multirresistente, MexAB-OprM alto)</td>
+<td>Aislados clinicos publicados; alelos descritos en Choudhury 2016 y Aguilar-Rodea 2022; mutantes dirigidos no localizados como colección en esta revisión [POR VERIFICAR]</td>
+<td>Aztreonam o carbenicilina (especificos de MexAB-OprM según Masuda 2000)</td>
+<td>Un fondo nalB da MIC basal alta: el efecto de un peptido se mide como reducción de MIC, no como potenciación desde el silvestre; conviene usar el par silvestre/nalB</td>
+<td>EXP</td>
+<td>10.1371/journal.pone.0149156; 10.1371/journal.pone.0266742</td>
+</tr>
+<tr>
+<td>MexR: estructura</td>
+<td>mexR / PA0424</td>
+<td>Control de mexAB-oprM</td>
+<td>Derepresor R21W resuelto (4ZZL)</td>
+<td>PDB 1LNW y 4ZZL (verificados en RCSB, material de partida tabla_estructuras_PDB.csv)</td>
+<td>No aplica</td>
+<td>Permite disenar controles de derepresión con base estructural; no informa sobre la interfaz OprM-MFP</td>
+<td>EXP</td>
+<td>PDB 1LNW / 4ZZL [DOI de articulo no consultado en esta revisión]</td>
+</tr>
+<tr>
+<td>NalC (TetR) y ArmR</td>
+<td>nalC / PA3721; armR / PA3719</td>
+<td>La perdida de NalC desreprime armR; ArmR se une a MexR y desreprime mexAB-oprM</td>
+<td>nalC (MexAB-OprM moderadamente alto)</td>
+<td>Aislados clinicos publicados (Cao 2004; Braz 2016) [POR VERIFICAR la disponibilidad de mutantes dirigidos]</td>
+<td>Aztreonam (Braz 2016 informa resistencia alta a aztreonam)</td>
+<td>La vía NalC es indirecta: un peptido que no toque la bomba puede parecer activo si altera el estado de derepresión; medir expresión de mexB por RT-qPCR en paralelo</td>
+<td>EXP</td>
+<td>10.1111/j.1365-2958.2004.04210.x; 10.1093/femsle/fnw166</td>
+</tr>
+<tr>
+<td>NalD (TetR)</td>
+<td>nalD / PA3574</td>
+<td>Segundo represor de mexAB-oprM</td>
+<td>nalD (MexAB-OprM alto)</td>
+<td>Descrita en Sobel 2005 y Morita 2006 [POR VERIFICAR la procedencia de la cepa]</td>
+<td>Aztreonam, carbenicilina</td>
+<td>Segundo locus a secuenciar antes de atribuir un cambio de MIC al peptido</td>
+<td>EXP</td>
+<td>10.1128/aac.49.5.1782-1786.2005; 10.1128/JB.01342-06</td>
+</tr>
+<tr>
+<td>NalD y NalC: estructura</td>
+<td>nalD / nalC</td>
+<td>Control de mexAB-oprM</td>
+<td>No aplica</td>
+<td>PDB 5DAJ, 5H9T (NalD) y 8KE8 (NalC), verificados en RCSB</td>
+<td>No aplica</td>
+<td>Base estructural para controles de derepresión; no informa de la interfaz</td>
+<td>EXP</td>
+<td>PDB 5DAJ / 5H9T / 8KE8 [DOI de articulo no consultado]</td>
+</tr>
+<tr>
+<td>CpxR</td>
+<td>cpxR</td>
+<td>Activa la expresión de MexAB-OprM</td>
+<td>Cepas de laboratorio y clinicas</td>
+<td>[POR VERIFICAR]</td>
+<td>Aztreonam, carbenicilina</td>
+<td>Cuarta vía de entrada a la expresión de MexAB-OprM: un estres de envoltura provocado por el propio peptido puede SUBIR la bomba blanco</td>
+<td>EXP-IND</td>
+<td>10.1371/journal.ppat.1005932</td>
+</tr>
+<tr>
+<td>NfxB (LysR/TetR)</td>
+<td>nfxB / PA4600</td>
+<td>Represor de mexCD-oprJ; su perdida sobreexpresa MexCD-OprJ</td>
+<td>nfxB (resistente a ciprofloxacino, hipersusceptible a beta-lactamos)</td>
+<td>Mutantes espontaneos seleccionables con ciprofloxacino subinhibitorio (Zaborskyte 2017 los obtiene en PAO1 con reporteros PmexCD-gfp) [procedencia concreta POR VERIFICAR]</td>
+<td>Ciprofloxacino; cefpiroma según perfil de MexCD-OprJ</td>
+<td>Los mutantes nfxB aparecen espontaneamente y alcanzan 80-90% de la población bajo 1/10 de la CIM de ciprofloxacino: en un ensayo de varios dias el genotipo del cultivo cambia bajo el propio ensayo, lo que obliga a secuenciar nfxB al final del experimento</td>
+<td>EXP</td>
+<td>10.1046/j.1365-2958.1996.281397.x; 10.1128/aac.02292-16</td>
+</tr>
+<tr>
+<td>MexT (LysR) y MexS</td>
+<td>mexT / PA2492; mexS / PA2491</td>
+<td>MexT activa mexEF-oprN; la alteración de mexS activa la vía</td>
+<td>nfxC (resistente a cloranfenicol, fluoroquinolonas y trimetoprima)</td>
+<td>Mutantes nfxC descritos desde Kohler 1997; sublinea PAO1-E sin mutaciones en mexT ni lasR (Liu 2022) como fondo limpio [POR VERIFICAR su disponibilidad]</td>
+<td>Cloranfenicol y trimetoprima (Maseda 2000 los confirma como sustratos de MexEF-OprN)</td>
+<td>ADVERTENCIA: muchas cepas silvestres portan mexT INACTIVO (tipo I: MexT inactiva; tipo II: inserto de 8 pb). En un fondo con mexT inactivo la expresión basal de MexEF-OprN es baja y un peptido anti-MexEF no tendra nada que inhibir. Secuenciar mexT del stock propio antes de disenar el ensayo</td>
+<td>EXP</td>
+<td>10.1111/j.1574-6968.2000.tb09367.x; 10.3389/fmicb.2022.821895; 10.1128/jb.181.20.6300-6305.1999</td>
+</tr>
+<tr>
+<td>CmrA (AraC)</td>
+<td>cmrA / PA14_38040 (homólogo PA2047 en PAO1)</td>
+<td>Activa mexEF-oprN a traves de MexS y MexT</td>
+<td>nfxC2 (resistente a cloranfenicol)</td>
+<td>Clones seleccionados in vitro de PA14 (Juarez 2017) [POR VERIFICAR]</td>
+<td>Cloranfenicol</td>
+<td>Tercer locus a secuenciar si aparece resistencia a cloranfenicol durante el ensayo</td>
+<td>EXP</td>
+<td>10.1128/aac.00585-17</td>
+</tr>
+<tr>
+<td>MexT: estructura</td>
+<td>mexT</td>
+<td>Activador de mexEF-oprN</td>
+<td>No aplica</td>
+<td>PDB 6L33 (dominio regulador), verificado en RCSB</td>
+<td>No aplica</td>
+<td>Base estructural del activador; no informa de la interfaz OMF-MFP</td>
+<td>EXP</td>
+<td>PDB 6L33 [DOI de articulo no consultado]</td>
+</tr>
+<tr>
+<td>MexZ (TetR)</td>
+<td>mexZ / PA2020</td>
+<td>Represor de mexXY; su perdida sobreexpresa MexXY</td>
+<td>Aislados de fibrosis quistica con mexZ mutado</td>
+<td>Colecciones de aislados de fibrosis quistica publicadas (Prickett 2016; Greipel 2016; Lopez-Causape 2017) [acceso POR VERIFICAR]</td>
+<td>Aminoglucosidos: tobramicina o amikacina (Masuda 2000 asigna los aminoglucosidos exclusivamente a MexXY-OprM)</td>
+<td>MexZ activa es un dimero que se une al DNA intergenico mexZ-mexX; la inducción por antibiotico no pasa solo por MexZ, de modo que un mutante mexZ NO es un fondo de expresión maxima</td>
+<td>EXP</td>
+<td>10.1016/j.femsle.2004.07.010; 10.1136/thoraxjnl-2015-208027</td>
+</tr>
+<tr>
+<td>ArmZ (PA5471)</td>
+<td>armZ / PA5471</td>
+<td>Antirrepresor de MexZ; la espectinomicina induce mexXY 18 veces de forma dependiente de ArmZ</td>
+<td>Silvestre inducido</td>
+<td>PAO1 silvestre + espectinomicina subinhibitoria (Hay 2013)</td>
+<td>Espectinomicina como inductor; tobramicina como indicador</td>
+<td>Permite ENCENDER MexXY en un fondo silvestre sin mutar nada: es la forma mas limpia de tener MexXY expresada y MexAB en su nivel basal</td>
+<td>EXP</td>
+<td>10.1371/journal.pone.0056858</td>
+</tr>
+<tr>
+<td>AmgRS</td>
+<td>amgRS</td>
+<td>Expresión de mexXY inducible por estres de envoltura</td>
+<td>Silvestre bajo estres</td>
+<td>[POR VERIFICAR]</td>
+<td>Tobramicina</td>
+<td>Un peptido cationico que perturbe la envoltura puede inducir mexXY por AmgRS: el control de peptido scrambled debe medirse también por RT-qPCR de mexY, no solo por CIM</td>
+<td>EXP-IND</td>
+<td>10.1002/mbo3.226</td>
+</tr>
+<tr>
+<td>Compensación cruzada MexAB -&gt; MexCD/MexEF</td>
+<td>mexAB-oprM / mexCD-oprJ / mexEF-oprN</td>
+<td>La expresión de MexCD-OprJ sube al caer MexAB-OprM (relación inversa), y lo mismo MexEF-OprN</td>
+<td>Mutantes definidos de MexAB-OprM</td>
+<td>Serie de mutantes de deleción de Morita 2001 (las cuatro operones) y PAO509 de Mima 2007 (quintuple) [contacto de los laboratorios POR VERIFICAR]</td>
+<td>Medir a la vez aztreonam (MexAB), ciprofloxacino (MexCD), cloranfenicol (MexEF) y tobramicina (MexXY)</td>
+<td>El ensayo DEBE medir las cuatro bombas: la inhibición de una puede subir la expresión de otra. Los propios autores advierten que el aumento de MexCD-OprJ y MexEF-OprN NO compensa la perdida de MexAB-OprM en terminos de resistencia, de modo que la compensación es de EXPRESION, no de fenotipo</td>
+<td>EXP</td>
+<td>10.1093/jac/46.6.885; 10.1128/aac.42.1.65</td>
+</tr>
+<tr>
+<td>Inducción de MexCD-OprJ por sustrato</td>
+<td>mexCD-oprJ</td>
+<td>MexCD-OprJ es INDUCIBLE por cloruro de tetrafenilfosfonio, bromuro de etidio, rodamina 6G y acriflavina</td>
+<td>Silvestre + inductor</td>
+<td>Serie de mutantes de Morita 2001 (PAO1)</td>
+<td>Ciprofloxacino como indicador; el inductor NO es indicador</td>
+<td>CONFLICTO DE ENSAYO: el bromuro de etidio y la rodamina son a la vez colorantes de los ensayos de acumulación e INDUCTORES de MexCD-OprJ. Un ensayo de acumulación con etidio prolongado induce la bomba que se pretende medir</td>
+<td>EXP</td>
+<td>10.1111/j.1574-6968.2001.tb10794.x</td>
+</tr>
+<tr>
+<td>Bibliotecas de transposon</td>
+<td>varios</td>
+<td>Fuente de mutantes de inserción individuales</td>
+<td>Inserción en cada gen no esencial</td>
+<td>Biblioteca de PAO1 de la Universidad de Washington (Jacobs 2003) y biblioteca de dos alelos verificada por secuencia (Held 2012); el canal de pedido concreto no se verifico en esta revisión [POR VERIFICAR]</td>
+<td>El del gen interrumpido</td>
+<td>Da mutantes simples, NO dobles ni triples: para los fondos multiples hay que construirlos o pedirlos a los laboratorios que los publicaron</td>
+<td>EXP</td>
+<td>10.1073/pnas.2036282100; 10.1128/JB.01479-12</td>
+</tr>
+<tr>
+<td>Fondos multiples publicados</td>
+<td>mexAB-oprM, mexCD-oprJ, mexEF-oprN, mexXY, mexJK</td>
+<td>Ausencia de varias bombas a la vez</td>
+<td>Hipersusceptible</td>
+<td>YM44 sin las cuatro bombas principales (Li 2003); serie de Morita 2001 con las cuatro operones deletadas o una sola presente; PAO509 quintuple de Mima 2007 (laboratorio de H. P. Schweizer)</td>
+<td>Todos los de la tabla de sustratos</td>
+<td>Estos son los fondos donde un emparejamiento forzado se puede probar; sin ellos no hay control negativo verdadero</td>
+<td>EXP</td>
+<td>10.1093/jac/dkg390; 10.1111/j.1574-6968.2001.tb10794.x; 10.1128/JB.00850-07</td>
+</tr>
+<tr>
+<td>Requerimiento de OprM por MexXY</td>
+<td>oprM / mexXY</td>
+<td>MexXY necesita OprM (o TolC en E. coli) para funcionar</td>
+<td>delta-oprM: perdida de resistencia a aminoglucosidos</td>
+<td>Mutantes de Morita 2001 (delta-mexXY, delta-mexAB, doble) [procedencia POR VERIFICAR]</td>
+<td>Tobramicina o amikacina</td>
+<td>delta-oprM es el control negativo indispensable del ensayo de CIM: el peptido no debe potenciar nada en ese fondo</td>
+<td>EXP</td>
+<td>10.2323/jgam.47.27; 10.1128/AAC.43.2.415</td>
+</tr>
+<tr>
+<td>Selectividad del canal en MexJK</td>
+<td>mexJK / oprM / oprJ / oprN</td>
+<td>MexJK funciona con OprM pero NO con OprJ ni con OprN</td>
+<td>Mutante mexL</td>
+<td>Cepas de Chuanchuen 2002 (laboratorio de H. P. Schweizer) [POR VERIFICAR]</td>
+<td>Tetraciclina, eritromicina</td>
+<td>Demuestra que el emparejamiento OMF-MFP es SELECTIVO y no universal: refuta la versión fuerte de la promiscuidad de OprM</td>
+<td>EXP</td>
+<td>10.1128/JB.184.18.5036-5044.2002</td>
+</tr>
+<tr>
+<td>TriABC necesita OpmH, no OprM</td>
+<td>triABC / opmH</td>
+<td>TriABC se asocia a OpmH y no a OprM</td>
+<td>PAO509.5 (promotor-up)</td>
+<td>PAO509 y PAO509.5 (Mima 2007, laboratorio de H. P. Schweizer)</td>
+<td>Triclosan</td>
+<td>Segundo caso documentado de un RND de P. aeruginosa que NO usa OprM; además usa DOS adaptadoras (TriA y TriB), lo que rompe la estequiometría 3:6:3 asumida</td>
+<td>EXP</td>
+<td>10.1128/JB.00850-07</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="g-11-busquedas-de-este-eje-que-no-devolvieron-nada-registrad"><span class="num">Secci&oacute;n 12</span>g.11 Búsquedas de este eje que no devolvieron nada, registradas como resultado</h2>
+<p>El registro completo de las <strong>105 consultas de OpenAlex</strong> y <strong>11 verificaciones en RCSB y NCBI</strong> de esta revisión está en <code>tabla_busquedas_negativas_validacion.csv</code>, con consulta literal, base, fecha, número de resultados e interpretación. Las estrictamente negativas relevantes para el eje (g) son:</p>
+<table class="data">
+<thead>
+<tr>
+<th>id</th>
+<th>Consulta</th>
+<th>Base</th>
+<th>n</th>
+<th>Interpretación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vg23</code></td>
+<td>mexT functional activation 8-bp insertion mexT allele nfxC PAO1 restoration</td>
+<td>OpenAlex</td>
+<td>1 (tesis)</td>
+<td>no se puede cerrar qué linajes portan <code>mexT</code> inactivo: <strong>[POR VERIFICAR]</strong>, secuenciar el stock propio</td>
+</tr>
+<tr>
+<td><code>vg29</code></td>
+<td>... hypersusceptible strain PAO750 PAO1100</td>
+<td>OpenAlex</td>
+<td><strong>0</strong></td>
+<td>esos nombres de cepa no se confirman; no escribirlos en un protocolo</td>
+</tr>
+<tr>
+<td><code>vn01</code></td>
+<td>"MexCD-OprM" functional pairing evidence</td>
+<td>OpenAlex</td>
+<td>2, ninguno pertinente</td>
+<td><strong>no hay evidencia publicada del emparejamiento forzado MexCD-OprM</strong></td>
+</tr>
+<tr>
+<td><code>vn02</code></td>
+<td>"MexEF-OprM" outer membrane channel exchange</td>
+<td>OpenAlex</td>
+<td>2, ninguno pertinente</td>
+<td>no hay evidencia directa; lo más cercano es Maseda 2000 (compatibilidad, no fisiología)</td>
+</tr>
+<tr>
+<td><code>rcsb01</code>–<code>rcsb07</code></td>
+<td>accesiones de MexX, MexC, MexD, MexE, MexF, Q9ZNG9, Q9ZNG8 y texto "OprA"</td>
+<td>RCSB</td>
+<td><strong>0</strong> cada una</td>
+<td>confirmado: cero estructuras de los cinco componentes y de OprA</td>
+</tr>
+<tr>
+<td><code>ncbi02</code></td>
+<td><code>opmH</code> en NCBI Gene para <em>P. aeruginosa</em></td>
+<td>NCBI</td>
+<td>2</td>
+<td><code>opmH</code> sólo tiene nombre de gen en DSM 50071 (GeneID 45712981); la accesión de OpmH de PAO1 queda <strong>[POR VERIFICAR]</strong>. PA0427 es <code>oprM</code> (sinónimo <code>oprK</code>), <strong>no</strong> <code>opmH</code></td>
+</tr>
+</tbody>
+</table>
+<p>Además, un resultado negativo sobre el propio material de partida: de los <strong>956 DOI</strong> del corpus heredado de OpenAlex, el cribado por título encontró <strong>0</strong> que trataran compensación cruzada o <em>trade-off</em> entre bombas, <strong>0</strong> sobre <code>nfxB</code>, <strong>0</strong> sobre <code>mexZ</code> y <strong>0</strong> sobre ensayos de acumulación de colorante. Toda la literatura de los §g.2, g.4, g.5 y de los ensayos del eje (h) hubo que buscarla en esta revisión. Es una observación sobre la cobertura del corpus heredado, no una crítica a su construcción: el barrido previo estaba orientado a estructura e inhibidores.</p></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

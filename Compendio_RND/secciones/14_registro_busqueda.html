@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro · Registro de búsqueda — Compendio RND</title>
+<meta name="description" content="Cada consulta con su fecha y su número de resultados, incluidas las que no devolvieron nada.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Registro de búsqueda">
+<meta property="og:description" content="Cada consulta con su fecha y su número de resultados, incluidas las que no devolvieron nada.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Registro de búsqueda</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#1-bases-consultadas-y-endpoints">1. Bases consultadas y endpoints</a></li><li><a href="#2-criterios-de-inclusion-y-exclusion">2. Criterios de inclusión y exclusión</a></li><li><a href="#3-consultas-ejecutadas-89-en-total">3. Consultas ejecutadas (89 en total)</a></li><li><a href="#4-inventario-completo-de-identificadores-devueltos-por-cada-">4. Inventario completo de identificadores devueltos por cada ruta</a></li><li><a href="#5-busquedas-negativas">5. Búsquedas negativas</a></li><li><a href="#6-verificacion-de-identificadores">6. Verificación de identificadores</a></li><li><a href="#7-reducciones-de-alcance-declaradas">7. Reducciones de alcance declaradas</a></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<p><strong>Fecha de corte: 2026-09-11.</strong> Todas las consultas de este registro se ejecutaron el 2026-09-11 desde el
+entorno de cómputo del proyecto. Se registran <strong>todas</strong> las consultas, devuelvan o no resultados.</p>
+<h2 id="1-bases-consultadas-y-endpoints"><span class="num">Secci&oacute;n 1</span>1. Bases consultadas y endpoints</h2>
+<table class="data">
+<thead>
+<tr>
+<th>Base</th>
+<th>Endpoint</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RCSB PDB (datos)</td>
+<td><code>https://data.rcsb.org/graphql</code></td>
+<td>verificación por entrada: método, resolución, fecha de liberación, entidades, cadenas de autor, ligandos, mutaciones declaradas, ensamblajes, citación primaria, EMDB</td>
+</tr>
+<tr>
+<td>RCSB PDB (búsqueda)</td>
+<td><code>https://search.rcsb.org/rcsbsearch/v2/query</code></td>
+<td>búsqueda por accesión UniProt, por texto, por organismo y por similitud de secuencia</td>
+</tr>
+<tr>
+<td>RCSB PDB (coordenadas)</td>
+<td><code>https://files.rcsb.org/download/{ID}.cif</code></td>
+<td>medición directa sobre coordenadas (mutaciones no declaradas, factores B por región)</td>
+</tr>
+<tr>
+<td>UniProt</td>
+<td><code>https://rest.uniprot.org/uniprotkb/{ACC}.json</code></td>
+<td>accesiones, longitudes, péptido señal, lipidación, estado de la entrada, versión de secuencia</td>
+</tr>
+<tr>
+<td>Crossref</td>
+<td><code>https://api.crossref.org/works/{DOI}</code> y <code>/works?query.bibliographic=</code></td>
+<td>verificación de DOI y búsqueda bibliográfica por metadatos</td>
+</tr>
+<tr>
+<td>PubMed E-utilities</td>
+<td><code>esearch.fcgi</code> y <code>esummary.fcgi</code></td>
+<td>verificación cruzada, PMID, búsqueda por autor</td>
+</tr>
+<tr>
+<td>EMDB</td>
+<td><code>https://www.ebi.ac.uk/emdb/api/entry/{ID}</code></td>
+<td>mapas asociados y su resolución declarada</td>
+</tr>
+<tr>
+<td>OpenAlex</td>
+<td><code>https://api.openalex.org/works</code></td>
+<td>barrido bibliográfico sistemático. <strong>Con clave de API</strong>, pasada como parámetro <code>api_key</code>; no se envió nunca el parámetro <code>mailto</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ningún dominio necesario quedó bloqueado por la política de red. No se utilizó ningún espejo ni caché.</p>
+<h2 id="2-criterios-de-inclusion-y-exclusion"><span class="num">Secci&oacute;n 2</span>2. Criterios de inclusión y exclusión</h2>
+<p><strong>Inclusión.</strong> (i) Estructuras experimentales de cualquier componente de una bomba tripartita de eflujo, de
+cualquier organismo; (ii) estructuras de reguladores transcripcionales de las cuatro bombas del proyecto, por
+su papel en el diseño de la validación fenotípica; (iii) trabajos con evidencia experimental o computacional
+sobre la interfaz OMF–MFP o MFP–RND; (iv) trabajos sobre inhibición de bombas de eflujo con mecanismo
+declarado; (v) trabajos metodológicos citados para justificar una medida.</p>
+<p><strong>Exclusión.</strong> (i) Entradas de PDB de proteínas homónimas o de organismos no relacionados devueltas por ruido
+de búsqueda a texto completo (<code>MtrC</code> devuelve 281 entradas, casi todas de metiltransferasas de arqueas;
+<code>TolC</code> devuelve 513 y <code>AcrB</code> 319 por coincidencias en las citaciones, no en las entidades); (ii) modelos
+predichos (la búsqueda se restringió a <code>results_content_type: ["experimental"]</code>); (iii) trabajos de
+inhibidores de eflujo de origen vegetal sin mecanismo molecular declarado, salvo como contexto.</p>
+<p>Sin filtro de idioma ni de fecha inferior. Filtro de fecha superior sólo en la consulta del apartado 4.5.</p>
+<h2 id="3-consultas-ejecutadas-89-en-total"><span class="num">Secci&oacute;n 3</span>3. Consultas ejecutadas (89 en total)</h2>
+<table class="data">
+<thead>
+<tr>
+<th style="text-align: left;">consulta</th>
+<th style="text-align: left;">base</th>
+<th style="text-align: left;">fecha</th>
+<th style="text-align: right;">n_resultados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">UniProt=P52477 (MexA)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=P52002 (MexB)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=Q51487 (OprM)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=G3XD21 (MexX)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=G3XCW2 (MexY)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=G3XD25 (MexC)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=Q9HVI9 (MexD)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=Q51397 (OprJ)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=Q9I0Y9 (MexE)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=Q9I0Y8 (MexF)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=Q9I0Y7 (OprN)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=P02930 (TolC)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=P0AE06 (AcrA)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=P31224 (AcrB)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">122</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=P0AAW9 (AcrZ)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=P75818 (YbjP)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=P75830 (MacA)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=P75831 (MacB)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=Q9ZNG9 (MexX_Q9ZNG9)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">UniProt=Q9ZNG8 (MexY_Q9ZNG8)</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexA"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexD"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexE"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexF"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexX"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexY"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="OprM"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">44</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="OprJ"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="OprN"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="OprA"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="TriABC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexJK"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MexGHI"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="OpmD"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="OpmH"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="tripartite efflux"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="RND efflux pump"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">51</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="membrane fusion protein efflux"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="outer membrane factor"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AcrA"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AcrB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">319</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="TolC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">513</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AcrZ"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MacA"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MacB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">71</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="CusB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="CusC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MtrC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">281</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MtrE"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AdeA"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AdeB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AdeC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="CmeA"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="CmeC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="SmeDEF"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AdeIJK"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AdeFGH"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MdtABC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="MdtEF"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AcrEF"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AcrAD"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="HefABC"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="VexAB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="BpeAB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="AmrAB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="CusCBA"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">full_text="EmrAB"</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">organismo=P. aeruginosa AND full_text=efflux</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">52</td>
+</tr>
+<tr>
+<td style="text-align: left;">similitud de secuencia MexA (P52477) identidad&gt;=30%</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr>
+<td style="text-align: left;">similitud de secuencia OprM (Q51487) identidad&gt;=30%</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr>
+<td style="text-align: left;">similitud de secuencia MexB (P52002) identidad&gt;=30%</td>
+<td style="text-align: left;">RCSB search API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">185</td>
+</tr>
+<tr>
+<td style="text-align: left;">filtro por fecha: liberadas después de 2026-04-08 sobre el universo de candidatos</td>
+<td style="text-align: left;">RCSB data API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">verificación de 396 DOI (corpus heredado + referencias de este compendio + citas primarias de PDB)</td>
+<td style="text-align: left;">Crossref API</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">127</td>
+</tr>
+<tr>
+<td style="text-align: left;">"efflux pump" AND ("assembly inhibitor" OR "assembly inhibition")</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">74</td>
+</tr>
+<tr>
+<td style="text-align: left;">"OprM" AND ("MexA" OR "membrane fusion protein") AND (interface OR interaction)</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">1280</td>
+</tr>
+<tr>
+<td style="text-align: left;">"tip-to-tip" AND (TolC OR OprM OR "outer membrane factor")</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">76</td>
+</tr>
+<tr>
+<td style="text-align: left;">"deep interpenetration" AND (TolC OR "outer membrane factor")</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">"RLS motif" AND ("membrane fusion protein" OR "periplasmic adaptor")</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">"functional rotation" AND (AcrB OR MexB OR "RND transporter")</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">217</td>
+</tr>
+<tr>
+<td style="text-align: left;">"efflux pump inhibitor" AND peptide</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">2832</td>
+</tr>
+<tr>
+<td style="text-align: left;">"protein-protein interaction inhibitor" AND ("Gram-negative" OR periplasm)</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">172</td>
+</tr>
+<tr>
+<td style="text-align: left;">"periplasmic" AND peptide AND (inhibitor OR "cell-penetrating")</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">24004</td>
+</tr>
+<tr>
+<td style="text-align: left;">nanobody AND (AcrB OR MexB OR TolC OR OprM OR efflux)</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">1962</td>
+</tr>
+<tr>
+<td style="text-align: left;">"MexAB-OprM" AND (cryo-EM OR crystal OR structure)</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">3065</td>
+</tr>
+<tr>
+<td style="text-align: left;">"TMexCD" OR "TOprJ"</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">234</td>
+</tr>
+<tr>
+<td style="text-align: left;">"MacAB-TolC" AND stoichiometry</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">88</td>
+</tr>
+<tr>
+<td style="text-align: left;">crosslinking AND ("AcrA" OR "MexA") AND ("TolC" OR "OprM")</td>
+<td style="text-align: left;">OpenAlex API (con clave)</td>
+<td style="text-align: left;">2026-09-11</td>
+<td style="text-align: right;">194</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-inventario-completo-de-identificadores-devueltos-por-cada-"><span class="num">Secci&oacute;n 4</span>4. Inventario completo de identificadores devueltos por cada ruta</h2>
+<ul>
+<li><strong>UniProt P52477 (MexA)</strong> — 8 entradas: 1T5E, 1VF7, 2V4D, 4DK1, 6IOK, 6IOL, 6TA5, 6TA6</li>
+<li><strong>UniProt P52002 (MexB)</strong> — 13 entradas: 21FO, 21FP, 22XK, 22XM, 2V50, 3W9I, 3W9J, 6IIA, 6IOK, 6IOL, 6T7S, 6TA5, 6TA6</li>
+<li><strong>UniProt Q51487 (OprM)</strong> — 9 entradas: 1WP1, 3D5K, 4Y1K, 6IOK, 6IOL, 6TA5, 6TA6, 6ZRE, 7AKZ</li>
+<li><strong>UniProt G3XD21 (MexX)</strong> — 0 entradas: <em>ninguna</em></li>
+<li><strong>UniProt G3XCW2 (MexY)</strong> — 2 entradas: 8Z1U, 9E9F</li>
+<li><strong>UniProt G3XD25 (MexC)</strong> — 0 entradas: <em>ninguna</em></li>
+<li><strong>UniProt Q9HVI9 (MexD)</strong> — 0 entradas: <em>ninguna</em></li>
+<li><strong>UniProt Q51397 (OprJ)</strong> — 1 entradas: 5AZS</li>
+<li><strong>UniProt Q9I0Y9 (MexE)</strong> — 0 entradas: <em>ninguna</em></li>
+<li><strong>UniProt Q9I0Y8 (MexF)</strong> — 0 entradas: <em>ninguna</em></li>
+<li><strong>UniProt Q9I0Y7 (OprN)</strong> — 4 entradas: 5AZO, 5AZP, 5IUY, 5NSW</li>
+<li><strong>UniProt P02930 (TolC)</strong> — 21 entradas: 1EK9, 1TQQ, 2VDD, 2VDE, 2WMZ, 2XMN, 5NG5, 5NIK, 5NIL, 5O66, 5V5S, 6WXH, 6WXI, 8ZAL, 8ZAR, 9A2X, 9QGY, 9TG4, 9V52, 9V53, 9V55</li>
+<li><strong>UniProt P0AE06 (AcrA)</strong> — 7 entradas: 2F1M, 5NG5, 5V5S, 9A2V, 9TG4, 9V53, 9V55</li>
+<li><strong>UniProt P31224 (AcrB)</strong> — 122 entradas: 1IWG, 1OY6, 1OY8, 1OY9, 1OYD, 1OYE, 1T9T, 1T9U, 1T9V, 1T9W, 1T9X, 1T9Y, 2DHH, 2DR6, 2DRD, 2GIF, 2HQC, 2HQD, 2HQF, 2HQG, 2HRT, 2I6W, 2J8S, 2RDD, 2W1B, 3AOA, 3AOB, 3AOC, 3AOD, 3D9B, 3NOC, 3NOG, 3W9H, 4C48, 4CDI, 4DX5, 4DX6, 4DX7, 4K7Q, 4U8V, 4U8Y, 4U95, 4U96, 4ZIT, 4ZIV, 4ZIW, 4ZJL, 4ZJO, 4ZJQ, 4ZLJ, 4ZLL, 4ZLN, 5EN5, 5ENO, 5ENP, 5ENQ, 5ENR, 5ENS, 5ENT, 5JMN, 5NC5, 5NG5, 5O66, 5V5S, 5YIL, 6BAJ, 6CSX, 6Q4N, 6Q4O, 6Q4P, 6SGR, 6SGS, 6SGT, 6SGU, 6ZO5, 6ZO6, 6ZO7, 6ZO8, 6ZO9, 6ZOA, 6ZOB, 6ZOC, 6ZOD, 6ZOE, 6ZOF, 6ZOG, 6ZOH, 7B5P, 7B8R, 7B8S, 7B8T, 7O3L, 7O3M, 7O3N, 7OUK, 7OUL, 7OUM, 7RR6, 7RR7, 7RR8, 8PX7, 8QZQ, 8QZT, 9BFH, 9BFM, 9BFN, 9BFT, 9DXN, 9FDP, 9FDQ, 9FE2, 9FE3, 9FE4, 9FHC, 9FHG, 9FHJ, 9HAO, 9HCI, 9HWL, 9TG4, 9V53, 9V5R</li>
+<li><strong>UniProt P0AAW9 (AcrZ)</strong> — 7 entradas: 4C48, 4CDI, 5NG5, 6SGR, 6SGS, 9TG4, 9V53</li>
+<li><strong>UniProt P75818 (YbjP)</strong> — 5 entradas: 9QGY, 9TG4, 9V52, 9V53, 9V55</li>
+<li><strong>UniProt P75830 (MacA)</strong> — 4 entradas: 3FPP, 5NIK, 5NIL, 9QGY</li>
+<li><strong>UniProt P75831 (MacB)</strong> — 6 entradas: 5LJ8, 5LJ9, 5LJA, 5NIK, 5NIL, 9QGY</li>
+<li><strong>UniProt Q9ZNG9 (MexX_Q9ZNG9)</strong> — 0 entradas: <em>ninguna</em></li>
+<li><strong>UniProt Q9ZNG8 (MexY_Q9ZNG8)</strong> — 0 entradas: <em>ninguna</em></li>
+<li><strong>Similitud de secuencia MexA (≥30 % id.)</strong> — 18 entradas: 1T5E, 1VF7, 2F1M, 2V4D, 4DK1, 5NG5, 5O66, 5V5S, 6IOK, 6IOL, 6TA5, 6TA6, 9A2V, 9J3D, 9J3E, 9TG4, 9V53, 9V55</li>
+<li><strong>Similitud de secuencia OprM (≥30 % id.)</strong> — 23 entradas: 1WP1, 3D5K, 3PIK, 4K34, 4K7K, 4K7R, 4MT0, 4Y1K, 5AZO, 5AZP, 5AZS, 5IUY, 5NSW, 6IOK, 6IOL, 6TA5, 6TA6, 6U94, 6ZRE, 7AKZ, 9J3D, 9J3E, 9RMM</li>
+<li><strong>Similitud de secuencia MexB (≥30 % id.)</strong> — 185 entradas: 1IWG, 1OY6, 1OY8, 1OY9, 1OYD, 1OYE, 1T9T, 1T9U, 1T9V, 1T9W, 1T9X, 1T9Y, 21FO, 21FP, 22XK, 22XM, 2DHH, 2DR6, 2DRD, 2GIF, 2HQC, 2HQD, 2HQF, 2HQG, 2HRT, 2I6W, 2J8S, 2RDD, 2V50, 2W1B, 3AOA, 3AOB, 3AOC, 3AOD, 3D9B, 3NOC, 3NOG, 3W9H, 3W9I, 3W9J, 4C48, 4CDI, 4DX5, 4DX6, 4DX7, 4K7Q, 4MT1, 4R86, 4U8V, 4U8Y, 4U95, 4U96, 4ZIT, 4ZIV, 4ZIW, 4ZJL, 4ZJO, 4ZJQ, 4ZLJ, 4ZLL …</li>
+</ul>
+<p><strong>Búsqueda por organismo</strong> (<em>Pseudomonas aeruginosa</em> + <code>efflux</code>, 52 entradas):
+1LNW, 1T5E, 1VF7, 1VPZ, 1WP1, 20YY, 21FO, 21FP, 22XK, 22XM, 2V4D, 2V50, 3D5K, 3LLB, 3U9S, 3W9I, 3W9J, 4DK1, 4Y1K, 4ZZL, 5AZO, 5AZP, 5AZS, 5DAJ, 5H9T, 5IUY, 5NSW, 5XBT, 5XBW, 5XQL, 5YC9, 5ZLU, 6IIA, 6IOK, 6IOL, 6L33, 6SPB, 6T7S, 6TA5, 6TA6, 6VD8, 6VEJ, 6ZRE, 7AKZ, 7XYA, 7YR6, 7YR7, 8KE8, 8Z1U, 9C5P, 9E9F, 9XWG</p>
+<h2 id="5-busquedas-negativas"><span class="num">Secci&oacute;n 5</span>5. Búsquedas negativas</h2>
+<p>Registradas por separado, con su interpretación, en <code>tablas/tabla_busquedas_negativas.csv</code>. Doce consultas, de
+las cuales <strong>seis devolvieron cero resultados</strong>. Las dos más consecuentes:</p>
+<ul>
+<li><code>"assembly inhibitor" periplasmic protein-protein interaction Gram-negative peptide precedent</code> — <strong>0 registros</strong>.</li>
+<li><code>"functional rotation" kinetics evidence 60 degree rotation tripartite efflux pump registry</code> — <strong>0 registros</strong>.</li>
+</ul>
+<h2 id="6-verificacion-de-identificadores"><span class="num">Secci&oacute;n 6</span>6. Verificación de identificadores</h2>
+<table class="data">
+<thead>
+<tr>
+<th>Clase</th>
+<th>Sometidos</th>
+<th>Verificados</th>
+<th>No verificados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entradas de PDB</td>
+<td>112</td>
+<td>112 (todas REL, ninguna obsoleta ni reemplazada)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Accesiones UniProt</td>
+<td>27</td>
+<td>25 activas</td>
+<td>2 borradas (A0A2V3GTR8, A0A069Q9M6)</td>
+</tr>
+<tr>
+<td>Mapas EMDB</td>
+<td>6 comprobados en detalle + 38 listados</td>
+<td>6 con resolución y título confirmados</td>
+<td>0</td>
+</tr>
+<tr>
+<td>DOI</td>
+<td>396 + 74 del núcleo</td>
+<td>384 resueltos en Crossref</td>
+<td>12 (7 cadenas malformadas heredadas, 2 DOI de <em>AAC</em> inexistentes en doi.org, 1 sin registro Crossref, 2 identificadores no bibliográficos)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-reducciones-de-alcance-declaradas"><span class="num">Secci&oacute;n 7</span>7. Reducciones de alcance declaradas</h2>
+<ol>
+<li><strong>185 entradas</strong> con ≥30 % de identidad frente a MexB y <strong>122</strong> referenciadas a AcrB (P31224) no se
+   documentaron una por una con las 29 columnas. Se incluyeron los transportadores RND aislados con valor de
+   control mecanístico. Magnitud de la reducción: ~190 entradas no detalladas, todas ellas transportadores
+   aislados sin interfaz OMF–MFP.</li>
+<li>Los 21 depósitos de TolC aislada y los 15 de la familia Cus se incluyeron en la tabla pero sin resolver la
+   columna <code>entorno_membrana</code> ni <code>simetria_RND</code>, que quedan marcadas <code>[POR VERIFICAR]</code>. Magnitud: 190 celdas
+   marcadas sobre un total de 3.248 (5,9 %).</li>
+</ol></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

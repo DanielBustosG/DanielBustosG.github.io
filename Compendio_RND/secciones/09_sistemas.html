@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cobertura · Las cuatro bombas y sus análogos — Compendio RND</title>
+<meta name="description" content="Qué se sabe de cada sistema, con la distancia de transferencia por analogía declarada en cada caso.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Las cuatro bombas y sus análogos">
+<meta property="og:description" content="Qué se sabe de cada sistema, con la distancia de transferencia por analogía declarada en cada caso.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Las cuatro bombas y sus análogos</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#1-que-contiene-este-archivo-y-con-que-metodo">1. Qué contiene este archivo y con qué método</a><ol><li><a href="#1-1-metodo-de-las-identidades-declaracion-obligatoria">1.1 Método de las identidades (declaración obligatoria)</a></li><li><a href="#1-2-metodo-de-la-identidad-del-epitopo-de-interfaz">1.2 Método de la identidad del epítopo de interfaz</a></li><li><a href="#1-3-advertencia-de-transferencia-por-analogia">1.3 Advertencia de transferencia por analogía</a></li><li><a href="#1-4-advertencia-metodologica-sobre-no-tiene-estructura">1.4 Advertencia metodológica sobre &quot;no tiene estructura&quot;</a></li></ol></li><li><a href="#2-las-cuatro-bombas-del-fondecyt">2. Las cuatro bombas del Fondecyt</a><ol><li><a href="#2-1-composicion-con-accesiones-verificadas">2.1 Composición, con accesiones verificadas</a></li><li><a href="#2-2-el-resultado-negativo-estructural-reproducido-en-esta-re">2.2 El resultado negativo estructural, reproducido en esta revisión</a></li><li><a href="#2-3-que-se-sabe-de-la-interfaz-omfmfp-de-cada-una">2.3 Qué se sabe de la interfaz OMF–MFP de cada una</a></li><li><a href="#2-4-nomenclatura-cognada-frente-a-promiscua">2.4 Nomenclatura cognada frente a promiscua</a></li></ol></li><li><a href="#3-opra-el-caso-especial">3. OprA: el caso especial</a></li><li><a href="#4-los-catorce-sistemas-por-analogia-y-el-barrido-de-cobertur">4. Los catorce sistemas por analogía y el barrido de cobertura</a><ol><li><a href="#4-1-los-catorce-de-este-compendio-estado-verificado">4.1 Los catorce de este compendio: estado verificado</a></li><li><a href="#4-2-el-barrido-de-cobertura-los-sistemas-que-este-compendio-">4.2 El barrido de cobertura: los sistemas que este compendio obliga a comproba</a></li><li><a href="#4-3-sistemas-anadidos-por-este-barrido-que-no-estaban-en-est">4.3 Sistemas añadidos por este barrido, que no estaban en este compendio</a></li></ol></li><li><a href="#5-la-medicion-que-ordena-los-analogos-y-lo-que-cambia">5. La medición que ordena los análogos, y lo que cambia</a><ol><li><a href="#5-1-los-omf-ordenados-por-conservacion-del-epitopo-de-contac">5.1 Los OMF ordenados por conservación del epítopo de contacto de MexA</a></li><li><a href="#5-2-los-mfp-ordenados-por-conservacion-del-epitopo-de-contac">5.2 Los MFP ordenados por conservación del epítopo de contacto de OprM</a></li><li><a href="#5-3-las-cuatro-conclusiones-que-esta-medicion-obliga-inf-sob">5.3 Las cuatro conclusiones que esta medición obliga (INF, sobre datos medidos</a></li><li><a href="#5-4-las-asunciones-de-estequiometria-que-este-barrido-rompe">5.4 Las asunciones de estequiometría que este barrido rompe</a></li><li><a href="#5-5-advertencia-de-replicacion">5.5 Advertencia de replicación</a></li></ol></li><li><a href="#6-tabla-de-cobertura">6. Tabla de cobertura</a></li><li><a href="#7-resultados-negativos-de-este-barrido-registrados">7. Resultados negativos de este barrido, registrados</a></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<p><strong>Proyecto:</strong> ANID-Fondecyt Regular 1260886.
+<strong>FECHA DE CORTE: 2026-09-11.</strong> Todas las accesiones de UniProt (80 secuencias descargadas), las dos accesiones de NCBI de OprA, las búsquedas de estructura en RCSB (26 por accesión y 13 por texto completo) y los 94 DOI citados fueron verificados por el autor de este documento en esta revisión.</p>
+<hr />
+<h2 id="1-que-contiene-este-archivo-y-con-que-metodo"><span class="num">Secci&oacute;n 1</span>1. Qué contiene este archivo y con qué método</h2>
+<p>Se cubren <strong>32 sistemas</strong> con <strong>81 componentes</strong> cuyas secuencias se descargaron y alinearon en esta revisión. Para cada uno se informa: organismo y taxid verificado, componentes con su clase (OMF / MFP / RND), accesiones verificadas, estructuras disponibles con el método de búsqueda declarado, <strong>identidad por componente frente al equivalente de <em>P. aeruginosa</em></strong> con el método declarado, si hay estudios de interfaz publicados, si hay intentos de inhibición publicados, y el grado de cobertura en el compendio.</p>
+<h3 id="1-1-metodo-de-las-identidades-declaracion-obligatoria">1.1 Método de las identidades (declaración obligatoria)</h3>
+<p>Alineamiento <strong>global de Needleman-Wunsch</strong> (Biopython <code>PairwiseAligner</code> 1.88), matriz <strong>BLOSUM62</strong>, apertura de hueco <strong>−11</strong>, extensión <strong>−1</strong>, identidad calculada sobre <strong>columnas alineadas sin hueco</strong>, secuencias <strong>UniProt completas en los dos lados</strong> (es decir, con péptido señal, no maduras). Referentes: <strong>MexA P52477</strong> para toda MFP, <strong>MexB P52002</strong> para todo RND, <strong>OprM Q51487</strong> para todo OMF.</p>
+<p><strong>Validación de la convención antes de usarla:</strong> con este procedimiento se reprodujeron exactamente los seis valores heredados del material de partida — AcrA 59,63; AcrB 70,14; TolC 23,06; MacA 27,59; OprJ 46,85; OprN 33,41. Coinciden hasta el segundo decimal. Los valores nuevos de este archivo se calcularon con el mismo código en la misma ejecución.</p>
+<p><strong>Discrepancia de convención con el material de partida, declarada.</strong> El material de partida §3 informa "MexA vs TMexC1 43,73" y "OprM 47,27" para el sistema de 9J3D. Este archivo informa <strong>TMexC1 44,32</strong> y <strong>TOprJ1 48,60</strong>. <strong>No es una contradicción: son dos convenciones.</strong> Los valores del material de partida usan el <strong>SEQRES depositado de 9J3D</strong> en un lado (MFP 395 aa, RND 1044 aa, OMF 483 aa); los de este archivo usan la <strong>secuencia UniProt completa</strong> en los dos lados (A0A411AKL2 387 aa, A0A411AKN6 477 aa). Las dos son correctas en su definición. Este archivo usa la segunda porque es la única aplicable de forma homogénea a los 32 sistemas, la mayoría de los cuales no tiene estructura depositada.</p>
+<h3 id="1-2-metodo-de-la-identidad-del-epitopo-de-interfaz">1.2 Método de la identidad del epítopo de interfaz</h3>
+<p>Además de la identidad global, se midió la identidad <strong>restringida a los residuos que forman la interfaz OprM–MexA</strong>, que es la superficie sobre la que el proyecto quiere diseñar:</p>
+<ul>
+<li><strong>Lado MFP:</strong> los <strong>12 residuos de MexA</strong> que contactan OprM a menos de 5 Å, medidos sobre 6IOK en el material de partida: madura 96, 97, 99, 100, 103–110 = <strong>UniProt 119, 120, 122, 123, 126–133</strong>.</li>
+<li><strong>Lado OMF:</strong> los <strong>24 residuos de OprM</strong> que contactan MexA, madura 190, 191, 194–196, 198–204, 395, 399, 402–404, 406–412 = <strong>UniProt 207, 208, 211–213, 215–221, 412, 416, 419–421, 423–429</strong>.</li>
+</ul>
+<p>El procedimiento es: alinear la secuencia consulta contra el referente completo, proyectar las posiciones del referente sobre el alineamiento, y contar identidades sólo en las posiciones que quedan alineadas sin hueco. Se informa además cuántas de las 12 o 24 posiciones quedaron alineadas, porque en un caso (MtrE) sólo 21 de 24 lo están y en otro (CusB) 11 de 12.</p>
+<p><strong>Discrepancia con el material de partida §5, declarada.</strong> El material de partida §5 informa, para "conservación del epítopo", MexC 60,0 %, MexX 40,0 %, MexE 33,3 %, AcrA 46,7 %, MacA 46,7 % y TMexC1 53,3 %. Este archivo informa 66,67; 50,00; 33,33; 58,33; 58,33 y 58,33. <strong>Son dos conjuntos de residuos distintos, no un desacuerdo.</strong> El material de partida mide el <strong>tramo contiguo de 15 residuos</strong> MexA 119–133 (UniProt); este archivo mide los <strong>12 residuos que realmente contactan</strong> dentro de ese tramo, excluyendo UniProt 121, 124 y 125, que pertenecen al tramo pero no están a menos de 5 Å de OprM. Para diseñar un competidor, el conjunto pertinente es el de contactos, porque un péptido compite por contactos. Los dos números deben usarse siempre con su definición al lado.</p>
+<h3 id="1-3-advertencia-de-transferencia-por-analogia">1.3 Advertencia de transferencia por analogía</h3>
+<p><strong>Repetida aquí, como en cada transferencia del compendio.</strong> Identidades medidas: MexB/AcrB <strong>70,14 %</strong>; MexA/AcrA <strong>59,63 %</strong>; <strong>OprM/TolC 23,06 %</strong>, y <strong>20,83 % (5 de 24) en el epítopo de contacto de MexA</strong>. El componente sobre el que se quiere diseñar el inhibidor es el menos conservado entre los dos sistemas modelo, y lo es aún más en la superficie exacta del diseño. Todo lo que viene de AcrAB-TolC cruza ese puente.</p>
+<h3 id="1-4-advertencia-metodologica-sobre-no-tiene-estructura">1.4 Advertencia metodológica sobre "no tiene estructura"</h3>
+<p>Esta revisión descubrió que la búsqueda de RCSB por accesión de UniProt puede dar un <strong>cero engañoso</strong>. Para MtrD de <em>N. gonorrhoeae</em> (Q51073) la búsqueda por accesión devuelve <strong>0</strong> entradas, pero la búsqueda de texto completo <code>"MtrD" Neisseria</code> devuelve <strong>6</strong> (4MT1, 6VKS, 6VKT, 8DEU, 8DEV, 8DEW), porque los depósitos referencian accesiones específicas de cepa distintas de la elegida. <strong>Un cero por accesión significa "ninguna entrada referencia esa accesión", no "la proteína no tiene estructura".</strong> La búsqueda de texto tiene el problema simétrico: <code>"AcrE" Escherichia</code> devuelve 105 entradas, casi todas falsos positivos de AcrB. En la tabla, la columna de estructuras declara el método usado en cada celda; donde se usó texto para corregir un cero por accesión, se dice.</p>
+<p>Para las cinco proteínas de las bombas del proyecto el cero está corroborado por los dos métodos (§2.2), y por tanto es firme.</p>
+<hr />
+<h2 id="2-las-cuatro-bombas-del-fondecyt"><span class="num">Secci&oacute;n 2</span>2. Las cuatro bombas del Fondecyt</h2>
+<h3 id="2-1-composicion-con-accesiones-verificadas">2.1 Composición, con accesiones verificadas</h3>
+<table class="data">
+<thead>
+<tr>
+<th>Bomba</th>
+<th>MFP</th>
+<th>RND</th>
+<th>OMF</th>
+<th>Estequiometría documentada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexAB-OprM</td>
+<td>MexA P52477 (383 aa)</td>
+<td>MexB P52002 (1046 aa)</td>
+<td>OprM Q51487 (485 aa)</td>
+<td><strong>3:6:3 observada</strong> (6IOK, 6IOL, 6TA5, 6TA6)</td>
+</tr>
+<tr>
+<td>MexXY-OprM</td>
+<td>MexX G3XD21 (396 aa)</td>
+<td>MexY G3XCW2 (1045 aa)</td>
+<td>OprM Q51487</td>
+<td><strong>no observada</strong></td>
+</tr>
+<tr>
+<td>MexCD-OprJ</td>
+<td>MexC G3XD25 (387 aa)</td>
+<td>MexD Q9HVI9 (1043 aa)</td>
+<td>OprJ Q51397 (479 aa)</td>
+<td><strong>no observada</strong></td>
+</tr>
+<tr>
+<td>MexEF-OprN</td>
+<td>MexE Q9I0Y9 (414 aa)</td>
+<td>MexF Q9I0Y8 (1062 aa)</td>
+<td>OprN Q9I0Y7 (472 aa)</td>
+<td><strong>no observada</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-el-resultado-negativo-estructural-reproducido-en-esta-re">2.2 El resultado negativo estructural, reproducido en esta revisión</h3>
+<p>Búsqueda en RCSB Search API v2 por accesión de UniProt, 2026-09-11, corroborada por texto completo:</p>
+<table class="data">
+<thead>
+<tr>
+<th>Accesión</th>
+<th>Proteína</th>
+<th>Por accesión</th>
+<th>Por texto completo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G3XD21</td>
+<td>MexX</td>
+<td><strong>0</strong></td>
+<td><code>"MexX" Pseudomonas</code> = <strong>0</strong></td>
+</tr>
+<tr>
+<td>G3XD25</td>
+<td>MexC</td>
+<td><strong>0</strong></td>
+<td><code>"MexC" Pseudomonas</code> = <strong>0</strong></td>
+</tr>
+<tr>
+<td>Q9HVI9</td>
+<td>MexD</td>
+<td><strong>0</strong></td>
+<td><code>"MexD" Pseudomonas</code> = <strong>0</strong></td>
+</tr>
+<tr>
+<td>Q9I0Y9</td>
+<td>MexE</td>
+<td><strong>0</strong></td>
+<td><code>"MexE" Pseudomonas</code> = <strong>0</strong></td>
+</tr>
+<tr>
+<td>Q9I0Y8</td>
+<td>MexF</td>
+<td><strong>0</strong></td>
+<td><code>"MexF" Pseudomonas</code> = <strong>0</strong></td>
+</tr>
+<tr>
+<td>Q9ZNG9 / Q9ZNG8</td>
+<td>MexX / MexY (versión del planteamiento inicial)</td>
+<td><strong>0</strong> / <strong>0</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>—</td>
+<td>OprA</td>
+<td>—</td>
+<td><code>"OprA" Pseudomonas</code> = <strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Control positivo con el mismo método y en la misma ejecución: MexA 8 entradas (1T5E, 1VF7, 2V4D, 4DK1, 6IOK, 6IOL, 6TA5, 6TA6), MexB 13, OprM 9, OprJ 1 (5AZS), OprN 4 (5AZO, 5AZP, 5IUY, 5NSW), MexY 2 (8Z1U, 9E9F). El método funciona. <strong>Confirmado: no existe estructura experimental de MexX, MexC, MexD, MexE, MexF ni OprA.</strong> EXP.</p>
+<h3 id="2-3-que-se-sabe-de-la-interfaz-omfmfp-de-cada-una">2.3 Qué se sabe de la interfaz OMF–MFP de cada una</h3>
+<ul>
+<li><strong>MexAB-OprM:</strong> evidencia directa y genética. Nehme y Poole 2004 (doi 10.1128/jb.186.10.2973-2983.2004) y 2007 (doi 10.1128/jb.00718-07): el defecto de <strong>MexA V129M</strong> (numeración de precursor = UniProt; = <strong>V106 en cadena madura</strong>, que <strong>está dentro</strong> de los 12 contactos medidos) se suprime por <strong>OprM T198I y F439I</strong> (UniProt; = T181 y F422 maduros, que <strong>no</strong> pertenecen a los 24 contactos medidos). EXP. Más las cuatro estructuras del ensamblaje completo.</li>
+<li><strong>MexXY-OprM:</strong> <strong>nada directo.</strong> Sólo el requerimiento funcional de OprM (Morita 2001, doi 10.2323/jgam.47.27; Mine 1999, doi 10.1128/aac.43.2.415). EXP para el requerimiento, <strong>cero</strong> para el contacto.</li>
+<li><strong>MexCD-OprJ:</strong> <strong>nada directo.</strong> Ni estructura de MexC/MexD, ni estudio de contacto. Todo por homología.</li>
+<li><strong>MexEF-OprN:</strong> <strong>nada directo.</strong> OprN tiene cuatro estructuras aisladas, MexE y MexF ninguna, y no hay estudio de contacto OprN–MexE. Todo por homología.</li>
+</ul>
+<p><strong>De las cuatro bombas del proyecto, tres no tienen ni una observación experimental de su interfaz OMF–MFP.</strong> Escrito sin suavizar, como pide este compendio.</p>
+<h3 id="2-4-nomenclatura-cognada-frente-a-promiscua">2.4 Nomenclatura cognada frente a promiscua</h3>
+<p>El planteamiento inicial escribe los blancos como MexAB-OprM, MexXY-OprM, <strong>MexCD-OprM</strong> y <strong>MexEF-OprM</strong>; la literatura escribe MexCD-<strong>OprJ</strong> y MexEF-<strong>OprN</strong>. Son cosas distintas: emparejamiento <strong>forzado</strong> en fondo de deleción frente a emparejamiento <strong>fisiológico</strong>. El estado de la evidencia de cada emparejamiento forzado publicado está en el eje (g), §g.8.5, y se resume así: MexXY–OprM documentado con dos fuentes; MexEF–OprM sólo como compatibilidad en fondo Δ<em>mexAB</em> (Maseda 2000, doi 10.1128/aac.44.3.658-664.2000); <strong>MexCD–OprM sin ninguna evidencia publicada localizada</strong> (consulta <code>vn01</code>, 2 resultados, ninguno pertinente); y dos contraejemplos directos: <strong>MexJK funciona con OprM y NO con OprJ ni OprN</strong> (Chuanchuen 2002, doi 10.1128/jb.184.18.5036-5044.2002) y <strong>TriABC se asocia a OpmH y NO a OprM</strong> (Mima 2007, doi 10.1128/jb.00850-07). La promiscuidad de OprM es real y <strong>selectiva</strong>.</p>
+<hr />
+<h2 id="3-opra-el-caso-especial"><span class="num">Secci&oacute;n 3</span>3. OprA: el caso especial</h2>
+<p>Verificado con NCBI E-utilities el 2026-09-11:</p>
+<ul>
+<li><strong>ABR81584.1</strong> — 467 aa; <code>DEFINITION</code>: "outer membrane efflux protein OprA [Pseudomonas paraeruginosa PA7]"; <code>ORGANISM</code>: <em>Pseudomonas paraeruginosa</em> PA7; <code>/db_xref="taxon:381754"</code>; <code>/gene="oprA"</code>; <code>/locus_tag="PSPA7_3271"</code>.</li>
+<li><strong>WP_012076019.1</strong> — 467 aa; <code>DEFINITION</code>: "MULTISPECIES: multidrug efflux transporter outer membrane subunit"; <code>ORGANISM</code>: <em>Pseudomonas aeruginosa</em> group; <code>/db_xref="taxon:136841"</code>; <code>/gene="oprA"</code>.</li>
+<li>Las dos secuencias son <strong>idénticas</strong> (comparación byte a byte en esta revisión).</li>
+<li><strong>Sin entrada UniProt. Sin estructura</strong> (<code>"OprA" Pseudomonas</code> en RCSB = 0).</li>
+</ul>
+<p>Dos precisiones que cambian la cita:</p>
+<ol>
+<li>El registro <strong>WP_012076019 es MULTISPECIES y está anclado al grupo taxonómico 136841</strong>, no a la cepa PA7. La accesión específica de cepa es <strong>ABR81584.1 / PSPA7_3271 / taxid 381754</strong>. Citar el WP_ como "OprA de PA7" es impreciso; usar ABR81584.</li>
+<li><strong>Medición nueva de esta revisión: OprA frente a OprM = 47,84 % global (222/464 columnas sin hueco) y 54,17 % (13/24) en el epítopo de contacto de MexA.</strong> OprA está mejor conservado en la superficie de interés que OprN (33,33 %) y al mismo nivel que OprJ (58,33 %) y TOprJ1 (54,17 %).</li>
+</ol>
+<p><strong>La quimera prohibida.</strong> Una bomba MexXY-OprA coherente exige que MexX y MexY sean <strong>también de PA7</strong>: difieren de los de PAO1 en <strong>5,05 %</strong> y <strong>3,44 %</strong> (valores del material de partida). <strong>Mezclar OprA de PA7 con MexX/MexY de PAO1 produce una quimera que no existe en ninguna célula, y su interfaz no es la interfaz de ningún organismo.</strong> Si el proyecto modela MexXY-OprA, los tres componentes deben ser de PA7 y hay que declararlo en la leyenda de cada figura y en cada archivo de coordenadas.</p>
+<hr />
+<h2 id="4-los-catorce-sistemas-por-analogia-y-el-barrido-de-cobertur"><span class="num">Secci&oacute;n 4</span>4. Los catorce sistemas por analogía y el barrido de cobertura</h2>
+<h3 id="4-1-los-catorce-de-este-compendio-estado-verificado">4.1 Los catorce de este compendio: estado verificado</h3>
+<table class="data">
+<thead>
+<tr>
+<th>Sistema</th>
+<th>Verificado</th>
+<th>Estructuras (método declarado)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OprJ</td>
+<td>sí</td>
+<td>5AZS (por accesión Q51397)</td>
+</tr>
+<tr>
+<td>OprN</td>
+<td>sí</td>
+<td>5AZO, 5AZP, 5IUY, 5NSW (por accesión Q9I0Y7)</td>
+</tr>
+<tr>
+<td>OprA (PA7)</td>
+<td>sí</td>
+<td><strong>ninguna</strong> (§3)</td>
+</tr>
+<tr>
+<td>AcrAB-TolC</td>
+<td>sí</td>
+<td>AcrA 2F1M/5NG5/5V5S/9A2V/9TG4/9V53/9V55; AcrB 122 entradas; TolC 21 entradas</td>
+</tr>
+<tr>
+<td>AcrAD-TolC</td>
+<td>sí</td>
+<td>AcrD 8F3E, 8F4N, 8F4R, 8F56</td>
+</tr>
+<tr>
+<td>AcrEF-TolC</td>
+<td>sí</td>
+<td><strong>ninguna por accesión</strong> para AcrE (P24180) ni AcrF (P24181)</td>
+</tr>
+<tr>
+<td>MdtEF-TolC</td>
+<td>sí</td>
+<td>MdtF 9LYJ, 9QPR, 9QPS, 9QPT; MdtE ninguna</td>
+</tr>
+<tr>
+<td>CusCBA</td>
+<td>sí</td>
+<td>CusB 11, CusA 15, CusC 4 entradas</td>
+</tr>
+<tr>
+<td>MtrCDE</td>
+<td>sí</td>
+<td>MtrE 4MT0/5U1A/5U1B por accesión; <strong>MtrD 4MT1/6VKS/6VKT/8DEU/8DEV/8DEW por texto</strong> (la accesión da 0); MtrC ninguna</td>
+</tr>
+<tr>
+<td>TriABC-OpmH</td>
+<td>sí</td>
+<td>TriA, TriB y TriC: <strong>6VEJ</strong> (las tres por accesión); OpmH sin accesión localizada</td>
+</tr>
+<tr>
+<td>MexJK</td>
+<td>sí</td>
+<td>ninguna por accesión de MexJ/MexK; el material de partida registra <strong>20YY</strong> (MexJ ×6 + MexK ×3, sin OMF, con triclosán) y <strong>9XWG</strong> (MexK trímero)</td>
+</tr>
+<tr>
+<td>MexGHI-OpmD</td>
+<td>sí</td>
+<td><strong>ninguna</strong> para MexH, MexI ni OpmD</td>
+</tr>
+<tr>
+<td>MexVW</td>
+<td>sí</td>
+<td><strong>ninguna</strong> para MexV ni MexW</td>
+</tr>
+<tr>
+<td>TMexCD1-TOprJ1</td>
+<td>sí</td>
+<td>9J3D, 9J3E (las tres cadenas por accesión)</td>
+</tr>
+<tr>
+<td>MacAB-TolC</td>
+<td>sí</td>
+<td>MacA 3FPP, 5NIK, 5NIL, 9QGY</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Nota sobre OpmH (resultado negativo, registrado).</strong> No se localizó accesión de UniProt para OpmH de PAO1: <code>gene:opmH AND organism_id:208964</code> devuelve <strong>0</strong>. En NCBI Gene, <code>opmH</code> aparece con nombre de gen <strong>sólo</strong> en <em>P. aeruginosa</em> DSM 50071 (GeneID 45712981, locus PA50071_RS25955) y no en la referencia PAO1. <strong>La accesión de OpmH queda [POR VERIFICAR].</strong> Y una comprobación que evita un error frecuente: <strong>PA0427 es <code>oprM</code> (sinónimo <code>oprK</code>), NO <code>opmH</code></strong> — verificado leyendo los nombres de gen de Q51487 en esta revisión. Pese a esto, la evidencia funcional de que TriABC usa OpmH y no OprM es firme y está en Mima 2007.</p>
+<h3 id="4-2-el-barrido-de-cobertura-los-sistemas-que-este-compendio-">4.2 El barrido de cobertura: los sistemas que este compendio obliga a comprobar explícitamente</h3>
+<p>Todos comprobados en esta revisión, con el resultado registrado incluso cuando es negativo.</p>
+<table class="data">
+<thead>
+<tr>
+<th>Sistema</th>
+<th>Organismo (taxid verificado)</th>
+<th>Componentes verificados</th>
+<th>Estudios de interfaz OMF–MFP</th>
+<th>Intentos de inhibición</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CmeABC</strong></td>
+<td><em>C. jejuni</em> (197)</td>
+<td>CmeA Q8RTE5, CmeB Q8RTE4, CmeC Q1A4H6</td>
+<td><strong>NO.</strong> Consulta <code>if_CmeABC</code> = <strong>0 resultados</strong>. Tiene estructura de los tres por separado (2K32/2K33 RMN, 5T0O, 4MT4) y <strong>ningún</strong> estudio de contacto</td>
+<td>sí, efecto de un inhibidor sobre CmeABC publicado (PMID 17199521) [DOI no verificado en esta revisión]</td>
+</tr>
+<tr>
+<td><strong>FarAB-MtrE</strong></td>
+<td><em>N. gonorrhoeae</em> (485)</td>
+<td>FarA Q9RQ30, FarB Q9RQ29</td>
+<td><strong>NO directo.</strong> Comparte MtrE con MtrCDE, sin mapa FarA–MtrE</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>AdeABC</strong></td>
+<td><em>A. baumannii</em> (470)</td>
+<td>AdeA A0A0D5YID2, AdeB Q93E19, AdeC A0A0D5YIU4</td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>AdeIJK</strong></td>
+<td><em>A. baumannii</em> (470)</td>
+<td>AdeI A0A0D5YF51, AdeJ Q24LT7, AdeK A0A0D5YE69</td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>AdeFGH</strong></td>
+<td><em>A. baumannii</em> (470)</td>
+<td>AdeF A0A0N9QP12, AdeG A0A090C131, AdeH A0A0N9Q906</td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>AmrAB-OprA</strong></td>
+<td><em>B. pseudomallei</em> (28450)</td>
+<td>AmrA O87935, AmrB O87936; <strong>OprA de Bps sin accesión localizada</strong></td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>BpeAB-OprB</strong></td>
+<td><em>B. pseudomallei</em> (28450)</td>
+<td>BpeA Q6VV69, BpeB Q6VV68, OprB Q6VV67</td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>AcrAB-TolC (Salmonella)</strong></td>
+<td><em>S.</em> Typhimurium LT2 (99287)</td>
+<td>AcrA Q8ZRA6, AcrB Q8ZRA7 (6Z12), TolC Q8ZLZ4</td>
+<td><strong>NO propio</strong>; se asume lo de <em>E. coli</em></td>
+<td>sí (PAβN, literatura de Salmonella)</td>
+</tr>
+<tr>
+<td><strong>VexAB / VexCD</strong></td>
+<td><em>V. cholerae</em> (666)</td>
+<td>VexA A6P7G8, VexB A6P7G9; VexC A6P7H0, VexD A6P7H1</td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>AcrAB (H. influenzae)</strong></td>
+<td><em>H. influenzae</em> Rd KW20 (71421)</td>
+<td>HI_0894 Q57500 (MFP, 382 aa), HI_0895 Q57124 (RND, 1032 aa)</td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>SmeDEF</strong></td>
+<td><em>S. maltophilia</em> (40324)</td>
+<td>SmeD Q9F241, SmeE Q9F240, SmeF Q6KAZ5</td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>MdtABC-TolC</strong></td>
+<td><em>E. coli</em> K-12 (83333)</td>
+<td>MdtA P76397, <strong>MdtB P76398 y MdtC P76399: DOS componentes RND</strong></td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+<tr>
+<td><strong>HefABC</strong></td>
+<td><em>H. pylori</em> (210)</td>
+<td>HefA O68960 (OMF, 477 aa), HefB O68961 (MFP, 241 aa), HefC O68962 (RND, 1026 aa)</td>
+<td><strong>NO</strong></td>
+<td>NO</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-3-sistemas-anadidos-por-este-barrido-que-no-estaban-en-est">4.3 Sistemas añadidos por este barrido, que no estaban en este compendio</h3>
+<ul>
+<li><strong>MuxABC-OpmB</strong> de <em>P. aeruginosa</em> (MuxA Q9I0V5, MuxB Q9I0V6, MuxC Q9I0V7, OpmB Q9I0V8; Mima <em>et al.</em> 2009, doi 10.1099/mic.0.031260-0). Es el <strong>segundo</strong> sistema RND con <strong>dos componentes de membrana interna</strong> además de MdtABC, y está en el propio organismo del proyecto. Ninguno de sus cuatro componentes tiene estructura. Sin estudio de interfaz.</li>
+<li><strong>MexPQ-OpmE y MexMN-OprM</strong> de <em>P. aeruginosa</em> (Mima <em>et al.</em> 2005, doi 10.1111/j.1348-0421.2005.tb03696.x). Se registran como mención: <strong>MexMN-OprM es otro emparejamiento con OprM documentado</strong>, lo que amplía la lista de emparejamientos forzados publicados del eje (g).</li>
+<li><strong>EmrAB-TolC</strong> (8ZAL/8ZAR, arquitectura 3:6:<strong>1</strong>) y <strong>TolC+YbjP</strong> (9V52/9V53), registrados en el material de partida. No son RND pero rompen la asunción de estequiometría 3:6:3, que es lo que los hace pertinentes.</li>
+</ul>
+<hr />
+<h2 id="5-la-medicion-que-ordena-los-analogos-y-lo-que-cambia"><span class="num">Secci&oacute;n 5</span>5. La medición que ordena los análogos, y lo que cambia</h2>
+<h3 id="5-1-los-omf-ordenados-por-conservacion-del-epitopo-de-contac">5.1 Los OMF ordenados por conservación del epítopo de contacto de MexA</h3>
+<table class="data">
+<thead>
+<tr>
+<th>OMF</th>
+<th>Sistema</th>
+<th>Identidad global vs OprM</th>
+<th><strong>Identidad en el epítopo (n/24)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OprM</td>
+<td>MexAB-OprM</td>
+<td>100 %</td>
+<td>100 % (24/24)</td>
+</tr>
+<tr>
+<td><strong>OprJ</strong></td>
+<td>MexCD-OprJ</td>
+<td>46,85 %</td>
+<td><strong>58,33 %</strong> (14/24)</td>
+</tr>
+<tr>
+<td><strong>TOprJ1</strong></td>
+<td>TMexCD1-TOprJ1</td>
+<td>48,60 %</td>
+<td><strong>54,17 %</strong> (13/24)</td>
+</tr>
+<tr>
+<td><strong>OprB</strong></td>
+<td>BpeAB-OprB</td>
+<td><strong>55,17 %</strong></td>
+<td><strong>54,17 %</strong> (13/24)</td>
+</tr>
+<tr>
+<td><strong>OprA</strong></td>
+<td>MexXY-OprA (PA7)</td>
+<td>47,84 %</td>
+<td><strong>54,17 %</strong> (13/24)</td>
+</tr>
+<tr>
+<td>AdeC</td>
+<td>AdeABC</td>
+<td>42,05 %</td>
+<td>45,83 % (11/24)</td>
+</tr>
+<tr>
+<td>AdeH</td>
+<td>AdeFGH</td>
+<td>34,65 %</td>
+<td>45,83 % (11/24)</td>
+</tr>
+<tr>
+<td>AdeK</td>
+<td>AdeIJK</td>
+<td>43,97 %</td>
+<td>41,67 % (10/24)</td>
+</tr>
+<tr>
+<td>SmeF</td>
+<td>SmeDEF</td>
+<td>48,68 %</td>
+<td>41,67 % (10/24)</td>
+</tr>
+<tr>
+<td>MtrE</td>
+<td>MtrCDE</td>
+<td>43,36 %</td>
+<td>38,10 % (8/21)</td>
+</tr>
+<tr>
+<td>OpmD</td>
+<td>MexGHI-OpmD</td>
+<td>30,80 %</td>
+<td>33,33 % (8/24)</td>
+</tr>
+<tr>
+<td>OprN</td>
+<td>MexEF-OprN</td>
+<td>33,41 %</td>
+<td>33,33 % (8/24)</td>
+</tr>
+<tr>
+<td>OpmB</td>
+<td>MuxABC-OpmB</td>
+<td>31,86 %</td>
+<td>29,17 % (7/24)</td>
+</tr>
+<tr>
+<td>CusC</td>
+<td>CusCBA</td>
+<td>45,47 %</td>
+<td>25,00 % (6/24)</td>
+</tr>
+<tr>
+<td><strong>TolC</strong></td>
+<td>AcrAB-TolC</td>
+<td><strong>23,06 %</strong></td>
+<td><strong>20,83 %</strong> (5/24)</td>
+</tr>
+<tr>
+<td>CmeC</td>
+<td>CmeABC</td>
+<td>27,33 %</td>
+<td>20,83 % (5/24)</td>
+</tr>
+<tr>
+<td>TolC</td>
+<td>AcrAB-TolC (Salmonella)</td>
+<td>21,59 %</td>
+<td>20,83 % (5/24)</td>
+</tr>
+<tr>
+<td>HefA</td>
+<td>HefABC</td>
+<td>21,66 %</td>
+<td><strong>8,33 %</strong> (2/24)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-2-los-mfp-ordenados-por-conservacion-del-epitopo-de-contac">5.2 Los MFP ordenados por conservación del epítopo de contacto de OprM</h3>
+<table class="data">
+<thead>
+<tr>
+<th>MFP</th>
+<th>Sistema</th>
+<th>Identidad global vs MexA</th>
+<th><strong>Identidad en el epítopo (n/12)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexA</td>
+<td>MexAB-OprM</td>
+<td>100 %</td>
+<td>100 % (12/12)</td>
+</tr>
+<tr>
+<td><strong>BpeA</strong></td>
+<td>BpeAB-OprB</td>
+<td>55,00 %</td>
+<td><strong>75,00 %</strong> (9/12)</td>
+</tr>
+<tr>
+<td>MexC</td>
+<td>MexCD-OprJ</td>
+<td>46,63 %</td>
+<td>66,67 % (8/12)</td>
+</tr>
+<tr>
+<td>AdeA / AdeI</td>
+<td>AdeABC / AdeIJK</td>
+<td>40,37 / 50,00 %</td>
+<td>66,67 % (8/12)</td>
+</tr>
+<tr>
+<td>AcrA</td>
+<td>AcrAB-TolC</td>
+<td>59,63 %</td>
+<td>58,33 % (7/12)</td>
+</tr>
+<tr>
+<td>MacA, MtrC, AmrA, TMexC1, HI_0894</td>
+<td>varios</td>
+<td>27,59–58,33 %</td>
+<td>58,33 % (7/12)</td>
+</tr>
+<tr>
+<td>MexX</td>
+<td>MexXY-OprM</td>
+<td>39,42 %</td>
+<td>50,00 % (6/12)</td>
+</tr>
+<tr>
+<td>MdtA, MexJ, AdeF, SmeD</td>
+<td>varios</td>
+<td>27,69–53,48 %</td>
+<td>50,00 % (6/12)</td>
+</tr>
+<tr>
+<td>MexV, AcrE, MdtE, MuxA, FarA, VexA, VexC, HefB</td>
+<td>varios</td>
+<td>25,56–54,74 %</td>
+<td>41,67 % (5/12)</td>
+</tr>
+<tr>
+<td>MexE</td>
+<td>MexEF-OprN</td>
+<td>32,45 %</td>
+<td>33,33 % (4/12)</td>
+</tr>
+<tr>
+<td>CmeA</td>
+<td>CmeABC</td>
+<td>30,68 %</td>
+<td>33,33 % (4/12)</td>
+</tr>
+<tr>
+<td>CusB</td>
+<td>CusCBA</td>
+<td>21,71 %</td>
+<td>27,27 % (3/11)</td>
+</tr>
+<tr>
+<td>TriB</td>
+<td>TriABC-OpmH</td>
+<td>28,99 %</td>
+<td>16,67 % (2/12)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-3-las-cuatro-conclusiones-que-esta-medicion-obliga-inf-sob">5.3 Las cuatro conclusiones que esta medición obliga (INF, sobre datos medidos)</h3>
+<p><strong>Primera: AcrAB-TolC es el peor análogo disponible para la interfaz OMF–MFP, y no por poco.</strong> TolC conserva <strong>5 de 24</strong> residuos del epítopo de OprM. De los <strong>17</strong> OMF medidos distintos de OprM, <strong>13 lo superan estrictamente</strong>, 3 lo igualan (CmeC, el propio TolC de <em>Salmonella</em> y TolC de <em>E. coli</em> como referencia de sí mismo) y <strong>sólo 1 queda por debajo</strong> (HefA, 8,33 %). Es decir, TolC está en el último cuartil de conservación del epítopo entre los OMF de la familia. Sin embargo, es el sistema con <strong>más</strong> conocimiento de interfaz publicado. El compendio se encuentra por tanto en la situación incómoda de que la literatura metodológica más rica cruza el puente más estrecho. Esto no invalida usar AcrAB-TolC como fuente de <strong>métodos</strong> —que es transferible—, pero sí invalida usarlo como fuente de <strong>residuos</strong>.</p>
+<p><strong>Segunda: el mejor análogo externo con estudio de interfaz real es MtrCDE, no AcrAB-TolC.</strong> MtrE conserva 38,10 % del epítopo frente al 20,83 % de TolC, casi el doble, y es el único sistema no-<em>Pseudomonas</em> con un mapa experimental de los sitios de unión de la MFP en el OMF: Janganan <em>et al.</em> 2011 (doi 10.1074/jbc.m111.246595) muestran que MtrC se une con afinidad alta a MtrD y a MtrE, que interactúa con un <strong>surco intraprotómero</strong> de MtrE induciendo apertura de canal, y que <strong>también puede entrecruzarse a cisteínas colocadas en el surco INTERprotómero</strong>. La existencia de <strong>dos</strong> sitios de unión de la MFP en el OMF es exactamente la pregunta que un diseñador de péptidos necesita resuelta, y está resuelta en MtrCDE y no en AcrAB-TolC. <strong>Recomendación: el protocolo de entrecruzamiento a copiar es el de Janganan 2011, no el de Lobedanz 2007.</strong></p>
+<p><strong>Tercera: hay un análogo de secuencia mucho mejor que nadie está usando, y no tiene estructura.</strong> <strong>BpeAB-OprB de <em>B. pseudomallei</em></strong> es el sistema con la MFP más parecida a MexA en el epítopo (<strong>75,00 %</strong>, 9/12) y con uno de los OMF mejor conservados (54,17 % del epítopo, 55,17 % global). Es decir, si el proyecto quisiera un segundo sistema experimental para comprobar que un péptido diseñado sobre MexA–OprM transfiere, <strong>BpeAB-OprB es el candidato de secuencia más cercano fuera de <em>Pseudomonas</em></strong>. El costo: no tiene estructura, no tiene estudio de interfaz, y <em>B. pseudomallei</em> es un patógeno de bioseguridad 3 que exige autorización institucional — de modo que esta recomendación es sobre la <strong>secuencia</strong>, no una propuesta de trabajar con el organismo. <strong>Si se quisiera explorar esa vía, la decisión de qué material usar y con qué autorización corresponde a la oficina de bioseguridad de la institución, no a este compendio.</strong> La alternativa segura y casi equivalente es <strong>AdeIJK de <em>A. baumannii</em></strong> (AdeI 66,67 % del epítopo, AdeK 41,67 %) o <strong>SmeDEF de <em>S. maltophilia</em></strong> (SmeD 50,00 %, SmeF 41,67 %).</p>
+<p><strong>Cuarta: dentro del propio proyecto, MexEF-OprN es el blanco con el peor pronóstico, y el dato es cuantitativo.</strong> Es la única de las cuatro bombas donde <strong>las dos caras</strong> de la interfaz están a un tercio de identidad simultáneamente: MexE 33,33 % del epítopo de MexA y OprN 33,33 % del epítopo de OprM. En el extremo opuesto, MexCD-OprJ es el blanco con mejor pronóstico (MexC 66,67 %, OprJ 58,33 %) — y es, a la vez, el que carece por completo de estructura de sus dos componentes internos. <strong>Si hay que recortar un blanco de los cuatro por presupuesto, la medición dice que sea MexEF-OprN.</strong></p>
+<h3 id="5-4-las-asunciones-de-estequiometria-que-este-barrido-rompe">5.4 Las asunciones de estequiometría que este barrido rompe</h3>
+<p>El compendio no puede asumir 3:6:3 como arquitectura universal. Verificado:</p>
+<ul>
+<li><strong>TriABC-OpmH</strong> (<em>P. aeruginosa</em>) usa <strong>dos MFP distintas</strong>, TriA y TriB, y <strong>las dos son necesarias</strong> (Mima 2007, doi 10.1128/jb.00850-07). La estructura 6VEJ contiene la fusión de las dos MFP y ningún OMF.</li>
+<li><strong>MdtABC-TolC</strong> (<em>E. coli</em>) y <strong>MuxABC-OpmB</strong> (<em>P. aeruginosa</em>) tienen <strong>dos componentes RND</strong> cada uno.</li>
+<li><strong>MacAB-TolC</strong> se resolvió con arquitectura <strong>3:6:2</strong> (5NIK/5NIL, 11 cadenas, MacB ×2).</li>
+<li><strong>EmrAB-TolC</strong> se resolvió con arquitectura <strong>3:6:1</strong> (8ZAL/8ZAR).</li>
+<li><strong>FarB</strong> de FarAB-MtrE <strong>no es un RND</strong>: es un transportador de la superfamilia MFS de 507 aa, y su identidad del 30,06 % frente a MexB sobre 499 columnas refleja una comparación entre familias distintas, no una homología funcional. <strong>Esa fila de la tabla debe leerse con esa advertencia.</strong></li>
+</ul>
+<p>Consecuencia para el diseño (INF): un péptido que compita por el sitio de la MFP en el OMF tiene un número de sitios equivalentes que depende de la arquitectura, y ese número no es 3 en todos los casos. Para MexAB-OprM sí lo es, porque la estequiometría 3:6:3 está observada en cuatro depósitos.</p>
+<h3 id="5-5-advertencia-de-replicacion">5.5 Advertencia de replicación</h3>
+<p><strong>6IOK y 6IOL son dos estados del mismo sistema</strong> (rotación pura de 59,9° de OprM sobre el eje del ensamblaje); <strong>6TA5 y 6TA6 son réplicas del estado tipo A</strong> de otro laboratorio y en nanodisco. n_estados = <strong>2</strong>, no 4. Tampoco son observaciones independientes los <strong>3 protómeros de OprM</strong> ni las <strong>6 copias de MexA</strong> de un mismo ensamblaje. Ningún conteo de esta tabla de cobertura debe usarse como n estadístico: las identidades son mediciones deterministas de secuencias, no muestras.</p>
+<hr />
+<h2 id="6-tabla-de-cobertura"><span class="num">Secci&oacute;n 6</span>6. Tabla de cobertura</h2>
+<p>Misma estructura de columnas que <code>tabla_sistemas_cubiertos.csv</code>. La tabla siguiente contiene las mismas 14 columnas que el CSV para los 32 sistemas; el CSV es la versión canónica y más cómoda de leer por su anchura.</p>
+<table class="data">
+<thead>
+<tr>
+<th>sistema</th>
+<th>organismo</th>
+<th>taxid_verificado</th>
+<th>componentes_OMF_MFP_RND</th>
+<th>accesiones_verificadas</th>
+<th>estructuras_disponibles_PDB</th>
+<th>identidad_por_componente_frente_a_Pa</th>
+<th>metodo_de_identidad</th>
+<th>hay_estudios_de_interfaz</th>
+<th>hay_intentos_de_inhibicion</th>
+<th>cubierto_en_el_compendio</th>
+<th>etiqueta_evidencia</th>
+<th>referencia_doi</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexAB-OprM</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>MexA (MFP); MexB (RND); OprM (OMF)</td>
+<td>MexA=P52477; MexB=P52002; OprM=Q51487</td>
+<td>MexA: 1T5E/1VF7/2V4D/4DK1/6IOK/6IOL/6TA5/6TA6; MexB: 21FO/21FP/22XK/22XM/2V50/3W9I/3W9J/6IIA (+5 mas); OprM: 1WP1/3D5K/4Y1K/6IOK/6IOL/6TA5/6TA6/6ZRE (+1 mas)</td>
+<td>MexA 100.0% global, 100.0% en el epitopo de contacto (383/383 columnas); MexB 100.0% global (1046/1046 columnas); OprM 100.0% global, 100.0% en el epitopo de contacto (485/485 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>SI: complementación de mutantes de mexA, entrecruzamiento MexA-MexB in vivo y supresores extragenicos MexA V129M &lt;-&gt; OprM T198I/F439I (numeración de precursor = UniProt); mas cuatro estructuras del ensamblaje completo</td>
+<td>SI: PAbetaN y piridopirimidinas (3W9J con P9D); piranopiridinas (5NG5) y NMP (9J3E) en sistemas relacionados</td>
+<td>completo</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/JB.186.10.2973-2983.2004; 10.1128/JB.00718-07</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MexXY-OprM</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>MexX (MFP); MexY (RND)</td>
+<td>MexX=G3XD21; MexY=G3XCW2</td>
+<td>MexY: 8Z1U/9E9F</td>
+<td>MexX 39.42% global, 50.0% en el epitopo de contacto (149/378 columnas); MexY 50.29% global (523/1040 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo: la única evidencia de interfaz es el requerimiento funcional de OprM por MexXY; ningún estudio de contacto residuo a residuo</td>
+<td>NO específico [POR VERIFICAR]</td>
+<td>completo</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.2323/jgam.47.27; 10.1128/AAC.43.2.415</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MexCD-OprJ</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>MexC (MFP); MexD (RND); OprJ (OMF)</td>
+<td>MexC=G3XD25; MexD=Q9HVI9; OprJ=Q51397</td>
+<td>OprJ: 5AZS</td>
+<td>MexC 46.63% global, 66.67% en el epitopo de contacto (173/371 columnas); MexD 50.14% global (522/1041 columnas); OprJ 46.85% global, 58.33% en el epitopo de contacto (223/476 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo: solo por homología; ninguna estructura de MexC ni MexD y ningún estudio de contacto</td>
+<td>NO específico [POR VERIFICAR]</td>
+<td>completo</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MexEF-OprN</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>MexE (MFP); MexF (RND); OprN (OMF)</td>
+<td>MexE=Q9I0Y9; MexF=Q9I0Y8; OprN=Q9I0Y7</td>
+<td>OprN: 5AZO/5AZP/5IUY/5NSW</td>
+<td>MexE 32.45% global, 33.33% en el epitopo de contacto (123/379 columnas); MexF 42.54% global (442/1039 columnas); OprN 33.41% global, 33.33% en el epitopo de contacto (152/455 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo: solo por homología; OprN tiene estructura (5AZO/5AZP/5IUY/5NSW) pero MexE y MexF no, y no hay estudio de contacto OprN-MexE</td>
+<td>NO específico [POR VERIFICAR]</td>
+<td>completo</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MexJK(-OprM/-OpmH)</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>MexJ (MFP); MexK (RND)</td>
+<td>MexJ=Q9HXW3; MexK=Q9HXW4</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>MexJ 26.0% global, 50.0% en el epitopo de contacto (91/350 columnas); MexK 26.51% global (264/996 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>PARCIAL: selectividad de canal demostrada funcionalmente (funciona con OprM, no con OprJ ni OprN), sin mapa de contactos</td>
+<td>NO (20YY contiene triclosan como SUSTRATO, no como inhibidor)</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/JB.184.18.5036-5044.2002</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MexGHI-OpmD</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>MexH (MFP); MexI (RND); OpmD (OMF)</td>
+<td>MexH=Q9HWH5; MexI=Q9HWH4; OpmD=Q9HWH3</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>MexH 26.69% global, 33.33% en el epitopo de contacto (95/356 columnas); MexI 31.3% global (318/1016 columnas); OpmD 30.8% global, 33.33% en el epitopo de contacto (146/474 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MexVW-OprM</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>MexV (MFP); MexW (RND)</td>
+<td>MexV=Q9HW28; MexW=Q9HW27</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>MexV 26.55% global, 41.67% en el epitopo de contacto (94/354 columnas); MexW 34.73% global (349/1005 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>PARCIAL: cooperación funcional con OprM demostrada, sin mapa de contactos</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1093/jac/dkg390</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>TriABC-OpmH</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>TriA (MFP); TriB (MFP); TriC (RND)</td>
+<td>TriA=Q9I6X6; TriB=Q9I6X5; TriC=Q9I6X4</td>
+<td>TriA: 6VEJ; TriB: 6VEJ; TriC: 6VEJ</td>
+<td>TriA 26.67% global, 25.0% en el epitopo de contacto (96/360 columnas); TriB 28.99% global, 16.67% en el epitopo de contacto (98/338 columnas); TriC 25.43% global (250/983 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>PARCIAL: requerimiento de DOS adaptadoras y asociación con OpmH y no con OprM, demostrados funcionalmente; estructura 6VEJ sin OMF</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/JB.00850-07</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MuxABC-OpmB</td>
+<td>P. aeruginosa PAO1</td>
+<td>208964 (UniProt 2026-09-11)</td>
+<td>MuxA (MFP); MuxB (RND); MuxC (RND); OpmB (OMF)</td>
+<td>MuxA=Q9I0V5; MuxB=Q9I0V6; MuxC=Q9I0V7; OpmB=Q9I0V8</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>MuxA 34.69% global, 41.67% en el epitopo de contacto (128/369 columnas); MuxB 30.07% global (307/1021 columnas); MuxC 31.55% global (319/1011 columnas); OpmB 31.86% global, 29.17% en el epitopo de contacto (151/474 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AcrAB-TolC</td>
+<td>E. coli K-12</td>
+<td>83333 (UniProt 2026-09-11)</td>
+<td>AcrA (MFP); AcrB (RND); TolC (OMF)</td>
+<td>AcrA=P0AE06; AcrB=P31224; TolC=P02930</td>
+<td>AcrA: 2F1M/5NG5/5V5S/9A2V/9TG4/9V53/9V55; AcrB: 1IWG/1OY6/1OY8/1OY9/1OYD/1OYE/1T9T/1T9U (+114 mas); TolC: 1EK9/1TQQ/2VDD/2VDE/2WMZ/2XMN/5NG5/5NIK (+13 mas)</td>
+<td>AcrA 59.63% global, 58.33% en el epitopo de contacto (226/379 columnas); AcrB 70.14% global (733/1045 columnas); TolC 23.06% global, 20.83% en el epitopo de contacto (101/438 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>SI: entrecruzamiento in vivo dirigido por cisteina que mapea la interfaz AcrA-TolC, mutagenesis de horquillas de AcrB, supresores AcrA-TolC, estructuras del ensamblaje y modelos integrativos</td>
+<td>SI: PAbetaN, piranopiridinas MBX (5NG5), NMP y DARPin (7B8R/7B8S/7B8T)</td>
+<td>completo</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1073/pnas.0610160104; 10.1111/mmi.12508; 10.1111/j.1365-2958.2010.07068.x; 10.1111/j.1365-2958.2004.04158.x</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AcrAD-TolC</td>
+<td>E. coli K-12</td>
+<td>83333 (UniProt 2026-09-11)</td>
+<td>AcrD (RND)</td>
+<td>AcrD=P24177</td>
+<td>AcrD: 8F3E/8F4N/8F4R/8F56</td>
+<td>AcrD 61.62% global (639/1037 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo para la interfaz OMF-MFP</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AcrEF-TolC</td>
+<td>E. coli K-12</td>
+<td>83333 (UniProt 2026-09-11)</td>
+<td>AcrE (MFP); AcrF (RND)</td>
+<td>AcrE=P24180; AcrF=P24181</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>AcrE 54.74% global, 41.67% en el epitopo de contacto (202/369 columnas); AcrF 67.05% global (692/1032 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo para la interfaz OMF-MFP</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MdtEF-TolC</td>
+<td>E. coli K-12</td>
+<td>83333 (UniProt 2026-09-11)</td>
+<td>MdtE (MFP); MdtF (RND)</td>
+<td>MdtE=P37636; MdtF=P37637</td>
+<td>MdtF: 9LYJ/9QPR/9QPS/9QPT</td>
+<td>MdtE 49.73% global, 41.67% en el epitopo de contacto (184/370 columnas); MdtF 62.8% global (650/1035 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo para la interfaz OMF-MFP</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MdtABC-TolC</td>
+<td>E. coli K-12</td>
+<td>83333 (UniProt 2026-09-11)</td>
+<td>MdtA (MFP); MdtB (RND); MdtC (RND)</td>
+<td>MdtA=P76397; MdtB=P76398; MdtC=P76399</td>
+<td>MdtB: 9LYQ</td>
+<td>MdtA 27.69% global, 50.0% en el epitopo de contacto (103/372 columnas); MdtB 32.06% global (319/995 columnas); MdtC 30.47% global (309/1014 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO: sistema con DOS componentes de membrana interna (MdtB y MdtC); sin estudio de interfaz OMF-MFP</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/JB.184.15.4161-4167.2002</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>CusCBA</td>
+<td>E. coli K-12</td>
+<td>83333 (UniProt 2026-09-11)</td>
+<td>CusB (MFP); CusA (RND); CusC (OMF)</td>
+<td>CusB=P77239; CusA=P38054; CusC=P77211</td>
+<td>CusB: 3H94/3NE5/3OOC/3OPO/3OW7/3T51/3T53/3T56 (+3 mas); CusA: 3K07/3K0I/3KSO/3KSS/3NE5/3T51/3T53/3T56 (+7 mas); CusC: 3PIK/4K34/4K7K/4K7R</td>
+<td>CusB 21.71% global, 27.27% en el epitopo de contacto (76/350 columnas); CusA 24.72% global (245/991 columnas); CusC 45.47% global, 25.0% en el epitopo de contacto (206/453 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>SI para MFP-RND y MFP-OMF: estructuras del complejo CusBA y de CusC, con contactos resueltos</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1038/nature09743</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MacAB-TolC</td>
+<td>E. coli K-12</td>
+<td>83333 (UniProt 2026-09-11)</td>
+<td>MacA (MFP)</td>
+<td>MacA=P75830</td>
+<td>MacA: 3FPP/5NIK/5NIL/9QGY</td>
+<td>MacA 27.59% global, 58.33% en el epitopo de contacto (88/319 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>SI: interacción tipo engranaje entrelazado TolC-MacA y estructuras 3:6:2</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1074/jbc.m110.202598; 10.1074/jbc.M111.238535</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MtrCDE</td>
+<td>N. gonorrhoeae</td>
+<td>485 (UniProt 2026-09-11)</td>
+<td>MtrC (MFP); MtrD (RND); MtrE (OMF)</td>
+<td>MtrC=P43505; MtrD=Q51073; MtrE=Q51006</td>
+<td>MtrE 4MT0/5U1A/5U1B (por accesión Q51006); MtrD 4MT1/6VKS/6VKT/8DEU/8DEV/8DEW (por texto, la accesión Q51073 da 0); MtrC sin entrada</td>
+<td>MtrC 45.65% global, 58.33% en el epitopo de contacto (173/379 columnas); MtrD 49.76% global (518/1041 columnas); MtrE 43.36% global, 38.1% en el epitopo de contacto (199/459 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>SI: MtrC entrecruzado a cisteinas en los surcos intra e INTERprotomero de MtrE, con apertura de canal inducida; el análogo mejor caracterizado después de AcrAB-TolC</td>
+<td>SI: ensayos de union de inhibidor a MtrD publicados [alcance POR VERIFICAR]</td>
+<td>completo</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1074/jbc.M111.246595; 10.1111/mmi.12211</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>FarAB-MtrE</td>
+<td>N. gonorrhoeae</td>
+<td>485 (UniProt 2026-09-11)</td>
+<td>FarA (MFP); FarB (RND-MFS)</td>
+<td>FarA=Q9RQ30; FarB=Q9RQ29</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>FarA 30.94% global, 41.67% en el epitopo de contacto (95/307 columnas); FarB 30.06% global (150/499 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo: comparte MtrE con MtrCDE pero sin mapa de contactos FarA-MtrE</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1046/j.1365-2958.1999.01530.x</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>CmeABC</td>
+<td>C. jejuni</td>
+<td>197 (UniProt 2026-09-11)</td>
+<td>CmeA (MFP); CmeB (RND); CmeC (OMF)</td>
+<td>CmeA=Q8RTE5; CmeB=Q8RTE4; CmeC=Q1A4H6</td>
+<td>CmeA 2K32/2K33 (RMN, por accesión); CmeB 5T0O; CmeC 4MT4 (por texto)</td>
+<td>CmeA 30.68% global, 33.33% en el epitopo de contacto (108/352 columnas); CmeB 42.01% global (434/1033 columnas); CmeC 27.33% global, 20.83% en el epitopo de contacto (129/472 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo: estructuras de los tres componentes por separado, sin estudio de contacto OMF-MFP</td>
+<td>SI: efecto de un inhibidor de bomba sobre CmeABC publicado (PMID 17199521) [DOI no verificado en esta revisión]</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/AAC.46.7.2124-2131.2002</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AdeABC</td>
+<td>A. baumannii</td>
+<td>470 (UniProt 2026-09-11)</td>
+<td>AdeA (MFP); AdeB (RND); AdeC (OMF)</td>
+<td>AdeA=A0A0D5YID2; AdeB=Q93E19; AdeC=A0A0D5YIU4</td>
+<td>AdeB 6OWS/7B8P/7B8Q/7KGD-7KGI (por texto; la accesión Q93E19 da 0); AdeA y AdeC sin entrada</td>
+<td>AdeA 40.37% global, 66.67% en el epitopo de contacto (151/374 columnas); AdeB 48.5% global (500/1031 columnas); AdeC 42.05% global, 45.83% en el epitopo de contacto (193/459 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AdeIJK</td>
+<td>A. baumannii</td>
+<td>470 (UniProt 2026-09-11)</td>
+<td>AdeI (MFP); AdeJ (RND); AdeK (OMF)</td>
+<td>AdeI=A0A0D5YF51; AdeJ=Q24LT7; AdeK=A0A0D5YE69</td>
+<td>AdeJ 7M4P-7M4Z/7RY3/7RYF (por texto; la accesión Q24LT7 da 0); AdeI y AdeK sin entrada</td>
+<td>AdeI 50.0% global, 66.67% en el epitopo de contacto (189/378 columnas); AdeJ 58.81% global (614/1044 columnas); AdeK 43.97% global, 41.67% en el epitopo de contacto (208/473 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AdeFGH</td>
+<td>A. baumannii</td>
+<td>470 (UniProt 2026-09-11)</td>
+<td>AdeF (MFP); AdeG (RND); AdeH (OMF)</td>
+<td>AdeF=A0A0N9QP12; AdeG=A0A090C131; AdeH=A0A0N9Q906</td>
+<td>AdeG 8YR0 (por accesión A0A090C131); AdeF y AdeH sin entrada</td>
+<td>AdeF 34.68% global, 50.0% en el epitopo de contacto (129/372 columnas); AdeG 41.71% global (435/1043 columnas); AdeH 34.65% global, 45.83% en el epitopo de contacto (158/456 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AmrAB-OprA</td>
+<td>B. pseudomallei</td>
+<td>28450 (UniProt 2026-09-11)</td>
+<td>AmrA (MFP); AmrB (RND)</td>
+<td>AmrA=O87935; AmrB=O87936</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>AmrA 40.26% global, 58.33% en el epitopo de contacto (153/380 columnas); AmrB 50.24% global (522/1039 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/AAC.43.3.465</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>BpeAB-OprB</td>
+<td>B. pseudomallei</td>
+<td>28450 (UniProt 2026-09-11)</td>
+<td>BpeA (MFP); BpeB (RND); OprB (OMF)</td>
+<td>BpeA=Q6VV69; BpeB=Q6VV68; OprB=Q6VV67</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>BpeA 55.0% global, 75.0% en el epitopo de contacto (209/380 columnas); BpeB 63.73% global (666/1045 columnas); OprB 55.17% global, 54.17% en el epitopo de contacto (267/484 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/JB.00003-07</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>SmeDEF</td>
+<td>S. maltophilia</td>
+<td>40324 (UniProt 2026-09-11)</td>
+<td>SmeD (MFP); SmeE (RND); SmeF (OMF)</td>
+<td>SmeD=Q9F241; SmeE=Q9F240; SmeF=Q6KAZ5</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>SmeD 53.48% global, 50.0% en el epitopo de contacto (200/374 columnas); SmeE 60.91% global (631/1036 columnas); SmeF 48.68% global, 41.67% en el epitopo de contacto (222/456 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>parcial</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/AAC.44.11.3079-3086.2000</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>VexAB</td>
+<td>V. cholerae</td>
+<td>666 (UniProt 2026-09-11)</td>
+<td>VexA (MFP); VexB (RND)</td>
+<td>VexA=A6P7G8; VexB=A6P7G9</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>VexA 25.56% global, 41.67% en el epitopo de contacto (92/360 columnas); VexB 32.41% global (326/1006 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>solo mención</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/IAI.01620-07</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>VexCD</td>
+<td>V. cholerae</td>
+<td>666 (UniProt 2026-09-11)</td>
+<td>VexC (MFP); VexD (RND)</td>
+<td>VexC=A6P7H0; VexD=A6P7H1</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>VexC 29.04% global, 41.67% en el epitopo de contacto (97/334 columnas); VexD 24.09% global (238/988 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>solo mención</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/IAI.01620-07</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>HefABC</td>
+<td>H. pylori</td>
+<td>210 (UniProt 2026-09-11)</td>
+<td>HefA (OMF); HefB (MFP); HefC (RND)</td>
+<td>HefA=O68960; HefB=O68961; HefC=O68962</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>HefA 21.66% global, 8.33% en el epitopo de contacto (94/434 columnas); HefB 25.75% global, 41.67% en el epitopo de contacto (60/233 columnas); HefC 28.49% global (288/1011 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>solo mención</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/AAC.44.2.248-254.2000</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AcrAB-TolC (Salmonella)</td>
+<td>S. enterica Typhimurium LT2</td>
+<td>99287 (UniProt 2026-09-11)</td>
+<td>AcrA (MFP); AcrB (RND); TolC (OMF)</td>
+<td>AcrA=Q8ZRA6; AcrB=Q8ZRA7; TolC=Q8ZLZ4</td>
+<td>AcrB: 6Z12</td>
+<td>AcrA 59.1% global, 58.33% en el epitopo de contacto (224/379 columnas); AcrB 70.05% global (732/1045 columnas); TolC 21.59% global, 20.83% en el epitopo de contacto (95/440 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO directo propio: se asume lo de E. coli; AcrB de Salmonella tiene estructura 6Z12</td>
+<td>SI (PAbetaN, en la literatura de Salmonella)</td>
+<td>solo mención</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1111/j.1365-2958.2005.04940.x</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>AcrAB (H. influenzae)</td>
+<td>H. influenzae Rd KW20</td>
+<td>71421 (UniProt 2026-09-11)</td>
+<td>HI_0894 (AcrA-like) (MFP); HI_0895 (AcrB-like) (RND)</td>
+<td>HI_0894 (AcrA-like)=Q57500; HI_0895 (AcrB-like)=Q57124</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>HI_0894 (AcrA-like) 26.76% global, 58.33% en el epitopo de contacto (95/355 columnas); HI_0895 (AcrB-like) 32.47% global (327/1007 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO</td>
+<td>NO</td>
+<td>solo mención</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/jb.179.21.6855-6857.1997</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>TMexCD1-TOprJ1</td>
+<td>K. pneumoniae (plasmidico)</td>
+<td>573 (UniProt 2026-09-11)</td>
+<td>TMexC1 (MFP); TMexD1 (RND); TOprJ1 (OMF)</td>
+<td>TMexC1=A0A411AKL2; TMexD1=A0A411AKL6; TOprJ1=A0A411AKN6</td>
+<td>TMexC1: 9J3D/9J3E; TMexD1: 9J3D/9J3E; TOprJ1: 9J3D/9J3E</td>
+<td>TMexC1 44.32% global, 58.33% en el epitopo de contacto (164/370 columnas); TMexD1 48.7% global (507/1041 columnas); TOprJ1 48.6% global, 54.17% en el epitopo de contacto (226/465 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>PARCIAL: estructuras 9J3D y 9J3E del ensamblaje 3:6:3 completo, una con inhibidor; sin mutagenesis de interfaz publicada</td>
+<td>SI: 9J3E contiene NMP en el ensamblaje completo</td>
+<td>completo</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>10.1128/mBio.02930-19</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MexXY-OprA</td>
+<td>P. paraeruginosa PA7</td>
+<td>381754 (NCBI 2026-09-11)</td>
+<td>OprA (OMF)</td>
+<td>OprA=ABR81584 (NCBI)</td>
+<td>ninguna por accesión UniProt en RCSB</td>
+<td>OprA 47.84% global, 54.17% en el epitopo de contacto (222/464 columnas)</td>
+<td>Needleman-Wunsch global (Biopython PairwiseAligner), BLOSUM62, apertura -11, extensión -1, identidad sobre columnas alineadas sin hueco, secuencias UniProt COMPLETAS en los dos lados; referentes MexA P52477 (MFP), MexB P52002 (RND), OprM Q51487 (OMF). Epitopo = 12 residuos de contacto de MexA (madura 96-110 = UniProt 119-133) y 24 de OprM (madura 190-204/395-412 = UniProt 207-221/412-429), medidos en 6IOK</td>
+<td>NO: ninguna evidencia de interfaz; OprA no tiene estructura ni entrada UniProt</td>
+<td>NO</td>
+<td>completo</td>
+<td>EXP para accesiones, estructuras y emparejamientos citados; INF para las identidades (medidas en esta revisión); POR VERIFICAR donde se indica</td>
+<td>[POR VERIFICAR]</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-resultados-negativos-de-este-barrido-registrados"><span class="num">Secci&oacute;n 7</span>7. Resultados negativos de este barrido, registrados</h2>
+<ol>
+<li><strong>CmeABC no tiene estudio de interfaz OMF–MFP</strong> (consulta <code>if_CmeABC</code>, OpenAlex, 2026-09-11: <strong>0 resultados</strong>), a pesar de tener estructura de los tres componentes por separado. Es el único de los 23 sistemas barridos con cero absoluto en la consulta de interfaz.</li>
+<li><strong>Nueve de los trece sistemas del barrido obligatorio no tienen ningún estudio de interfaz OMF–MFP publicado</strong> (AdeABC, AdeIJK, AdeFGH, AmrAB-OprA, BpeAB-OprB, VexAB, VexCD, SmeDEF, HefABC, MdtABC y AcrAB de <em>H. influenzae</em>). El conocimiento de interfaz OMF–MFP de toda la familia RND está concentrado en <strong>tres</strong> sistemas: AcrAB-TolC, MtrCDE y MacAB-TolC, más el caso especial de CusCBA, donde la interfaz resuelta es MFP–RND (estructuras de CusBA).</li>
+<li><strong>OpmH de PAO1 no tiene accesión de UniProt localizable por nombre de gen</strong> y en NCBI Gene sólo aparece nombrado en DSM 50071. <strong>[POR VERIFICAR]</strong></li>
+<li><strong>OprA de <em>B. pseudomallei</em></strong> (el OMF de AmrAB-OprA) <strong>no se localizó en UniProt</strong> por nombre de gen ni por nombre de proteína. <strong>[POR VERIFICAR]</strong></li>
+<li><strong>AdeF y AdeH no se localizan por nombre de gen</strong> en UniProt; se localizaron por nombre de proteína (A0A0N9QP12 y A0A0N9Q906). Las accesiones son de TrEMBL, no revisadas, y la asignación de clase (MFP y OMF) es <strong>INF</strong> por longitud y contexto operónico, no una anotación verificada.</li>
+<li><strong>AcrE (P24180) y AcrF (P24181) no tienen entradas en RCSB por accesión</strong>, pese a que AcrEF es uno de los sistemas mejor caracterizados funcionalmente de <em>E. coli</em>. Es un recordatorio de que la caracterización funcional y la estructural no van juntas.</li>
+<li><strong>Los cinco componentes internos de las bombas del proyecto (MexX, MexC, MexD, MexE, MexF) y OprA tienen cero estructuras</strong>, confirmado por dos métodos independientes (§2.2).</li>
+</ol>
+<p>El registro completo con consulta literal, base, fecha, número de resultados e interpretación está en <code>tabla_busquedas_negativas_validacion.csv</code> (116 filas: 105 consultas de OpenAlex y 11 verificaciones en RCSB y NCBI).</p></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

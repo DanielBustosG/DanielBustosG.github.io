@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eje (c) · El mecanismo de rotación y el registro — Compendio RND</title>
+<meta name="description" content="Los dos estados de MexAB–OprM separados 60°: qué se midió, qué dicen sus autores y qué evidencia falta para llamarlo ciclo funcional.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="El mecanismo de rotación y el registro">
+<meta property="og:description" content="Los dos estados de MexAB–OprM separados 60°: qué se midió, qué dicen sus autores y qué evidencia falta para llamarlo ciclo funcional.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>El mecanismo de rotación y el registro</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#c0-advertencia-de-transferencia-por-analogia-se-repite-en-ca">c0. Advertencia de transferencia por analogía (se repite en cada transferencia</a></li><li><a href="#c1-que-es-el-par-6iok-6iol">c1. Que es el par 6IOK / 6IOL</a><ol><li><a href="#c1-1-convencion-del-angulo">c1.1 Convención del ángulo</a></li><li><a href="#c1-2-los-dos-estados">c1.2 Los dos estados</a></li><li><a href="#c1-3-el-detalle-que-hace-la-pregunta-interesante">c1.3 El detalle que hace la pregunta interesante</a></li></ol></li><li><a href="#c2-la-pregunta-central-ciclo-funcional-o-polimorfismo">c2. La pregunta central: ciclo funcional o polimorfismo?</a><ol><li><a href="#c2-1-lo-que-dicen-los-autores-originales">c2.1 Lo que dicen los autores originales</a></li><li><a href="#c2-2-evidencia-a-favor-del-ciclo-funcional">c2.2 Evidencia a favor del ciclo funcional</a></li><li><a href="#c2-3-evidencia-a-favor-del-polimorfismo-de-empaquetamiento-o">c2.3 Evidencia a favor del polimorfismo de empaquetamiento o de clasificación</a></li><li><a href="#c2-4-balance-honesto">c2.4 Balance honesto</a></li><li><a href="#c2-5-que-experimento-zanjaria-la-cuestion">c2.5 Que experimento zanjaria la cuestion</a></li></ol></li><li><a href="#c3-cuidado-con-el-modulo">c3. Cuidado con el modulo</a></li><li><a href="#c4-acoplamiento-con-el-ciclo-funcional-del-rnd">c4. Acoplamiento con el ciclo funcional del RND</a><ol><li><a href="#c4-1-la-asimetria-a-b-e-que-esta-observado">c4.1 La asimetría A/B/E: que esta observado</a></li><li><a href="#c4-2-los-residuos-del-rele-de-protones-verificados-contra-la">c4.2 Los residuos del rele de protones, verificados contra la fuente primaria</a></li><li><a href="#c4-3-el-rele-de-protones-de-verdad-con-las-dos-numeraciones">c4.3 El rele de protones de verdad, con las dos numeraciones</a></li><li><a href="#c4-4-la-controversia-5o66-frente-a-5v5s-resuelta-sin-promedi">c4.4 La controversia 5O66 frente a 5V5S: resuelta sin promediar</a></li><li><a href="#c4-5-la-pregunta-de-acoplamiento">c4.5 La pregunta de acoplamiento</a></li></ol></li><li><a href="#c5-la-simetria-del-hexamero-de-mexa">c5. La simetría del hexamero de MexA</a><ol><li><a href="#c5-1-que-implica-para-el-mecanismo-de-rotacion">c5.1 Que implica para el mecanismo de rotación</a></li><li><a href="#c5-2-acoplamiento-entre-anillos">c5.2 Acoplamiento entre anillos</a></li></ol></li><li><a href="#c6-implicacion-para-la-inhibicion-congelar-el-registro">c6. Implicación para la inhibición: congelar el registro</a><ol><li><a href="#c6-1-la-idea">c6.1 La idea</a></li><li><a href="#c6-2-las-objeciones-en-orden-de-gravedad">c6.2 Las objeciones, en orden de gravedad</a></li><li><a href="#c6-3-y-la-objecion-que-corre-en-sentido-contrario">c6.3 Y la objeción que corre en sentido contrario</a></li><li><a href="#c6-4-recomendacion-para-la-decision-de-inversion">c6.4 Recomendación para la decisión de inversión</a></li></ol></li><li><a href="#c7-tablas-del-eje-c">c7. Tablas del eje (c)</a><ol><li><a href="#c7-1-tabla-rotacion-registro-csv">c7.1 tabla_rotacion_registro.csv</a></li><li><a href="#c7-2-tabla-rele-protones-rnd-csv">c7.2 tabla_rele_protones_RND.csv</a></li></ol></li><li><a href="#c8-tabla-referencias-arquitectura-csv-referencias-de-los-eje">c8. tabla_referencias_arquitectura.csv — referencias de los ejes (a) y (c)</a></li><li><a href="#c9-elementos-marcados-por-verificar-en-este-eje">c9. Elementos marcados POR VERIFICAR en este eje</a></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<p><strong>Fecha de corte: 2026-09-11.</strong> Todos los DOI citados en este archivo fueron resueltos por el autor de esta sección contra <code>https://api.crossref.org/works/{DOI}</code> el 2026-09-11 (64 DOI, ninguno fallido). Las mediciones geometricas provienen de las mediciones previas del proyecto y de <code>el archivo de hechos verificados</code> y se citan como "medido en el proyecto, 2026-09-11". Los alineamientos de secuencia AcrB/MexB de la sección c4 se calcularon en esta revisión.
+<strong>Etiquetas de evidencia:</strong> EXP, EXP-IND, COMP, INF, POR VERIFICAR.</p>
+<hr />
+<h2 id="c0-advertencia-de-transferencia-por-analogia-se-repite-en-ca"><span class="num">Secci&oacute;n 1</span>c0. Advertencia de transferencia por analogía (se repite en cada transferencia de esta sección)</h2>
+<p>Identidades medidas en el proyecto: <strong>MexB/AcrB 70,14 %; MexA/AcrA 59,63 %; OprM/TolC 23,06 %</strong>. En esta revisión se reprodujo la identidad AcrB/MexB con la misma convención (NW global, BLOSUM62, hueco −11/−1): <strong>70,14 % sobre 1.045 columnas sin huecos</strong> (EXP, medido en esta revisión). Esta sección hace <strong>dos</strong> transferencias por analogía de naturaleza muy distinta, y hay que distinguirlas:</p>
+<ul>
+<li>La transferencia <strong>MexB ← AcrB</strong> (secciones c4.2 y c4.3, rele de protones y ciclo A/B/E) va por un puente del <strong>70,14 %</strong>, con conservación residuo a residuo verificable posición por posición. Es una transferencia razonablemente solida.</li>
+<li>La transferencia <strong>MexA–OprM ← AcrA–TolC</strong> (todo lo que tenga que ver con el registro y con la interfaz) va por un puente del <strong>23,06 %</strong> en el componente OMF. Es debil, y en esta sección se declara en cada punto donde se hace.</li>
+</ul>
+<h2 id="c1-que-es-el-par-6iok-6iol"><span class="num">Secci&oacute;n 2</span>c1. Que es el par 6IOK / 6IOL</h2>
+<h3 id="c1-1-convencion-del-angulo">c1.1 Convención del ángulo</h3>
+<p>Todos los ángulos de registro de esta sección usan la siguiente convención, declarada aquí una vez y referida después:</p>
+<blockquote>
+<p><strong>Eje:</strong> la recta que une el centroide del trimero RND con el centroide del trimero OMF.
+<strong>Sentido positivo del eje:</strong> desde el RND hacia el OMF, es decir desde el citoplasma hacia el exterior de la celula.
+<strong>Handedness:</strong> regla de la mano derecha en torno a ese eje orientado.
+<strong>Modulo:</strong> el ángulo se reduce <strong>modulo 120 grados</strong>, porque la simetría de orden 3 del trimero OMF hace que 0, 120 y 240 grados sean la misma configuración.
+<strong>Origen:</strong> convención interna del proyecto, fijada para que los valores de las distintas entradas sean comparables entre si; el valor absoluto no tiene significado físico, solo las <strong>diferencias</strong> lo tienen.
+(medido en el proyecto, 2026-09-11)</p>
+</blockquote>
+<p>La <strong>inclinación</strong> que acompana a cada medida es el ángulo entre el eje de la rotación que relaciona dos objetos y el eje del ensamblaje así definido; una inclinación pequena significa que la rotación es <strong>pura en torno al eje del ensamblaje</strong>. Un valor cercano a 180 grados, como el 179,94 de 9J3E, corresponde al <strong>mismo eje con el signo invertido</strong> y no a una inclinación física de 180 grados.</p>
+<h3 id="c1-2-los-dos-estados">c1.2 Los dos estados</h3>
+<p>6IOK y 6IOL son dos clases del <strong>mismo conjunto de datos</strong> de crio-EM del mismo preparado de MexAB–OprM reconstituido in vitro y estabilizado en amfipol A8-35: 37.971 particulas para la primera y 42.338 para la segunda, resueltas a 3,64 y 3,76 Å, ambas reconstruidas en <strong>C1</strong> (EXP, Tsutsumi2019 doi 10.1038/s41467-019-09463-9; metadatos verificados en RCSB 2026-09-11). Se liberaron el mismo dia y tienen la misma completitud de modelado.</p>
+<p>Las dos entradas difieren <strong>solo</strong> en la orientación azimutal del trimero de OprM. Las medidas, todas convergentes:</p>
+<ul>
+<li><strong>59,96 grados</strong> por calculo intrinseco y <strong>60,10 grados</strong> por superposición de componentes (medido en el proyecto).</li>
+<li><strong>59,9 grados sobre un eje a 0,4 grados del eje del ensamblaje</strong>, superponiendo primero el trimero de MexB de 6IOL sobre el de 6IOK (RMSD 0,81 Å) y ajustando después solo OprM (medido en el proyecto, mediciones previas del proyecto). La inclinación de 0,4 grados es la que autoriza a llamarlo <strong>rotación pura</strong>.</li>
+<li>Registro en la convención de c1.1: <strong>6IOK = 101,86 grados</strong> (dispersión 1,59; inclinación 0,92) y <strong>6IOL = 41,90 grados</strong> (dispersión 1,52; inclinación 1,03). Diferencia: <strong>59,96 grados</strong> (medido en el proyecto).</li>
+<li>Los autores lo describen con sus propias palabras: "los estados A y B son muy similares (RMSD Cα 0,47); sin embargo, las posiciones relativas de OprM en cada estado estan relacionadas por una rotación de 60 grados", y desde ahi renombran los dos estados como <strong>"estado de 0 grados"</strong> y <strong>"estado de 60 grados"</strong> (EXP, Tsutsumi2019).</li>
+<li>Verificación funcional de que la interfaz es equivalente en los dos registros: rotar el trimero de OprM de 6IOK en +60 grados reproduce 6IOL con un <strong>DockQ mediano para la interfaz OMF–MFP de 0,9395 (media 0,9195)</strong> (medido en el proyecto). Un DockQ de 0,94 esta en el rango de "calidad alta" de la metrica; la interfaz del estado rotado es, a efectos de esa medida, la misma interfaz.</li>
+<li>Los propios autores cuantifican lo mismo por otra vía: el RMSD Cα entre las puntas periplasmicas del protomero de OprM en los dos estados (S188–E214 para H3–H4; Y396–F422 para H7–H8) es <strong>1,1 Å</strong>, el RMSD entre los dominios de horquilla α del hexamero de MexA (A74–F134) es <strong>0,33 Å</strong>, y las superficies de contacto entre el hexamero de MexA y el trimero de OprM son <strong>2.992 Å² en el estado de 0 grados y 2.983 Å² en el de 60 grados</strong> (EXP, Tsutsumi2019). Una diferencia de 9 Å² sobre 2.992 es del <strong>0,3 %</strong>: los dos registros entierran la misma superficie.</li>
+</ul>
+<h3 id="c1-3-el-detalle-que-hace-la-pregunta-interesante">c1.3 El detalle que hace la pregunta interesante</h3>
+<p>Lo que <strong>si</strong> cambia entre los dos estados no es la cantidad de interfaz sino <strong>quien toca a quien</strong>. En el estado de 0 grados, las helices H3–H4 de OprM encaran las puntas de horquilla α de los protomeros <strong>LC</strong> de MexA y las H7–H8 encaran las de los protomeros <strong>SC</strong>; en el estado de 60 grados <strong>se invierte</strong>: H3–H4 encaran los SC y H7–H8 encaran los LC (EXP, Tsutsumi2019, cita del articulo). "LC" y "SC" son la nomenclatura de los autores para las dos poblaciones conformacionales del hexamero de MexA, que el proyecto midio de forma independiente y bautizo <strong>clase a (copias D, F, H)</strong> y <strong>clase b (copias E, G, I)</strong> (medido en el proyecto; ver c5).</p>
+<p>De modo que la rotación de 60 grados <strong>intercambia el emparejamiento entre los dos pares de helices de OprM y las dos clases conformacionales de MexA</strong>. No es un simple deslizamiento: es una permutación de la tabla de emparejamientos. Esta observación, que viene del articulo primario, es la que da a la hipótesis del ciclo funcional su único argumento estructural serio, y se discute en c2.</p>
+<p><strong>Etiqueta de cierre de c1:</strong> todo lo anterior es EXP. Ninguna de estas medidas dice si la rotación ocurre en la celula.</p>
+<h2 id="c2-la-pregunta-central-ciclo-funcional-o-polimorfismo"><span class="num">Secci&oacute;n 3</span>c2. La pregunta central: ciclo funcional o polimorfismo?</h2>
+<p>La pregunta se plantea aquí como <strong>abierta</strong>. El compendio no la resuelve, y lo relevante para el proyecto es que <strong>nadie la ha resuelto</strong>.</p>
+<h3 id="c2-1-lo-que-dicen-los-autores-originales">c2.1 Lo que dicen los autores originales</h3>
+<p>Este es el punto en que esta sección contradice la formulación habitual, y por eso se cita el articulo con precisión. <strong>Tsutsumi y colaboradores no proponen un ciclo funcional de rotación.</strong> Lo que escriben es:</p>
+<ul>
+<li>Llaman al fenomeno <strong>"dos modos de union de OprM a MexA"</strong>, no un ciclo ni una rotación funcional. La frase con la que introducen el resultado es que durante el análisis de particula única "identificamos dos modos de union de OprM a MexA" (EXP, Tsutsumi2019).</li>
+<li>Dan el <strong>reparto de particulas</strong>: cuando los dos estados se separaron en el análisis de particula única, la razon 0 grados : 60 grados fue <strong>45:55 en ausencia de farmaco</strong> y <strong>58:42 en presencia de novobiocina</strong>, lo que los autores leen como <strong>"una razon global de casi 1:1"</strong> (EXP, Tsutsumi2019).</li>
+<li>Su <strong>explicación mecanistica</strong> es de accesibilidad, no de catalisis: MexB, embebida en la membrana interna, y MexA, anclada a ella, pueden moverse libremente sobre la membrana interna, mientras <strong>OprM, que atraviesa la membrana externa dura y el peptidoglicano, esta notablemente restringida en cuanto a movimiento y rotación</strong>; por tanto <strong>"la presencia de dos modos de union en OprM probablemente aumenta las posibilidades de contacto entre MexA y OprM"</strong> (EXP, Tsutsumi2019).</li>
+</ul>
+<p>Es decir: la interpretación de los autores originales es que los dos registros son una <strong>caracteristica de tolerancia del ensamblaje</strong> —dos maneras validas de acoplarse, que aumentan la probabilidad de un encuentro productivo con un OMF que no puede girar— y <strong>no</strong> un ciclo catalitico.</p>
+<p>Hay un segundo dato en esa misma frase que va en contra del ciclo, y que conviene leer despacio porque es la evidencia mas dura de esta sección: <strong>la ocupancia de los dos estados practicamente no cambia al anadir sustrato</strong>, y el cambio que hay (45:55 → 58:42) va en la dirección de <strong>mas</strong> estado de 0 grados con novobiocina, no de un desplazamiento hacia un estado "de transporte". Si la rotación fuera un paso de un ciclo impulsado por el transporte de farmaco, seria esperable que la población de los dos estados respondiera a la presencia de sustrato. No lo hace de forma apreciable. <strong>INF del autor de esta sección:</strong> con n = 2 condiciones y sin barras de error sobre esos porcentajes de particulas, esto no refuta el ciclo, pero es lo mas parecido a una prueba de ocupancia que existe y su resultado es <strong>negativo</strong>.</p>
+<p><strong>R11 — fuente única:</strong> todo el contenido de c2.1 proviene de un solo articulo, Tsutsumi2019. No hay una segunda publicación que mida el reparto de particulas entre los dos registros.</p>
+<h3 id="c2-2-evidencia-a-favor-del-ciclo-funcional">c2.2 Evidencia a favor del ciclo funcional</h3>
+<p>Se busco activamente y esto es todo lo que hay:</p>
+<ol>
+<li><strong>El argumento estructural de c1.3</strong>, que es real: la rotación permuta el emparejamiento entre los pares de helices H3–H4 / H7–H8 de OprM y las dos clases conformacionales de MexA. Una permutación de emparejamientos es la firma geometrica que cabria esperar de un mecanismo alternante. <strong>Etiqueta: EXP para la observación, INF para su lectura como ciclo. Nadie en la literatura la ha propuesto como ciclo.</strong></li>
+<li><strong>Compatibilidad con el ciclo del RND</strong>: un ciclo de tres estados sobre simetría de orden 3 y un desplazamiento de 60 grados son geometrias compatibles (se desarrolla en c4.5). Compatible no es demostrado.</li>
+<li><strong>Evidencia cinetica: ninguna.</strong> La búsqueda <code>(MexAB-OprM OR MexAB) AND (rotation*) AND (kinetic* OR turnover OR single-molecule)</code> en PubMed devuelve <strong>0 resultados</strong> (2026-09-11), y la misma pregunta formulada en lenguaje natural en OpenAlex (<code>kinetics rotational state OprM MexA sixty degree cycle efflux</code>) devuelve <strong>0</strong>. Dos bases, dos ceros. <strong>No existe evidencia cinetica, ni a favor ni en contra, del ciclo de rotación de 60 grados.</strong> Esto es un resultado y se registra como tal en <code>tabla_busquedas_negativas_arquitectura.csv</code>.</li>
+<li>La evidencia cinetica que <strong>si</strong> existe sobre estas bombas es de otra cosa: del <strong>reclutamiento del OMF</strong> (EXP, Tikhonova2009 doi 10.1073/pnas.0906601106, "control cinetico del reclutamiento de TolC por los complejos de eflujo") y del <strong>ensamblaje secuencial</strong> del complejo (EXP, Tikhonova2011 doi 10.1016/j.chembiol.2011.02.011). Son datos de ensamblaje, no de registro. Citarlos como apoyo del ciclo de rotación seria un cambio de tema.</li>
+</ol>
+<h3 id="c2-3-evidencia-a-favor-del-polimorfismo-de-empaquetamiento-o">c2.3 Evidencia a favor del polimorfismo de empaquetamiento o de clasificación</h3>
+<ol>
+<li><strong>Los registros de los demas sistemas estan dispersos y nadie propone un ciclo para ellos.</strong> Valores medidos en el proyecto (modulo 120 grados, convención de c1.1): 6IOK <strong>101,86</strong>; 6IOL <strong>41,90</strong>; 6TA5 <strong>101,67</strong>; 6TA6 <strong>101,07</strong>; 9J3D <strong>45,38</strong>; 9J3E <strong>45,99</strong>; 5V5S <strong>58,99</strong>; 5O66 <strong>105,47</strong>. Para TMexCD1–TOprJ1 y para AcrAB–TolC, cada sistema tiene su valor y nadie ha escrito que ese valor sea un punto de un ciclo. Los autores de 9J3D describen <strong>un solo estado</strong>, que llaman de <strong>reposo (R)</strong>, y no mencionan dos registros (EXP, Shi2025 doi 10.1038/s41467-025-65038-x).</li>
+<li><strong>Ausencia de estados intermedios depositados.</strong> Búsqueda en PubMed <code>(tripartite efflux) AND (intermediate state*) AND (cryo-EM) AND (rotation OR registry)</code> → <strong>0</strong>; en OpenAlex, 3 resultados ninguno pertinente. Y la comprobación directa sobre los depósitos: los ocho registros medidos se agrupan en <strong>41,9 / 45,4 / 46,0 / 59,0 / 101,1 / 101,7 / 101,9 / 105,5</strong>, y para <strong>MexAB–OprM solo existen dos valores, 101,9 y 41,9, sin ningún depósito con un registro intermedio entre ellos</strong>. Un ciclo mecanico continuo deberia poblar estados intermedios; dos estados discretos y nada en medio es también lo que produce una clasificación 3D que separa dos maximos.</li>
+<li><strong>La clasificación 3D puede separar orientaciones equivalentes.</strong> Esta es la objeción metodologica de fondo y en este caso concreto tiene una base medida: el proyecto determino que <strong>un decoy rotado 120 grados es indistinguible del nativo bajo un mapeo de cadenas buscado, con DockQ mediano OMF–MFP de 0,9686</strong> (medido en el proyecto; se desarrolla en c3). Si una rotación de 120 grados es indistinguible por la metrica de interfaz, y la de 60 grados da 0,9395, entonces <strong>las dos configuraciones tienen interfaces casi equivalentes</strong>, y separarlas en dos clases 3D es exactamente lo que se espera de un algoritmo que maximiza la correlación con dos referencias distintas. <strong>Etiqueta: INF, construida sobre mediciones EXP del proyecto.</strong></li>
+<li><strong>El dato que corta en la dirección contraria y que hay que declarar:</strong> el polimorfismo <strong>no es un artefacto del amfipol</strong>. Glavier y colaboradores, en otro laboratorio, con otro protocolo y en <strong>nanodiscos lipidicos</strong>, identificaron también <strong>"dos complejos relacionados geometricamente por una rotación de 60 grados de OprM o de MexB"</strong> y los describieron, citando a Tsutsumi, como <strong>"dos modos de union de OprM a MexA"</strong> (EXP, Glavier2020 doi 10.1038/s41467-020-18770-5). El fenomeno se reproduce entre laboratorios y entre entornos de membrana. <strong>Matiz importante que hay que registrar:</strong> aunque Glavier identifico los dos modos en sus datos, <strong>solo depósito el registro equivalente al estado A</strong> — 6TA5 mide 101,67 y 6TA6 mide 101,07, ambos a menos de 1 grado de 6IOK (101,86) (medido en el proyecto). De modo que hay <strong>dos observaciones independientes de la existencia de los dos modos</strong> y <strong>un solo depósito del segundo modo</strong>.</li>
+<li><strong>Ningún autor, en ninguno de los dos articulos, propone un ciclo.</strong> Los dos usan la expresión "modos de union". Esa es la lectura de la comunidad a 2026-09-11.</li>
+</ol>
+<h3 id="c2-4-balance-honesto">c2.4 Balance honesto</h3>
+<p><strong>La formulación defendible es:</strong> existen dos modos de union OprM–MexA relacionados por una rotación de 60 grados, reproducidos en dos laboratorios y en dos entornos de membrana, poblados en proporción aproximadamente 1:1, con interfaces cuya superficie enterrada difiere en un 0,3 %, sin estados intermedios observados, sin evidencia cinetica de ningún signo, y <strong>sin que ningún autor haya propuesto que constituyan un ciclo funcional</strong>. La interpretación publicada por quienes los descubrieron es que los dos modos <strong>facilitan el ensamblaje</strong> frente a un OMF inmovilizado por la membrana externa y el peptidoglicano.</p>
+<p><strong>La formulación que seria un error escribir:</strong> "la bomba rota 60 grados durante su ciclo catalitico". Eso no esta demostrado ni propuesto en la literatura.</p>
+<h3 id="c2-5-que-experimento-zanjaria-la-cuestion">c2.5 Que experimento zanjaria la cuestion</h3>
+<p>Tres disenos concretos, en orden de decisión por costo y por lo que cada uno excluye. Todos son <strong>propuestas del autor de esta sección (INF)</strong>; la búsqueda documentada muestra que ninguno se ha hecho.</p>
+<ol>
+<li><strong>Entrecruzamiento que fije un registro, seguido de medida de actividad de eflujo.</strong> Es el experimento decisivo y el mas barato. Introducir un par de cisteinas entre una posición de la punta de la horquilla α de MexA y una posición de OprM que esten en contacto <strong>en uno solo de los dos registros</strong> (las dos entradas 6IOK y 6IOL estan disponibles y el proyecto ya tiene medidos los conjuntos de contacto de los dos lados), formar el disulfuro en la celula y medir CMI y acumulación de colorante. <strong>Interpretación prevista:</strong> si al fijar un registro la bomba <strong>sigue funcionando</strong>, la rotación no es parte del ciclo catalitico, y la estrategia de congelar el registro (c6) queda descartada. Si <strong>pierde función</strong>, hay que controlar, como en la literatura de AcrB, que la perdida se deba al enlace y no a la mutación: el control obligatorio es repetir en una cepa <strong>dsbA</strong> o reducir con DTT y comprobar recuperación de actividad, que es exactamente el diseno de control que se uso para AcrB (EXP de la metodología, Takatsuka2007 doi 10.1128/jb.01127-07; Rajapaksha2020 doi 10.1021/acsomega.0c02921). Sin ese control, un doble mutante inactivo no distingue "el movimiento importa" de "la mutación rompe la interfaz".</li>
+<li><strong>FRET de molecula única entre MexA y OprM.</strong> Un par donante/aceptor colocado de modo que la distancia cambie entre los dos registros permitiria ver si un mismo complejo <strong>alterna</strong> entre ellos, y a que frecuencia, y si esa frecuencia depende del gradiente de protones y del sustrato. Esto es lo que separa de forma limpia "dos poblaciones estaticas" de "un complejo que cicla". Búsquedas <code>(single-molecule FRET OR smFRET) AND (efflux pump) AND (assembly)</code> en PubMed → <strong>0</strong>; <code>single-molecule FRET MexA OprM efflux pump assembly</code> en OpenAlex → 11 resultados, <strong>ninguno</strong> de smFRET sobre esta interfaz. <strong>No se ha hecho.</strong></li>
+<li><strong>Crio-EM resuelta en el tiempo.</strong> Mezclar sustrato y vitrificar a tiempos controlados, y seguir el reparto de particulas entre los dos registros. Es la versión directa de la prueba de ocupancia que Tsutsumi hizo en dos condiciones de equilibrio. Su debilidad es que el sistema purificado no tiene gradiente de protones sostenido, de modo que requiere un preparado en el que el ciclo pueda girar de verdad — por ejemplo una reconstitución en liposomas con bacteriorodopsina, que es una metodología ya establecida para MexAB (EXP de la metodología, doi 10.3791/50894, verificado en Crossref 2026-09-11; Verchere, Dezi y Broutin, <em>J Vis Exp</em> 2014, PMID 24638061). Búsqueda <code>time-resolved cryo-EM efflux pump tripartite</code> en OpenAlex: 198 resultados, ninguno de crio-EM resuelta en el tiempo sobre estas bombas.</li>
+</ol>
+<p>Un cuarto experimento, negativo y muy barato, que el proyecto puede hacer sin laboratorio: <strong>reprocesar publicamente los datos de 6IOK/6IOL</strong> (EMPIAR, si estan depositados — <strong>POR VERIFICAR</strong>, no se comprobo la disponibilidad de los micrografos en esta revisión) buscando clases intermedias. La ausencia de estados intermedios es hoy un argumento del polimorfismo, pero <strong>puede ser simplemente que nadie los haya buscado</strong>.</p>
+<h2 id="c3-cuidado-con-el-modulo"><span class="num">Secci&oacute;n 4</span>c3. Cuidado con el modulo</h2>
+<p>La simetría de orden 3 del trimero de OprM hace que el registro solo este definido <strong>modulo 120 grados</strong>. Dos consecuencias, ninguna intuitiva.</p>
+<p><strong>Primera: 60 grados es la distancia maxima posible en ese espacio.</strong> En el circulo de 120 grados con la metrica del camino mas corto, dos configuraciones no pueden estar separadas por mas de 60 grados. Por tanto <strong>6IOK y 6IOL estan tan lejos como dos configuraciones pueden estarlo</strong>. El valor 60 no es un número cualquiera: es el antipodo. Esto tiene una lectura que conviene no perder: si un algoritmo de clasificación 3D separa dos clases de registro, las separara por la distancia maxima, porque son los dos maximos mas distinguibles. <strong>INF:</strong> la coincidencia entre "la separación observada" y "la separación maxima posible" es exactamente lo que produciria un artefacto de clasificación, y también lo que produciria un mecanismo de dos estados alternantes. El valor 60 no discrimina entre las dos hipótesis; el compendio no debe presentarlo como si lo hiciera.</p>
+<p><strong>Segunda: un decoy rotado 120 grados es indistinguible del nativo.</strong> Medido en el proyecto: bajo un <strong>mapeo de cadenas buscado</strong> —es decir, probando las permutaciones de etiquetas y quedandose con la mejor— un decoy con el trimero de OprM rotado 120 grados da <strong>DockQ mediano OMF–MFP de 0,9686</strong> frente al nativo. Es el valor mas alto de toda la escalera de decoys del proyecto. La razon es trivial y por eso peligrosa: una rotación de 120 grados es un <strong>elemento de la simetría del propio trimero</strong>, de modo que reproduce la estructura nativa con las cadenas renombradas.</p>
+<p>Consecuencias operativas, todas con efecto directo sobre las dos tesis del proyecto (INF sobre mediciones EXP):</p>
+<ul>
+<li><strong>Cualquier evaluación de un modelo de esta interfaz tiene que declarar si el mapeo de cadenas es fijo o buscado.</strong> Con mapeo buscado, un modelo que acierte la interfaz pero "gire" el trimero 120 grados puntuara como perfecto — y de hecho es perfecto, porque es la misma estructura. Con mapeo fijo, el mismo modelo puntuara mal sin que haya nada malo en el.</li>
+<li><strong>La comprobación de la permutación ciclica de 120 grados debe correrse en cada evaluación</strong>, tal como ya pide las mediciones previas del proyecto</li>
+<li><strong>Y el corolario inverso, que es el que importa para el eje (c):</strong> si un decoy a 120 grados da 0,9686 y el estado B real a 60 grados da 0,9395, entonces <strong>DockQ sobre la interfaz OMF–MFP no puede usarse para distinguir los dos registros</strong>. Distinguirlos requiere una medida que no sea invariante bajo la simetría del trimero: el ángulo de registro con la convención de c1.1, o el emparejamiento LC/SC de c1.3. Usar DockQ para esto seria usar una metrica ciega al fenomeno.</li>
+</ul>
+<h2 id="c4-acoplamiento-con-el-ciclo-funcional-del-rnd"><span class="num">Secci&oacute;n 5</span>c4. Acoplamiento con el ciclo funcional del RND</h2>
+<h3 id="c4-1-la-asimetria-a-b-e-que-esta-observado">c4.1 La asimetría A/B/E: que esta observado</h3>
+<p>El mecanismo de <strong>rotación funcional</strong> del transportador RND postula que los tres protomeros del trimero recorren ciclicamente tres estados conformacionales —acceso (A o L, <em>loose</em>), union (B o T, <em>tight</em>) y extrusión (E u O, <em>open</em>)— de modo que en todo momento cada protomero esta en un estado distinto (EXP-IND y revisión, Pos2009b doi 10.1016/j.bbapap.2008.12.015; Kavanaugh2024 doi 10.1128/mmbr.00089-23).</p>
+<p>Evidencia estructural:</p>
+<ul>
+<li><strong>En AcrB</strong>: los tres estados en una sola particula. El depósito <strong>9V53</strong>, del complejo endogeno TolC–YbjP–AcrABZ a 3,39 Å, presenta el trimero de AcrB con los <strong>tres estados L, T y O simultaneamente</strong>, capturando un ciclo de transporte completo (EXP, Ge2026 doi 10.7554/eLife.109684).</li>
+<li><strong>En MexB</strong>: el proyecto midio la asimetría directamente. RMSD Cα entre protomeros <strong>2,07–2,72 Å</strong> en el ensamblaje (6IOK/6IOL), y <strong>2,67–3,40 Å</strong> en los cristales aislados (3W9I 2,72–3,40; 6IIA 2,67–3,29; 2V50 2,80–3,38) (medido en el proyecto). <strong>La asimetría no se pierde al aislar el trimero: es incluso mayor.</strong> Esto es importante metodologicamente, porque significa que un cuerpo rigido de MexB extraido de un cristal aislado conserva la no equivalencia de protomeros que el mecanismo exige.</li>
+<li><strong>La excepción informativa</strong>: <strong>6T7S</strong>, la única MexB de crio-EM en nanodisco y sin socios, es la <strong>menos</strong> asimétrica de todas (1,43–1,96 Å) (medido en el proyecto). Glavier y colaboradores interpretan esto: <strong>MexB insertada en membrana lipidica no esta preparada para el transporte activo</strong>, porque adopta una forma inactiva que ellos llaman <strong>LTC</strong>, con la compuerta de salida <strong>cerrada</strong>, y son MexA y OprM los que, actuando como un corset, la convierten en la forma activa <strong>LTO</strong> (EXP, Glavier2020). Es decir: la asimetría funcional del RND <strong>depende de la presencia de los socios</strong>, y el socio que la induce llega a traves de la MFP.</li>
+<li><strong>Evidencia mutacional / de entrecruzamiento del ciclo</strong>: disulfuros <strong>disenados</strong> entre subdominios potencialmente moviles del dominio periplásmico de AcrB <strong>inhiben la función de la bomba</strong> (EXP, Seeger2008 doi 10.1038/nsmb.1379). Los dobles mutantes de cisteina en la hendidura periplásmica y en la interfaz entre protomeros son <strong>inactivos</strong>, y recuperan actividad de transporte en una cepa <strong>dsbA</strong> —que tiene capacidad disminuida de formar disulfuros en el periplasma—, lo que demuestra que es <strong>el enlace y no la mutación</strong> lo que inactiva (EXP, Takatsuka2007 doi 10.1128/jb.01127-07). Un trabajo posterior introdujo <strong>seis</strong> disulfuros inter-subunidad y, en dos casos, la actividad se recupero parcialmente con <strong>DTT</strong> (EXP, Rajapaksha2020 doi 10.1021/acsomega.0c02921). Este es el apoyo experimental directo del mecanismo de rotación funcional <strong>del RND</strong> — no del registro OMF–MFP.</li>
+</ul>
+<h3 id="c4-2-los-residuos-del-rele-de-protones-verificados-contra-la">c4.2 Los residuos del rele de protones, verificados contra la fuente primaria</h3>
+<p>Este compendio pedia verificar dos residuos citados como "de MexB": <strong>T583 y T678</strong>. El resultado de la verificación es que <strong>la atribución es incorrecta en los dos casos</strong>, y de dos maneras distintas.</p>
+<p><strong>Verificación de T583.</strong> Búsqueda de texto completo en Europe PMC (EBI), 2026-09-11: <code>"T583" AND "MexB"</code> → <strong>0 resultados</strong>; <code>"Thr583" AND (MexB OR AcrB)</code> → <strong>0</strong>; <code>"T583" AND "AcrB"</code> → <strong>1 resultado</strong>. Búsqueda en PubMed <code>(MexB) AND (T583 OR Thr583)</code> → <strong>0</strong>. El único articulo que menciona T583 en este contexto es Rajapaksha2020, y ahi <strong>T583 es un residuo de AcrB</strong>. Además, el alineamiento global AcrB/MexB calculado en esta revisión muestra que <strong>la posición 583 de MexB (P52002) es una SERINA, no una treonina</strong>: <code>AcrB T583 → MexB S583</code>. <strong>"MexB T583" no existe.</strong></p>
+<p><strong>Verificación de T678.</strong> <code>"T678" AND "MexB"</code> en Europe PMC → 2 resultados, los <strong>dos sobre AcrB</strong> (un AcrB de <em>Salmonella</em> y un AcrB de <em>Haemophilus influenzae</em>). <code>"T678" AND "AcrB"</code> → <strong>7 resultados</strong>. PubMed <code>(MexB) AND (T678 OR Thr678)</code> → <strong>0</strong>. El alineamiento de esta revisión da <code>AcrB T678 → MexB T678</code>: <strong>la treonina si esta conservada en esa posición</strong>, de modo que "MexB T678" designa un residuo que existe. Pero la <strong>atribución funcional sigue siendo de AcrB</strong>: la coincidencia del residuo es fortuita y no convierte en dato de MexB una medición hecha en AcrB.</p>
+<p><strong>A que corresponden realmente T583 y T678.</strong> A ninguna de las tres opciones que este compendio ofrecia. <strong>No son residuos del rele de protones, ni del bucle de conmutación, ni de un sitio de union.</strong> Son <strong>posiciones de la interfaz entre protomeros del dominio periplásmico de AcrB</strong>, elegidas para introducir disulfuros inter-subunidad y probar la flexibilidad relativa entre protomeros. En la tabla 1 de Rajapaksha2020 aparecen en tres parejas de cisteinas:</p>
+<table class="data">
+<thead>
+<tr>
+<th>pareja de cisteinas (AcrB)</th>
+<th>% de producto entrecruzado</th>
+<th>efecto sobre el eflujo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q229 – <strong>T583</strong></td>
+<td>69,4 ± 0,5</td>
+<td><code>+</code> (el mas debil de la escala del trabajo)</td>
+</tr>
+<tr>
+<td>D566 – <strong>T678</strong></td>
+<td>no determinado (N/A)</td>
+<td><code>+</code></td>
+</tr>
+<tr>
+<td>F666 – <strong>T678</strong></td>
+<td>no determinado (N/A)</td>
+<td><code>−</code> (sin efecto)</td>
+</tr>
+</tbody>
+</table>
+<p>(EXP, Rajapaksha2020, tabla 1, leida en el texto completo en esta revisión.) Equivalencias en MexB calculadas en esta revisión: AcrB Q229 → MexB Q229; AcrB D566 → MexB D566; AcrB F666 → MexB F666; AcrB T583 → <strong>MexB S583</strong>; AcrB T678 → MexB T678.</p>
+<p><strong>Consecuencia para el compendio:</strong> cualquier documento del proyecto que cite "T583 y T678 de MexB como residuos del rele de protones" debe corregirse. La corrección es doble: la <strong>numeración</strong> es de AcrB, y la <strong>función atribuida</strong> es equivocada.</p>
+<h3 id="c4-3-el-rele-de-protones-de-verdad-con-las-dos-numeraciones">c4.3 El rele de protones de verdad, con las dos numeraciones</h3>
+<p>Los residuos del rele que la literatura de AcrB discute son <strong>D407, D408, K940, R971 y T978</strong>. Correspondencia con MexB calculada en esta revisión (NW global, BLOSUM62, hueco −11/−1, identidad 70,14 % sobre 1.045 columnas sin huecos; EXP, medido en esta revisión):</p>
+<table class="data">
+<thead>
+<tr>
+<th>AcrB (P31224)</th>
+<th>MexB (P52002)</th>
+<th>conservado?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D407</td>
+<td><strong>D407</strong></td>
+<td>si, identico</td>
+</tr>
+<tr>
+<td>D408</td>
+<td><strong>D408</strong></td>
+<td>si, identico</td>
+</tr>
+<tr>
+<td>K940</td>
+<td><strong>K939</strong></td>
+<td>si, identico (desplazamiento −1)</td>
+</tr>
+<tr>
+<td>R971</td>
+<td><strong>R969</strong></td>
+<td>si, identico (desplazamiento −2)</td>
+</tr>
+<tr>
+<td>T978</td>
+<td><strong>T976</strong></td>
+<td>si, identico (desplazamiento −2)</td>
+</tr>
+</tbody>
+</table>
+<p>El desplazamiento AcrB→MexB es 0 hasta aproximadamente el residuo 938 y luego pasa a −1 y a −2, de modo que <strong>un desplazamiento único no es valido para todo el rele</strong>: hay que convertir posición por posición. Este es un caso concreto de la regla R7 del proyecto.</p>
+<p><strong>La comprobación independiente que da confianza en el alineamiento.</strong> Existe una fuente primaria que hizo la mutagenesis <strong>directamente en MexB y en numeración de MexB</strong>: Guan y Nakae, 2001 (EXP, doi 10.1128/jb.183.5.1734-1739.2001, PMID 11160105, <em>J Bacteriol</em> 183:1734–1739). Sus resultados, leidos en esta revisión:</p>
+<ul>
+<li><strong>Asp407 (TMS-4)</strong>, bien conservado: las sustituciones por Ala, Asn o Lys <strong>abolen la actividad</strong>; la sustitución por Glu es solo marginalmente funcional, lo que indica que la <strong>longitud de la cadena lateral</strong> en esa posición importa.</li>
+<li><strong>Asp408 (TMS-4)</strong>: la única sustitución con función significativa es <strong>Glu</strong>.</li>
+<li><strong>Lys939 (TMS-10)</strong>: la única sustitución con función significativa es <strong>Arg</strong>.</li>
+<li>Los dobles mutantes neutros, y los mutantes en que se <strong>intercambiaron</strong> las cargas de Asp407 con Lys939 o de Asp408 con Lys939, <strong>pierden la función por completo</strong>.</li>
+<li><strong>Resultado negativo que delimita el rele:</strong> <strong>Lys342 y Glu346 de TMS-2</strong>, sustituidos por Ala, Arg, Glu, Gln o Asp, <strong>no tienen efecto discernible</strong> sobre las CMI ni sobre el eflujo de colorante fluorescente. Se registra porque acota que no cualquier residuo cargado de la membrana pertenece al rele.</li>
+</ul>
+<p>El punto clave: <strong>el K939 de MexB identificado por mutagenesis en 2001 es exactamente el residuo al que el alineamiento de esta revisión mapea el K940 de AcrB</strong>. Dos rutas independientes —mutagenesis en MexB y alineamiento desde AcrB— dan el mismo residuo. Eso valida la conversión de numeración.</p>
+<p><strong>Lo que queda sin verificar.</strong> Para <strong>T978 de AcrB</strong> (= T976 de MexB) <strong>no se localizo en esta revisión un articulo primario de mutagenesis</strong>; la atribución proviene de revisiones (Pos2009b; Kavanaugh2024). <strong>[POR VERIFICAR]</strong>, con cero fuentes primarias de mutagenesis localizadas. Para <strong>R971 de AcrB</strong> (= R969 de MexB) la evidencia es del análisis mutacional sistematico de Seeger2009 (EXP, doi 10.1021/bi900446j), donde D407, D408, K940 y R971 son los <strong>cuatro residuos de importancia primaria</strong> de la vía de translocación de protones. Para <strong>D408</strong> hay tres fuentes independientes: Seeger2009, con marcaje por carbodiimida (EXP, doi 10.1021/bi900446j), y la mutación D408A en <em>Salmonella</em> Typhimurium, que deja AcrB no funcional con expresión normal, aumenta la acumulación de Hoechst 33342 y <strong>hace perder virulencia a la cepa</strong> (EXP, WangKan2017 doi 10.1128/mBio.00430-16).</p>
+<p><strong>Un dato de 2026 que amplia el cuadro y viene de <em>P. aeruginosa</em>.</strong> La red del rele en las bombas RND de la familia HAE-1 esta formada por <strong>dos aspartatos en TM4, un residuo básico en TM10 y una treonina en TM11</strong>; y en <strong>MexK y en su homólogo TriC el residuo de TM10 es una ARGININA, no una lisina</strong>, a diferencia de la mayoria de las bombas HAE-1 (EXP, Wu2026 doi 10.1126/sciadv.aee7036). Los residuos concretos de MexK son <strong>D402, D403, R932 y T969</strong>, con R932 formando puentes salinos con D402 y D403, y los autores declaran la equivalencia <strong>MexK D403 = AcrB D408</strong>. La conversión a numeración de MexB <strong>no se calculo en esta revisión</strong>: <strong>[POR VERIFICAR]</strong>. La lección para el proyecto es que la red del rele <strong>no es identica en todas las bombas RND de <em>P. aeruginosa</em></strong>, y que la extrapolación entre bombas de la misma especie tampoco es gratuita.</p>
+<h3 id="c4-4-la-controversia-5o66-frente-a-5v5s-resuelta-sin-promedi">c4.4 La controversia 5O66 frente a 5V5S: resuelta sin promediar</h3>
+<p>Este compendio pedia documentar que <strong>dos depósitos del mismo sistema y del mismo articulo discrepan en si el trimero es simétrico</strong>, y no promediar. La discrepancia medida en el proyecto es real: <strong>5V5S da RMSD Cα entre protomeros de 0,52–0,57 Å (simétrico) y 5O66 da 2,25–3,26 Å (asimétrico)</strong>, y los dos depósitos citan como fuente primaria el mismo articulo, verificado en RCSB el 2026-09-11 (Wang2017 doi 10.7554/eLife.24905).</p>
+<p>La resolución, leida en el texto completo del articulo y en los metadatos del depósito en esta revisión, es que <strong>no son dos medidas discrepantes sino una medida y una restricción</strong>:</p>
+<ul>
+<li><strong>5V5S</strong> es el mapa <strong>apo/cerrado a 6,5 Å</strong>, reconstruido a partir de <strong>13.544 particulas</strong>, sobre un complejo <strong>estabilizado covalentemente</strong> por un disulfuro <strong>diseñado</strong> entre AcrA-S273C y AcrB-S258C, y refinado con <strong>simetría puntual C3 impuesta</strong>. El metadato de RCSB es explicito: <code>em_single_particle_entity.point_symmetry = C3</code>. El propio texto del articulo describe "los cuatro componentes dentro de una unidad asimétrica del ensamblaje <strong>simétrico C3</strong>". <strong>Un mapa con C3 impuesta no puede producir protomeros distintos.</strong></li>
+<li><strong>5O66</strong> es el mapa <strong>asimétrico</strong> obtenido <strong>sin imponer simetría</strong>, a partir del subconjunto del <strong>30,2 %</strong> de las particulas que contienen exactamente un protomero en estado de extrusión, a <strong>5,9 Å</strong> y <strong>26.950 particulas</strong>. Aquí la asimetría es un resultado.</li>
+</ul>
+<p>Por tanto: <strong>la simetría del trimero de 5V5S es un artefacto de procesamiento, no una observación</strong>, y la comparación correcta no es "5V5S dice simétrico, 5O66 dice asimétrico" sino "5O66 lo midio y 5V5S lo impuso". No se promedia, no se elige la que conviene, y no queda una contradicción abierta.</p>
+<p>Este criterio, aplicado al resto del conjunto, reordena toda la columna de simetría del RND:</p>
+<table class="data">
+<thead>
+<tr>
+<th>entrada</th>
+<th>simetría impuesta (RCSB)</th>
+<th>RMSD Cα entre protomeros</th>
+<th>lectura</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6IOK, 6IOL</td>
+<td><strong>C1</strong></td>
+<td>2,07–2,72 Å</td>
+<td>asimetría <strong>medida</strong></td>
+</tr>
+<tr>
+<td>6TA5, 6TA6</td>
+<td><strong>C1</strong></td>
+<td>asimétrico</td>
+<td>asimetría <strong>medida</strong></td>
+</tr>
+<tr>
+<td>9J3D</td>
+<td>ninguna (reprocesado <strong>sin</strong> simetría por los autores)</td>
+<td>0,26–0,29 Å</td>
+<td>simetría <strong>medida</strong></td>
+</tr>
+<tr>
+<td>9J3E</td>
+<td>idem</td>
+<td>0,18–0,20 Å</td>
+<td>simetría <strong>medida</strong></td>
+</tr>
+<tr>
+<td>5O66</td>
+<td>ninguna</td>
+<td>2,25–3,26 Å</td>
+<td>asimetría <strong>medida</strong></td>
+</tr>
+<tr>
+<td><strong>5V5S</strong></td>
+<td><strong>C3 impuesta</strong></td>
+<td>0,52–0,57 Å</td>
+<td>simetría <strong>impuesta</strong>, no medida</td>
+</tr>
+</tbody>
+</table>
+<p>(metadatos verificados en RCSB 2026-09-11; RMSD medidos en el proyecto 2026-09-11.)</p>
+<p>El contraste entre 9J3D y 5V5S es la lección metodologica: Shi y colaboradores <strong>anticiparon la objeción y la refutaron</strong>, reprocesando sus datos sin simetría y comprobando que el mapa a 3,5 Å <strong>sigue mostrando C3 aparente</strong> (EXP, Shi2025). De modo que <strong>TMexD1 es genuinamente un trimero simétrico en estado de reposo y MexB es genuinamente asimétrica</strong>: las dos afirmaciones son solidas y no se contradicen entre si, porque son de dos sistemas distintos.</p>
+<h3 id="c4-5-la-pregunta-de-acoplamiento">c4.5 La pregunta de acoplamiento</h3>
+<p><strong>Esta la rotación de 60 grados del registro OMF–MFP sincronizada con el ciclo A/B/E del RND, o son movimientos independientes?</strong></p>
+<p>Lo que se puede afirmar:</p>
+<ol>
+<li><strong>Son geometrias compatibles.</strong> Un ciclo de tres estados y un desplazamiento de 60 grados sobre simetría de orden 3 encajan: 60 grados es medio paso de la simetría de orden 3, y en el circulo de 120 grados es el antipodo. Un mecanismo en dos medios pasos de 60 grados completaria un paso de 120 grados, es decir un avance de una posición en el ciclo de tres estados. <strong>Compatible no es demostrado</strong>, y el compendio no debe presentar esta aritmetica como argumento.</li>
+<li><strong>Nadie lo ha propuesto.</strong> Búsqueda <code>(OprM OR TolC) AND (cryo-EM) AND (rotational state* OR azimuthal)</code> en PubMed → <strong>0</strong> (2026-09-11). El fenomeno del registro solo aparece, y de pasada, en los dos articulos de MexAB–OprM, y en ninguno de los dos se relaciona con el ciclo A/B/E.</li>
+<li><strong>Hay un dato estructural que apunta a acoplamiento</strong>, y es el de c1.3: la rotación de 60 grados <strong>permuta el emparejamiento</strong> entre los pares de helices H3–H4 / H7–H8 de OprM y los protomeros LC / SC de MexA (EXP, Tsutsumi2019). Y las clases LC/SC de MexA <strong>estan correlacionadas con los protomeros de MexB</strong>: el proyecto midio que lo que distingue a las dos clases de MexA es la <strong>cara que toca MexB</strong> —90–94 contactos por copia en la clase a frente a 59–60 en la clase b, a menos de 5 Å en 6IOK— mientras los contactos MexA–OprM son <strong>28–37 en las seis copias</strong>, es decir practicamente iguales (medido en el proyecto). <strong>INF:</strong> existe, por tanto, una cadena de correlaciones <strong>estado de MexB → clase de MexA → emparejamiento con H3–H4 u H7–H8 de OprM</strong>. Eso es un mecanismo candidato de acoplamiento, y es una predicción falsable: si el registro esta acoplado al ciclo A/B/E, entonces <strong>cambiar el estado de MexB deberia cambiar el registro</strong>. Los datos disponibles no lo confirman: 6IOK y 6IOL tienen <strong>el mismo</strong> conjunto de estados de MexB (la asimetría medida es 2,07–2,72 Å en el par de estados) y registros que difieren en 60 grados.</li>
+<li><strong>Hay un dato que apunta a independencia</strong>, y es el de c2.1: la ocupancia de los dos registros <strong>no cambia apreciablemente</strong> con la adición de novobiocina (45:55 → 58:42). Si el registro estuviera sincronizado con el ciclo de transporte, anadir sustrato deberia alterar la distribución.</li>
+<li><strong>Y hay un dato de otro sistema que desacopla el ensamblaje de la energía:</strong> en MtrCDE de <em>Neisseria gonorrhoeae</em>, <strong>la apertura del canal del OMF requiere la union de la MFP y es independiente de energía</strong>, y la <strong>energía se necesita para la DISOCIACION</strong> del complejo tripartito, no para su ensamblaje ni para su apertura; cuando se mutan los residuos de translocación de protones del transportador, las interacciones entre componentes <strong>se preservan</strong> y el complejo permanece estable (EXP, Janganan2013 doi 10.1111/mmi.12211). <strong>Transferencia por analogía declarada: es otro sistema, otra especie, y la identidad OprM/MtrE no se midio en esta revisión [POR VERIFICAR].</strong> Pero si el mismo principio vale para MexAB-OprM, entonces el ensamblaje y la apertura del OMF <strong>no consumen el ciclo de protones</strong>, y no hay razon energetica para esperar que el registro este acoplado al.</li>
+</ol>
+<p><strong>Respuesta:</strong> la pregunta esta <strong>abierta</strong>, y el balance de la evidencia disponible se inclina levemente hacia <strong>movimientos independientes</strong>: una correlación estructural plausible (punto 3) frente a una prueba de ocupancia con resultado negativo (punto 4) y un principio de independencia energetica en un sistema homólogo (punto 5). Nadie lo ha propuesto ni lo ha probado.</p>
+<h2 id="c5-la-simetria-del-hexamero-de-mexa"><span class="num">Secci&oacute;n 6</span>c5. La simetría del hexamero de MexA</h2>
+<p>Medido en el proyecto en 6IOK, 6IOL, 6TA5 y 6TA6, con el orden del anillo establecido por contactos Cα a menos de 12 Å y el eje del ensamblaje definido como en c1.1 (medido en el proyecto, 2026-09-11):</p>
+<table class="data">
+<thead>
+<tr>
+<th>relación</th>
+<th>rotación</th>
+<th>inclinación respecto del eje del ensamblaje</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>copias adyacentes (i, i+1)</td>
+<td><strong>59,8–60,9°</strong></td>
+<td>4,2–6,0°</td>
+</tr>
+<tr>
+<td>copias a distancia 2 (i, i+2)</td>
+<td><strong>119,5–120,5°</strong></td>
+<td>0,1–0,6°</td>
+</tr>
+<tr>
+<td>copias opuestas (i, i+3)</td>
+<td><strong>179,2–179,9°</strong></td>
+<td>2,1–3,2°</td>
+</tr>
+<tr>
+<td>protomeros de OprM₃</td>
+<td>119,9–120,2°</td>
+<td>0,1–0,3°</td>
+</tr>
+<tr>
+<td>protomeros de MexB₃</td>
+<td>117,6–123,5°</td>
+<td>0,1–1,0°</td>
+</tr>
+</tbody>
+</table>
+<p>En la convención canonica del proyecto (anillo D-E-F-G-H-I): <strong>simetría de orden 3 exacta sobre la triada de clase a (D, F, H) y, por separado, sobre la de clase b (E, G, I); eje binario entre copias OPUESTAS (D–G, E–H, F–I); y entre copias ADYACENTES no hay eje binario, estan relacionadas por 60 grados.</strong> El grupo generado por 2 × C3 mas 3 × C2 sobre pares opuestos es C6 en terminos de <strong>posición</strong> de los cuerpos, compatible con dos conformaciones internas distintas — que es exactamente la arquitectura observada.</p>
+<p>Lo que distingue a las dos clases, medido: la bimodalidad de MexA es un <strong>giro rigido de ~28 grados del dominio MP</strong> y nada mas. Sobre el marco del barril β: horquilla α ≤ 1,6 Å y 0,4–2,9 grados de giro; dominio lipoilo ≤ 1,2 Å; dominio MP 8,9–10,0 Å y 27–29 grados de giro. <strong>Las dos clases no difieren en la punta de la horquilla, que es la que toca OprM.</strong> Difieren en la cara que toca MexB (medido en el proyecto).</p>
+<h3 id="c5-1-que-implica-para-el-mecanismo-de-rotacion">c5.1 Que implica para el mecanismo de rotación</h3>
+<p>Tres implicaciones, todas INF sobre mediciones EXP:</p>
+<ol>
+<li><strong>El anillo de MexA es de orden 3 en dos capas, no de orden 6.</strong> Un anillo de orden 6 verdadero seria invariante bajo 60 grados, y entonces una rotación de 60 grados de OprM no cambiaria nada. Pero el anillo <strong>no</strong> es de orden 6 conformacionalmente: es dos anillos de orden 3 entrelazados, con las copias adyacentes relacionadas por 60 grados de <strong>posición</strong> pero en <strong>conformaciones distintas</strong>. De ahi que la rotación de 60 grados de OprM <strong>si</strong> tenga consecuencia: intercambia cual de los dos anillos de orden 3 encara H3–H4 y cual encara H7–H8 (c1.3). <strong>La simetría medida del hexamero es la razon geometrica de que los dos registros sean distinguibles en absoluto.</strong></li>
+<li><strong>Si la rotación fuera funcional, el paso natural seria de 60 grados y no de 120.</strong> Un paso de 120 grados llevaria cada anillo de orden 3 sobre si mismo y seria una operación de simetría, es decir <strong>invisible</strong> (c3). Un paso de 60 grados es el paso mínimo con consecuencia. Coherente con lo observado; de nuevo, coherente no es demostrado.</li>
+<li><strong>La restricción de simetría que hay que imponer en el muestreo computacional es 2 × C3 + 3 × C2 entre pares opuestos, no 3 × C2 entre adyacentes.</strong> Esta corrección ya esta documentada en las mediciones previas del proyecto y tiene efecto operativo inmediato sobre la configuración de HADDOCK3 de la etapa A. Imponer un eje binario entre copias que en el blanco estan relacionadas por 60 grados <strong>no es una aproximación conservadora, es una restricción incorrecta</strong> que sesga el muestreo en la dirección equivocada.</li>
+</ol>
+<h3 id="c5-2-acoplamiento-entre-anillos">c5.2 Acoplamiento entre anillos</h3>
+<p>El acoplamiento medido corre en una sola dirección detectable: la clase conformacional de MexA correlaciona con la <strong>cara de MexB</strong> (90–94 frente a 59–60 contactos por copia) y <strong>no</strong> con la interfaz de OprM (28–37 contactos en las seis copias). De modo que <strong>el anillo de MexA lee el estado del RND y no el del OMF</strong>. Esto es consistente con la observación de un sistema distinto y de otra familia: en MacAB–TolC, el <strong>anillo hexamerico de los dominios MP de MacA se deforma a una forma oval para acomodar la simetría binaria del dimero de MacB</strong>, y tres dominios β-barril de MacA contactan MacB de forma <strong>no equivalente</strong> (EXP, Fitzpatrick2017 doi 10.1038/nmicrobiol.2017.70). En dos sistemas de dos familias distintas, <strong>el anillo de MFP adapta su simetría a la del transportador</strong>, no a la del OMF.</p>
+<p><strong>INF, y es la inferencia mas util del eje (c) para el diseno:</strong> si el anillo de MexA se organiza leyendo a MexB, y su interfaz con OprM es casi identica en las seis copias y en los dos registros, entonces <strong>la interfaz OprM–MexA es la parte mas "estandarizada" de todo el ensamblaje</strong>. Un peptido que la imite se enfrenta a un sitio que se repite seis veces con la misma geometría, en los dos registros, con la misma superficie enterrada. Eso es una <strong>ventaja</strong> para el diseno —un solo epitopo, seis copias, dos registros, una sola geometría— y coincide con la medición del proyecto de que el <strong>epitopo local esta preorganizado</strong> incluso en las cadenas cristalograficas aisladas (RMSD 0,28–0,73 Å en las 39 cadenas al superponer solo 96–110), aunque <strong>su colocación respecto del cuerpo no lo este</strong>.</p>
+<h2 id="c6-implicacion-para-la-inhibicion-congelar-el-registro"><span class="num">Secci&oacute;n 7</span>c6. Implicación para la inhibición: congelar el registro</h2>
+<h3 id="c6-1-la-idea">c6.1 La idea</h3>
+<p>Si la rotación es funcional, existe un mecanismo de inhibición <strong>alternativo</strong> al de impedir el ensamblaje: un ligando que <strong>fije el registro</strong> no necesitaria romper la interfaz, solo bloquear un grado de libertad. El atractivo es de escala. Las cifras relevantes, y hay que ser cuidadoso con cual es cual:</p>
+<ul>
+<li>Superficie de contacto entre el <strong>hexamero completo</strong> de MexA y el <strong>trimero completo</strong> de OprM: <strong>2.992 Å² en el estado de 0 grados y 2.983 Å² en el de 60 grados</strong> (EXP, Tsutsumi2019, valores del articulo).</li>
+<li>Este compendio menciona <strong>483 Å²</strong> de interfaz. Ese valor es del orden de <strong>2.992 / 6 = 498,7 Å² por copia de MexA</strong>, de modo que es coherente con una medida <strong>por copia</strong> y no con la interfaz total. <strong>Aclaración obligatoria de numeración de magnitudes:</strong> en este compendio, hablar de "483 Å² de interfaz" solo tiene sentido <strong>por copia de MexA</strong>; la interfaz total que un inhibidor tendria que desmontar para desarmar el ensamblaje es <strong>~3.000 Å²</strong>, seis veces mayor. <strong>[POR VERIFICAR]</strong> el origen exacto del valor 483 Å², que no se recalculo en esta revisión.</li>
+</ul>
+<p>Con esa aclaración, el argumento de escala de "congelar el registro" es real: bloquear una coordenada rotacional podria requerir mucha menos energía de union que competir por ~3.000 Å² repartidos en seis sitios de ~500 Å² cada uno.</p>
+<h3 id="c6-2-las-objeciones-en-orden-de-gravedad">c6.2 Las objeciones, en orden de gravedad</h3>
+<ol>
+<li><strong>No sabemos si la rotación importa, y la única prueba de ocupancia que existe salio negativa.</strong> Es la objeción decisiva. Los dos registros estan poblados <strong>casi 1:1</strong> y su ocupancia <strong>no responde apreciablemente al sustrato</strong> (45:55 → 58:42 con novobiocina; EXP, Tsutsumi2019). Si los dos registros son dos estados de equilibrio igualmente competentes —que es exactamente lo que proponen los autores originales, "dos modos de union" que aumentan la probabilidad de contacto— entonces <strong>fijar uno de ellos no inhibe nada</strong>: la bomba seguiria funcionando en el registro que quedo fijado. Una estrategia de inhibición cuyo mecanismo requiere que la rotación sea funcional descansa sobre una hipótesis que la literatura <strong>no sostiene</strong> y que su propio descubridor <strong>no propuso</strong>.</li>
+<li><strong>Las dos interfaces son casi identicas</strong>, con 0,3 % de diferencia en superficie enterrada y DockQ de 0,94 entre los dos registros (EXP y medido en el proyecto). Un ligando que reconozca la interfaz de un registro reconocera muy probablemente la del otro. Disenar un ligando <strong>específico de registro</strong> exigiria explotar la diferencia de <strong>emparejamiento</strong> LC/SC de c1.3, no la diferencia de superficie, porque esta ultima practicamente no existe.</li>
+<li><strong>La geometría del blanco esta en el sitio equivocado para bloquear una rotación.</strong> Un grado de libertad rotacional se bloquea con una cuna que actue con brazo de palanca, es decir lejos del eje. La interfaz OprM–MexA esta a un radio pequeno respecto del eje del ensamblaje (las puntas de horquilla convergen hacia el eje), lo que reduce el torque que un ligando pequeno puede oponer. <strong>INF, no medido: el brazo de palanca efectivo no se calculo en esta revisión. [POR VERIFICAR]</strong></li>
+<li><strong>No hay precedente.</strong> La búsqueda <code>lock rotational register inhibitor tripartite efflux pump freeze</code> en OpenAlex devuelve 6 resultados, <strong>ninguno pertinente</strong>. La idea de congelar el registro OMF–MFP como mecanismo de inhibición <strong>no ha sido propuesta en la literatura</strong>. Es una hipótesis original del proyecto, y por tanto sin ningún respaldo externo de viabilidad.</li>
+<li><strong>Transferencia debil.</strong> Todo el conocimiento de registro proviene de MexAB-OprM directamente, lo que aquí es una ventaja; pero cualquier extensión a MexXY-OprM, MexCD-OprJ o MexEF-OprN es transferencia sin estructura, porque <strong>no existe ninguna estructura experimental de MexX, MexC, MexD, MexE ni MexF</strong>.</li>
+</ol>
+<h3 id="c6-3-y-la-objecion-que-corre-en-sentido-contrario">c6.3 Y la objeción que corre en sentido contrario</h3>
+<p>Hay un argumento a favor que seria injusto omitir: <strong>existe precedente experimental de que restringir un movimiento relativo entre subunidades inactiva una bomba RND</strong>. Los disulfuros disenados entre subdominios moviles del dominio periplásmico de AcrB <strong>inhiben la función</strong> (EXP, Seeger2008), los dobles mutantes de cisteina en la interfaz entre protomeros son <strong>inactivos</strong> y recuperan actividad en una cepa <em>dsbA</em> o con DTT (EXP, Takatsuka2007; Rajapaksha2020). Es decir: <strong>la estrategia de "congelar un grado de libertad para inhibir" funciona, en el transportador RND.</strong> Pero funciona sobre un grado de libertad cuya funcionalidad <strong>si</strong> esta demostrada —la rotación funcional A/B/E de los protomeros—, y no sobre el registro OMF–MFP, cuya funcionalidad no lo esta.</p>
+<h3 id="c6-4-recomendacion-para-la-decision-de-inversion">c6.4 Recomendación para la decisión de inversión</h3>
+<p><strong>INF del autor de esta sección, formulada como recomendación y no como resultado:</strong></p>
+<ul>
+<li><strong>No</strong> convertir "congelar el registro" en el mecanismo declarado del proyecto. Su premisa esta sin demostrar, la única prueba de ocupancia disponible salio negativa, y los propios descubridores del fenomeno proponen la interpretación contraria.</li>
+<li><strong>Si</strong> mantener el mecanismo principal como esta formulado en la hipótesis del proyecto —competir por OprM e impedir el ensamblaje—, porque ese mecanismo <strong>no depende</strong> de que la rotación sea funcional. Es indiferente al debate del eje (c), y eso es una virtud.</li>
+<li><strong>Si</strong> anadir un experimento barato y decisivo al plan: el entrecruzamiento de c2.5.1, con su control de <em>dsbA</em> o DTT. Cuesta poco, y su resultado <strong>cambia una decisión</strong>: si al fijar un registro la bomba sigue funcionando, la vía de "congelar el registro" queda cerrada de forma definitiva y el proyecto deja de considerarla; si pierde función con recuperación por DTT, se abre una segunda vía de ataque sobre el mismo blanco y el mismo epitopo, con un mecanismo distinto y un margen energetico mucho mas favorable.</li>
+<li><strong>Si</strong> usar la geometría del registro como <strong>control negativo</strong> en el banco de pruebas computacional: el decoy a 120 grados con DockQ 0,9686 (c3) es una trampa de fuga perfecta, porque puntua como nativo siendo una permutación de etiquetas.</li>
+</ul>
+<h2 id="c7-tablas-del-eje-c"><span class="num">Secci&oacute;n 8</span>c7. Tablas del eje (c)</h2>
+<h3 id="c7-1-tabla-rotacion-registro-csv">c7.1 <code>tabla_rotacion_registro.csv</code></h3>
+<table class="data">
+<thead>
+<tr>
+<th>pdb_id</th>
+<th>sistema</th>
+<th>registro_mod120_deg</th>
+<th>convencion_declarada</th>
+<th>dispersion_deg</th>
+<th>inclinacion_deg</th>
+<th>separacion_axial_A</th>
+<th>simetria_RND_rmsd_A</th>
+<th>interpretacion_de_los_autores</th>
+<th>etiqueta_evidencia</th>
+<th>referencia_doi</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6IOK</td>
+<td>MexAB-OprM (P. aeruginosa)</td>
+<td>101,86</td>
+<td>convención: eje = centroide del trimero RND -&gt; centroide del trimero OMF, sentido positivo desde el RND hacia el OMF (desde el citoplasma hacia el exterior), regla de la mano derecha en torno a ese eje, ángulo reducido modulo 120 grados por la simetría C3 del OMF; medido en el proyecto 2026-09-11</td>
+<td>1,59</td>
+<td>0,92</td>
+<td>196,6</td>
+<td>asimétrico: 2,07-2,72 (CA entre protomeros)</td>
+<td>Tsutsumi et al. lo llaman 'estado de 0 grados' y 'dos modos de union de OprM a MexA', no un ciclo. Reparto de particulas 0:60 = 45:55 sin farmaco y 58:42 con novobiocina, que ellos leen como una proporción cercana a 1:1. Su explicación: OprM esta muy restringida en movimiento y rotación porque atraviesa la membrana externa y el peptidoglicano, mientras MexA y MexB difunden en la membrana interna; los dos modos de union AUMENTARIAN la probabilidad de contacto productivo</td>
+<td>EXP (geometría medida en el proyecto sobre coordenadas; interpretación = cita textual del articulo)</td>
+<td>10.1038/s41467-019-09463-9</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>6IOL</td>
+<td>MexAB-OprM (P. aeruginosa)</td>
+<td>41,90</td>
+<td>convención: eje = centroide del trimero RND -&gt; centroide del trimero OMF, sentido positivo desde el RND hacia el OMF (desde el citoplasma hacia el exterior), regla de la mano derecha en torno a ese eje, ángulo reducido modulo 120 grados por la simetría C3 del OMF; medido en el proyecto 2026-09-11</td>
+<td>1,52</td>
+<td>1,03</td>
+<td>196,6</td>
+<td>asimétrico: 2,07-2,72 en el par de estados</td>
+<td>'estado de 60 grados'; misma interpretación que 6IOK. Diferencia 6IOK-6IOL medida en el proyecto: 59,96 grados por calculo intrinseco, 60,10 por superposición de componentes, 59,9 sobre un eje a 0,4 grados del eje del ensamblaje; RMSD CA global entre estados 0,47 A según los autores</td>
+<td>EXP</td>
+<td>10.1038/s41467-019-09463-9</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>6TA5</td>
+<td>MexAB-OprM (P. aeruginosa), nanodisco</td>
+<td>101,67</td>
+<td>convención: eje = centroide del trimero RND -&gt; centroide del trimero OMF, sentido positivo desde el RND hacia el OMF (desde el citoplasma hacia el exterior), regla de la mano derecha en torno a ese eje, ángulo reducido modulo 120 grados por la simetría C3 del OMF; medido en el proyecto 2026-09-11</td>
+<td>0,52</td>
+<td>0,59</td>
+<td>198,6</td>
+<td>asimétrico (medido en el proyecto)</td>
+<td>Glavier et al. identifican 'dos complejos relacionados geometricamente por una rotación de 60 grados de OprM o de MexB' y los describen como 'dos modos de union de OprM a MexA', citando a Tsutsumi. NO proponen un ciclo. Solo depositaron el registro equivalente al estado A</td>
+<td>EXP</td>
+<td>10.1038/s41467-020-18770-5</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>6TA6</td>
+<td>MexAB-OprM (P. aeruginosa), nanodisco</td>
+<td>101,07</td>
+<td>convención: eje = centroide del trimero RND -&gt; centroide del trimero OMF, sentido positivo desde el RND hacia el OMF (desde el citoplasma hacia el exterior), regla de la mano derecha en torno a ese eje, ángulo reducido modulo 120 grados por la simetría C3 del OMF; medido en el proyecto 2026-09-11</td>
+<td>1,26</td>
+<td>1,16</td>
+<td>198,6</td>
+<td>asimétrico (medido en el proyecto)</td>
+<td>mismo conjunto de datos que 6TA5, sección MexA-MexB; no es una observación independiente del registro</td>
+<td>EXP</td>
+<td>10.1038/s41467-020-18770-5</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9J3D</td>
+<td>TMexCD1-TOprJ1 (K. pneumoniae)</td>
+<td>45,38</td>
+<td>convención: eje = centroide del trimero RND -&gt; centroide del trimero OMF, sentido positivo desde el RND hacia el OMF (desde el citoplasma hacia el exterior), regla de la mano derecha en torno a ese eje, ángulo reducido modulo 120 grados por la simetría C3 del OMF; medido en el proyecto 2026-09-11</td>
+<td>0,13</td>
+<td>0,05</td>
+<td>207,3</td>
+<td>SIMETRICO: 0,26-0,29</td>
+<td>Shi et al. describen un único estado, que llaman 'de reposo' (R), con C3 aparente; reprocesaron sin imponer simetría y la C3 persiste. No mencionan dos registros ni un ciclo rotacional</td>
+<td>EXP</td>
+<td>10.1038/s41467-025-65038-x</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9J3E</td>
+<td>TMexCD1-TOprJ1 + NMP (K. pneumoniae)</td>
+<td>45,99</td>
+<td>convención: eje = centroide del trimero RND -&gt; centroide del trimero OMF, sentido positivo desde el RND hacia el OMF (desde el citoplasma hacia el exterior), regla de la mano derecha en torno a ese eje, ángulo reducido modulo 120 grados por la simetría C3 del OMF; medido en el proyecto 2026-09-11</td>
+<td>0,10</td>
+<td>179,94</td>
+<td>204,3</td>
+<td>SIMETRICO: 0,18-0,20</td>
+<td>idem 9J3D con inhibidor. La inclinación medida de 179,94 grados corresponde a un eje antiparalelo al de la convención, es decir el mismo eje con el signo invertido; no es una inclinación física de 180 grados</td>
+<td>EXP</td>
+<td>10.1038/s41467-025-65038-x</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>5V5S</td>
+<td>AcrAB-TolC (E. coli), apo, disulfuro diseñado</td>
+<td>58,99</td>
+<td>convención: eje = centroide del trimero RND -&gt; centroide del trimero OMF, sentido positivo desde el RND hacia el OMF (desde el citoplasma hacia el exterior), regla de la mano derecha en torno a ese eje, ángulo reducido modulo 120 grados por la simetría C3 del OMF; medido en el proyecto 2026-09-11</td>
+<td>0,27</td>
+<td>0,09</td>
+<td>213,0</td>
+<td>SIMETRICO: 0,52-0,57</td>
+<td>Wang et al. no discuten el registro. El trimero es simétrico porque la reconstrucción se refino CON simetría puntual C3 IMPUESTA (metadato de RCSB): la simetría del trimero no es un resultado, es una restricción del procesamiento</td>
+<td>EXP con simetría impuesta; la simetría del RND NO es observación independiente</td>
+<td>10.7554/eLife.24905</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>5O66</td>
+<td>AcrABZ-TolC (E. coli), puromicina, mapa asimétrico</td>
+<td>105,47</td>
+<td>convención: eje = centroide del trimero RND -&gt; centroide del trimero OMF, sentido positivo desde el RND hacia el OMF (desde el citoplasma hacia el exterior), regla de la mano derecha en torno a ese eje, ángulo reducido modulo 120 grados por la simetría C3 del OMF; medido en el proyecto 2026-09-11</td>
+<td>2,30</td>
+<td>0,37</td>
+<td>199,6</td>
+<td>asimétrico: 2,25-3,26</td>
+<td>Wang et al. reconstruyeron este mapa SIN imponer simetría, a partir del 30,2% de las particulas que contienen exactamente un protomero en estado de extrusión. La discrepancia de simetría del RND frente a 5V5S NO es una contradicción entre dos observaciones del mismo sistema: es la diferencia entre un mapa con C3 impuesta y un mapa sin simetría, del mismo articulo</td>
+<td>EXP</td>
+<td>10.7554/eLife.24905</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<h3 id="c7-2-tabla-rele-protones-rnd-csv">c7.2 <code>tabla_rele_protones_RND.csv</code></h3>
+<table class="data">
+<thead>
+<tr>
+<th>residuo</th>
+<th>proteína</th>
+<th>numeracion_declarada</th>
+<th>numeracion_equivalente_en_MexB</th>
+<th>funcion_atribuida</th>
+<th>evidencia_mutacional</th>
+<th>fenotipo</th>
+<th>etiqueta_evidencia</th>
+<th>referencia_doi</th>
+<th>n_fuentes_independientes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Asp407</td>
+<td>MexB</td>
+<td>P52002 (UniProt) = numeración PDB de MexB, desplazamiento 0</td>
+<td>D407 (es la propia numeración de MexB)</td>
+<td>rele de protones, TMS-4; residuo cargado conservado</td>
+<td>sustituciones D407A, D407N y D407K por mutagenesis dirigida; D407E solo marginalmente funcional</td>
+<td>perdida de actividad (MIC de antibioticos y eflujo de colorante fluorescente); la longitud de la cadena lateral importa</td>
+<td>EXP</td>
+<td>10.1128/JB.183.5.1734-1739.2001</td>
+<td>1 (fuente única para la numeración de MexB)</td>
+</tr>
+<tr>
+<td>Asp408</td>
+<td>MexB</td>
+<td>P52002 (UniProt) = PDB de MexB</td>
+<td>D408</td>
+<td>rele de protones, TMS-4</td>
+<td>mutagenesis dirigida; la única sustitución con función significativa es Glu; dobles mutantes neutros o con intercambio D408/K939 pierden la función por completo</td>
+<td>perdida de actividad salvo D408E</td>
+<td>EXP</td>
+<td>10.1128/JB.183.5.1734-1739.2001</td>
+<td>1 (fuente única en MexB); el equivalente AcrB D408 tiene 2 fuentes independientes mas</td>
+</tr>
+<tr>
+<td>Lys939</td>
+<td>MexB</td>
+<td>P52002 (UniProt) = PDB de MexB</td>
+<td>K939</td>
+<td>rele de protones, TMS-10</td>
+<td>mutagenesis dirigida; la única sustitución funcional es Arg; intercambios D407/K939 y D408/K939 abolen la función</td>
+<td>perdida de actividad salvo K939R</td>
+<td>EXP</td>
+<td>10.1128/JB.183.5.1734-1739.2001</td>
+<td>1 (fuente única)</td>
+</tr>
+<tr>
+<td>Lys342 y Glu346</td>
+<td>MexB</td>
+<td>P52002 (UniProt) = PDB de MexB</td>
+<td>K342, E346</td>
+<td>residuos cargados de TMS-2; candidatos DESCARTADOS como parte del rele</td>
+<td>K342A, K342R, K342E; E346A, E346Q, E346D</td>
+<td>RESULTADO NEGATIVO: ningún efecto discernible sobre MIC ni sobre eflujo. Se registra porque delimita el rele</td>
+<td>EXP</td>
+<td>10.1128/JB.183.5.1734-1739.2001</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Asp407</td>
+<td>AcrB</td>
+<td>P31224 (UniProt AcrB)</td>
+<td>D407 (alineamiento global NW/BLOSUM62 -11/-1 medido en esta revisión, identidad 70,14% sobre 1045 columnas sin huecos)</td>
+<td>vía de translocación de protones</td>
+<td>análisis mutacional sistematico de aminoacidos titulables y polares de la región de membrana</td>
+<td>uno de los cuatro residuos de importancia primaria para la función de AcrB</td>
+<td>EXP</td>
+<td>10.1021/bi900446j</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Asp408</td>
+<td>AcrB</td>
+<td>P31224</td>
+<td>D408 (alineamiento medido en esta revisión)</td>
+<td>vía de translocación de protones; el cambio de estado de protonación desencadena reordenamientos de las helices transmembrana acoplados alostericamente al dominio periplásmico</td>
+<td>mutagenesis dirigida y marcaje con carbodiimida (Seeger 2009); D408A en Salmonella Typhimurium (Wang-Kan 2017)</td>
+<td>D408A: AcrB no funcional con expresión normal, acumulación aumentada de Hoechst 33342 y perdida de virulencia en Salmonella</td>
+<td>EXP</td>
+<td>10.1021/bi900446j; 10.1128/mBio.00430-16</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Lys940</td>
+<td>AcrB</td>
+<td>P31224</td>
+<td>K939 (alineamiento medido en esta revisión). COINCIDE con el K939 identificado de forma independiente en MexB por Guan y Nakae 2001: dos rutas distintas dan el mismo residuo</td>
+<td>vía de translocación de protones, TM10</td>
+<td>análisis mutacional sistematico</td>
+<td>uno de los cuatro residuos de importancia primaria</td>
+<td>EXP</td>
+<td>10.1021/bi900446j</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Arg971</td>
+<td>AcrB</td>
+<td>P31224</td>
+<td>R969 (alineamiento medido en esta revisión)</td>
+<td>vía de translocación de protones</td>
+<td>análisis mutacional sistematico</td>
+<td>uno de los cuatro residuos de importancia primaria</td>
+<td>EXP</td>
+<td>10.1021/bi900446j</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Thr978</td>
+<td>AcrB</td>
+<td>P31224</td>
+<td>T976 (alineamiento medido en esta revisión)</td>
+<td>treonina de TM11 que la literatura de revisión incluye en la red del rele de protones</td>
+<td>[POR VERIFICAR] no se localizo en esta revisión un articulo primario de mutagenesis de T978 de AcrB; la atribución proviene de revisiones</td>
+<td>[POR VERIFICAR]</td>
+<td>POR VERIFICAR</td>
+<td>10.1016/j.bbapap.2008.12.015</td>
+<td>0 fuentes primarias de mutagenesis localizadas</td>
+</tr>
+<tr>
+<td>Thr583</td>
+<td>AcrB (NO MexB)</td>
+<td>P31224 (AcrB). En MexB P52002 la posición 583 es SERINA (S583), medido en esta revisión: 'MexB T583' no existe</td>
+<td>S583</td>
+<td>NO es un residuo del rele de protones ni del bucle de conmutación. Es una posición de la INTERFAZ ENTRE PROTOMEROS del dominio periplásmico de AcrB, usada como pareja de cisteinas (Q229-T583) para formar un disulfuro inter-subunidad y probar la flexibilidad relativa entre protomeros</td>
+<td>doble mutante Q229C/T583C; 69,4 +/- 0,5 % de producto entrecruzado</td>
+<td>efecto sobre el eflujo clasificado como '+' (el mas debil de la escala del trabajo) en la comparación de MIC frente a los mutantes simples</td>
+<td>EXP</td>
+<td>10.1021/acsomega.0c02921</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Thr678</td>
+<td>AcrB (numeración AcrB; el residuo SI es Thr también en MexB)</td>
+<td>P31224 (AcrB)</td>
+<td>T678 (identico por conservación, medido en esta revisión). La coincidencia es fortuita: la atribución funcional sigue siendo de AcrB</td>
+<td>NO es un residuo del rele de protones. Posición de la interfaz entre protomeros del dominio periplásmico de AcrB, usada en las parejas de cisteinas D566-T678 y F666-T678</td>
+<td>dobles mutantes D566C/T678C y F666C/T678C; porcentaje de entrecruzamiento no determinado (N/A en la tabla del trabajo)</td>
+<td>D566C/T678C '+'; F666C/T678C '-' (sin efecto). En dos casos del trabajo la actividad se recupero parcialmente con DTT, confirmando que la restricción del movimiento relativo, y no la mutación, es lo que inactiva</td>
+<td>EXP</td>
+<td>10.1021/acsomega.0c02921</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Asp402, Asp403, Arg932, Thr969</td>
+<td>MexK (P. aeruginosa)</td>
+<td>numeración del articulo primario de MexJK, sobre la secuencia de MexK</td>
+<td>[POR VERIFICAR] no se alinearon MexK y MexB en esta revisión. Los autores declaran la equivalencia MexK D403 = AcrB D408</td>
+<td>red del rele de protones: dos aspartatos en TM4, un residuo básico en TM10 y una treonina en TM11. En MexK y en TriC el residuo de TM10 es ARGININA, no lisina, a diferencia de la mayoria de las bombas HAE-1</td>
+<td>mutagenesis de los residuos del tunel de triclosan y simulaciones de dinamica molecular; R932 forma puentes salinos con D402 y D403</td>
+<td>los residuos clave del eflujo de triclosan son también esenciales para cloranfenicol y pirimetamina</td>
+<td>EXP para el eflujo; COMP para la asignación de la red por simulación</td>
+<td>10.1126/sciadv.aee7036</td>
+<td>1 (fuente única)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="c8-tabla-referencias-arquitectura-csv-referencias-de-los-eje"><span class="num">Secci&oacute;n 9</span>c8. <code>tabla_referencias_arquitectura.csv</code> — referencias de los ejes (a) y (c)</h2>
+<p><strong>64 DOI, todos resueltos contra <code>api.crossref.org</code> el 2026-09-11. Ninguno quedo sin verificar; cero DOI marcados [DOI NO VERIFICADO] y cero DOI citados de memoria en los ejes (a) y (c).</strong></p>
+<table class="data">
+<thead>
+<tr>
+<th>clave_cita</th>
+<th>autores</th>
+<th>anio</th>
+<th>titulo</th>
+<th>revista</th>
+<th>volumen_paginas</th>
+<th>doi</th>
+<th>pmid</th>
+<th>verificado_en</th>
+<th>tipo</th>
+<th>ejes_en_que_se_usa</th>
+<th>hallazgo_principal_una_frase</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Akama2004a</td>
+<td>Akama H; Matsuura T; Kashiwagi S et al.</td>
+<td>2004</td>
+<td>Crystal Structure of the Membrane Fusion Protein, MexA, of the Multidrug Transporter in Pseudomonas aeruginosa</td>
+<td>Journal of Biological Chemistry</td>
+<td>279:25939-25942</td>
+<td>10.1074/jbc.c400164200</td>
+<td>15117957</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Estructura cristalina de MexA (1VF7) con la sustitución C1S de la cisteina lipidada.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Akama2004b</td>
+<td>Akama H; Kanemaki M; Yoshimura M et al.</td>
+<td>2004</td>
+<td>Crystal Structure of the Drug Discharge Outer Membrane Protein, OprM, of Pseudomonas aeruginosa</td>
+<td>Journal of Biological Chemistry</td>
+<td>279:52816-52819</td>
+<td>10.1074/jbc.c400445200</td>
+<td>15507433</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Estructura cristalina de OprM (1WP1), en la que las dos cadenas de la unidad asimétrica no forman el trimero funcional.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Bavro2008</td>
+<td>Bavro V; Pietras Z; Furnham N et al.</td>
+<td>2008</td>
+<td>Assembly and Channel Opening in a Bacterial Drug Efflux Machine</td>
+<td>Molecular Cell</td>
+<td>30:114-121</td>
+<td>10.1016/j.molcel.2008.02.015</td>
+<td>18406332</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Ensamblaje y apertura del canal en una maquina bacteriana de expulsión de farmacos; estados abiertos de TolC.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Daury2016</td>
+<td>Daury L; Orange F; Taveau J et al.</td>
+<td>2016</td>
+<td>Tripartite assembly of RND multidrug efflux pumps</td>
+<td>Nature Communications</td>
+<td>7:10731</td>
+<td>10.1038/ncomms10731</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Ensamblaje tripartito de bombas RND reconstituido y visualizado por EM, precedente metodologico del automontaje en nanodiscos usado después en 6TA5/6TA6.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Du2014</td>
+<td>Du D; Wang Z; James N et al.</td>
+<td>2014</td>
+<td>Structure of the AcrAB–TolC multidrug efflux pump</td>
+<td>Nature</td>
+<td>509:512-515</td>
+<td>10.1038/nature13205</td>
+<td>24747401</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Primera estructura de crio-EM del ensamblaje AcrAB-TolC que establece el hexamero de AcrA y la ausencia de contacto directo AcrB-TolC.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Du2015</td>
+<td>Du D; Voss J; Wang Z et al.</td>
+<td>2015</td>
+<td>The pseudo-atomic structure of an RND-type tripartite multidrug efflux pump</td>
+<td>Biological Chemistry</td>
+<td>396:1073-1082</td>
+<td>10.1515/hsz-2015-0118</td>
+<td>25803077</td>
+<td>Crossref 2026-09-11</td>
+<td>revisión</td>
+<td>a</td>
+<td>Revisión de la estructura pseudoatomica de una bomba tripartita de tipo RND.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Du2016</td>
+<td>Jeong H; Kim J; Song S et al.</td>
+<td>2016</td>
+<td>Pseudoatomic Structure of the Tripartite Multidrug Efflux Pump AcrAB-TolC Reveals the Intermeshing Cogwheel-like Interaction between AcrA and TolC</td>
+<td>Structure</td>
+<td>24:272-276</td>
+<td>10.1016/j.str.2015.12.007</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Estructura pseudoatomica de AcrAB-TolC que consolida el contacto de engranajes entrelazados y el hexamero de AcrA.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Du2020</td>
+<td>Du D; Neuberger A; Orr M et al.</td>
+<td>2020</td>
+<td>Interactions of a Bacterial RND Transporter with a Transmembrane Small Protein in a Lipid Environment</td>
+<td>Structure</td>
+<td>28:625-634.e6</td>
+<td>10.1016/j.str.2020.03.013</td>
+<td>32348749</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>AcrB con la proteína pequena transmembrana AcrZ en entorno lipidico (6SGR/6SGS), con estequiometría AcrZ 3 : AcrB 3.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Fabre2021</td>
+<td>Fabre L; Ntreh A; Yazidi A et al.</td>
+<td>2021</td>
+<td>A “Drug Sweeping” State of the TriABC Triclosan Efflux Pump from Pseudomonas aeruginosa</td>
+<td>Structure</td>
+<td>29:261-274.e6</td>
+<td>10.1016/j.str.2020.09.001</td>
+<td>32966762</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>TriABC de P. aeruginosa: el depósito 6VEJ contiene TriC3 mas tres cadenas de una FUSION de ingenieria TriA-TriB y NO contiene OpmH; representa un intermedio de ensamblaje previo al acoplamiento del OMF, con el tunel constrenido.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Feng2026</td>
+<td>Feng Z; Huang X; Chen Y et al.</td>
+<td>2026</td>
+<td>A review of research progress on periplasmic adaptor proteins in bacterial tripartite pumps</td>
+<td>Frontiers in Microbiology</td>
+<td>17:1859451</td>
+<td>10.3389/fmicb.2026.1859451</td>
+<td>42404788</td>
+<td>Crossref 2026-09-11</td>
+<td>revisión</td>
+<td>a,c</td>
+<td>Revisión de proteínas adaptadoras periplasmicas que las reinterpreta como acopladores alostericos dinamicos y no como andamios pasivos.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Fitzpatrick2017</td>
+<td>Fitzpatrick A; Llabrés S; Neuberger A et al.</td>
+<td>2017</td>
+<td>Structure of the MacAB–TolC ABC-type tripartite multidrug efflux pump</td>
+<td>Nature Microbiology</td>
+<td>2:17070</td>
+<td>10.1038/nmicrobiol.2017.70</td>
+<td>28504659</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>MacAB-TolC con OMF 3 : MFP 6 : transportador 2; el anillo hexamerico de MacA se deforma a una forma oval para acomodar la simetría binaria del dimero de MacB y tres dominios beta-barril de MacA contactan MacB de forma no equivalente.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Ge2026</td>
+<td>Ge X; Gu Z; Wang J</td>
+<td>2026</td>
+<td>Structural mechanisms of pump assembly and drug transport in the AcrAB–TolC efflux system</td>
+<td>eLife</td>
+<td>14:RP109684</td>
+<td>10.7554/elife.109684</td>
+<td>42007677</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Complejos endogenos TolC-YbjP y TolC-YbjP-AcrABZ de E. coli; YbjP se une a TolC en estequiometría 3:3 y permanece unido cuando AcrA abre el canal; 9V55 es un refinamiento LOCAL del mismo conjunto, no un ensamblaje sin transportador.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Glavier2020</td>
+<td>Glavier M; Puvanendran D; Salvador D et al.</td>
+<td>2020</td>
+<td>Antibiotic export by MexB multidrug efflux transporter is allosterically controlled by a MexA-OprM chaperone-like complex</td>
+<td>Nature Communications</td>
+<td>11:4948</td>
+<td>10.1038/s41467-020-18770-5</td>
+<td>33009415</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a,c</td>
+<td>MexAB-OprM automontado en nanodiscos: MexA y OprM actuan como un corset alosterico que convierte MexB de la forma inactiva LTC a la activa LTO; los dos complejos relacionados por 60 grados se reproducen en nanodisco; 6TA5 y 6TA6 son dos SECCIONES del mismo conjunto de datos, no replicas.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>GuanNakae2001</td>
+<td>Guan L; Nakae T</td>
+<td>2001</td>
+<td>Identification of Essential Charged Residues in Transmembrane Segments of the Multidrug Transporter MexB of             Pseudomonas aeruginosa</td>
+<td>Journal of Bacteriology</td>
+<td>183:1734-1739</td>
+<td>10.1128/jb.183.5.1734-1739.2001</td>
+<td>11160105</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Fuente primaria del rele de protones EN NUMERACION DE MexB: Asp407 y Asp408 (TMS-4) y Lys939 (TMS-10) son esenciales; Lys342 y Glu346 de TMS-2 no tienen efecto.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Hayashi2016</td>
+<td>Hayashi K; Nakashima R; Sakurai K et al.</td>
+<td>2016</td>
+<td>AcrB-AcrA Fusión Proteins That Act as Multidrug Efflux Transporters</td>
+<td>Journal of Bacteriology</td>
+<td>198:332-342</td>
+<td>10.1128/jb.00587-15</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>Proteínas de FUSION AcrB-AcrA funcionales como transportadores multifarmaco, construidas precisamente porque el número de moleculas de AcrA en el complejo estaba en disputa; el trabajo resume la contradicción entre el entrecruzamiento con disulfuros (1:1:1) y la crio-EM.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Higgins2004</td>
+<td>Higgins M; Bokma E; Koronakis E et al.</td>
+<td>2004</td>
+<td>Structure of the periplasmic component of a bacterial drug efflux pump</td>
+<td>Proceedings of the National Academy of Sciences</td>
+<td>101:9994-9999</td>
+<td>10.1073/pnas.0400375101</td>
+<td>15226509</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Estructura del componente periplásmico MexA de una bomba de eflujo bacteriana; entrada 1T5E, 13 cadenas sin dominio MP.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Hobbs2012</td>
+<td>Hobbs E; Yin X; Paul B et al.</td>
+<td>2012</td>
+<td>Conserved small protein associates with the multidrug efflux pump AcrB and differentially affects antibiotic resistance</td>
+<td>Proceedings of the National Academy of Sciences</td>
+<td>109:16696-16701</td>
+<td>10.1073/pnas.1210093109</td>
+<td>23010927</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>Articulo fundacional de AcrZ: una proteína pequena conservada que se asocia a AcrB y afecta de forma diferencial a la resistencia a antibioticos; la conservación declarada es entre enterobacterias.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Horne2026</td>
+<td>Horne J; Kaplan E; Jin B et al.</td>
+<td>2026</td>
+<td>A lipoprotein partner for the Escherichia coli outer membrane protein TolC</td>
+<td>eLife</td>
+<td>15:RP110666</td>
+<td>10.7554/elife.110666</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Fuente primaria de 9QGY (YbjP-MacAB-TolC) y 9TG4 (YbjP-AcrABZ-TolC): TolC de E. coli carece del anclaje lipidico N-terminal que conservan muchos homólogos de la superfamilia y YbjP lo sustituye; la interacción YbjP-TolC NO es necesaria para el eflujo en condiciones de laboratorio.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Husain2004</td>
+<td>Husain F; Humbard M; Misra R</td>
+<td>2004</td>
+<td>Interaction between the TolC and AcrA Proteins of a Multidrug Efflux System of             Escherichia coli</td>
+<td>Journal of Bacteriology</td>
+<td>186:8533-8536</td>
+<td>10.1128/jb.186.24.8533-8536.2004</td>
+<td>15576805</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>Entrecruzamiento que demuestra la interacción física directa TolC-AcrA, independiente de sustrato y de AcrB.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Janganan2013</td>
+<td>Janganan T; Bavro V; Zhang L et al.</td>
+<td>2013</td>
+<td>Tripartite efflux pumps: energy is required for dissociation, but not assembly or opening of the outer membrane channel of the pump</td>
+<td>Molecular Microbiology</td>
+<td>88:590-602</td>
+<td>10.1111/mmi.12211</td>
+<td>23565750</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>En MtrCDE la apertura del canal del OMF requiere la union de la MFP y es INDEPENDIENTE de energía; la energía se necesita para la DISOCIACION del complejo, no para su ensamblaje ni para su apertura.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Johnson2020</td>
+<td>Johnson R; Fais C; Parmar M et al.</td>
+<td>2020</td>
+<td>Cryo-EM Structure and Molecular Dynamics Analysis of the Fluoroquinolone Resistant Mutant of the AcrB Transporter from Salmonella</td>
+<td>Microorganisms</td>
+<td>8:943</td>
+<td>10.3390/microorganisms8060943</td>
+<td>32585951</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>c</td>
+<td>AcrB de Salmonella con la mutación clinica G288D obtenida en SMA, con análisis de dinamica molecular.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Kavanaugh2024</td>
+<td>Kavanaugh L; Dey D; Shafer W et al.</td>
+<td>2024</td>
+<td>Structural and functional diversity of Resistance-Nodulation-Division (RND) efflux pump transporters with implications for antimicrobial resistance</td>
+<td>Microbiology and Molecular Biology Reviews</td>
+<td>88:e00089-23</td>
+<td>10.1128/mmbr.00089-23</td>
+<td>39235227</td>
+<td>Crossref 2026-09-11</td>
+<td>revisión</td>
+<td>a,c</td>
+<td>Revisión de la diversidad estructural y funcional de los transportadores RND, con la nomenclatura de estados y del rele de protones.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Koronakis2000</td>
+<td>Koronakis V; Sharff A; Koronakis E et al.</td>
+<td>2000</td>
+<td>Crystal structure of the bacterial membrane protein TolC central to multidrug efflux and protein export</td>
+<td>Nature</td>
+<td>405:914-919</td>
+<td>10.1038/35016007</td>
+<td>10879525</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Estructura del canal TolC, el molde de toda la familia OMF.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Krishnamoorthy2013</td>
+<td>Krishnamoorthy G; Tikhonova E; Dhamdhere G et al.</td>
+<td>2013</td>
+<td>On the role of TolC in multidrug efflux: the function and assembly of AcrAB–TolC tolerate significant depletion of intracellular TolC protein</td>
+<td>Molecular Microbiology</td>
+<td>87:982-997</td>
+<td>10.1111/mmi.12143</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Función y ensamblaje de AcrAB-TolC analizados por reconstitución y genetica.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Lawrence2025</td>
+<td>Lawrence R; Athar M; Uddin M et al.</td>
+<td>2025</td>
+<td>Molecular basis for multidrug efflux by an anaerobic-associated RND transporter</td>
+<td>Nature Communications</td>
+<td>16:10601</td>
+<td>10.1038/s41467-025-65565-7</td>
+<td>41339309</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Base molecular del eflujo multifarmaco por un transportador RND asociado a anaerobiosis.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Lobedanz2007</td>
+<td>Lobedanz S; Bokma E; Symmons M et al.</td>
+<td>2007</td>
+<td>A periplasmic coiled-coil interface underlying TolC recruitment and the assembly of bacterial drug efflux pumps</td>
+<td>Proceedings of the National Academy of Sciences</td>
+<td>104:4612-4617</td>
+<td>10.1073/pnas.0610160104</td>
+<td>17360572</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>Mapeo por entrecruzamiento in vivo de la interfaz de helices enrolladas entre el conducto TolC y el adaptador, el trabajo que fija el modelo de interpenetración.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Lopez2017</td>
+<td>López C; Travers T; Pos K et al.</td>
+<td>2017</td>
+<td>Dynamics of Intact MexAB-OprM Efflux Pump: Focusing on the MexA-OprM Interface</td>
+<td>Scientific Reports</td>
+<td>7:16521</td>
+<td>10.1038/s41598-017-16497-w</td>
+<td>29184094</td>
+<td>Crossref 2026-09-11</td>
+<td>COMP</td>
+<td>a,c</td>
+<td>Dinamica del ensamblaje MexAB-OprM intacto centrada en la interfaz MexA-OprM; fuente de los pares de covariación que el proyecto reevaluo sobre 6TA5.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Lu2014</td>
+<td>Lu W; Zhong M; Chai Q et al.</td>
+<td>2014</td>
+<td>Functional Relevance of AcrB Trimerization in Pump Assembly and Substrate Binding</td>
+<td>PLoS ONE</td>
+<td>9:e89143</td>
+<td>10.1371/journal.pone.0089143</td>
+<td>24551234</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>La trimerización de AcrB es obligatoria para el ensamblaje de la bomba y para la union de sustrato, e interacciona con la vía del rele de protones.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Middlemiss2004</td>
+<td>Middlemiss J; Poole K</td>
+<td>2004</td>
+<td>Differential Impact of MexB Mutations on Substrate Selectivity of the MexAB-OprM Multidrug Efflux Pump of             Pseudomonas aeruginosa</td>
+<td>Journal of Bacteriology</td>
+<td>186:1258-1269</td>
+<td>10.1128/jb.186.5.1258-1269.2004</td>
+<td>14973037</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Mutagenesis de mexB que identifica 19 mutaciones unicas con impacto diferencial en la selectividad de sustrato, la mayoria en los grandes bucles periplasmicos.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Mikolosko2006</td>
+<td>Mikolosko J; Bobyk K; Zgurskaya H et al.</td>
+<td>2006</td>
+<td>Conformational Flexibility in the Multidrug Efflux System Protein AcrA</td>
+<td>Structure</td>
+<td>14:577-587</td>
+<td>10.1016/j.str.2005.11.015</td>
+<td>16531241</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Flexibilidad conformacional de AcrA: el adaptador es articulado, no rigido.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Nakashima2013</td>
+<td>Nakashima R; Sakurai K; Yamasaki S et al.</td>
+<td>2013</td>
+<td>Structural basis for the inhibition of bacterial multidrug exporters</td>
+<td>Nature</td>
+<td>500:102-106</td>
+<td>10.1038/nature12300</td>
+<td>23812586</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a,c</td>
+<td>Base estructural de la inhibición de exportadores multifarmaco; entradas 3W9I (solo detergente) y 3W9J (inhibidor P9D) de MexB.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Neuberger2018</td>
+<td>Neuberger A; Du D; Luisi B</td>
+<td>2018</td>
+<td>Structure and mechanism of bacterial tripartite efflux pumps</td>
+<td>Research in Microbiology</td>
+<td>169:401-413</td>
+<td>10.1016/j.resmic.2018.05.003</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>revisión</td>
+<td>a</td>
+<td>Revisión de estructura y mecanismo de bombas tripartitas bacterianas.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>OrnikCha2021</td>
+<td>Ornik-Cha A; Wilhelm J; Kobylka J et al.</td>
+<td>2021</td>
+<td>Structural and functional analysis of the promiscuous AcrB and AdeB efflux pumps suggests different drug binding mechanisms</td>
+<td>Nature Communications</td>
+<td>12:6919</td>
+<td>10.1038/s41467-021-27146-2</td>
+<td>34824229</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>c</td>
+<td>Análisis de AcrB y AdeB que compara la asimetría de protomeros entre bombas RND promiscuas.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Pei2011</td>
+<td>Pei X; Hinchliffe P; Symmons M et al.</td>
+<td>2011</td>
+<td>Structures of sequential open states in a symmetrical opening transition of the TolC exit duct</td>
+<td>Proceedings of the National Academy of Sciences</td>
+<td>108:2112-2117</td>
+<td>10.1073/pnas.1012588108</td>
+<td>21245342</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Estados abiertos secuenciales en una transición de apertura simétrica del conducto TolC.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Phan2010</td>
+<td>Phan G; Benabdelhak H; Lascombe M et al.</td>
+<td>2010</td>
+<td>Structural and Dynamical Insights into the Opening Mechanism of P. aeruginosa OprM Channel</td>
+<td>Structure</td>
+<td>18:507-517</td>
+<td>10.1016/j.str.2010.01.018</td>
+<td>20399187</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Mecanismo de apertura de OprM de P. aeruginosa; entrada 3D5K, el único trimero aislado completo de OprM.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Pos2009a</td>
+<td>Pos K</td>
+<td>2009</td>
+<td>Trinity revealed: Stoichiometric complex assembly of a bacterial multidrug efflux pump</td>
+<td>Proceedings of the National Academy of Sciences</td>
+<td>106:6893-6894</td>
+<td>10.1073/pnas.0902837106</td>
+<td>19416927</td>
+<td>Crossref 2026-09-11</td>
+<td>comentario</td>
+<td>a</td>
+<td>Comentario editorial sobre Symmons 2009 titulado 'Trinity revealed', que documenta el estado de la cuestion estequiometrica en 2009 y la aceptación del modelo de tres MFP en ese momento.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Pos2009b</td>
+<td>Pos K</td>
+<td>2009</td>
+<td>Drug transport mechanism of the AcrB efflux pump</td>
+<td>Biochimica et Biophysica Acta (BBA) - Proteins and Proteomics</td>
+<td>1794:782-793</td>
+<td>10.1016/j.bbapap.2008.12.015</td>
+<td>19166984</td>
+<td>Crossref 2026-09-11</td>
+<td>revisión</td>
+<td>c</td>
+<td>Revisión del mecanismo de transporte de AcrB que fija el vocabulario de la rotación funcional y la asignación de la red del rele de protones.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Rajapaksha2020</td>
+<td>Rajapaksha P; Pandeya A; Wei Y</td>
+<td>2020</td>
+<td>Probing the Dynamics of AcrB Through Disulfide Bond Formation</td>
+<td>ACS Omega</td>
+<td>5:21844-21852</td>
+<td>10.1021/acsomega.0c02921</td>
+<td>32905396</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Seis disulfuros inter-subunidad en el dominio periplásmico de AcrB, entre ellos Q229-T583, D566-T678 y F666-T678: T583 y T678 son posiciones de AcrB en la interfaz entre protomeros, NO residuos del rele de protones; dos dobles mutantes recuperan actividad con DTT.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Seeger2008</td>
+<td>Seeger M; von Ballmoos C; Eicher T et al.</td>
+<td>2008</td>
+<td>Engineered disulfide bonds support the functional rotation mechanism of multidrug efflux pump AcrB</td>
+<td>Nature Structural &amp; Molecular Biology</td>
+<td>15:199-205</td>
+<td>10.1038/nsmb.1379</td>
+<td>18223659</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Disulfuros DISENADOS entre subdominios potencialmente moviles de AcrB inhiben la función de la bomba: apoyo experimental del mecanismo de rotación FUNCIONAL de los protomeros del RND.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Seeger2009</td>
+<td>Seeger M; von Ballmoos C; Verrey F et al.</td>
+<td>2009</td>
+<td>Crucial Role of Asp408 in the Proton Translocation Pathway of Multidrug Transporter AcrB: Evidence from Site-Directed Mutagenesis and Carbodiimide Labeling</td>
+<td>Biochemistry</td>
+<td>48:5801-5812</td>
+<td>10.1021/bi900446j</td>
+<td>19425588</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Análisis mutacional sistematico y marcaje con carbodiimida en AcrB: D407, D408, K940 y R971 son los cuatro residuos de importancia primaria de la vía de translocación de protones.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Shi2019</td>
+<td>Shi X; Chen M; Yu Z et al.</td>
+<td>2019</td>
+<td>In situ structure and assembly of the multidrug efflux pump AcrAB-TolC</td>
+<td>Nature Communications</td>
+<td>10:2635</td>
+<td>10.1038/s41467-019-10512-6</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Estructura IN SITU de AcrAB-TolC por crio-tomografia y promediado de 1321 subtomogramas con C3 impuesta (~15 A): la arquitectura in situ indica una relación 3:6:3 TolC:AcrA:AcrB, se observan subcomplejos AcrAB sin TolC, AcrA contacta el peptidoglicano y la separación entre membranas se mantiene constante donde hay bombas.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Shi2025</td>
+<td>Shi Y; Li M; Cui T et al.</td>
+<td>2025</td>
+<td>Assembly and inhibition of transferable TMexCD1-TOprJ1 efflux pump</td>
+<td>Nature Communications</td>
+<td>16:10025</td>
+<td>10.1038/s41467-025-65038-x</td>
+<td>41238543</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a,c</td>
+<td>TMexCD1-TOprJ1 con estequiometría OMF 3 : MFP 6 : transportador 3 y contacto punta a punta; los autores reprocesaron los datos SIN imponer simetría y la C3 del trimero RND persiste, descartando el artefacto de simetría para este sistema.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Stahl2023</td>
+<td>Stahl K; Graziadei A; Dau T et al.</td>
+<td>2023</td>
+<td>Protein structure prediction with in-cell photo-crosslinking mass spectrometry and deep learning</td>
+<td>Nature Biotechnology</td>
+<td>41:1810-1819</td>
+<td>10.1038/s41587-023-01704-z</td>
+<td>36941363</td>
+<td>Crossref 2026-09-11</td>
+<td>COMP/EXP-IND</td>
+<td>a</td>
+<td>Modelos integrativos de AcrA y TolC (9A2V/9A2X) por foto-entrecruzamiento in vivo combinado con aprendizaje profundo.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Stegmeier2006</td>
+<td>Stegmeier J; Polleichtner G; Brandes N et al.</td>
+<td>2006</td>
+<td>Importance of the Adaptor (Membrane Fusion) Protein Hairpin Domain for the Functionality of Multidrug Efflux Pumps</td>
+<td>Biochemistry</td>
+<td>45:10303-10312</td>
+<td>10.1021/bi060320g</td>
+<td>16922505</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a,c</td>
+<td>El hibrido de OprM de P. aeruginosa con AcrAB de E. coli SE ENSAMBLA pero NO es funcional, y el intercambio del dominio de horquilla de AcrA por el de MexA modifica la funcionalidad: evidencia directa de que la especificidad OMF-MFP reside en la horquilla y de que ensamblar no implica funcionar.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Symmons2009</td>
+<td>Symmons M; Bokma E; Koronakis E et al.</td>
+<td>2009</td>
+<td>The assembled structure of a complete tripartite bacterial multidrug efflux pump</td>
+<td>Proceedings of the National Academy of Sciences</td>
+<td>106:7173-7178</td>
+<td>10.1073/pnas.0900693106</td>
+<td>19342493</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>Completa el dominio beta-roll de MexA (2V4D) y, con restricciones de entrecruzamiento in vivo, construye un modelo acoplado AcrA3-AcrB3-TolC3 de 610 kDa y 270 A: el planteamiento inicial de TRES MFP que las estructuras de crio-EM corrigieron a seis.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Takatsuka2007</td>
+<td>Takatsuka Y; Nikaido H</td>
+<td>2007</td>
+<td>Site-Directed Disulfide Cross-Linking Shows that Cleft Flexibility in the Periplasmic Domain Is Needed for the Multidrug Efflux Pump AcrB of             Escherichia coli</td>
+<td>Journal of Bacteriology</td>
+<td>189:8677-8684</td>
+<td>10.1128/jb.01127-07</td>
+<td>17905989</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Entrecruzamiento por disulfuros dirigidos en la hendidura periplásmica y en la interfaz entre protomeros de AcrB; los dobles mutantes son inactivos y recuperan actividad en una cepa dsbA, lo que demuestra que es el enlace y no la mutación lo que inactiva.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Tamura2005</td>
+<td>Tamura N; Murakami S; Oyama Y et al.</td>
+<td>2005</td>
+<td>Direct Interaction of Multidrug Efflux Transporter AcrB and Outer Membrane Channel TolC Detected vía Site-Directed Disulfide Cross-Linking</td>
+<td>Biochemistry</td>
+<td>44:11115-11121</td>
+<td>10.1021/bi050452u</td>
+<td>16101295</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>Entrecruzamiento por disulfuros dirigidos entre las puntas de las horquillas de AcrB y las bases de las helices de TolC: evidencia bioquimica de proximidad entre esos elementos antes de que la crio-EM mostrara que AcrB y TolC no se tocan.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Tikhonova2009</td>
+<td>Tikhonova E; Dastidar V; Rybenkov V et al.</td>
+<td>2009</td>
+<td>Kinetic control of TolC recruitment by multidrug efflux complexes</td>
+<td>Proceedings of the National Academy of Sciences</td>
+<td>106:16416-16421</td>
+<td>10.1073/pnas.0906601106</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Control CINETICO del reclutamiento de TolC por los complejos de eflujo: la evidencia cinetica que existe es sobre el reclutamiento del OMF, no sobre un ciclo de rotación del registro.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Tikhonova2011</td>
+<td>Tikhonova E; Yamada Y; Zgurskaya H</td>
+<td>2011</td>
+<td>Sequential Mechanism of Assembly of Multidrug Efflux Pump AcrAB-TolC</td>
+<td>Chemistry &amp; Biology</td>
+<td>18:454-463</td>
+<td>10.1016/j.chembiol.2011.02.011</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Mecanismo SECUENCIAL de ensamblaje de AcrAB-TolC: el complejo se forma por etapas y no en un solo paso.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Tsutsumi2019</td>
+<td>Tsutsumi K; Yonehara R; Ishizaka-Ikeda E et al.</td>
+<td>2019</td>
+<td>Structures of the wild-type MexAB–OprM tripartite pump reveal its complex formation and drug efflux mechanism</td>
+<td>Nature Communications</td>
+<td>10:1520</td>
+<td>10.1038/s41467-019-09463-9</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a,c</td>
+<td>Primeras estructuras del ensamblaje MexAB-OprM completo (6IOK/6IOL); OprM no contacta MexB; dos modos de union de OprM a MexA relacionados por 60 grados, con reparto de particulas 45:55 sin farmaco y 58:42 con novobiocina; L100 de MexA y G199/G407 de OprM son esenciales para la formación del complejo.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Ueda2026</td>
+<td>Ueda Y; Yonehara R; Ishizaka-Ikeda E et al.</td>
+<td>2026</td>
+<td>Structure of chloramphenicol-bound MexB reveals residues in the distal binding pocket that are critical for substrate recognition</td>
+<td>The Journal of Biochemistry</td>
+<td>179:403-411</td>
+<td>10.1093/jb/mvag012</td>
+<td>41662826</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>c</td>
+<td>MexB unida a cloranfenicol (21FP) y con CYMAL-7 (21FO); identifica residuos del bolsillo de union distal criticos para la especificidad.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Verchere2014</td>
+<td>Verchère A; Dezi M; Broutin I et al.</td>
+<td>2014</td>
+<td>In vitro Investigation of the MexAB Efflux Pump From Pseudomonas aeruginosa</td>
+<td>Journal of Visualized Experiments</td>
+<td></td>
+<td>10.3791/50894</td>
+<td>24638061</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>Reconstitución in vitro de la bomba MexAB de P. aeruginosa en liposomas con bacteriorodopsina; referencia metodologica del preparado energizado que haria falta para una crio-EM resuelta en el tiempo del registro.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Wang2017</td>
+<td>Wang Z; Fan G; Hryc C et al.</td>
+<td>2017</td>
+<td>An allosteric transport mechanism for the AcrAB-TolC multidrug efflux pump</td>
+<td>eLife</td>
+<td>6:e24905</td>
+<td>10.7554/elife.24905</td>
+<td>28355133</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a,c</td>
+<td>AcrABZ-TolC en amfipol en estados de reposo y de transporte; el mapa apo (5V5S) se refino con simetría C3 impuesta sobre un complejo estabilizado con un disulfuro AcrA-S273C/AcrB-S258C, mientras el mapa asimétrico con puromicina (5O66) se reconstruyo sin simetría.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>WangKan2017</td>
+<td>Richmond G; Evans L; Anderson M et al.</td>
+<td>2016</td>
+<td>The Acinetobacter baumannii Two-Component System AdeRS Regulates Genes Required for Multidrug Efflux, Biofilm Formation, and Virulence in a Strain-Specific Manner</td>
+<td>mBio</td>
+<td>7:e00430-16</td>
+<td>10.1128/mbio.00430-16</td>
+<td>28720734</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>c</td>
+<td>AcrB D408A en Salmonella Typhimurium: la bomba pierde función y la cepa pierde virulencia, con expresión normal de AcrB.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Welch2010</td>
+<td>Welch A; Awah C; Jing S et al.</td>
+<td>2010</td>
+<td>Promiscuous partnering and independent activity of MexB, the multidrug transporter protein from Pseudomonas aeruginosa</td>
+<td>Biochemical Journal</td>
+<td>430:355-364</td>
+<td>10.1042/bj20091860</td>
+<td>20583998</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>MexB puede reclutar AcrA y TolC en ausencia de MexA y OprM: emparejamiento promiscuo entre componentes de las dos especies.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Wu2026</td>
+<td>Wu Z; Meng Z; Huang W et al.</td>
+<td>2026</td>
+<td>Structural insights into a substrate translocation pathway revealed by the RND efflux pump complex MexJK from                     Pseudomonas aeruginosa</td>
+<td>Science Advances</td>
+<td>12:eaee7036</td>
+<td>10.1126/sciadv.aee7036</td>
+<td>42566533</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a,c</td>
+<td>Fuente primaria de 20YY y 9XWG: MexJK de P. aeruginosa con triclosan y sin OMF; la densidad de MexJ varia entre posiciones relacionadas por C3, es decir los sitios de union de MexJ no estan saturados; MexK y TriC usan ARGININA en lugar de lisina en el rele de protones (D402, D403, R932, T969).</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Xu2010</td>
+<td>Xu Y; Sim S; Song S et al.</td>
+<td>2010</td>
+<td>The tip región of the MacA α-hairpin is important for the binding to TolC to the Escherichia coli MacAB–TolC pump</td>
+<td>Biochemical and Biophysical Research Communications</td>
+<td>394:962-965</td>
+<td>10.1016/j.bbrc.2010.03.097</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>La región de la punta de la horquilla alfa de MacA es la determinante de la union a TolC.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Xu2011a</td>
+<td>Xu Y; Lee M; Moeller A et al.</td>
+<td>2011</td>
+<td>Funnel-like Hexameric Assembly of the Periplasmic Adapter Protein in the Tripartite Multidrug Efflux Pump in Gram-negative Bacteria</td>
+<td>Journal of Biological Chemistry</td>
+<td>286:17910-17920</td>
+<td>10.1074/jbc.m111.238535</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP-IND</td>
+<td>a</td>
+<td>Propone por cristalografia y entrecruzamiento un ensamblaje HEXAMERICO en forma de embudo de la proteína adaptadora periplásmica, ocho anos antes de las estructuras de crio-EM del ensamblaje completo de MexAB-OprM.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Xu2011b</td>
+<td>Xu Y; Song S; Moeller A et al.</td>
+<td>2011</td>
+<td>Functional Implications of an Intermeshing Cogwheel-like Interaction between TolC and MacA in the Action of Macrolide-specific Efflux Pump MacAB-TolC</td>
+<td>Journal of Biological Chemistry</td>
+<td>286:13541-13549</td>
+<td>10.1074/jbc.m110.202598</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP-IND</td>
+<td>a</td>
+<td>Interacción de 'engranajes entrelazados' entre TolC y MacA, el modelo alternativo al contacto punta a punta para la interfaz OMF-MFP.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Xu2012</td>
+<td>Xu Y; Moeller A; Jun S et al.</td>
+<td>2012</td>
+<td>Assembly and Channel Opening of Outer Membrane Protein in Tripartite Drug Efflux Pumps of Gram-negative Bacteria</td>
+<td>Journal of Biological Chemistry</td>
+<td>287:11740-11750</td>
+<td>10.1074/jbc.m111.329375</td>
+<td>22308040</td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a,c</td>
+<td>Ensamblaje y apertura del canal del OMF en bombas tripartitas; identifica G199 y G407 de OprM como residuos criticos, verificados después por mutagenesis en Tsutsumi 2019.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Zgurskaya1999</td>
+<td>Zgurskaya H; Nikaido H</td>
+<td>1999</td>
+<td>Bypassing the periplasm: Reconstitution of the AcrAB multidrug efflux pump of                     Escherichia coli</td>
+<td>Proceedings of the National Academy of Sciences</td>
+<td>96:7190-7195</td>
+<td>10.1073/pnas.96.13.7190</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>Reconstitución de la bomba AcrAB evitando el periplasma; trabajo fundacional del acoplamiento entre componentes.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Zgurskaya2000</td>
+<td>Zgurskaya H; Nikaido H</td>
+<td>2000</td>
+<td>Cross-Linked Complex between Oligomeric Periplasmic Lipoprotein AcrA and the Inner-Membrane-Associated Multidrug Efflux Pump AcrB from             Escherichia coli</td>
+<td>Journal of Bacteriology</td>
+<td>182:4264-4267</td>
+<td>10.1128/jb.182.15.4264-4267.2000</td>
+<td></td>
+<td>Crossref 2026-09-11</td>
+<td>EXP</td>
+<td>a</td>
+<td>Complejo entrecruzado entre la lipoproteina periplásmica oligomerica AcrA y AcrB: primera evidencia bioquimica de que la MFP es oligomerica en el complejo.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Zgurskaya2018</td>
+<td>Zgurskaya H; Rybenkov V; Krishnamoorthy G et al.</td>
+<td>2018</td>
+<td>Trans-envelope multidrug efflux pumps of Gram-negative bacteria and their synergism with the outer membrane barrier</td>
+<td>Research in Microbiology</td>
+<td>169:351-356</td>
+<td>10.1016/j.resmic.2018.02.002</td>
+<td>29454787</td>
+<td>Crossref 2026-09-11</td>
+<td>revisión</td>
+<td>a</td>
+<td>Bombas de eflujo transenvoltura de bacterias gramnegativas y su sinergia con la barrera de la membrana externa.</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Zhong2026</td>
+<td>Zhong Z; Maimaiti T; Jackson M et al.</td>
+<td>2026</td>
+<td>A model for drug transport across two membranes of Gram-negative bacteria by an MFS tripartite assembly</td>
+<td>Nature Communications</td>
+<td>17:4039</td>
+<td>10.1038/s41467-026-70500-5</td>
+<td>41839863</td>
+<td>Crossref 2026-09-11</td>
+<td>estructura</td>
+<td>a</td>
+<td>EmrAB-TolC de la familia MFS: OMF 3 : MFP 6 : transportador 1, con la estequiometría del transportador previamente en disputa entre 1 y 2; el modelo es compuesto a partir de dos mapas segmentados.</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<h2 id="c9-elementos-marcados-por-verificar-en-este-eje"><span class="num">Secci&oacute;n 10</span>c9. Elementos marcados POR VERIFICAR en este eje</h2>
+<ol>
+<li>Evidencia mutacional primaria para <strong>T978 de AcrB (= T976 de MexB)</strong>: no localizada; la atribución al rele proviene de revisiones.</li>
+<li>Conversión de la numeración de <strong>MexK (D402, D403, R932, T969) a MexB</strong>: no calculada en esta revisión.</li>
+<li>Identidad de secuencia <strong>OprM/MtrE</strong>, necesaria para pesar la transferencia del resultado de Janganan2013 sobre independencia energetica del ensamblaje.</li>
+<li>Origen exacto del valor de <strong>483 Å²</strong> de interfaz citado en este compendio; no recalculado en esta revisión. La cifra del articulo primario es 2.992 Å² para el conjunto hexamero-trimero.</li>
+<li><strong>Brazo de palanca efectivo</strong> de un ligando en la interfaz OprM–MexA respecto del eje del ensamblaje: no calculado.</li>
+<li>Disponibilidad de los <strong>micrografos de 6IOK/6IOL en EMPIAR</strong>, requisito del reprocesamiento propuesto al final de c2.5.</li>
+<li>Discrepancia de metadatos de <strong>5NG5</strong> (6,5 Å y "apo state" en el depósito frente a 3,6 Å con MBX3132 en el articulo).</li>
+<li>Simetría del trimero RND de 5NG5, 5NIK, 5NIL, 6VEJ, 20YY, 9TG4 y 9V53: no medida en el proyecto.</li>
+</ol></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

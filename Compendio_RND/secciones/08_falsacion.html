@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eje (h) · Cómo se falsaría una inhibición de interfaz — Compendio RND</title>
+<meta name="description" content="Veinte métodos, lo que cada uno no puede distinguir, y el experimento decisivo mínimo.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo se falsaría una inhibición de interfaz">
+<meta property="og:description" content="Veinte métodos, lo que cada uno no puede distinguir, y el experimento decisivo mínimo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Cómo se falsaría una inhibición de interfaz</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#h-0-reduccion-de-alcance-declarada">h.0 Reducción de alcance declarada</a></li><li><a href="#h-1-que-se-esta-falsando-exactamente">h.1 Qué se está falsando, exactamente</a></li><li><a href="#h-2-metodos-en-celula-viva">h.2 Métodos en célula viva</a><ol><li><a href="#h-2-1-cim-por-microdilucion-en-caldo-clsi-m100">h.2.1 CIM por microdilución en caldo (CLSI M100)</a></li><li><a href="#h-2-2-tablero-de-ajedrez-y-fici">h.2.2 Tablero de ajedrez y FICI</a></li><li><a href="#h-2-3-acumulacion-y-eflujo-de-colorante-hoechst-33342-bromur">h.2.3 Acumulación y eflujo de colorante (Hoechst 33342, bromuro de etidio, roj</a></li><li><a href="#h-2-4-potencial-de-membrana-disc3-5-u-equivalente">h.2.4 Potencial de membrana (DiSC3(5) u equivalente)</a></li><li><a href="#h-2-5-citometria-de-flujo-de-acumulacion-de-colorante">h.2.5 Citometría de flujo de acumulación de colorante</a></li></ol></li><li><a href="#h-3-metodos-de-asociacion-fisica">h.3 Métodos de asociación física</a><ol><li><a href="#h-3-1-pull-down-y-co-purificacion">h.3.1 Pull-down y co-purificación</a></li><li><a href="#h-3-2-bn-page-y-electroforesis-nativa">h.3.2 BN-PAGE y electroforesis nativa</a></li><li><a href="#h-3-3-entrecruzamiento-in-vivo-dirigido-por-cisteina">h.3.3 Entrecruzamiento in vivo dirigido por cisteína</a></li><li><a href="#h-3-4-foto-entrecruzamiento-con-aminoacido-no-natural-pbpa-y">h.3.4 Foto-entrecruzamiento con aminoácido no natural (pBpa) y lectura por MS</a></li><li><a href="#h-3-5-entrecruzamiento-quimico-seguido-de-ms-xl-ms">h.3.5 Entrecruzamiento químico seguido de MS (XL-MS)</a></li></ol></li><li><a href="#h-4-metodos-geneticos">h.4 Métodos genéticos</a><ol><li><a href="#h-4-1-complementacion-de-mutantes-en-fondo-de-delecion">h.4.1 Complementación de mutantes en fondo de deleción</a></li><li><a href="#h-4-2-supresores-extragenicos">h.4.2 Supresores extragénicos</a></li><li><a href="#h-4-3-una-contradiccion-entre-la-interpretacion-funcional-y-">h.4.3 Una contradicción entre la interpretación funcional y las estructuras, q</a></li><li><a href="#h-4-4-dos-hibridos-bacterianos-bacth-y-ensayos-tipo-lexa">h.4.4 Dos híbridos bacterianos (BACTH) y ensayos tipo LexA</a></li><li><a href="#h-4-5-complementacion-de-fragmentos-de-fluorescencia-en-peri">h.4.5 Complementación de fragmentos de fluorescencia en periplasma</a></li></ol></li><li><a href="#h-5-metodos-de-afinidad">h.5 Métodos de afinidad</a><ol><li><a href="#h-5-1-mst-spr-e-itc-con-dominios-solubles">h.5.1 MST, SPR e ITC con dominios solubles</a></li><li><a href="#h-5-2-termoforesis-o-desplazamiento-termico-en-lisado">h.5.2 Termoforesis o desplazamiento térmico en lisado</a></li><li><a href="#h-5-3-fret-de-molecula-unica">h.5.3 FRET de molécula única</a></li></ol></li><li><a href="#h-6-reconstitucion-nanodiscos-y-proteoliposomas-el-ensayo-ce">h.6 Reconstitución: nanodiscos y proteoliposomas — el ensayo central</a></li><li><a href="#h-7-crio-em-del-complejo-con-peptido">h.7 Crio-EM del complejo con péptido</a></li><li><a href="#h-8-fraccionamiento-periplasmico-y-llegada-del-peptido">h.8 Fraccionamiento periplásmico y llegada del péptido</a></li><li><a href="#h-9-lo-que-un-score-de-docking-no-es">h.9 Lo que un score de docking no es</a></li><li><a href="#h-10-el-experimento-decisivo-minimo">h.10 El EXPERIMENTO DECISIVO MÍNIMO</a><ol><li><a href="#h-10-1-la-cadena-mas-corta-que-obligaria-a-creer-que-el-pept">h.10.1 La cadena más corta que obligaría a creer que el péptido inhibe el ensa</a></li><li><a href="#h-10-2-la-cadena-mas-corta-que-obligaria-a-abandonar-la-hipo">h.10.2 La cadena más corta que obligaría a ABANDONAR la hipótesis</a></li></ol></li><li><a href="#h-11-tabla-del-eje-h">h.11 Tabla del eje (h)</a></li><li><a href="#h-12-busquedas-de-este-eje-que-no-devolvieron-nada-registrad">h.12 Búsquedas de este eje que no devolvieron nada, registradas como resultado</a></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<p><strong>Proyecto:</strong> ANID-Fondecyt Regular 1260886.
+<strong>FECHA DE CORTE: 2026-09-11.</strong> Los 94 DOI citados en este archivo y en <code>tabla_metodos_validacion_experimental.csv</code> fueron resueltos por el autor de este documento contra <code>api.crossref.org</code> en esta revisión (94/94, 0 fallos). Los cuatro métodos para los que <strong>no</strong> se localizó una referencia metodológica aplicable llevan literalmente <code>[DOI NO VERIFICADO]</code> y etiqueta POR VERIFICAR, en lugar de una cita de relleno.</p>
+<p><strong>Etiquetas:</strong> EXP / EXP-IND / COMP / INF / POR VERIFICAR.</p>
+<p><strong>Convención de numeración:</strong> cada residuo con su sistema en la misma cláusula. Conversiones: MexA UniProt = PDB (madura) + 23; MexB UniProt = PDB + 0; OprM UniProt = PDB (madura) + 17. Comprobado residuo a residuo en esta revisión.</p>
+<p><strong>Convención angular:</strong> cuando se habla de "registro", el ángulo se mide con el eje definido como <strong>centroide del trímero RND → centroide del trímero OMF</strong>, sentido antihorario visto desde el lado OMF, mano derecha, y <strong>módulo 120°</strong> por la simetría C3 del OMF. Es la convención del material de partida, donde los valores medidos son 6IOK 101,86°, 6IOL 41,90°, 6TA5 101,67°, 6TA6 101,07°, 9J3D 45,38°, 9J3E 45,99°. Un péptido que altere el ensamblaje puede, en principio, cambiar el registro; cualquier afirmación de ese tipo debe declarar esta convención completa.</p>
+<p><strong>Advertencia de transferencia por analogía (repetida en cada transferencia de este archivo).</strong> Identidades medidas: MexB/AcrB 70,14 %; MexA/AcrA 59,63 %; <strong>OprM/TolC 23,06 %</strong>, y <strong>20,83 % (5 de 24) restringido a los residuos de OprM que contactan MexA</strong> (madura 190–204 y 395–412 = UniProt 207–221 y 412–429). Todo lo que en este eje venga del sistema AcrAB-TolC —que es casi todo el arsenal metodológico de interfaz— cruza a MexA–OprM por un puente de 23 % global y 21 % en la superficie exacta que se quiere atacar.</p>
+<hr />
+<h2 id="h-0-reduccion-de-alcance-declarada"><span class="num">Secci&oacute;n 1</span>h.0 Reducción de alcance declarada</h2>
+<p>Se cubren <strong>20 métodos</strong>. Quedan fuera, con su magnitud: (i) la validación <em>in vivo</em> en modelo animal, que es otra etapa y otra escala de recursos; (ii) los métodos de descubrimiento (cribado de bibliotecas, <em>phage display</em>), porque este compendio pide falsación y no descubrimiento; (iii) RMN de estado sólido y espectrometría de movilidad iónica, sobre las que no se hizo búsqueda en esta revisión y que por tanto quedan <strong>[POR VERIFICAR]</strong> en bloque; (iv) toda estimación de coste en proteína y tiempo de la tabla es una <strong>inferencia de orden de magnitud del autor de este documento (INF)</strong>, no un valor tomado de la fuente metodológica citada, y así está marcado en la tabla.</p>
+<hr />
+<h2 id="h-1-que-se-esta-falsando-exactamente"><span class="num">Secci&oacute;n 2</span>h.1 Qué se está falsando, exactamente</h2>
+<p>La hipótesis del proyecto tiene tres cláusulas encadenadas, y un experimento puede falsar cualquiera de ellas sin tocar las otras:</p>
+<ol>
+<li><strong>Cláusula de unión.</strong> El péptido se une a OprM en el sitio de la MFP.</li>
+<li><strong>Cláusula de ensamblaje.</strong> Esa unión impide que la MFP y el OMF formen el complejo.</li>
+<li><strong>Cláusula fenotípica.</strong> La falta de ensamblaje restaura la susceptibilidad antibiótica en la célula.</li>
+</ol>
+<p>El error de diseño más común y más caro es medir la cláusula 3 y concluir la 1. Una potenciación de antibiótico es compatible con al menos seis mecanismos distintos: inhibición de ensamblaje, bloqueo del poro ya ensamblado, disipación de la fuerza protón-motriz, permeabilización de la membrana externa que aumenta la entrada del antibiótico, efecto antibacteriano directo del péptido que se suma al del antibiótico, y alteración de la <strong>expresión</strong> de la bomba por estrés de envoltura (véase eje (g), §g.4 y §g.1.2). Cada método de este eje se evalúa por <strong>qué cláusula prueba y cuáles confunde</strong>.</p>
+<p>Hay además una asimetría que conviene decir de entrada: los métodos que prueban la cláusula 1 son baratos y no prueban nada sobre la célula; los que prueban la cláusula 3 son baratos y no prueban nada sobre el mecanismo; y <strong>el único método que prueba la cláusula 2 de forma directa —reconstitución con composición controlada— es el más caro en proteína después de la crio-EM</strong>. Ése es el cuello de botella real del programa, no la síntesis peptídica. INF.</p>
+<hr />
+<h2 id="h-2-metodos-en-celula-viva"><span class="num">Secci&oacute;n 3</span>h.2 Métodos en célula viva</h2>
+<h3 id="h-2-1-cim-por-microdilucion-en-caldo-clsi-m100">h.2.1 CIM por microdilución en caldo (CLSI M100)</h3>
+<p><strong>Qué mide:</strong> el desplazamiento de la CIM del antibiótico en presencia del péptido, en diluciones dobles.</p>
+<p><strong>Qué NO puede distinguir:</strong> inhibición de la bomba, permeabilización de la membrana, efecto antibacteriano directo del péptido y cambio de expresión de la bomba. Tampoco resuelve menos de un factor 2, por construcción de la escala.</p>
+<p><strong>Coste:</strong> sin proteína purificada. INF: 1–2 días por placa; un panel de 4 bombas × 4 antibióticos × 3 réplicas es una semana de trabajo de banco.</p>
+<p><strong>Controles indispensables:</strong> (i) CIM del péptido solo; (ii) la cepa <strong>Δ<em>oprM</em></strong>, donde el péptido <strong>no debe potenciar nada</strong> —es el control que convierte el ensayo en interpretable, porque si potencia igual sin OprM, lo que hace no es inhibir la bomba; (iii) péptido <em>scrambled</em> de idéntica composición de aminoácidos; (iv) <strong>polimixina B</strong> como control interno de permeabilización, porque ninguna de las bombas del proyecto la extruye (Masuda 2000, doi 10.1128/aac.44.12.3322-3327.2000, resumen consultado; EXP).</p>
+<p><strong>Nivel de prueba:</strong> necesario, nunca suficiente. Es el filtro de entrada. La referencia metodológica canónica para este tipo de ensayo aplicado a inhibidores de eflujo en <em>P. aeruginosa</em> es Lomovskaya <em>et al.</em> 2001 (doi 10.1128/aac.45.1.105-116.2001, registro únicamente; EXP).</p>
+<h3 id="h-2-2-tablero-de-ajedrez-y-fici">h.2.2 Tablero de ajedrez y FICI</h3>
+<p><strong>Qué mide:</strong> la interacción entre péptido y antibiótico en dos dimensiones de concentración, resumida en un índice fraccional.
+<strong>Qué NO puede distinguir:</strong> sinergia por inhibición de bomba de sinergia por permeabilización; además el FICI depende del rango de concentraciones elegido, de modo que dos laboratorios pueden publicar índices distintos para el mismo par.
+<strong>Coste:</strong> INF: una placa de 96 pozos por par, 2–3 días con réplicas.
+<strong>Controles:</strong> el mismo par en Δ<em>oprM</em> y en el fondo hipersusceptible; PAβN como comparador de referencia.
+<strong>Nivel de prueba:</strong> cuantifica la interacción, no el mecanismo.</p>
+<h3 id="h-2-3-acumulacion-y-eflujo-de-colorante-hoechst-33342-bromur">h.2.3 Acumulación y eflujo de colorante (Hoechst 33342, bromuro de etidio, rojo Nilo)</h3>
+<p><strong>Qué mide:</strong> actividad de eflujo en célula viva, como aumento de fluorescencia intracelular cuando el eflujo se inhibe. Las referencias metodológicas verificadas son Coldham <em>et al.</em> 2010 (doi 10.1093/jac/dkq169), Bohnert, Karamian y Nikaido 2010 para el ensayo optimizado de rojo Nilo (doi 10.1128/aac.00620-10) y Bohnert <em>et al.</em> 2011 para fenotipos de eflujo en tiempo real (doi 10.1371/journal.pone.0021196); las tres verificadas en Crossref, registro únicamente. EXP.</p>
+<p><strong>Qué NO puede distinguir:</strong> eflujo de <strong>disipación de la fuerza protón-motriz</strong>; y tampoco distingue inhibición de eflujo de un aumento de la <strong>entrada</strong> del colorante por permeabilización. Las dos confusiones son exactamente las que un péptido catiónico produce.</p>
+<p><strong>Coste:</strong> sin proteína. INF: 2–4 h por placa de lectura cinética; una semana para montar y calibrar.</p>
+<p><strong>Controles indispensables:</strong> (i) <strong>CCCP</strong> como positivo de disipación; (ii) <strong>medición del potencial de membrana en paralelo</strong>, en la misma condición y a la misma concentración de péptido (§h.2.4); (iii) y una trampa específica de este proyecto: <strong>el bromuro de etidio y la rodamina 6G son inductores de MexCD-OprJ</strong> (Morita 2001, doi 10.1111/j.1574-6968.2001.tb10794.x, resumen consultado; EXP), de modo que no deben usarse como sonda cuando esa bomba es el blanco. Usar Hoechst 33342 o rojo Nilo en ese caso.</p>
+<p><strong>Nivel de prueba:</strong> es un ensayo de <strong>actividad</strong>, no de <strong>ensamblaje</strong>. Un péptido que impida el ensamblaje y otro que tape el poro ya ensamblado dan la misma señal. Eso significa que este ensayo <strong>no puede</strong> falsar ni confirmar la cláusula 2 de §h.1. INF.</p>
+<h3 id="h-2-4-potencial-de-membrana-disc3-5-u-equivalente">h.2.4 Potencial de membrana (DiSC3(5) u equivalente)</h3>
+<p><strong>Qué mide:</strong> despolarización de la membrana interna.
+<strong>Qué NO puede distinguir:</strong> despolarización por poro de despolarización por desacoplamiento metabólico.
+<strong>Coste:</strong> medio día por serie, sin proteína.
+<strong>Controles:</strong> CCCP como positivo; el péptido <strong>a la misma concentración</strong> usada en el ensayo de colorante, no a otra.
+<strong>Nivel de prueba:</strong> control obligatorio de todo ensayo de colorante y de todo péptido catiónico. Referencias metodológicas verificadas: Boix-Lemonche, Lekka y Skerlavaj 2020 (doi 10.3390/antibiotics9020092), Benfield y Henriques 2020 sobre disrupción de membrana frente a mecanismos intracelulares en péptidos antimicrobianos (doi 10.3389/fmedt.2020.610997), y Maiden y Waters 2020 (doi 10.1371/journal.ppat.1008529), que documenta un caso real y directamente pertinente: <strong>el triclosán agota el potencial de membrana en biopelículas de <em>P. aeruginosa</em> e inhibe la actividad de los aminoglucósidos</strong>. EXP. Es la demostración de que un compuesto puede parecer un modulador de eflujo y ser un desacoplante.</p>
+<p><strong>Búsqueda negativa:</strong> la consulta <code>vh05</code> ("proton motive force membrane potential DiSC3(5) CCCP control efflux inhibitor artefact", OpenAlex, 2026-09-11) devolvió <strong>CERO resultados</strong>. Es decir, <strong>el control cruzado que este compendio exige no existe como literatura</strong>: hay que montarlo, no citarlo. Y la consulta <code>vh33</code> sobre permeabilización por PAβN como artefacto también devolvió <strong>CERO</strong>.</p>
+<h3 id="h-2-5-citometria-de-flujo-de-acumulacion-de-colorante">h.2.5 Citometría de flujo de acumulación de colorante</h3>
+<p><strong>Qué mide:</strong> la distribución de acumulación célula a célula, en lugar de la media poblacional (Whittle <em>et al.</em> 2019, doi 10.3389/fmicb.2019.02319; registro únicamente; EXP).
+<strong>Qué NO puede distinguir:</strong> una subpoblación con la bomba apagada de una subpoblación muerta o permeabilizada, si no se incluye tinción de viabilidad.
+<strong>Coste:</strong> INF: 1–2 días por experimento tras calibración.
+<strong>Controles:</strong> viabilidad simultánea; CCCP.
+<strong>Nivel de prueba:</strong> añade información que la lectura en placa promedia. Es el método que detectaría que el péptido actúa sólo sobre parte de la población, que es un resultado perfectamente posible y que en placa se vería como "efecto parcial".</p>
+<hr />
+<h2 id="h-3-metodos-de-asociacion-fisica"><span class="num">Secci&oacute;n 4</span>h.3 Métodos de asociación física</h2>
+<h3 id="h-3-1-pull-down-y-co-purificacion">h.3.1 Pull-down y co-purificación</h3>
+<p><strong>Qué mide:</strong> asociación física entre componentes <strong>en el detergente elegido</strong>.
+<strong>Qué NO puede distinguir:</strong> complejo fisiológico de coagregación en la micela, ni unión inespecífica a la resina. La literatura fundacional de este enfoque en el sistema de <em>E. coli</em> es Tikhonova y Zgurskaya 2004 (doi 10.1074/jbc.m402230200) y Touzé <em>et al.</em> 2004 (doi 10.1111/j.1365-2958.2004.04158.x); las dos verificadas, registro únicamente. EXP. <strong>Transferencia por analogía: ambas son de AcrAB-TolC, puente OprM/TolC 23,06 % global y 20,83 % en el epítopo.</strong>
+<strong>Coste:</strong> INF: miligramos de cada componente; 2–4 semanas de producción y purificación por componente.
+<strong>Controles indispensables:</strong> control sin etiqueta, control de resina, y <strong>el mismo experimento en detergente y en nanodisco en paralelo</strong>, porque el resultado depende del entorno lipídico.
+<strong>Nivel de prueba:</strong> asociación, no estequiometría ni relevancia funcional.</p>
+<h3 id="h-3-2-bn-page-y-electroforesis-nativa">h.3.2 BN-PAGE y electroforesis nativa</h3>
+<p><strong>Qué mide:</strong> presencia y tamaño aparente de complejos preformados.
+<strong>Qué NO puede distinguir:</strong> el complejo nativo de subcomplejos estabilizados por el propio gel; y no resuelve estequiometrías cercanas (3:6:3 frente a 3:6:2, por ejemplo).
+<strong>Coste:</strong> microgramos por carril a partir de material ya purificado; 1–2 días por gel. INF.
+<strong>Controles:</strong> los tres componentes por separado en el mismo gel, y un complejo al que se le quita un componente como control de migración.
+<strong>Nivel de prueba:</strong> cribado rápido de pérdida de complejo. Bien usado, es la lectura de un experimento de reconstitución (Daury <em>et al.</em> 2016, doi 10.1038/ncomms10731; registro únicamente). EXP-IND.</p>
+<h3 id="h-3-3-entrecruzamiento-in-vivo-dirigido-por-cisteina">h.3.3 Entrecruzamiento <em>in vivo</em> dirigido por cisteína</h3>
+<p>Éste es el método que produjo el único mapa de interfaz OMF–MFP que existe en la familia, y merece una descripción más larga porque es el que el proyecto debería copiar.</p>
+<p><strong>Qué mide:</strong> proximidad <strong>en la célula</strong> entre dos posiciones concretas, una en cada componente, introducidas como cisteínas.</p>
+<p><strong>Qué NO puede distinguir:</strong> proximidad de contacto funcional. Un entrecruzamiento positivo dice que dos posiciones están a distancia de enlace parte del tiempo; no dice que ese contacto sea necesario.</p>
+<p><strong>Coste:</strong> sin proteína purificada, pero exige construir la biblioteca de mutantes de cisteína. INF: 1–2 semanas por par una vez construidos; <strong>meses</strong> para construir un barrido.</p>
+<p><strong>Controles indispensables:</strong> la variante sin cisteína, y <strong>mutantes de interfaz como negativos</strong>. Los que el proyecto propone son MexA L100D y OprM G199A, G407A, R403A, <strong>todos en numeración de cadena madura = PDB</strong>, equivalentes a MexA L123 (UniProt P52477) y OprM G216, G424 y R420 (UniProt Q51487). Esta revisión comprobó que esas posiciones <strong>sólo</strong> coinciden con la secuencia en numeración madura, de modo que la numeración de este compendio es correcta.</p>
+<p><strong>Los dos precedentes, y lo que dicen exactamente:</strong></p>
+<ul>
+<li><strong>AcrA–TolC</strong> (Lobedanz <em>et al.</em> 2007, doi 10.1073/pnas.0610160104; PMID 17360572; resumen consultado). Describieron la interacción de las espirales enrolladas periplásmicas yuxtapuestas del conducto y del adaptador usando <strong>entrecruzamiento <em>in vivo</em></strong> para mapear la extensión del contacto intermolecular. El entrecruzamiento de variantes de cisteína de TolC <strong>sitio a sitio</strong> contra AcrA silvestre identificó residuos en el <strong>dominio de barril α-helicoidal inferior de TolC</strong>, formando un <strong>agrupamiento contiguo cerca de la apertura de entrada</strong> del conducto; y recíprocamente con cisteínas en AcrA. EXP. <strong>Transferencia por analogía: OprM/TolC 23,06 % global, 20,83 % en el epítopo.</strong></li>
+<li><strong>MtrC–MtrE</strong> (Janganan <em>et al.</em> 2011, doi 10.1074/jbc.m111.246595; PMID 21610073; resumen consultado). En MtrCDE de <em>N. gonorrhoeae</em>, MtrC se une con afinidad relativamente alta <strong>a MtrD y a MtrE</strong>, mientras la interacción MtrD–MtrE es débil; MtrD confiere resistencia <strong>sólo</strong> cuando se expresa con MtrE y MtrC, lo que sitúa a MtrC como puente. MtrC interactúa con un <strong>surco intraprotómero</strong> en la superficie de MtrE <strong>induciendo la apertura del canal</strong>, y los autores establecieron además que MtrC <strong>puede entrecruzarse a cisteínas colocadas en el surco INTERprotómero</strong>, en la interfaz entre subunidades de MtrE. EXP.</li>
+</ul>
+<p><strong>Consecuencia para el proyecto (INF), y es una de las más útiles de este eje:</strong> el análogo metodológicamente más cercano <strong>no es AcrAB-TolC, es MtrCDE</strong>. Identidades medidas en esta revisión: <strong>MtrE frente a OprM 43,36 % global y 38,10 % en las posiciones del epítopo de contacto</strong>, frente a 23,06 % y 20,83 % de TolC. Y, a diferencia de AcrAB-TolC, MtrCDE tiene el mapa de <strong>dos</strong> sitios de unión de la MFP en el OMF (intra e interprotómero), que es precisamente la pregunta que un diseñador de péptidos necesita responder. Si el proyecto va a copiar un protocolo de entrecruzamiento, el de Janganan 2011 cruza un puente casi dos veces más ancho que el de Lobedanz 2007.</p>
+<h3 id="h-3-4-foto-entrecruzamiento-con-aminoacido-no-natural-pbpa-y">h.3.4 Foto-entrecruzamiento con aminoácido no natural (pBpa) y lectura por MS</h3>
+<p><strong>Qué mide:</strong> proximidad <em>in vivo</em> sin necesidad de un par de cisteínas, con identificación del péptido entrecruzado por espectrometría de masas.
+<strong>Qué NO puede distinguir:</strong> contacto específico de vecindad transitoria; y la eficiencia de entrecruzamiento <strong>no</strong> es afinidad.
+<strong>Coste:</strong> INF: meses de construcción; el análisis por MS requiere servicio externo.
+<strong>Controles:</strong> posiciones control fuera de la interfaz; muestra sin irradiar.
+<strong>Nivel de prueba:</strong> es la técnica que generó los <strong>modelos integrativos</strong> de AcrA y TolC por foto-entrecruzamiento <em>in vivo</em> combinado con aprendizaje profundo, depositados como 9A2V y 9A2X (entradas verificadas en el material de partida de estructuras). Da proximidad con resolución de residuo. EXP-IND para este proyecto.</p>
+<h3 id="h-3-5-entrecruzamiento-quimico-seguido-de-ms-xl-ms">h.3.5 Entrecruzamiento químico seguido de MS (XL-MS)</h3>
+<p><strong>Qué mide:</strong> una red de distancias entre lisinas o carboxilos de todo el complejo en una sola medición.
+<strong>Qué NO puede distinguir:</strong> el estado ensamblado del desensamblado si ambos coexisten; y los brazos largos de los reactivos toleran varias geometrías.
+<strong>Coste:</strong> decenas de microgramos de complejo; 1–2 semanas más el tiempo de instrumentación. INF.
+<strong>Controles:</strong> complejo al que se le quita un componente; reactivo sin muestra.
+<strong>Nivel de prueba:</strong> excelente para <strong>falsar</strong> una arquitectura propuesta, pobre para afinar un residuo. Es decir: útil para decir "el péptido rompió la topología", inútil para decir "el péptido ocupa el residuo 403".</p>
+<hr />
+<h2 id="h-4-metodos-geneticos"><span class="num">Secci&oacute;n 5</span>h.4 Métodos genéticos</h2>
+<h3 id="h-4-1-complementacion-de-mutantes-en-fondo-de-delecion">h.4.1 Complementación de mutantes en fondo de deleción</h3>
+<p><strong>Qué mide:</strong> el requerimiento funcional del residuo mutado para la resistencia.
+<strong>Qué NO puede distinguir:</strong> efecto sobre el <strong>plegamiento o la estabilidad</strong> de efecto sobre la <strong>interfaz</strong>. Ésta es la confusión que invalida más resultados de este tipo.
+<strong>Coste:</strong> sin proteína purificada. INF: 3–6 semanas por serie con clonación y CIM.
+<strong>Control indispensable, no negociable:</strong> comprobar por inmunodetección el <strong>nivel</strong> de cada mutante y su <strong>localización subcelular</strong>. Un mutante que no se acumula, o que no llega a la membrana, no informa de la interfaz. Nehme y Poole 2004 lo hicieron explícitamente: seleccionaron mutaciones "que comprometen la contribución de MexA a la resistencia <strong>pero producen niveles de MexA de tipo silvestre</strong>" (doi 10.1128/jb.186.10.2973-2983.2004; resumen consultado). EXP. Ése es el estándar.
+<strong>Nivel de prueba:</strong> es la única vía que asigna función a un residuo <strong>en la célula</strong>, y en MexAB-OprM es la que produjo toda la evidencia de interfaz disponible.</p>
+<h3 id="h-4-2-supresores-extragenicos">h.4.2 Supresores extragénicos</h3>
+<p><strong>Qué mide:</strong> pares de residuos funcionalmente acoplados <strong>entre dos componentes distintos</strong>.
+<strong>Qué NO puede distinguir:</strong> supresión por contacto directo de supresión alostérica o por reequilibrio conformacional. Esta distinción no es teórica en este sistema; véase §h.4.3.
+<strong>Coste:</strong> sin proteína. INF: 2–4 meses por selección, más secuenciación.
+<strong>Controles:</strong> secuenciar el genoma completo del supresor —un supresor puede estar en cualquier parte— y comprobar que no cambia el nivel de expresión.
+<strong>Nivel de prueba:</strong> <strong>es la evidencia más fuerte que existe hoy a favor de la hipótesis del proyecto.</strong> Nehme y Poole 2007 (doi 10.1128/jb.00718-07; resumen consultado): la hipersusceptibilidad causada por <strong>V129M en la horquilla α de MexA, implicada en la interacción con OprM, se suprime por T198I y F439I en el barril α-helicoidal periplásmico de OprM</strong>. EXP.</p>
+<p>Y aquí entra una medición de esta revisión que cambia la lectura de ese resultado. Comprobando residuo a residuo contra las secuencias de UniProt descargadas hoy, <strong>Nehme 2004 y 2007 usan numeración de precursor, que coincide con UniProt</strong> (las posiciones 68, 72, 91, 108, 110, 129, 66 y 259 de P52477 son P, G, L, A, L, V, V, V; leídas como madura no coincide ninguna). Por lo tanto:</p>
+<ul>
+<li><strong>MexA V129 (UniProt P52477) = V106 (cadena madura, PDB)</strong>, y <strong>106 está dentro</strong> del conjunto de 12 residuos de MexA que contactan OprM medido sobre 6IOK {96, 97, 99, 100, 103–110, numeración madura}. La genética y la estructura coinciden sobre el mismo residuo. Es el mejor argumento disponible para "hay puntos calientes de interfaz".</li>
+<li><strong>OprM T198 (UniProt) = T181 (madura)</strong> y <strong>F439 (UniProt) = F422 (madura)</strong>, y <strong>ninguno de los dos pertenece</strong> al conjunto de 24 contactos medido. Los supresores del lado OMF están en el barril periplásmico pero <strong>fuera</strong> de la superficie de contacto a menos de 5 Å. Su efecto es conformacional, no la restauración de un contacto. INF sobre EXP.</li>
+</ul>
+<p><strong>Lo que esto significa para el diseño del péptido (INF):</strong> la evidencia genética sostiene que el <strong>lado MexA</strong> de la interfaz tiene un residuo caliente verificado y estructuralmente localizado; <strong>no</strong> sostiene lo mismo del lado OprM, donde los residuos con evidencia genética no son residuos de contacto. Como el péptido se diseña para unirse a OprM, ésa es justamente la mitad de la interfaz peor respaldada genéticamente.</p>
+<h3 id="h-4-3-una-contradiccion-entre-la-interpretacion-funcional-y-">h.4.3 Una contradicción entre la interpretación funcional y las estructuras, que hay que reportar</h3>
+<p><strong>Lo que dice Nehme 2007:</strong> los supresores de MexA "también restauraron la resistencia en <em>P. aeruginosa</em> que expresa proteínas OprM con mutaciones en la punta proximal (periplásmica) de OprM, <strong>que se predice que interactúa con MexB</strong>".</p>
+<p><strong>Lo que dice la medición estructural del material de partida:</strong> en 6IOK, con contactos de átomo pesado a menos de 5 Å y la convención canónica de cadenas, los contactos <strong>OprM–MexB son CERO</strong>. No hay ni uno.</p>
+<p><strong>Lo mismo ocurre en el sistema de <em>E. coli</em>:</strong> Weeks, Bavro y Misra 2014 (doi 10.1111/mmi.12508; resumen consultado) investigaron las horquillas β de los subdominios DN y DC de AcrB <strong>"que se presume se acoplan con TolC"</strong>, y encontraron que las del DN son más críticas para la estabilidad y actividad del complejo, y que el fallo de acoplamiento del mutante de deleción del DN se <strong>revierte por alteraciones compensatorias en los dominios lipoilo y de barril β de AcrA</strong>. EXP.</p>
+<p><strong>Cómo se dirime.</strong> Las dos fuentes son experimentales y buenas, y no se contradicen en los hechos, sino en el <strong>modelo</strong>. Los experimentos funcionales de 2007 y 2014 detectan un <strong>acoplamiento funcional</strong> RND↔OMF; las estructuras de 2019–2020 muestran que ese acoplamiento <strong>no es un contacto directo</strong>: está mediado por la MFP. La estructura tiene mejor evidencia sobre la existencia o no de un contacto físico, porque es la observación directa de la geometría; el experimento funcional tiene mejor evidencia sobre el acoplamiento, porque mide función. La resolución honesta es: <strong>RND y OMF están funcionalmente acoplados sin tocarse, a través de la MFP</strong>. Y el corolpráctico, que es el que importa para el presupuesto: <strong>el propio Weeks 2014 muestra que alteraciones en AcrA revierten un defecto de acoplamiento</strong>, lo que significa que la MFP puede compensar perturbaciones de la interfaz. Un péptido que ocupe parcialmente el sitio puede ser compensado por la MFP. Eso baja la probabilidad <em>a priori</em> de que una ocupación parcial produzca fenotipo. INF.</p>
+<h3 id="h-4-4-dos-hibridos-bacterianos-bacth-y-ensayos-tipo-lexa">h.4.4 Dos híbridos bacterianos (BACTH) y ensayos tipo LexA</h3>
+<p><strong>Qué mide:</strong> interacción entre dos proteínas o dominios en el <strong>citoplasma</strong> de <em>E. coli</em> (Karimova <em>et al.</em> 1998, doi 10.1073/pnas.95.10.5752; registro únicamente; EXP).
+<strong>Qué NO puede distinguir:</strong> no sirve para dominios periplásmicos en su topología nativa, y no distingue interacción directa de interacción mediada por un tercer componente endógeno.
+<strong>Coste:</strong> INF: 3–4 semanas por par.
+<strong>Controles:</strong> pares no interactuantes de la misma colección; comprobación de expresión de las dos fusiones.
+<strong>Nivel de prueba:</strong> cribado de interacción, no de interfaz. En este sistema se usó para la multimerización de MexA (Nehme 2004) y para la interacción MexZ–ArmZ (Hay 2013, doi 10.1371/journal.pone.0056858). EXP-IND.</p>
+<h3 id="h-4-5-complementacion-de-fragmentos-de-fluorescencia-en-peri">h.4.5 Complementación de fragmentos de fluorescencia en periplasma</h3>
+<p><strong>Qué mide:</strong> proximidad estable de dos componentes <em>in vivo</em> con lectura de fluorescencia.
+<strong>Qué NO puede distinguir:</strong> proximidad de complejo funcional; y la reconstitución del fluoróforo es prácticamente <strong>irreversible</strong>, de modo que captura encuentros transitorios como si fueran complejos estables — un problema grave en un sistema donde el ensamblaje es dinámico.
+<strong>Coste:</strong> INF: 1–2 meses de construcción por par.
+<strong>Controles:</strong> fusiones con un componente mutado en la interfaz; control de plegamiento del fragmento en periplasma.
+<strong>Nivel de prueba:</strong> útil para cribar pérdida de proximidad en presencia del péptido; la irreversibilidad limita su uso cuantitativo.
+<strong><code>[DOI NO VERIFICADO]</code></strong>: la consulta <code>vh12</code> devolvió 363 resultados pero <strong>ninguno</strong> de split-GFP periplásmico aplicado a bombas RND. <strong>POR VERIFICAR.</strong> No se cita una referencia de relleno.</p>
+<hr />
+<h2 id="h-5-metodos-de-afinidad"><span class="num">Secci&oacute;n 6</span>h.5 Métodos de afinidad</h2>
+<h3 id="h-5-1-mst-spr-e-itc-con-dominios-solubles">h.5.1 MST, SPR e ITC con dominios solubles</h3>
+<p><strong>Qué mide:</strong> la afinidad del péptido por el dominio soluble de OprM, o por MexA. A diferencia de un score de docking, <strong>un Kd medido sí es una constante termodinámica</strong> y sí se convierte en ΔG°.</p>
+<p><strong>Qué NO puede distinguir:</strong> afinidad por el <strong>dominio aislado</strong> de relevancia <strong>en el complejo completo</strong>. Y aquí hay una objeción medida, no teórica, que debe aparecer en el prerregistro del experimento: según las mediciones previas del proyecto del propio proyecto, superponiendo el barril de membrana de OprM y midiendo el desplazamiento de los residuos que contactan MexA, <strong>la punta periplásmica del trímero aislado 3D5K está a 6,98–7,72 Å de RMSD (desviación máxima 12,07 Å) de la conformación unida</strong>, mientras que el control interno dentro del ensamblaje está a 0,34–0,37 Å y una réplica de otro laboratorio (6TA5) a 0,65–0,71 Å. <strong>Las cinco estructuras aisladas de OprM están cerradas.</strong> Un dominio periplásmico soluble de OprM presentado a un péptido está, por tanto, en una conformación que <strong>no es</strong> la que el péptido debe reconocer. Un Kd medido sobre ese constructo puede ser un número correcto de una interacción irrelevante.</p>
+<p><strong>Coste:</strong> INF: SPR y MST, decenas de microgramos por serie; ITC, miligramos; 1–2 semanas por serie tras purificar.
+<strong>Controles indispensables:</strong> péptido <em>scrambled</em> de idéntica composición; <strong>competencia con MexA soluble</strong>, que es el control que convierte una afinidad en una afinidad por el sitio correcto; en SPR, superficie sin ligando y control de unión inespecífica.
+<strong>Nivel de prueba:</strong> prueba la cláusula 1 de §h.1 y nada más. La referencia de afinidad MFP–OMF verificada en la familia es Janganan 2011 (doi 10.1074/jbc.m111.246595), y la revisión específica del papel de OprM en los ensamblajes es Phan, Picard y Broutin 2015 (doi 10.3390/antibiotics4040544). EXP.</p>
+<h3 id="h-5-2-termoforesis-o-desplazamiento-termico-en-lisado">h.5.2 Termoforesis o desplazamiento térmico en lisado</h3>
+<p><strong>Qué mide:</strong> unión en un entorno complejo sin purificar el blanco.
+<strong>Qué NO puede distinguir:</strong> unión al blanco de unión a otra proteína del lisado, sin un control de depleción.
+<strong>Coste:</strong> microlitros de lisado; una semana. INF.
+<strong>Control:</strong> lisado de la cepa <strong>Δ<em>oprM</em></strong> como control de especificidad — el mismo truco que en la CIM, y el más limpio disponible.
+<strong><code>[DOI NO VERIFICADO]</code></strong>: no se localizó referencia metodológica de MST en lisado aplicada a OprM (consulta <code>vh14</code>, 1586 resultados, ninguno aplicable). <strong>POR VERIFICAR.</strong></p>
+<h3 id="h-5-3-fret-de-molecula-unica">h.5.3 FRET de molécula única</h3>
+<p><strong>Qué mide:</strong> dinámica de asociación y disociación en tiempo real de un par marcado. Es el único método que mediría directamente si el péptido <strong>acelera la disociación</strong> en lugar de impedir la asociación, que son dos mecanismos distintos con consecuencias distintas para la dosificación.
+<strong>Qué NO puede distinguir:</strong> disociación de un cambio conformacional que aleje los fluoróforos; y el marcaje puede alterar la propia interfaz.
+<strong>Coste:</strong> nanogramos de material marcado pero <strong>meses</strong> de puesta a punto e instrumentación especializada. INF.
+<strong>Controles:</strong> par marcado en posiciones fuera de la interfaz; construcción sin aceptor.
+<strong><code>[DOI NO VERIFICADO]</code></strong>: la consulta <code>vh13</code> sobre FRET de molécula única aplicado a ensamblaje de bombas de eflujo no devolvió trabajo aplicable. <strong>POR VERIFICAR.</strong> No existe implementación publicada localizada para MexAB-OprM.</p>
+<hr />
+<h2 id="h-6-reconstitucion-nanodiscos-y-proteoliposomas-el-ensayo-ce"><span class="num">Secci&oacute;n 7</span>h.6 Reconstitución: nanodiscos y proteoliposomas — el ensayo central</h2>
+<p><strong>Qué mide:</strong> ensamblaje <em>in vitro</em> con <strong>composición y estequiometría controladas</strong>, y transporte en vesícula. Es el único formato donde "ensamblaje" es la variable medida y no una inferencia.</p>
+<p><strong>Los tres precedentes verificados, todos del sistema MexAB-OprM y todos del mismo entorno de trabajo (Broutin/Picard y colaboradores):</strong></p>
+<ul>
+<li>Ntsogo Enguéné <em>et al.</em> 2015 (doi 10.3389/fmicb.2015.00541): ensayo de afinidad con <strong>proteoliposomas biotinilados</strong> para investigar el ensamblaje de MexA-MexB-OprM. EXP.</li>
+<li>Verchère <em>et al.</em> 2015 (doi 10.1038/ncomms7890): <strong>actividad de transporte <em>in vitro</em> de la bomba MexAB-OprM completamente ensamblada</strong>. EXP.</li>
+<li>Daury <em>et al.</em> 2016 (doi 10.1038/ncomms10731): <strong>ensamblaje tripartito de bombas RND</strong> por reconstitución. EXP.</li>
+</ul>
+<p>Los tres verificados en Crossref en esta revisión (registro únicamente; los resúmenes no se consultaron para estos tres, y por tanto la descripción de arriba se limita a lo que dice el título y no se cita como si se hubiera leído el texto completo).</p>
+<p><strong>Qué NO puede distinguir:</strong> el ensamblaje espontáneo del inducido por la geometría de la vesícula; y el transporte reconstituido no reproduce la fuerza protón-motriz fisiológica. Un resultado de reconstitución no autoriza a afirmar tasas de transporte celulares.</p>
+<p><strong>Coste:</strong> INF: <strong>miligramos de cada componente</strong> y semanas de optimización por condición. Es el segundo método más caro en proteína, después de la crio-EM. Conviene compararlo con el coste de la síntesis peptídica: el péptido es, con diferencia, la parte barata.</p>
+<p><strong>Controles indispensables:</strong> reconstitución <strong>sin un componente</strong> (sin MexA; sin OprM) como negativo de ensamblaje, y la misma preparación sin péptido. Sin el negativo por omisión de componente, una banda o una señal de ensamblaje no significa nada.</p>
+<p><strong>Nivel de prueba:</strong> es el ensayo que prueba la <strong>cláusula 2</strong> de §h.1, y el único de esta lista que lo hace sin inferencia. INF.</p>
+<p><strong>Advertencia derivada del material de partida(EXP):</strong> la elección del cuerpo de OprM no es neutra. Si el ensayo se monta con OprM purificada a partir de la estructura aislada, se parte de la conformación cerrada (§h.5.1). Si se monta con OprM extraída del complejo, se parte de la conformación unida y el ensayo deja de ser un ensayo de ensamblaje <strong>de novo</strong>. Hay que declarar cuál de las dos se usa.</p>
+<hr />
+<h2 id="h-7-crio-em-del-complejo-con-peptido"><span class="num">Secci&oacute;n 8</span>h.7 Crio-EM del complejo con péptido</h2>
+<p><strong>Qué mide:</strong> ocupación estructural directa del sitio, y su efecto sobre la conformación y sobre el <strong>registro</strong> (convención angular en el encabezado de este archivo).
+<strong>Qué NO puede distinguir:</strong> el complejo mayoritario de la clase seleccionada por el procesamiento; y una ocupación parcial puede promediarse hasta desaparecer en densidad débil. Una ausencia de densidad de péptido <strong>no</strong> es una ausencia de péptido.
+<strong>Coste:</strong> INF: cientos de microgramos de complejo purificado por preparación, semanas de tiempo de microscopio, meses de procesamiento.
+<strong>Controles:</strong> el mismo complejo sin péptido procesado en paralelo con el mismo flujo de trabajo, y clasificación sin máscara en el sitio de interés para no imponer el resultado.
+<strong>Nivel de prueba:</strong> la prueba fuerte. Es la única que muestra el péptido en el sitio.</p>
+<p><strong>Lo que ya existe y el proyecto puede usar como precedente (verificado en el material de partida):</strong> hay <strong>dos</strong> complejos tripartitos <strong>completos</strong> con inhibidor unido: <strong>9J3E</strong> (A1EAN ×3 = 1-(naftalen-1-ilmetil)piperazina, NMP) y <strong>5NG5</strong> (5QF ×3 = piranopiridina de la clase MBX). Existe además <strong>3W9J</strong>, MexB con el inhibidor piridopirimidínico P9D. Y una advertencia de lectura verificada en el material de partida: <strong>6IIA contiene AV0, que es lauril maltósido neopentil glicol, un detergente, no un inhibidor</strong>, y <strong>20YY contiene triclosán en MexJK como sustrato, no como inhibidor</strong>. Confundir un detergente o un sustrato con un inhibidor en una tabla de precedentes es un error fácil y silencioso.</p>
+<p><strong>Y una advertencia de replicación que aplica a toda interpretación estructural:</strong> <strong>6IOK y 6IOL son dos estados del mismo sistema</strong>, relacionados por una rotación de 59,9° de OprM sobre el eje del ensamblaje; <strong>6TA5 y 6TA6 son réplicas del estado tipo A</strong>, de otro laboratorio y en nanodisco. Ninguna combinación de las cuatro es "cuatro observaciones independientes": n_estados = 2. Tampoco son observaciones independientes los <strong>3 protómeros de OprM</strong> ni las <strong>6 copias de MexA</strong> de un mismo ensamblaje. Si un análisis del efecto del péptido cuenta protómeros como réplicas, su n está inflado por un factor 3 o 6.</p>
+<p><strong>Nota de calidad local, medida en el material de partida (EXP):</strong> el cociente entre el factor B medio de la región de interfaz y el del componente completo es 0,65 (OprM) y 0,64 (MexA) en 6TA5, y 0,14 y 0,20 en 6IOK (escalas propias de cada depósito, sólo los cocientes son comparables). Es decir, <strong>la región de interfaz está mejor ordenada que la media de su propio componente en los dos depósitos</strong>. Eso es una buena noticia para un experimento de crio-EM con péptido: el sitio no es una región desordenada donde la densidad de un ligando se perdería por fuerza.</p>
+<hr />
+<h2 id="h-8-fraccionamiento-periplasmico-y-llegada-del-peptido"><span class="num">Secci&oacute;n 9</span>h.8 Fraccionamiento periplásmico y llegada del péptido</h2>
+<p><strong>Qué mide:</strong> si el péptido llega al periplasma y <strong>en qué forma</strong>.
+<strong>Qué NO puede distinguir:</strong> acumulación de actividad; y —el punto que este compendio subraya y que es correcto— la <strong>señal total no distingue el péptido intacto de sus productos de degradación</strong>.
+<strong>Coste:</strong> sin proteína. INF: 1–2 semanas por serie más el tiempo del servicio de LC-MS.
+<strong>Controles indispensables:</strong> cuantificar el <strong>péptido INTACTO por LC-MS con estándar interno marcado isotópicamente</strong>, no la señal total ni la fluorescencia de una etiqueta; y un marcador soluble de citoplasma para descartar que la señal periplásmica venga de lisis.
+<strong>Nivel de prueba:</strong> es una <strong>condición necesaria de todo el programa</strong>. Si el péptido no llega intacto al periplasma, ninguna medida de afinidad <em>in vitro</em> predice el fenotipo, y ningún resultado negativo de CIM falsa la hipótesis: sólo falsa la entrega.
+<strong><code>[DOI NO VERIFICADO]</code></strong>: la consulta <code>vh18</code> (40 resultados) y <code>vh35</code>/<code>vh36</code> no devolvieron una referencia metodológica de cuantificación de péptido intacto en periplasma de <em>P. aeruginosa</em>. <strong>POR VERIFICAR.</strong> El método hay que adaptarlo de proteómica periplásmica general.</p>
+<p><strong>Consecuencia de orden (INF):</strong> este ensayo debería ir <strong>antes</strong> de cualquier ronda de optimización de afinidad, no después. Es el más barato de los que pueden matar el programa entero.</p>
+<hr />
+<h2 id="h-9-lo-que-un-score-de-docking-no-es"><span class="num">Secci&oacute;n 10</span>h.9 Lo que un score de docking no es</h2>
+<p>Un score de docking, un ΔΔG predicho y un valor de MM/PBSA <strong>no son energías libres de unión</strong>. No se convierten a Kd, no se comparan entre programas, y la diferencia entre dos scores de dos programas distintos no es una diferencia de afinidad. Un score sirve para <strong>ordenar</strong> candidatos dentro de una misma ejecución del mismo programa con el mismo protocolo, y para nada más.</p>
+<p>En la literatura verificada para este eje, la revisión de Athar <em>et al.</em> 2023 sobre lo aprendido de los estudios computacionales en bombas tripartitas RND (doi 10.1099/mic.0.001307; registro únicamente) es el lugar donde el proyecto debe apoyar sus afirmaciones computacionales, y conviene leerla con esta regla en la mano: <strong>si una fuente convierte un score o un MM/PBSA en una constante de disociación, hay que citarla y señalar el problema, no reproducir la conversión.</strong> Las únicas cantidades de esta lista que son energías libres de unión son las que salen de <strong>ITC, SPR y MST</strong> (§h.5.1), y aún ésas se refieren al constructo medido, que en el caso de OprM está en conformación cerrada.</p>
+<hr />
+<h2 id="h-10-el-experimento-decisivo-minimo"><span class="num">Secci&oacute;n 11</span>h.10 El EXPERIMENTO DECISIVO MÍNIMO</h2>
+<p>Las dos cadenas siguientes están escritas como <strong>resultados concretos con su control</strong>, no como intenciones. Cada elemento es una observación que puede salir o no salir.</p>
+<h3 id="h-10-1-la-cadena-mas-corta-que-obligaria-a-creer-que-el-pept">h.10.1 La cadena más corta que obligaría a creer que el péptido inhibe el ensamblaje</h3>
+<ol>
+<li><strong>El péptido intacto se detecta en la fracción periplásmica por LC-MS con estándar interno marcado, a concentración igual o mayor que la concentración a la que se observa efecto en CIM, y la fracción no muestra el marcador soluble de citoplasma</strong> (control: cepa tratada con péptido <em>scrambled</em>, que debe dar la misma recuperación de péptido intacto; y control de lisis).</li>
+<li><strong>El péptido reduce al menos 4 veces la CIM del marcador específico de la bomba blanco en el fondo que la expresa —aztreonam para MexAB-OprM o tobramicina para MexXY-OprM— y NO cambia la CIM en la cepa Δ<em>oprM</em></strong> (control: péptido solo, cuya CIM propia debe ser al menos 8 veces superior a la concentración usada; y polimixina B, cuya CIM no debe cambiar, porque ninguna de las bombas la extruye).</li>
+<li><strong>El péptido <em>scrambled</em> de idéntica composición no reproduce ninguno de los dos efectos anteriores</strong> (control: mismo lote de síntesis, misma pureza por HPLC, misma concentración medida por absorbancia, no por peso).</li>
+<li><strong>El potencial de membrana medido con DiSC3(5) en la misma condición y a la misma concentración no difiere del control sin péptido, mientras CCCP sí lo despolariza</strong> (control positivo: CCCP; este resultado es el que elimina el mecanismo de desacoplamiento).</li>
+<li><strong>La expresión de <code>mexB</code>, <code>mexD</code>, <code>mexF</code> y <code>mexY</code> por RT-qPCR no aumenta con el péptido respecto del control sin péptido</strong> (control: el <em>scrambled</em> medido en el mismo ensayo; este resultado es el que elimina el mecanismo regulatorio y la compensación cruzada como explicación).</li>
+<li><strong>En reconstitución, la preparación con los tres componentes más péptido muestra menos complejo ensamblado que la preparación con los tres componentes sin péptido, por BN-PAGE o por el ensayo de afinidad con proteoliposomas</strong> (controles: reconstitución sin MexA y reconstitución sin OprM, las dos sin complejo; y la misma preparación con <em>scrambled</em>, con complejo).</li>
+<li><strong>El péptido se une al dominio periplásmico de OprM por SPR o MST con un Kd medido, y MexA soluble compite por esa unión desplazando la curva</strong> (controles: <em>scrambled</em>, sin unión medible; superficie sin ligando; y la declaración explícita de que el constructo de OprM está en conformación cerrada, con 6,98–7,72 Å de RMSD en la punta de contacto respecto de la conformación unida).</li>
+<li><strong>Los mutantes de interfaz OprM G199A, G407A y R403A (numeración de cadena madura = PDB; UniProt G216, G424, R420) pierden la unión del péptido en el mismo ensayo de §7, y su nivel de proteína y su localización de membrana son indistinguibles del silvestre por inmunodetección y fraccionamiento</strong> (control: un mutante de superficie fuera de la interfaz, que debe conservar la unión).</li>
+</ol>
+<p>Los ocho elementos son ejecutables con lo descrito en §h.2 a §h.6. <strong>Si los ocho salen, la conclusión "el péptido inhibe el ensamblaje" es obligatoria</strong> salvo una objeción que el propio compendio debe anticipar: nada de esto excluye que el péptido bloquee el poro <strong>ya ensamblado</strong> en lugar de impedir el ensamblaje. Sólo el elemento 6 discrimina eso, y lo hace porque parte de componentes separados. Por eso el elemento 6 <strong>no es opcional</strong>, aunque sea el más caro en proteína de la lista.</p>
+<p>Un noveno elemento haría la cadena incontestable y por eso se escribe aparte, con su costo: <strong>crio-EM del complejo tripartito con densidad de péptido asignable en el sitio de contacto de MexA, con el mismo complejo sin péptido procesado en paralelo</strong>. Es la prueba fuerte y hay dos precedentes de complejo completo con ligando (9J3E, 5NG5). No pertenece al mínimo porque el mínimo tiene que ser ejecutable en el plazo del proyecto.</p>
+<h3 id="h-10-2-la-cadena-mas-corta-que-obligaria-a-abandonar-la-hipo">h.10.2 La cadena más corta que obligaría a ABANDONAR la hipótesis</h3>
+<p>Cada uno de los tres bloques siguientes es, por sí solo, suficiente para abandonar. No hay que esperar a los tres.</p>
+<ol>
+<li><strong>El péptido intacto no se detecta en la fracción periplásmica por LC-MS con estándar interno marcado, a ninguna de las concentraciones ensayadas hasta el límite de solubilidad o de toxicidad, y el control de recuperación con péptido añadido a la fracción sí se detecta</strong> (es decir: el método funciona y el péptido no llega). Consecuencia: la hipótesis de interfaz no se falsa, pero la estrategia peptídica sí, y <strong>el proyecto debe cambiar de vehículo antes de gastar en diseño</strong>.</li>
+<li><strong>El péptido reduce la CIM del antibiótico marcador en la misma magnitud en el silvestre y en la cepa Δ<em>oprM</em>, y/o despolariza la membrana en DiSC3(5) a la concentración a la que actúa, y/o potencia polimixina B</strong> (controles: CCCP como positivo de despolarización; <em>scrambled</em>, que si reproduce el efecto lo confirma). Consecuencia: el efecto observado no es inhibición de bomba, es permeabilización o desacoplamiento, y <strong>cualquier resultado positivo previo de CIM queda explicado sin la hipótesis</strong>.</li>
+<li><strong>En reconstitución, el péptido a saturación no reduce la cantidad de complejo ensamblado, mientras los controles por omisión de componente sí muestran ausencia de complejo y una perturbación positiva de referencia sí lo reduce</strong> (control indispensable: el mutante de interfaz como perturbación positiva; sin él, un resultado negativo puede ser un ensayo insensible y no una hipótesis falsa). Consecuencia: la unión, si existe, no impide el ensamblaje, y la cláusula 2 de §h.1 queda falsada aunque las cláusulas 1 y 3 sigan en pie.</li>
+</ol>
+<p>Y un cuarto resultado, que no falsa la hipótesis general pero <strong>sí falsa el alcance prometido</strong> y por eso debe estar en la lista: <strong>el péptido cumple la cadena de §h.10.1 para MexAB-OprM y MexXY-OprM y no produce ningún efecto en fondos que expresan MexCD-OprJ y MexEF-OprN</strong>, con los marcadores y los fondos de deleción correspondientes. Consecuencia: el argumento de "un péptido, cuatro bombas" se cae y hay que reescribirlo a dos bombas. Esta posibilidad no es remota: la identidad medida del epítopo de contacto de MexA es 50,00 % en MexX y <strong>33,33 % en MexE</strong>, y la del epítopo de OprM es 58,33 % en OprJ y <strong>33,33 % en OprN</strong>; además no existe evidencia publicada del emparejamiento forzado MexCD-OprM (consulta <code>vn01</code>, 2026-09-11, 2 resultados, ninguno pertinente).</p>
+<hr />
+<h2 id="h-11-tabla-del-eje-h"><span class="num">Secci&oacute;n 12</span>h.11 Tabla del eje (h)</h2>
+<p>Misma estructura de columnas que <code>tabla_metodos_validacion_experimental.csv</code>. Recordatorio: la columna de coste es <strong>INF</strong>, una inferencia de orden de magnitud del autor de este documento, no un valor tomado de la fuente metodológica.</p>
+<table class="data">
+<thead>
+<tr>
+<th>método</th>
+<th>que_mide</th>
+<th>que_no_puede_distinguir</th>
+<th>coste_proteina_y_tiempo</th>
+<th>control_indispensable</th>
+<th>nivel_de_prueba_que_aporta</th>
+<th>referencia_metodologica_doi</th>
+<th>etiqueta_evidencia</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CIM por microdilución en caldo (CLSI M100)</td>
+<td>Potenciación del antibiotico por el peptido, como desplazamiento de la CIM en diluciones dobles</td>
+<td>No distingue inhibición de la bomba de permeabilización de membrana ni de efecto antibacteriano directo del peptido; la escala en diluciones dobles no resuelve menos de 2x</td>
+<td>Sin proteína purificada. INF: 1-2 dias por placa, semana de trabajo para un panel de 4 bombas x 4 antibioticos x 3 replicas</td>
+<td>Peptido solo (CIM propia) y cepa delta-oprM, donde el peptido NO debe potenciar nada; además peptido scrambled de identica composición</td>
+<td>Necesaria pero no suficiente: es el filtro de entrada, nunca la prueba de mecanismo</td>
+<td>10.1128/AAC.45.1.105-116.2001; 10.1128/AAC.44.12.3322-3327.2000</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Tablero de ajedrez y FICI</td>
+<td>Sinergia o antagonismo entre peptido y antibiotico en dos dimensiones de concentración</td>
+<td>No distingue sinergia por inhibición de bomba de sinergia por permeabilización; el FICI depende del rango de concentraciones elegido</td>
+<td>Sin proteína. INF: 1 placa de 96 pozos por par, 2-3 dias con replicas</td>
+<td>El mismo par en delta-oprM y en el fondo hipersusceptible; PAbetaN como comparador de referencia</td>
+<td>Cuantifica la interacción, no el mecanismo</td>
+<td>10.1128/AAC.45.1.105-116.2001</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Acumulación o eflujo de colorante (Hoechst 33342, bromuro de etidio, rojo Nilo)</td>
+<td>Actividad de eflujo en celula viva por aumento de fluorescencia intracelular al inhibir</td>
+<td>No distingue inhibición de eflujo de disipación de la fuerza proton-motriz ni de aumento de permeabilidad de entrada del colorante</td>
+<td>Sin proteína. INF: 2-4 h por placa de lectura cinetica; 1 semana para montar y calibrar el ensayo</td>
+<td>CCCP como positivo de disipación Y medición del potencial de membrana en paralelo (por ejemplo DiSC3(5)); además el bromuro de etidio y la rodamina 6G son INDUCTORES de MexCD-OprJ y no deben usarse como sonda cuando esa bomba es el blanco</td>
+<td>Ensayo de actividad, no de ensamblaje: un peptido que impida el ensamblaje y otro que bloquee el poro dan la misma senal</td>
+<td>10.1093/jac/dkq169; 10.1128/AAC.00620-10; 10.1371/journal.pone.0021196; 10.1111/j.1574-6968.2001.tb10794.x</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Potencial de membrana (DiSC3(5) u equivalente)</td>
+<td>Despolarización de la membrana interna</td>
+<td>No distingue despolarización por poro de despolarización por desacoplamiento metabolico</td>
+<td>Sin proteína. INF: medio dia por serie</td>
+<td>CCCP como positivo; el peptido a la misma concentración usada en el ensayo de colorante, no a otra</td>
+<td>Control obligatorio de todo ensayo de colorante y de todo peptido cationico: sin el, la potenciación observada no es interpretable</td>
+<td>10.3390/antibiotics9020092; 10.1371/journal.ppat.1008529; 10.3389/fmedt.2020.610997</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Citometria de flujo de acumulación de colorante</td>
+<td>Distribución de acumulación celula a celula en lugar de la media poblacional</td>
+<td>No distingue subpoblación con bomba apagada de subpoblación muerta o permeabilizada sin tinción de viabilidad</td>
+<td>Sin proteína. INF: 1-2 dias por experimento con calibración previa</td>
+<td>Tinción de viabilidad simultanea; control CCCP</td>
+<td>Detecta heterogeneidad que la lectura en placa promedia; util para descubrir que el peptido actua solo sobre parte de la población</td>
+<td>10.3389/fmicb.2019.02319</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Pull-down y co-purificación</td>
+<td>Asociación física entre componentes en el detergente elegido</td>
+<td>No distingue complejo fisiologico de coagregación en micela ni de union inespecifica a la resina</td>
+<td>INF: miligramos de cada componente; 2-4 semanas de producción y purificación por componente</td>
+<td>Control sin etiqueta y control de resina; el MISMO experimento en detergente y en nanodisco, porque el resultado depende del entorno</td>
+<td>Prueba de asociación, no de estequiometría ni de relevancia funcional</td>
+<td>10.1074/jbc.M402230200; 10.1111/j.1365-2958.2004.04158.x</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>BN-PAGE / electroforesis nativa</td>
+<td>Presencia y tamano aparente de complejos preformados</td>
+<td>No distingue el complejo nativo de subcomplejos estabilizados por el gel ni resuelve estequiometrías cercanas</td>
+<td>INF: microgramos por carril a partir de material ya purificado; 1-2 dias por gel</td>
+<td>Los tres componentes por separado en el mismo gel; un complejo sin un componente como control de migración</td>
+<td>Cribado rapido de perdida de complejo; no da sitio ni afinidad</td>
+<td>10.1038/ncomms10731; 10.1021/acs.chemrev.1c00055</td>
+<td>EXP-IND</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Entrecruzamiento in vivo dirigido por cisteina</td>
+<td>Proximidad en la celula entre dos posiciones concretas, una en cada componente</td>
+<td>No distingue proximidad de contacto funcional; un entrecruzamiento positivo no implica que ese contacto sea necesario</td>
+<td>Sin proteína purificada, pero exige la biblioteca de mutantes de cisteina. INF: 1-2 semanas por par de posiciones una vez construidos los mutantes; meses para construir un barrido</td>
+<td>Mutantes de interfaz como negativos (MexA L100D; OprM G199A, G407A, R403A, todos en numeración de cadena madura = PDB, equivalentes a UniProt 123, 216, 424, 420) y la variante sin cisteina</td>
+<td>Es el método que produjo el mapa de la interfaz AcrA-TolC y el de MtrC-MtrE: la prueba mas fuerte de contacto disponible sin estructura</td>
+<td>10.1073/pnas.0610160104; 10.1074/jbc.M111.246595</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Foto-entrecruzamiento con aminoacido no natural (pBpa) y lectura por MS</td>
+<td>Proximidad in vivo sin necesidad de un par de cisteinas, con identificación del peptido entrecruzado</td>
+<td>No distingue contacto específico de vecindad transitoria; la eficiencia de entrecruzamiento no es afinidad</td>
+<td>INF: meses de construcción; el análisis por MS requiere servicio externo</td>
+<td>Posiciones control fuera de la interfaz; muestra sin irradiar</td>
+<td>Genero modelos integrativos de AcrA y TolC (entradas 9A2V y 9A2X del material de partidade estructuras): prueba de proximidad con resolución de residuo</td>
+<td>10.1021/acs.chemrev.1c00055</td>
+<td>EXP-IND</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Entrecruzamiento químico seguido de MS (XL-MS)</td>
+<td>Red de distancias entre lisinas o carboxilos de todo el complejo en una sola medición</td>
+<td>No distingue el estado ensamblado del desensamblado si ambos coexisten; los enlaces largos toleran varias geometrias</td>
+<td>INF: decenas de microgramos de complejo; 1-2 semanas mas el tiempo de la instalación de MS</td>
+<td>Complejo sin un componente; reactivo sin muestra</td>
+<td>Mapa global de topología: excelente para falsar una arquitectura propuesta, pobre para afinar un residuo</td>
+<td>10.1021/acs.chemrev.1c00055</td>
+<td>EXP-IND</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Complementación de mutantes en fondo de deleción</td>
+<td>Requerimiento funcional del residuo mutado para la resistencia</td>
+<td>No distingue efecto sobre el plegamiento o la estabilidad de efecto sobre la interfaz</td>
+<td>Sin proteína purificada. INF: 3-6 semanas por serie de mutantes con clonación y MIC</td>
+<td>Comprobar por inmunodetección el NIVEL de cada mutante y su localización subcelular; un mutante que no se acumula no informa de la interfaz</td>
+<td>Es la única vía que asigna función a un residuo en la celula; en MexAB-OprM es la que produjo la evidencia de interfaz MexA-OprM disponible</td>
+<td>10.1128/JB.186.10.2973-2983.2004; 10.1128/JB.00718-07; 10.1128/JB.01276-07</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Supresores extragenicos</td>
+<td>Pares de residuos funcionalmente acoplados entre dos componentes</td>
+<td>No distingue supresión por contacto directo de supresión alosterica o por reequilibrio conformacional</td>
+<td>Sin proteína. INF: 2-4 meses por selección, mas secuenciación</td>
+<td>Secuenciar el genoma completo del supresor; comprobar que el supresor no cambia el nivel de expresión</td>
+<td>Prueba genetica de acoplamiento funcional: es la evidencia mas fuerte que existe hoy para la interfaz MexA-OprM (V129M de MexA suprimido por T198I y F439I de OprM, numeración de precursor = UniProt)</td>
+<td>10.1128/JB.00718-07</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Dos hibridos bacterianos (BACTH) y ensayos tipo LexA</td>
+<td>Interacción entre dos proteínas o dominios en el citoplasma de E. coli</td>
+<td>No sirve para dominios periplasmicos en su topología nativa; no distingue interacción directa de interacción mediada por un tercero endogeno</td>
+<td>Sin proteína purificada. INF: 3-4 semanas por par</td>
+<td>Pares no interactuantes de la misma colección; comprobación de expresión de las dos fusiones</td>
+<td>Cribado de interacción, no de interfaz; en este sistema se uso para la multimerización de MexA y para MexZ-ArmZ</td>
+<td>10.1073/pnas.95.10.5752; 10.1128/JB.186.10.2973-2983.2004; 10.1371/journal.pone.0056858</td>
+<td>EXP-IND</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Complementación de fragmentos de fluorescencia (split-GFP y similares) en periplasma</td>
+<td>Proximidad estable de dos componentes in vivo con lectura de fluorescencia</td>
+<td>No distingue proximidad de complejo funcional; la reconstitución del fluoroforo es practicamente irreversible y captura encuentros transitorios como si fueran estables</td>
+<td>Sin proteína purificada. INF: 1-2 meses de construcción por par</td>
+<td>Fusiones con un componente mutado en la interfaz; control de plegamiento periplásmico del fragmento</td>
+<td>Util para cribar perdida de proximidad en presencia del peptido; la irreversibilidad limita su uso cuantitativo</td>
+<td>[DOI NO VERIFICADO: no se localizo en esta revisión una referencia metodologica de split-GFP periplásmico aplicada a bombas RND]</td>
+<td>POR VERIFICAR</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>MST, SPR e ITC con dominios solubles</td>
+<td>Afinidad del peptido por el dominio soluble de OprM o por MexA</td>
+<td>No distingue afinidad por el dominio aislado de relevancia en el complejo completo; el dominio periplásmico aislado de OprM esta en conformación CERRADA (medido: la punta de contacto de 3D5K esta a 6,98-7,72 A RMSD de la conformación unida)</td>
+<td>INF: SPR y MST, decenas de microgramos por serie; ITC, miligramos; 1-2 semanas por serie una vez purificada la proteína</td>
+<td>Peptido scrambled de identica composición y competencia con MexA soluble; en SPR, superficie sin ligando y control de union inespecifica</td>
+<td>Da un número (Kd) que SI es una energía libre de union, a diferencia de un score de docking; pero el número se refiere al dominio aislado, no al ensamblaje</td>
+<td>10.1074/jbc.M111.246595; 10.3390/antibiotics4040544</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Termoforesis o desplazamiento termico en lisado</td>
+<td>Union en un entorno complejo sin purificar el blanco</td>
+<td>No distingue union al blanco de union a otra proteína del lisado sin un control de depleción</td>
+<td>INF: microlitros de lisado; 1 semana</td>
+<td>Lisado de la cepa delta-oprM como control de especificidad</td>
+<td>Filtro intermedio entre la afinidad in vitro y el fenotipo; no es prueba de mecanismo</td>
+<td>[DOI NO VERIFICADO: no se localizo en esta revisión una referencia metodologica de MST en lisado aplicada a OprM]</td>
+<td>POR VERIFICAR</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Nanodiscos y reconstitución en proteoliposomas</td>
+<td>Ensamblaje in vitro con composición lipidica y estequiometría controladas, y transporte en vesicula</td>
+<td>No distingue el ensamblaje espontaneo del inducido por la geometría de la vesicula; el transporte reconstituido no reproduce la fuerza proton-motriz fisiologica</td>
+<td>INF: miligramos de cada componente y semanas de optimización por condición; es el método mas caro en proteína después de la crio-EM</td>
+<td>Reconstitución SIN un componente (sin MexA, sin OprM) como negativo, y la misma preparación sin peptido</td>
+<td>Es el único ensayo que mide ENSAMBLAJE separado de actividad en un sistema definido: el ensayo central para la hipótesis del proyecto</td>
+<td>10.3389/fmicb.2015.00541; 10.1038/ncomms7890; 10.1038/ncomms10731</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Crio-EM del complejo con peptido</td>
+<td>Ocupación estructural directa del sitio y su efecto sobre el registro y la conformación</td>
+<td>No distingue el complejo mayoritario de la clase seleccionada por el procesamiento; una ocupación parcial puede promediarse a densidad debil</td>
+<td>INF: cientos de microgramos de complejo purificado por preparación, semanas de tiempo de microscopio y meses de procesamiento</td>
+<td>El mismo complejo sin peptido procesado en paralelo; clasificación sin mascara en el sitio de interes</td>
+<td>La prueba fuerte: es la única que muestra el peptido en el sitio. Cara y lenta; existen dos precedentes de complejo tripartito COMPLETO con inhibidor unido (9J3E y 5NG5 del material de partidade estructuras)</td>
+<td>10.1038/s41467-019-10512-6; 10.1021/acs.chemrev.1c00055</td>
+<td>EXP</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>Fraccionamiento periplásmico con cuantificación del peptido por LC-MS</td>
+<td>Si el peptido llega al periplasma y en que forma</td>
+<td>No distingue acumulación de actividad; la senal total no distingue peptido INTACTO de sus productos de degradación</td>
+<td>Sin proteína. INF: 1-2 semanas por serie mas el tiempo del servicio de LC-MS</td>
+<td>Cuantificar el peptido INTACTO por LC-MS con estandar interno marcado, no solo la senal total; control de fuga citoplasmatica con un marcador soluble</td>
+<td>Condición necesaria de todo el programa: si el peptido no llega al periplasma intacto, ninguna medida de afinidad in vitro predice el fenotipo</td>
+<td>[DOI NO VERIFICADO: no se localizo en esta revisión una referencia metodologica de cuantificación de peptido intacto en periplasma de P. aeruginosa]</td>
+<td>POR VERIFICAR</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>FRET de molecula única</td>
+<td>Dinamica de asociación y disociación en tiempo real de un par marcado</td>
+<td>No distingue disociación de cambio conformacional que aleje los fluoroforos; el marcaje puede alterar la interfaz</td>
+<td>INF: nanogramos de material marcado pero meses de puesta a punto y acceso a instrumentación especializada</td>
+<td>Par marcado en posiciones fuera de la interfaz; construcción sin aceptor</td>
+<td>Mediria directamente si el peptido acelera la disociación; no existe implementación publicada para MexAB-OprM localizada en esta revisión</td>
+<td>[DOI NO VERIFICADO: la búsqueda de FRET de molecula única aplicado a ensamblaje de bombas de eflujo no devolvio trabajo aplicable]</td>
+<td>POR VERIFICAR</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="h-12-busquedas-de-este-eje-que-no-devolvieron-nada-registrad"><span class="num">Secci&oacute;n 13</span>h.12 Búsquedas de este eje que no devolvieron nada, registradas como resultado</h2>
+<table class="data">
+<thead>
+<tr>
+<th>id</th>
+<th>Consulta</th>
+<th>Base</th>
+<th>n</th>
+<th>Interpretación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vh05</code></td>
+<td>proton motive force membrane potential DiSC3(5) CCCP control efflux inhibitor artefact</td>
+<td>OpenAlex</td>
+<td><strong>0</strong></td>
+<td>el control cruzado que este eje exige no existe publicado; hay que montarlo</td>
+</tr>
+<tr>
+<td><code>vh33</code></td>
+<td>PAbetaN phenylalanine arginine beta-naphthylamide membrane permeabilization artefact</td>
+<td>OpenAlex</td>
+<td><strong>0</strong></td>
+<td>el artefacto de permeabilización de PAβN no está tratado explícitamente bajo esos términos</td>
+</tr>
+<tr>
+<td><code>vh21</code></td>
+<td>MexA hairpin mutation L100 assembly function Pseudomonas</td>
+<td>OpenAlex</td>
+<td><strong>1</strong>, no pertinente</td>
+<td><strong>no existe literatura sobre la mutación L100 de MexA (madura)</strong>: el control negativo propuesto no tiene precedente publicado</td>
+</tr>
+<tr>
+<td><code>vh22</code></td>
+<td>OprM mutagenesis G199 G407 R403 assembly MexA interaction</td>
+<td>OpenAlex</td>
+<td><strong>1</strong>, no pertinente</td>
+<td><strong>no existe literatura sobre mutagénesis de OprM en G199, G407 ni R403 (madura)</strong>: los tres controles negativos son de novo. Las únicas sustituciones documentadas en esa región son las <strong>no declaradas</strong> de 6ZRE y 7AKZ (R403L, Y404F, D416A, R419A y, en 7AKZ, L412G, numeración madura), cuyo campo <code>pdbx_mutation</code> en RCSB está vacío</td>
+</tr>
+<tr>
+<td><code>vh13</code></td>
+<td>single molecule FRET efflux pump assembly dynamics</td>
+<td>OpenAlex</td>
+<td>919, ninguno aplicable</td>
+<td>no hay implementación de smFRET para ensamblaje de MexAB-OprM: <strong>[POR VERIFICAR]</strong></td>
+</tr>
+<tr>
+<td><code>vh12</code></td>
+<td>split GFP fluorescence fragment complementation bacterial periplasm</td>
+<td>OpenAlex</td>
+<td>363, ninguno aplicable</td>
+<td>no hay split-GFP periplásmico aplicado a bombas RND: <strong>[POR VERIFICAR]</strong></td>
+</tr>
+<tr>
+<td><code>vh14</code></td>
+<td>microscale thermophoresis lysate label free binding membrane protein</td>
+<td>OpenAlex</td>
+<td>1586, ninguno aplicable</td>
+<td>no hay MST en lisado aplicada a OprM: <strong>[POR VERIFICAR]</strong></td>
+</tr>
+<tr>
+<td><code>vn04</code></td>
+<td>peptide targeting OprM MexA interface inhibitor assembly</td>
+<td>OpenAlex</td>
+<td>117, ninguno pertinente</td>
+<td><strong>nadie ha publicado un péptido dirigido a la interfaz OprM–MFP</strong>: el hueco está vacío, lo que es bueno para la novedad y malo para el riesgo</td>
+</tr>
+<tr>
+<td><code>vn05</code></td>
+<td>MexA alpha-hairpin peptide competition OprM binding affinity</td>
+<td>OpenAlex</td>
+<td>7, ninguno pertinente</td>
+<td><strong>no hay medición publicada de afinidad de un péptido de la horquilla de MexA por OprM</strong>: el proyecto no tiene con qué comparar su primer Kd</td>
+</tr>
+<tr>
+<td><code>vn06</code></td>
+<td>cryo-EM MexAB-OprM peptide inhibitor bound structure</td>
+<td>OpenAlex</td>
+<td>68, ninguno pertinente</td>
+<td><strong>no existe crio-EM de MexAB-OprM con péptido unido</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Las tres últimas filas, juntas, son el diagnóstico del eje: <strong>el proyecto se propone hacer algo para lo que no hay precedente metodológico directo, ni un Kd de referencia, ni una estructura de referencia.</strong> Eso hace que la construcción de los controles negativos —que tampoco están heredados de la literatura, según <code>vh21</code> y <code>vh22</code>— sea parte del trabajo experimental y no un paso administrativo. El registro completo de las 105 consultas de OpenAlex y las 11 verificaciones en RCSB y NCBI está en <code>tabla_busquedas_negativas_validacion.csv</code>.</p></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

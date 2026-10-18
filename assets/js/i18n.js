@@ -472,6 +472,16 @@ var I18N_EN = {
     'conformal prediction.</p>' +
     '<p><a class="btn btn-ghost" href="Caso_Ureasa/">View material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
+    '<span class="badge badge-coi">Compendium</span>' +
+    '<span class="project-years">15 sections · 18 tables</span></div>' +
+    '<h3><a href="Compendio_RND/">Compendium of RND efflux pumps</a></h3>' +
+    '<p class="project-role">In-depth material · ANID–Fondecyt Regular project 1260886</p>' +
+    '<p>Verified evidence on the assembly of RND efflux pumps in <em>Pseudomonas aeruginosa</em>, ' +
+    'focused on the OMF–MFP interface and the rotational register: 112 PDB entries checked, ' +
+    '334 references with resolved DOIs and 164 logged searches, including those that found nothing. ' +
+    'Available in Spanish only.</p>' +
+    '<p><a class="btn btn-ghost" href="Compendio_RND/">View compendium →</a></p></article>' +
+    '<article class="project"><div class="project-head">' +
     '<span class="badge badge-active">Permanent</span></div>' +
     '<h3>Co-creation of the LBQC</h3>' +
     '<p class="project-role">Bioinformatics and Computational Chemistry Laboratory · UCM</p>' +

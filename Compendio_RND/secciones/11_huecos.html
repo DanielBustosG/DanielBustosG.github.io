@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huecos · Huecos de conocimiento priorizados — Compendio RND</title>
+<meta name="description" content="Ordenados por explotabilidad: qué se sabría al cerrarlos, qué cuesta y quién puede hacerlo.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Huecos de conocimiento priorizados">
+<meta property="og:description" content="Ordenados por explotabilidad: qué se sabría al cerrarlos, qué cuesta y quién puede hacerlo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Huecos de conocimiento priorizados</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#nivel-a-cerrables-por-analisis-estructural-comparativo-sin-e">Nivel A — Cerrables por análisis estructural comparativo, sin experimento</a><ol><li><a href="#a1-distancia-entre-puntas-de-horquilla-de-copias-adyacentes-">A1. Distancia entre puntas de horquilla de copias adyacentes de MexA</a></li><li><a href="#a2-que-fraccion-de-la-variabilidad-de-mexa-libre-cubren-las-">A2. Qué fracción de la variabilidad de MexA libre cubren las conformaciones de</a></li><li><a href="#a3-existe-en-oprm-el-sitio-de-apertura-sin-union-que-mtre-ti">A3. ¿Existe en OprM el sitio de apertura-sin-unión que MtrE tiene?</a></li><li><a href="#a4-que-fraccion-del-sitio-de-oprm-preexiste-en-la-forma-apo">A4. ¿Qué fracción del sitio de OprM preexiste en la forma apo?</a></li><li><a href="#a5-convencion-de-handedness-y-comparabilidad-de-los-angulos-">A5. Convención de handedness y comparabilidad de los ángulos de registro entre</a></li></ol></li><li><a href="#nivel-b-cerrables-con-experimento-al-alcance-de-los-colabora">Nivel B — Cerrables con experimento al alcance de los colaboradores microbiólo</a><ol><li><a href="#b1-cual-es-la-kd-de-mexaoprm">B1. ¿Cuál es la Kd de MexA–OprM?</a></li><li><a href="#b2-basta-con-romper-la-interfaz-omfmfp-para-inactivar-la-bom">B2. ¿Basta con romper la interfaz OMF–MFP para inactivar la bomba?</a></li><li><a href="#b3-vida-media-y-recambio-de-los-componentes-de-la-bomba-en-p">B3. Vida media y recambio de los componentes de la bomba en P. aeruginosa</a></li><li><a href="#b4-los-tres-controles-negativos-del-proyecto-no-existen-toda">B4. Los tres controles negativos del proyecto no existen todavía</a></li><li><a href="#b5-es-funcional-la-rotacion-de-60">B5. ¿Es funcional la rotación de 60°?</a></li></ol></li><li><a href="#nivel-c-huecos-estructurales-que-solo-cierra-un-deposito-nue">Nivel C — Huecos estructurales que sólo cierra un depósito nuevo</a><ol><li><a href="#c1-no-existe-estructura-de-mexx-mexc-mexd-mexe-ni-mexf">C1. No existe estructura de MexX, MexC, MexD, MexE ni MexF</a></li><li><a href="#c2-no-existe-estructura-de-ningun-complejo-omfmfp-binario-ai">C2. No existe estructura de ningún complejo OMF–MFP binario aislado</a></li><li><a href="#c3-las-coordenadas-de-la-oprm-de-2-08-a-no-son-publicas">C3. Las coordenadas de la OprM de 2,08 Å no son públicas</a></li><li><a href="#c4-existe-un-equivalente-de-acrz-o-de-ybjp-en-p-aeruginosa">C4. ¿Existe un equivalente de AcrZ o de YbjP en P. aeruginosa?</a></li><li><a href="#c5-es-el-epitopo-de-oprm-y-no-el-de-mexa-la-ruta-al-inhibido">C5. ¿Es el epítopo de OprM —y no el de MexA— la ruta al inhibidor pan-RND?</a></li></ol></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<p><strong>Fecha de corte: 2026-09-11.</strong> Ordenados por <strong>explotabilidad</strong> —cuánto cambia una decisión del proyecto
+dividido por lo que cuesta cerrarlos—, no por interés académico. La columna decisiva es la última:
+<strong>«¿lo cierra el la etapa de análisis estructural comparativo?»</strong>, porque ésa es la lista de entrada del siguiente compendio.</p>
+<hr />
+<h2 id="nivel-a-cerrables-por-analisis-estructural-comparativo-sin-e"><span class="num">Secci&oacute;n 1</span>Nivel A — Cerrables por análisis estructural comparativo, sin experimento</h2>
+<h3 id="a1-distancia-entre-puntas-de-horquilla-de-copias-adyacentes-">A1. Distancia entre puntas de horquilla de copias adyacentes de MexA</h3>
+<ul>
+<li><strong>El hueco.</strong> No está medida la distancia euclídea entre las puntas de horquilla de copias adyacentes del
+  hexámero de MexA; sólo se conocen las relaciones angulares (59,8–60,9° entre copias adyacentes,
+  119,5–120,5° a distancia dos, medidas en el proyecto).</li>
+<li><strong>Qué se sabría.</strong> La longitud exacta que debe tener el espaciador de un competidor bivalente o
+  multivalente. Sin ese número, cualquier arquitectura multivalente se diseña a ciegas, y la multivalencia es
+  la única respuesta estructural conocida a la objeción de avidez 6:3.</li>
+<li><strong>Cómo se cierra.</strong> Una tarde de cálculo sobre las coordenadas de 6TA5 o 6IOK.</li>
+<li><strong>Al alcance del grupo:</strong> sí, trivialmente. <strong>¿la etapa de análisis estructural comparativo? SÍ.</strong> Es el hueco de mejor relación
+  consecuencia/coste de toda la lista.</li>
+</ul>
+<h3 id="a2-que-fraccion-de-la-variabilidad-de-mexa-libre-cubren-las-">A2. Qué fracción de la variabilidad de MexA libre cubren las conformaciones del ensamblaje</h3>
+<ul>
+<li><strong>El hueco.</strong> Existen 39 cadenas cristalográficas independientes de MexA aislada (1T5E, 1VF7, 2V4D) y sólo
+  dos conformaciones observadas en el ensamblaje. La punta de la horquilla está preorganizada (RMSD
+  0,28–0,73 Å) pero <strong>su colocación respecto del cuerpo no lo está</strong>: la horquilla está girada 36–54° en las
+  39 cadenas. <code>EXP</code>, medido en el proyecto.</li>
+<li><strong>Qué se sabría.</strong> Si un generador conformacional puede alcanzar la geometría competente partiendo de la
+  forma libre, y qué penalización entrópica paga un péptido que tenga que fijar esa colocación.</li>
+<li><strong>Cómo se cierra.</strong> Análisis de componentes principales sobre las 39 cadenas más superposición contra las
+  seis copias del ensamblaje. Horas de cómputo.</li>
+<li><strong>Al alcance del grupo:</strong> sí. <strong>¿la etapa de análisis estructural comparativo? SÍ.</strong></li>
+</ul>
+<h3 id="a3-existe-en-oprm-el-sitio-de-apertura-sin-union-que-mtre-ti">A3. ¿Existe en OprM el sitio de apertura-sin-unión que MtrE tiene?</h3>
+<ul>
+<li><strong>El hueco.</strong> En MtrE, los residuos N198, E434 y Q441 impiden la apertura del canal <strong>con la MFP unida
+  intacta</strong> (DOI 10.1074/jbc.M110.187658, verificado por <em>pull-down</em> y microcalorimetría). Sus equivalentes
+  mapeados sobre OprM (identidad OprM/MtrE 43,36 %, medida) son <strong>D190, Q425 y R432 maduros</strong>. No se sabe si
+  forman un sitio accesible en OprM.</li>
+<li><strong>Qué se sabría.</strong> Si existe un blanco que <strong>ya está presente en el estado cerrado</strong> de OprM —el único
+  estado al que un ligando puede acceder antes del ensamblaje—, lo que esquiva de raíz el problema de la
+  conformación condicional del epítopo de MexA. R432 coincide además con uno de los dos puntos de apoyo
+  (R376/R432) que Tsutsumi 2019 identifica para la apertura de H7–H8.</li>
+<li><strong>Cómo se cierra.</strong> Superposición estructural, análisis de cavidades en 1WP1/3D5K, y comprobación de si el
+  surco intraprotomérico de MtrE tiene equivalente geométrico en OprM. Días de cómputo.</li>
+<li><strong>Al alcance del grupo:</strong> sí. <strong>¿la etapa de análisis estructural comparativo? SÍ.</strong> Es el hueco con mayor potencial de reorientar el proyecto.</li>
+</ul>
+<h3 id="a4-que-fraccion-del-sitio-de-oprm-preexiste-en-la-forma-apo">A4. ¿Qué fracción del sitio de OprM preexiste en la forma apo?</h3>
+<ul>
+<li><strong>El hueco.</strong> Se sabe que la punta se desplaza 6,98–7,72 Å, y que el desplazamiento es <strong>asimétrico</strong>: el
+  tramo 191–204 se mueve 3–5 Å y el tramo 399–412 se mueve 5–10,5 Å. No se sabe qué subconjunto del sitio es
+  suficientemente invariante para servir de ancla a un ligando.</li>
+<li><strong>Qué se sabría.</strong> Si existe un «medio sitio» preformado sobre el que anclar, y por tanto si el diseño debe
+  ser de receptor rígido sobre ese subconjunto o de receptor flexible sobre todo.</li>
+<li><strong>Cómo se cierra.</strong> Descomposición por residuo del desplazamiento apo→holo y análisis de correlación.</li>
+<li><strong>Al alcance del grupo:</strong> sí. <strong>¿la etapa de análisis estructural comparativo? SÍ.</strong></li>
+</ul>
+<h3 id="a5-convencion-de-handedness-y-comparabilidad-de-los-angulos-">A5. Convención de <em>handedness</em> y comparabilidad de los ángulos de registro entre depósitos</h3>
+<ul>
+<li><strong>El hueco.</strong> El valor de inclinación 179,94° de 9J3E corresponde a una convención de signo del eje
+  invertida. Antes de comparar registros entre depósitos hay que fijar y declarar la convención.</li>
+<li><strong>Cómo se cierra.</strong> Trabajo de definición, no de medida. <strong>¿la etapa de análisis estructural comparativo? SÍ</strong>, y es prerrequisito de cualquier
+  comparación de registro que el la etapa de análisis estructural comparativo haga.</li>
+</ul>
+<hr />
+<h2 id="nivel-b-cerrables-con-experimento-al-alcance-de-los-colabora"><span class="num">Secci&oacute;n 2</span>Nivel B — Cerrables con experimento al alcance de los colaboradores microbiólogos</h2>
+<h3 id="b1-cual-es-la-kd-de-mexaoprm">B1. ¿Cuál es la Kd de MexA–OprM?</h3>
+<ul>
+<li><strong>El hueco.</strong> <strong>No existe ninguna Kd publicada</strong> para la interacción MexA–OprM (búsqueda negativa
+  documentada, 338 registros revisados). La cromatografía de exclusión de Tsutsumi 2019 <strong>no detecta</strong> el
+  complejo binario MexA+OprM.</li>
+<li><strong>Qué se sabría.</strong> La línea base contra la que definir el éxito de un péptido. Hoy el proyecto no puede
+  fijar un umbral cuantitativo a partir de la literatura.</li>
+<li><strong>Cómo se cierra.</strong> MST, SPR o ITC con dominios periplásmicos solubles. Semanas, miligramos de proteína.</li>
+<li><strong>Advertencia medida que hay que incorporar al diseño del experimento:</strong> el dominio periplásmico aislado de
+  OprM está <strong>cerrado</strong> (la punta de 3D5K está a 6,98–7,72 Å de la conformación unida). Una Kd medida sobre él
+  puede ser <strong>correcta y a la vez irrelevante</strong>. El experimento informativo exige OprM en un contexto que
+  permita la conformación abierta, es decir reconstitución.</li>
+<li><strong>Al alcance del grupo:</strong> con colaboradores. <strong>¿la etapa de análisis estructural comparativo? No.</strong></li>
+</ul>
+<h3 id="b2-basta-con-romper-la-interfaz-omfmfp-para-inactivar-la-bom">B2. ¿Basta con romper la interfaz OMF–MFP para inactivar la bomba?</h3>
+<ul>
+<li><strong>El hueco.</strong> La interfaz aporta el 7,88 % de los contactos del ensamblaje. No se sabe si romperla desmonta
+  la bomba, la deja parcialmente ensamblada, o la deja ensamblada e inactiva. Ningún trabajo publicado ha
+  añadido un ligando externo a una bomba ensamblada y medido su desmontaje (búsqueda negativa: cero
+  candidatos).</li>
+<li><strong>Qué se sabría.</strong> Si el mecanismo declarado del proyecto es alcanzable, o si hay que reformularlo como
+  perturbación alostérica (que es lo que la evidencia de control tipo chaperona sugiere).</li>
+<li><strong>Cómo se cierra.</strong> Los mutantes de interfaz de Tsutsumi con CIM medida ya responden parcialmente:
+  MexA L100D y OprM G199A/G407A/R403A abolen complejo <strong>y</strong> resistencia. Lo que falta es el experimento con
+  <strong>ligando externo</strong> sobre bomba ya formada.</li>
+<li><strong>Al alcance del grupo:</strong> con colaboradores, y requiere reconstitución. <strong>¿la etapa de análisis estructural comparativo? No.</strong></li>
+</ul>
+<h3 id="b3-vida-media-y-recambio-de-los-componentes-de-la-bomba-en-p">B3. Vida media y recambio de los componentes de la bomba en <em>P. aeruginosa</em></h3>
+<ul>
+<li><strong>El hueco.</strong> No hay datos para <em>P. aeruginosa</em>. Para <em>E. coli</em>, AcrA y AcrB duran ~6 días
+  (DOI 10.1007/s00216-016-9871-7).</li>
+<li><strong>Qué se sabría.</strong> Sobre qué ventana temporal puede actuar un inhibidor de ensamblaje, y por tanto cómo hay
+  que diseñar el ensayo de CIM (durante el crecimiento, no sobre células crecidas).</li>
+<li><strong>Cómo se cierra.</strong> Marcaje de pulso y caza, o SILAC bacteriano. Semanas.</li>
+<li><strong>Al alcance del grupo:</strong> con colaboradores. <strong>¿la etapa de análisis estructural comparativo? No.</strong></li>
+</ul>
+<h3 id="b4-los-tres-controles-negativos-del-proyecto-no-existen-toda">B4. Los tres controles negativos del proyecto no existen todavía</h3>
+<ul>
+<li><strong>El hueco.</strong> Los controles negativos propuestos —MexA L100D y OprM G199A/G407A/R403A— <strong>no tienen
+  precedente experimental publicado como cepas disponibles</strong>. Construirlos y caracterizarlos es trabajo
+  experimental, no un paso administrativo.</li>
+<li><strong>Cómo se cierra.</strong> Mutagénesis dirigida y complementación, con control de nivel de expresión y
+  localización de cada mutante. Meses.</li>
+<li><strong>Al alcance del grupo:</strong> con colaboradores. <strong>¿la etapa de análisis estructural comparativo? No.</strong></li>
+</ul>
+<h3 id="b5-es-funcional-la-rotacion-de-60">B5. ¿Es funcional la rotación de 60°?</h3>
+<ul>
+<li><strong>El hueco.</strong> <strong>Cero registros</strong> de evidencia cinética a favor o en contra. La única prueba de ocupancia
+  existente salió negativa (45:55 sin fármaco frente a 58:42 con novobiocina, y en dirección contraria a la
+  esperada).</li>
+<li><strong>Qué se sabría.</strong> Si «congelar el registro» es un mecanismo de inhibición o una idea sin sustrato.</li>
+<li><strong>Cómo se cierra.</strong> smFRET entre MexA y OprM, o entrecruzamiento que fije un registro seguido de medida de
+  eflujo. Meses, y exige una colaboración de biofísica de molécula única que el grupo <strong>no tiene</strong>.</li>
+<li><strong>Al alcance del grupo:</strong> no. <strong>¿la etapa de análisis estructural comparativo? No</strong>, pero el la etapa de análisis estructural comparativo sí puede acotar si existe superficie
+  diferencial entre registros sobre la que un ligando pudiera discriminar (la respuesta preliminar es que
+  casi no: 0,3 % de diferencia de área).</li>
+</ul>
+<hr />
+<h2 id="nivel-c-huecos-estructurales-que-solo-cierra-un-deposito-nue"><span class="num">Secci&oacute;n 3</span>Nivel C — Huecos estructurales que sólo cierra un depósito nuevo</h2>
+<h3 id="c1-no-existe-estructura-de-mexx-mexc-mexd-mexe-ni-mexf">C1. No existe estructura de MexX, MexC, MexD, MexE ni MexF</h3>
+<p>Confirmado por dos métodos independientes en RCSB el 2026-09-11. Toda afirmación sobre la interfaz de tres de
+las cuatro bombas del proyecto es modelado. <strong>¿la etapa de análisis estructural comparativo?</strong> Puede producir los modelos y, sobre todo, puede
+<strong>cuantificar la incertidumbre</strong> de cada uno declarando el molde y su identidad. Lo que no puede es
+convertirlos en evidencia.</p>
+<h3 id="c2-no-existe-estructura-de-ningun-complejo-omfmfp-binario-ai">C2. No existe estructura de ningún complejo OMF–MFP binario aislado</h3>
+<p>Ni CusB–CusC ni MtrC–MtrE existen como estructura (3NE5 es CusA+CusB, la interfaz MFP–RND; 4MT0 es MtrE
+aislada). La interfaz OMF–MFP sólo se observa dentro de ensamblajes completos. <strong>Consecuencia de diseño:</strong> no
+hay ningún sistema en el que se haya aislado experimentalmente la interacción que el proyecto quiere
+inhibir. <strong>¿la etapa de análisis estructural comparativo? No.</strong></p>
+<h3 id="c3-las-coordenadas-de-la-oprm-de-2-08-a-no-son-publicas">C3. Las coordenadas de la OprM de 2,08 Å no son públicas</h3>
+<p>El artículo de 2026 (DOI 10.1016/j.yjsbx.2026.100152) declara los datos «disponibles a petición».
+<strong>Acción recomendada, de coste cero y beneficio alto: escribir a los autores.</strong> Es la estructura de OprM de
+mayor resolución y su trabajo propone la misma diana que el proyecto. <strong>¿la etapa de análisis estructural comparativo? No</strong>, pero conviene
+solicitarla antes de que el la etapa de análisis estructural comparativo empiece.</p>
+<h3 id="c4-existe-un-equivalente-de-acrz-o-de-ybjp-en-p-aeruginosa">C4. ¿Existe un equivalente de AcrZ o de YbjP en <em>P. aeruginosa</em>?</h3>
+<p>Descartado por cuatro vías independientes (literatura, familias de dominios InterPro IPR019702/PF10766 y
+DUF3828, y barrido Smith-Waterman sobre el proteoma de referencia PAO1 con control positivo que recupera
+MexA). La ausencia de un equivalente <strong>funcional no homólogo</strong> queda provisional: no se cribaron
+individualmente los 79 registros de proteínas pequeñas de membrana. <strong>¿la etapa de análisis estructural comparativo?</strong> Parcialmente: puede
+buscar densidad no asignada en los mapas de 6IOK, 6IOL y 6TA5.</p>
+<h3 id="c5-es-el-epitopo-de-oprm-y-no-el-de-mexa-la-ruta-al-inhibido">C5. ¿Es el epítopo de OprM —y no el de MexA— la ruta al inhibidor pan-RND?</h3>
+<p>Es la pregunta que abre el hallazgo central del compendio (§2 del resumen ejecutivo). <strong>¿la etapa de análisis estructural comparativo? SÍ</strong>, y
+debería ser una de sus preguntas principales: medir la conservación del sitio de OprM entre los OMF de
+<em>P. aeruginosa</em> (OprJ 46,85 %, OprN 33,41 % de identidad global frente a OprM) y determinar si un péptido
+derivado de OprM tendría un blanco conservado en las cuatro MFP.</p></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

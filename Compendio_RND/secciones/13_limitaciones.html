@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Limitaciones · Limitaciones de este compendio — Compendio RND</title>
+<meta name="description" content="Profundidad de lectura, cribado, celdas sin verificar y cobertura por eje.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Limitaciones de este compendio">
+<meta property="og:description" content="Profundidad de lectura, cribado, celdas sin verificar y cobertura por eje.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Limitaciones de este compendio</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#limitaciones-del-propio-compendio">Limitaciones del propio compendio</a><ol><li><a href="#l-1-profundidad-de-lectura-de-las-fuentes">L.1 Profundidad de lectura de las fuentes</a></li><li><a href="#l-2-cribado-del-corpus-bibliografico">L.2 Cribado del corpus bibliográfico</a></li><li><a href="#l-3-tabla-de-estructuras">L.3 Tabla de estructuras</a></li><li><a href="#l-4-mediciones">L.4 Mediciones</a></li><li><a href="#l-5-costes-estimados">L.5 Costes estimados</a></li><li><a href="#l-6-cobertura-por-eje">L.6 Cobertura por eje</a></li><li><a href="#l-7-verificacion-de-identificadores-lo-que-no-cerro">L.7 Verificación de identificadores: lo que no cerró</a></li><li><a href="#l-8-lo-que-este-compendio-no-puede-decidir">L.8 Lo que este compendio no puede decidir</a></li></ol></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<h2 id="limitaciones-del-propio-compendio"><span class="num">Secci&oacute;n 1</span>Limitaciones del propio compendio</h2>
+<p><strong>Fecha de corte: 2026-09-11.</strong> Toda reducción de alcance se declara aquí con su magnitud, según la norma de trazabilidad adoptada del
+compendio. Ninguna se ejecutó en silencio.</p>
+<h3 id="l-1-profundidad-de-lectura-de-las-fuentes">L.1 Profundidad de lectura de las fuentes</h3>
+<p>De las <strong>334 referencias únicas verificadas</strong>, sólo <strong>5 se leyeron a texto completo</strong>. Las restantes se usaron
+a partir del registro de Crossref y, en 23 casos, del resumen de PubMed. Cada fila afectada de las tablas de
+referencias lo declara en su columna <code>verificado_en</code>. <strong>Ninguna cita de este compendio debe leerse como
+lectura de texto completo salvo donde se indique explícitamente.</strong> Un artículo (Du <em>et al.</em> 2014,
+DOI 10.1038/nature13205) quedó tras muro de pago y se trató como «resumen únicamente».</p>
+<p>Magnitud: 98,5 % de las referencias citadas por metadatos verificados y no por lectura completa.</p>
+<h3 id="l-2-cribado-del-corpus-bibliografico">L.2 Cribado del corpus bibliográfico</h3>
+<p>El barrido sistemático en OpenAlex con las catorce cadenas del protocolo devolvió <strong>956 DOI únicos</strong>. <strong>No se
+leyeron los 956 resúmenes.</strong> El cribado se hizo por palabras clave sobre el título y se dirigió por las
+preguntas obligatorias de cada eje, complementado con búsquedas nuevas y dirigidas en PubMed, Europe PMC,
+OpenAlex, InterPro, UniProt y RCSB (164 búsquedas registradas en total).</p>
+<p>Consecuencia detectada y declarada: de los 956 DOI, el cribado por título encontró <strong>0 sobre nfxB, 0 sobre
+mexZ, 0 sobre compensación cruzada y 0 sobre ensayos de acumulación de colorante</strong>. No es un defecto del
+barrido —estaba orientado a estructura e inhibidores— pero significa que toda la literatura de los ejes (g)
+y (h) hubo que buscarla de nuevo: 105 consultas adicionales en OpenAlex.</p>
+<h3 id="l-3-tabla-de-estructuras">L.3 Tabla de estructuras</h3>
+<p><strong>190 celdas de 3.248 (5,9 %)</strong> están marcadas <code>[POR VERIFICAR]</code>, concentradas en las columnas
+<code>entorno_membrana</code> y <code>simetria_RND</code> de los depósitos de TolC aislada y de la familia Cus, que no son
+decisivos para la interfaz MexA–OprM.</p>
+<p><strong>No se documentaron una por una</strong> las 185 entradas con ≥30 % de identidad frente a MexB ni las 122
+referenciadas a AcrB (P31224): son transportadores RND aislados sin interfaz OMF–MFP. Se incluyeron los que
+tienen valor de control mecanístico. Magnitud de la reducción: ~190 entradas no detalladas. El inventario
+completo de identificadores está en <code>log_de_busqueda.md</code>.</p>
+<h3 id="l-4-mediciones">L.4 Mediciones</h3>
+<p>Las mediciones geométricas de registro, separación axial, RMSD entre protómeros y desplazamiento apo/holo
+proceden <strong>íntegramente</strong> de las mediciones previas del proyecto y de las mediciones previas del proyecto del 2026-09-11; no se
+recalcularon. Las mediciones <strong>nuevas</strong> de esta revisión son: presencia de residuos de interfaz en las
+coordenadas, factores B por componente y por región, sustituciones no declaradas en 6ZRE/7AKZ, identidades y
+alineamientos de secuencia, contactos y puentes de hidrógeno de la interfaz en tres sistemas, y composición
+de aminoácidos del epítopo.</p>
+<p>Dos convenciones de medida de identidad conviven en el documento y <strong>las dos son correctas en su definición</strong>:
+la matriz frente a 9J3D usa el SEQRES depositado en el lado del homólogo, y las comparaciones entre organismos
+usan UniProt completa en los dos lados. Análogamente, la conservación del epítopo se informa de dos formas —
+sobre el tramo contiguo de 15 residuos (MexA 119–133, UniProt) y sobre los 12 residuos que efectivamente
+contactan— que difieren en unos pocos puntos porcentuales. Ambas están declaradas en cada punto de uso.</p>
+<h3 id="l-5-costes-estimados">L.5 Costes estimados</h3>
+<p>Todas las cifras de coste en proteína y tiempo de <code>tablas/tabla_metodos_validacion_experimental.csv</code> son
+<strong>inferencias de orden de magnitud del autor del compendio</strong> (<code>INF</code>), no valores tomados de la fuente
+metodológica citada.</p>
+<h3 id="l-6-cobertura-por-eje">L.6 Cobertura por eje</h3>
+<ul>
+<li><strong>Eje (g):</strong> quedan fuera la regulación de las 8 bombas RND del genoma que no son las cuatro del proyecto,
+  los circuitos de detección de quorum, hierro y biopelícula (mencionados sólo cuando producen artefacto de
+  ensayo) y la regulación postranscripcional y por sRNA, <strong>sin ninguna búsqueda</strong>.</li>
+<li><strong>Eje (h):</strong> se cubren 20 métodos. Quedan fuera la validación en modelo animal, los métodos de
+  descubrimiento (cribado de bibliotecas, <em>phage display</em>) y RMN de estado sólido y movilidad iónica, estos
+  últimos <strong>sin búsqueda</strong>.</li>
+<li><strong>Ejes (b), (g) y (h)</strong> exceden la banda de extensión prevista (~9.200, 6.197 y 6.549 palabras frente a
+  2.500–5.000). Se prefirió no recortar contenido verificado que sostiene decisiones del proyecto.</li>
+<li><strong>Columna <code>hay_intentos_de_inhibicion</code></strong> de <code>tabla_sistemas_cubiertos.csv</code>: no se hizo una búsqueda dedicada
+  de inhibidores para cada uno de los 32 sistemas. Un «NO» en esa columna significa <strong>«no localizado en este
+  barrido»</strong>, no «inexistente».</li>
+<li><strong>Área enterrada por residuo</strong>: medida sólo para MexAB–OprM. Para AcrAB–TolC y TMexCD1–TOprJ1 se midieron
+  contactos y partición esqueleto/cadena lateral pero no área (71 de 107 filas de
+  <code>tabla_residuos_interfaz_OMF_MFP.csv</code>).</li>
+</ul>
+<h3 id="l-7-verificacion-de-identificadores-lo-que-no-cerro">L.7 Verificación de identificadores: lo que no cerró</h3>
+<ul>
+<li><strong>1 de 334 referencias</strong> queda <code>[DOI NO VERIFICADO por Crossref]</code>: 10.14348/molcells.2019.0168, que
+  resuelve en doi.org pero no tiene registro recuperable en la API de Crossref.</li>
+<li><strong>7 cadenas malformadas</strong> heredadas del corpus previo del proyecto (con sufijos <code>**</code>, <code>[aid</code>, paréntesis
+  truncados) no son DOI y se registran como defecto del corpus heredado, no como referencias.</li>
+<li><strong>2 DOI de <em>Antimicrobial Agents and Chemotherapy</em></strong> del corpus heredado (10.1128/aac.45.5.1428-1432.2001 y
+  10.1128/aac.46.9.2848-2852.2002) devuelven 404 en doi.org: no existen como DOI registrados.</li>
+<li><strong>La columna <code>pmid</code></strong> está poblada para las referencias del núcleo y de algunas lanes, pero no para todas:
+  la verificación se hizo íntegramente contra Crossref en tres de las cuatro lanes.</li>
+</ul>
+<h3 id="l-8-lo-que-este-compendio-no-puede-decidir">L.8 Lo que este compendio no puede decidir</h3>
+<p>No puede decidir si la rotación de 60° es funcional (no hay evidencia cinética publicada), ni cuál es la Kd
+de MexA–OprM (no existe), ni si romper la interfaz inactiva la bomba (nadie lo ha medido con un ligando
+externo). Esas tres preguntas quedan abiertas y están en la lista priorizada de huecos con el experimento que
+las cerraría.</p></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Método · Alcance y método de búsqueda — Compendio RND</title>
+<meta name="description" content="Bases consultadas, convenciones de medida declaradas y reglas de interpretación.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Alcance y método de búsqueda">
+<meta property="og:description" content="Bases consultadas, convenciones de medida declaradas y reglas de interpretación.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Alcance y método de búsqueda</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#alcance-y-metodo-de-busqueda">Alcance y método de búsqueda</a><ol><li><a href="#m-1-que-es-y-que-no-es-este-documento">M.1 Qué es y qué no es este documento</a></li><li><a href="#m-2-sistemas-cubiertos">M.2 Sistemas cubiertos</a></li><li><a href="#m-3-procedimiento">M.3 Procedimiento</a></li><li><a href="#m-4-reglas-de-verificacion-aplicadas">M.4 Reglas de verificación aplicadas</a></li><li><a href="#m-5-etiquetado-de-evidencia">M.5 Etiquetado de evidencia</a></li><li><a href="#m-6-convenciones-que-deben-declararse-y-aqui-se-declaran">M.6 Convenciones que deben declararse y aquí se declaran</a></li><li><a href="#m-7-que-no-se-debe-hacer-con-los-datos-de-este-compendio">M.7 Qué no se debe hacer con los datos de este compendio</a></li></ol></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<h2 id="alcance-y-metodo-de-busqueda"><span class="num">Secci&oacute;n 1</span>Alcance y método de búsqueda</h2>
+<p><strong>Fecha de corte: 2026-09-11.</strong></p>
+<h3 id="m-1-que-es-y-que-no-es-este-documento">M.1 Qué es y qué no es este documento</h3>
+<p>Este compendio cubre lo que hay que saber para intentar inhibir bombas de eflujo RND <strong>en la interfaz
+OMF–MFP o en su mecanismo de rotación y registro</strong>. No es una revisión de inhibidores de eflujo en general:
+los inhibidores clásicos de sitio de sustrato entran sólo como comparador y como fuente de lecciones sobre
+fracaso translacional. No contiene modelado propio — ni AlphaFold, ni docking, ni dinámica molecular —, con
+una excepción declarada: se hicieron <strong>mediciones directas sobre coordenadas descargadas de RCSB</strong> para
+resolver cuestiones que los metadatos no responden (mutaciones no declaradas, factores B por región,
+presencia de residuos de interfaz). Esas mediciones se etiquetan «medido en esta revisión, 2026-09-11» y se
+distinguen de las mediciones previas del proyecto, etiquetadas «medido en el proyecto».</p>
+<h3 id="m-2-sistemas-cubiertos">M.2 Sistemas cubiertos</h3>
+<p>Las cuatro bombas del proyecto Fondecyt: <strong>MexAB–OprM, MexXY–OprM, MexCD–OprJ y MexEF–OprN</strong>. El compendio
+distingue en todo momento el <strong>emparejamiento cognado</strong> (MexCD con OprJ, MexEF con OprN) del
+<strong>emparejamiento promiscuo o forzado</strong> que el planteamiento inicial escribe como «MexCD-OprM» y «MexEF-OprM»: no es lo
+mismo el emparejamiento fisiológico que el forzado en fondos genéticos de deleción, y la evidencia de cada
+uno se trata por separado. La cobertura sistema por sistema, con sus catorce sistemas por analogía, está en
+<code>tablas/tabla_sistemas_cubiertos.csv</code>.</p>
+<h3 id="m-3-procedimiento">M.3 Procedimiento</h3>
+<p>El trabajo se ejecutó en cuatro fases, en este orden y por esta razón:</p>
+<ol>
+<li><strong>Verificación de los datos heredados</strong> (los del propio compendio y los de los datos previos del proyecto locales del
+   proyecto). Se ejecutó primero porque de ahí salen las correcciones que afectan a todo lo demás. Resultado:
+   <strong>20 correcciones</strong> registradas en <code>tablas/tabla_correcciones_a_datos_heredados.csv</code>, cinco de ellas con
+   impacto alto o muy alto sobre las conclusiones.</li>
+<li><strong>Búsqueda de entradas de PDB posteriores al cierre de la lista de este compendio (2026-04-08)</strong>, con las cinco
+   rutas del protocolo. Resultado: 4 entradas nuevas y 79 entradas no registradas en este compendio.</li>
+<li><strong>Revisión bibliográfica por ejes</strong>, con las catorce cadenas de búsqueda del protocolo ejecutadas en
+   OpenAlex y complementadas con búsquedas dirigidas en Crossref y PubMed.</li>
+<li><strong>Síntesis, auditoría de identificadores y escritura.</strong></li>
+</ol>
+<p>El registro completo de consultas, con fecha y número de resultados por consulta, está en
+<code>log_de_busqueda.md</code> (89 consultas). Las búsquedas que no devolvieron nada se publican como resultado en
+<code>tablas/tabla_busquedas_negativas.csv</code>.</p>
+<h3 id="m-4-reglas-de-verificacion-aplicadas">M.4 Reglas de verificación aplicadas</h3>
+<ul>
+<li>Cada entrada de PDB se comprobó contra RCSB en esta revisión; se registró la fecha de consulta en la
+  columna <code>verificado_rcsb</code> de la tabla de estructuras.</li>
+<li>Cada accesión se comprobó contra UniProt o NCBI en esta revisión.</li>
+<li>Cada DOI se resolvió contra Crossref o PubMed en esta revisión. Los que no resuelven llevan
+  <code>[DOI NO VERIFICADO]</code>. <strong>Cero DOI compuestos o atribuidos sin resolver.</strong></li>
+<li>Cuando RCSB contradijo un dato heredado, <strong>manda RCSB</strong>: el valor nuevo se usa, el antiguo y el nuevo se
+  registran en la tabla de correcciones, y la discrepancia se destaca en el resumen ejecutivo.</li>
+<li>Los huecos se marcan <code>[POR VERIFICAR]</code>. Está prohibido rellenarlos con valores plausibles.</li>
+</ul>
+<h3 id="m-5-etiquetado-de-evidencia">M.5 Etiquetado de evidencia</h3>
+<p>Cada afirmación sustantiva y cada fila de tabla lleva una de estas etiquetas:</p>
+<table class="data">
+<thead>
+<tr>
+<th>Etiqueta</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EXP</code></td>
+<td>evidencia experimental directa (estructura, mutagénesis, ensayo bioquímico, CIM)</td>
+</tr>
+<tr>
+<td><code>EXP-IND</code></td>
+<td>evidencia experimental indirecta (fenotipo compatible, correlación, ausencia en un barrido)</td>
+</tr>
+<tr>
+<td><code>COMP</code></td>
+<td>predicción computacional (docking, MD, AlphaFold, covariación, modelo de homología)</td>
+</tr>
+<tr>
+<td><code>INF</code></td>
+<td>inferencia del autor del compendio a partir de lo anterior</td>
+</tr>
+<tr>
+<td><code>POR VERIFICAR</code></td>
+<td>no se pudo comprobar en esta revisión</td>
+</tr>
+</tbody>
+</table>
+<p>En la sección de inhibición se añade una escala de fuerza: <strong>N1</strong> sólo <em>in silico</em>; <strong>N2</strong> actividad
+bioquímica <em>in vitro</em>; <strong>N3</strong> actividad en célula con mecanismo controlado (potenciación de CIM más control
+de permeabilización más control en cepa de deleción); <strong>N4</strong> evidencia estructural o bioquímica directa del
+mecanismo declarado; <strong>N5</strong> eficacia <em>in vivo</em>.</p>
+<h3 id="m-6-convenciones-que-deben-declararse-y-aqui-se-declaran">M.6 Convenciones que deben declararse y aquí se declaran</h3>
+<p><strong>Numeración de residuos.</strong> Toda numeración va con su sistema. Las conversiones verificadas en esta revisión
+comparando el SEQRES depositado con las secuencias de UniProt son:</p>
+<table class="data">
+<thead>
+<tr>
+<th>Proteína</th>
+<th>Numeración de las entradas de PDB</th>
+<th>Conversión a UniProt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexA (P52477)</td>
+<td>cadena madura</td>
+<td>UniProt = PDB <strong>+ 23</strong></td>
+</tr>
+<tr>
+<td>MexB (P52002)</td>
+<td>cadena completa (sin péptido señal)</td>
+<td>UniProt = PDB <strong>+ 0</strong></td>
+</tr>
+<tr>
+<td>OprM (Q51487)</td>
+<td>cadena madura</td>
+<td>UniProt = PDB <strong>+ 17</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Ejemplo del formato obligatorio: <code>MexA L100 (PDB 6TA5, cadena madura) = L123 (UniProt P52477)</code>.</p>
+<p><strong>Ángulos de registro.</strong> Eje definido como centroide del trímero RND → centroide del trímero OMF; registro
+reportado <strong>módulo 120°</strong>, porque la simetría C3 del ensamblaje hace que 0° y 120° sean la misma
+configuración; <em>handedness</em> fijada por el sentido del eje así definido. Sin esta convención declarada, un
+ángulo de registro no significa nada. El valor de inclinación de 179,94° de 9J3E corresponde a una convención
+de signo del eje invertida respecto de las demás entradas y no a una estructura invertida.</p>
+<p><strong>Identidades de secuencia.</strong> Needleman–Wunsch global, BLOSUM62, apertura de hueco −11, extensión −1;
+identidad = coincidencias ÷ columnas alineadas sin huecos. Dos convenciones conviven en el proyecto y hay que
+distinguirlas: la matriz frente a 9J3D usa el <strong>SEQRES depositado</strong> en el lado del homólogo y la secuencia
+<strong>UniProt completa</strong> en el lado del blanco (así se reproducen los valores heredados a dos decimales); las
+identidades entre organismos usan UniProt completa en los dos lados.</p>
+<p><strong>Estequiometrías.</strong> Cada cifra se escribe etiquetada con su componente (<code>OMF 3 : MFP 6 : transportador 2</code>),
+nunca como un triplete de dígitos suelto, porque la literatura usa órdenes distintos para familias distintas.</p>
+<h3 id="m-7-que-no-se-debe-hacer-con-los-datos-de-este-compendio">M.7 Qué no se debe hacer con los datos de este compendio</h3>
+<ul>
+<li><strong>No confundir estados con réplicas.</strong> 6IOK y 6IOL son dos estados del mismo sistema. 6TA5 y 6TA6 son del
+  mismo depósito, y 6TA6 corresponde a un mapa enfocado en MexA–MexB (EMD-10395). Ninguna combinación de esas
+  cuatro entradas es <em>n</em> = 4 observaciones independientes.</li>
+<li><strong>No confundir copias con observaciones.</strong> Los tres protómeros de OprM y las seis copias de MexA están
+  mecánicamente acoplados dentro de un mismo ensamblaje.</li>
+<li><strong>No promediar estructuras antes de resolver la correspondencia de cadenas.</strong> El caso 9J3D/9J3E lo
+  demuestra: un RMSD de 44,92 Å colapsa a 1,18 Å bajo la permutación J→K, K→J, L→L.</li>
+<li><strong>Un score no es una energía libre.</strong> Ningún score de docking, ΔΔG predicho, MM/PBSA o MM/GBSA se convierte
+  a Kd ni se compara entre programas distintos.</li>
+</ul></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

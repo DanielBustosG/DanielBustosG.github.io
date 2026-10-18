@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compendio RND · interfaz OMF–MFP — Daniel Bustos</title>
+<meta name="description" content="Compendio verificado sobre el ensamblaje de las bombas de eflujo RND de Pseudomonas aeruginosa: la interfaz OMF-MFP, el mecanismo de rotacion y registro, 112 estructuras del PDB y 334 referencias con DOI comprobado.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="La interfaz OMF–MFP en las bombas de eflujo RND">
+<meta property="og:description" content="Compendio verificado sobre el ensamblaje de las bombas de eflujo RND de Pseudomonas aeruginosa: la interfaz OMF-MFP, el mecanismo de rotacion y registro, 112 estructuras del PDB y 334 referencias con DOI comprobado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none">&larr; Daniel Bustos · Bioinformática Estructural</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>La interfaz OMF–MFP en las bombas de eflujo RND</h1>
+<div class="meta">Compendio de evidencia verificada · Material de profundización para estudiantes del proyecto ANID–Fondecyt Regular 1260886 · Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Universidad Católica del Maule · Fecha de corte: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#como-usar-este-material">Cómo usar este material</a></li><li><a href="#glosario-minimo">Glosario mínimo</a></li><li><a href="#las-secciones">Las secciones</a></li><li><a href="#datos-descargables">Datos descargables</a></li><li><a href="#como-citar-y-que-garantiza-este-material">Cómo citar y qué garantiza este material</a></li></ol></nav><main><h2 id="como-usar-este-material"><span class="num">Secci&oacute;n 1</span>Cómo usar este material</h2>
+<p>Este compendio reúne lo que la evidencia publicada y las estructuras depositadas permiten afirmar —y lo que
+<strong>no</strong> permiten afirmar— sobre el <strong>ensamblaje</strong> de las bombas de eflujo RND de <em>Pseudomonas aeruginosa</em>, con
+foco en la unión entre el canal de membrana externa (OMF) y la proteína adaptadora periplásmica (MFP), y en el
+mecanismo de rotación y registro del complejo.</p>
+<p>No es una revisión de inhibidores de eflujo en general ni un repaso introductorio. Supone que ya sabes qué es
+una bomba tripartita y para qué sirve un alineamiento de secuencias. Lo que aporta es <strong>trazabilidad</strong>: cada
+afirmación dice de dónde viene, cada identificador fue comprobado contra su base de datos el <strong>11 de septiembre de 2026</strong>, y las
+búsquedas que no encontraron nada se publican como resultado, porque una ausencia verificada también es
+información.</p>
+<p>Tres hábitos que este material intenta enseñar tanto como su contenido:</p>
+<ol>
+<li><strong>Un resultado negativo es un resultado.</strong> Que no exista estructura de MexX, MexC, MexD, MexE ni MexF no es
+   una laguna de la revisión: es una conclusión, y condiciona todo lo que puede decirse de tres de las cuatro
+   bombas. Las búsquedas que devolvieron cero están registradas con su fecha y su número de resultados.</li>
+<li><strong>Un número sin su convención no es un número.</strong> Un ángulo de registro necesita que se declare el eje, el
+   sentido y el módulo. Un RMSD necesita que se diga qué átomos se superpusieron. Un área de interfaz necesita
+   el radio de sonda. Un porcentaje de identidad necesita saber si los huecos terminales se penalizaron.</li>
+<li><strong>Copias no son observaciones, y estados no son réplicas.</strong> Los tres protómeros de un trímero están
+   mecánicamente acoplados dentro del mismo ensamblaje; dos entradas del mismo conjunto de datos no son dos
+   experimentos. Tratarlos como <em>n</em> independientes estrecha falsamente las barras de error.</li>
+</ol>
+<h2 id="glosario-minimo"><span class="num">Secci&oacute;n 2</span>Glosario mínimo</h2>
+<p>Si alguna de estas siglas no te resulta familiar, empieza por aquí.</p>
+<table class="data">
+<thead>
+<tr>
+<th>Sigla</th>
+<th>Qué significa</th>
+<th>Qué es, en una frase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RND</strong></td>
+<td><em>Resistance–Nodulation–cell Division</em></td>
+<td>La superfamilia del transportador de membrana interna que impulsa el eflujo con la fuerza protón-motriz. En <em>P. aeruginosa</em>: MexB, MexY, MexD, MexF.</td>
+</tr>
+<tr>
+<td><strong>MFP</strong></td>
+<td><em>membrane fusion protein</em>, también llamada PAP (<em>periplasmic adaptor protein</em>)</td>
+<td>La proteína adaptadora que vive en el periplasma y acopla el transportador con el canal. En <em>P. aeruginosa</em>: MexA, MexX, MexC, MexE.</td>
+</tr>
+<tr>
+<td><strong>OMF</strong></td>
+<td><em>outer membrane factor</em></td>
+<td>El canal de membrana externa que conduce el sustrato al exterior. En <em>P. aeruginosa</em>: OprM, OprJ, OprN, OprA.</td>
+</tr>
+<tr>
+<td><strong>CIM</strong></td>
+<td>concentración inhibitoria mínima</td>
+<td>La menor concentración de antibiótico que impide el crecimiento visible. Es la medida fenotípica estándar de resistencia.</td>
+</tr>
+<tr>
+<td><strong>EPI</strong></td>
+<td><em>efflux pump inhibitor</em></td>
+<td>Inhibidor de bomba de eflujo. Los clásicos actúan en el sitio de sustrato del transportador, no en las interfaces de ensamblaje.</td>
+</tr>
+<tr>
+<td><strong>PPI</strong></td>
+<td>interacción proteína–proteína</td>
+<td>La clase de blanco a la que pertenece la interfaz OMF–MFP: extensa, polar y sin cavidad hidrofóbica.</td>
+</tr>
+<tr>
+<td><strong>crio-EM</strong></td>
+<td>criomicroscopía electrónica</td>
+<td>La técnica con la que se resolvieron los ensamblajes completos. Su resolución declarada es global: distintas regiones del mismo mapa pueden estar mucho peor definidas.</td>
+</tr>
+<tr>
+<td><strong>PDB / RCSB</strong></td>
+<td><em>Protein Data Bank</em></td>
+<td>El repositorio de coordenadas atómicas. Cada entrada tiene un código de 4 caracteres (6IOK, 6TA5…).</td>
+</tr>
+<tr>
+<td><strong>EMDB</strong></td>
+<td><em>Electron Microscopy Data Bank</em></td>
+<td>El repositorio de los mapas de densidad asociados a las entradas de crio-EM.</td>
+</tr>
+<tr>
+<td><strong>UniProt</strong></td>
+<td>base de datos de secuencias de proteínas</td>
+<td>Fuente canónica de la secuencia y de la numeración de referencia. Las entradas revisadas (Swiss-Prot) y las no revisadas (TrEMBL) no tienen la misma garantía.</td>
+</tr>
+<tr>
+<td><strong>SASA / BSA</strong></td>
+<td>superficie accesible al disolvente / superficie enterrada</td>
+<td>La magnitud con la que se cuantifica el tamaño de una interfaz. Depende del radio de sonda y del método, que hay que declarar.</td>
+</tr>
+<tr>
+<td><strong>RMSD</strong></td>
+<td>desviación cuadrática media</td>
+<td>La medida de cuánto difieren dos estructuras superpuestas. Sin decir qué átomos se superpusieron, un RMSD no significa nada.</td>
+</tr>
+<tr>
+<td><strong>DockQ</strong></td>
+<td>métrica de calidad de un complejo modelado</td>
+<td>Combina la fracción de contactos nativos con las desviaciones de interfaz y de ligando; va de 0 a 1.</td>
+</tr>
+<tr>
+<td><strong>Cadena madura frente a precursor</strong></td>
+<td>dos convenciones de numeración</td>
+<td>La proteína madura ha perdido su péptido señal. <strong>MexA: UniProt = PDB + 23. MexB: + 0. OprM: + 17.</strong> Confundirlas apunta a residuos equivocados.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="las-secciones"><span class="num">Secci&oacute;n 3</span>Las secciones</h2>
+<div class="units">
+        <article class="unit">
+          <div class="unit-num"><small>Resumen</small>—</div>
+          <div>
+            <h2><a href="secciones/00_resumen.html">Resumen ejecutivo</a></h2>
+            <p class="desc">Empieza por aquí. Qué cambia una decisión, qué evidencia tensiona la hipótesis de partida y dónde están los cuatro riesgos mayores. Se lee solo.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Eje (a)</small>1</div>
+          <div>
+            <h2><a href="secciones/01_arquitectura.html">Arquitectura tripartita y estequiometrías observadas</a></h2>
+            <p class="desc">Qué compone una bomba RND, qué estequiometrías se han observado realmente y por qué 3:6:3 no es una propiedad universal.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Eje (b)</small>2</div>
+          <div>
+            <h2><a href="secciones/02_interfaz_OMF_MFP.html">La interfaz OMF–MFP</a></h2>
+            <p class="desc">La unión entre el canal de membrana externa y la proteína adaptadora: qué residuos contactan, cuál es su naturaleza química y qué pasa cuando se mutan.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Eje (c)</small>3</div>
+          <div>
+            <h2><a href="secciones/03_rotacion_registro.html">El mecanismo de rotación y el registro</a></h2>
+            <p class="desc">Los dos estados de MexAB–OprM separados 60°: qué se midió, qué dicen sus autores y qué evidencia falta para llamarlo ciclo funcional.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Eje (d)</small>4</div>
+          <div>
+            <h2><a href="secciones/04_interfaz_MFP_RND.html">La interfaz MFP–RND y el dominio embudo</a></h2>
+            <p class="desc">La otra unión del ensamblaje, por qué tiene más evidencia de ser atacable y por qué aun así no es peptidomimetizable.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Eje (e)</small>5</div>
+          <div>
+            <h2><a href="secciones/05_intentos_inhibicion.html">Intentos de inhibición de las bombas RND</a></h2>
+            <p class="desc">Qué se ha intentado, con qué fuerza de evidencia (escala N1–N5) y por qué se detuvo cada programa.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Eje (f)</small>6</div>
+          <div>
+            <h2><a href="secciones/06_barreras.html">Precedente y barreras de un péptido periplásmico</a></h2>
+            <p class="desc">Las tres barreras en serie —permeabilidad, proteólisis y avidez— y qué dice la estadística de interfaces proteína–proteína inhibidas con éxito.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Eje (g)</small>7</div>
+          <div>
+            <h2><a href="secciones/07_regulacion.html">Regulación, en lo que cambia un experimento</a></h2>
+            <p class="desc">Reguladores, cepas y marcadores: lo que hay que controlar para que un ensayo de potenciación signifique algo.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Eje (h)</small>8</div>
+          <div>
+            <h2><a href="secciones/08_falsacion.html">Cómo se falsaría una inhibición de interfaz</a></h2>
+            <p class="desc">Veinte métodos, lo que cada uno no puede distinguir, y el experimento decisivo mínimo.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Cobertura</small>9</div>
+          <div>
+            <h2><a href="secciones/09_sistemas.html">Las cuatro bombas y sus análogos</a></h2>
+            <p class="desc">Qué se sabe de cada sistema, con la distancia de transferencia por analogía declarada en cada caso.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Estructuras</small>10</div>
+          <div>
+            <h2><a href="secciones/10_estructuras.html">Síntesis de estructuras PDB</a></h2>
+            <p class="desc">112 entradas verificadas: cuál sirve de receptor, cuál de control y cuál no debe usarse.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Huecos</small>11</div>
+          <div>
+            <h2><a href="secciones/11_huecos.html">Huecos de conocimiento priorizados</a></h2>
+            <p class="desc">Ordenados por explotabilidad: qué se sabría al cerrarlos, qué cuesta y quién puede hacerlo.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Método</small>12</div>
+          <div>
+            <h2><a href="secciones/12_metodo.html">Alcance y método de búsqueda</a></h2>
+            <p class="desc">Bases consultadas, convenciones de medida declaradas y reglas de interpretación.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Limitaciones</small>13</div>
+          <div>
+            <h2><a href="secciones/13_limitaciones.html">Limitaciones de este compendio</a></h2>
+            <p class="desc">Profundidad de lectura, cribado, celdas sin verificar y cobertura por eje.</p>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small>Registro</small>14</div>
+          <div>
+            <h2><a href="secciones/14_registro_busqueda.html">Registro de búsqueda</a></h2>
+            <p class="desc">Cada consulta con su fecha y su número de resultados, incluidas las que no devolvieron nada.</p>
+          </div>
+        </article>
+</div>
+<h2 id="datos-descargables"><span class="num">Secci&oacute;n 4</span>Datos descargables</h2>
+<p>Todas las tablas están en CSV con codificación UTF-8 y separador coma. Las mismas columnas aparecen en las tablas de las páginas. Son el material con el que se puede rehacer, comprobar o extender cualquier afirmación del compendio.</p>
+<table class="data">
+<thead>
+<tr>
+<th>Tabla</th>
+<th>Filas</th>
+<th>Contenido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="tablas/tabla_apo_vs_holo_OMF.csv"><code>tabla_apo_vs_holo_OMF.csv</code></a></td>
+<td>54</td>
+<td>Desplazamientos medidos entre las formas libre y unida del canal de membrana externa.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_arquitectura_estequiometrias.csv"><code>tabla_arquitectura_estequiometrias.csv</code></a></td>
+<td>23</td>
+<td>Estequiometrías observadas, con cada cifra etiquetada con el componente al que corresponde.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_barreras_peptido_periplasmico.csv"><code>tabla_barreras_peptido_periplasmico.csv</code></a></td>
+<td>9</td>
+<td>Las barreras documentadas para un péptido que deba actuar en el periplasma.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_busquedas_negativas.csv"><code>tabla_busquedas_negativas.csv</code></a></td>
+<td>164</td>
+<td>Las 164 búsquedas registradas, 34 de ellas con cero resultados. Es la tabla que convierte una ausencia en un dato.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_covariacion_publicada.csv"><code>tabla_covariacion_publicada.csv</code></a></td>
+<td>11</td>
+<td>Pares covariantes publicados, comprobados uno a uno contra las coordenadas.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_crosslinking_publicado.csv"><code>tabla_crosslinking_publicado.csv</code></a></td>
+<td>12</td>
+<td>Experimentos de entrecruzamiento publicados con su par de residuos y su eficiencia.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_estructuras_PDB.csv"><code>tabla_estructuras_PDB.csv</code></a></td>
+<td>112</td>
+<td>Las 112 entradas de PDB verificadas, con 29 columnas: composición, ligandos, mutaciones, entorno de membrana, cobertura de la región de interfaz y, para cada una, qué uso permite y cuál no.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_intentos_inhibicion.csv"><code>tabla_intentos_inhibicion.csv</code></a></td>
+<td>48</td>
+<td>Qué se ha intentado contra estas bombas, con la escala N1–N5 de fuerza de evidencia y una columna que dice si el mecanismo declarado está respaldado.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_metodos_validacion_experimental.csv"><code>tabla_metodos_validacion_experimental.csv</code></a></td>
+<td>20</td>
+<td>Veinte métodos de validación con lo que cada uno mide y, sobre todo, lo que no puede distinguir.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_mutaciones_interfaz.csv"><code>tabla_mutaciones_interfaz.csv</code></a></td>
+<td>39</td>
+<td>Mutaciones de interfaz publicadas con su fenotipo de ensamblaje y de resistencia, la numeración en los dos sistemas y el número de fuentes independientes.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_novedad_busqueda.csv"><code>tabla_novedad_busqueda.csv</code></a></td>
+<td>14</td>
+<td>Las consultas con que se comprobó la afirmación de novedad, con su resultado.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_proteasas_periplasmicas_Pa.csv"><code>tabla_proteasas_periplasmicas_Pa.csv</code></a></td>
+<td>6</td>
+<td>Proteasas periplásmicas de <em>P. aeruginosa</em> con su accesión verificada.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_referencias_verificadas.csv"><code>tabla_referencias_verificadas.csv</code></a></td>
+<td>334</td>
+<td>Las 334 referencias con su DOI resuelto, su PMID cuando existe, el eje en que se usa y su hallazgo principal en una frase.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_regulacion_y_cepas.csv"><code>tabla_regulacion_y_cepas.csv</code></a></td>
+<td>20</td>
+<td>Reguladores, cepas y sustratos indicadores para diseñar un experimento de validación.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_rele_protones_RND.csv"><code>tabla_rele_protones_RND.csv</code></a></td>
+<td>12</td>
+<td>Residuos del relé de protones con la fuente primaria de cada uno y el sistema de numeración en que se publicó.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_residuos_interfaz_OMF_MFP.csv"><code>tabla_residuos_interfaz_OMF_MFP.csv</code></a></td>
+<td>107</td>
+<td>Contactos medidos residuo a residuo en tres sistemas, con la partición entre cadena principal y cadena lateral.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_rotacion_registro.csv"><code>tabla_rotacion_registro.csv</code></a></td>
+<td>8</td>
+<td>Geometría del registro por entrada, con la convención de ángulo declarada.</td>
+</tr>
+<tr>
+<td><a href="tablas/tabla_sistemas_cubiertos.csv"><code>tabla_sistemas_cubiertos.csv</code></a></td>
+<td>32</td>
+<td>Los sistemas cubiertos con su identidad de secuencia frente a las proteínas de <em>P. aeruginosa</em>: la distancia que cruza cada transferencia por analogía.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="como-citar-y-que-garantiza-este-material"><span class="num">Secci&oacute;n 5</span>Cómo citar y qué garantiza este material</h2>
+<p>Cada identificador de este compendio —DOI, código de PDB, accesión de UniProt, mapa de EMDB— fue resuelto
+contra su base de datos de origen en la fecha de corte. Lo que <strong>no</strong> garantiza: que los artículos se hayan
+leído a texto completo. De las 334 referencias, cinco se leyeron completas; las demás se citan por sus
+metadatos verificados, y la columna correspondiente de la tabla de referencias lo declara caso por caso.
+Antes de apoyar un argumento propio en cualquiera de ellas, lee el original.</p>
+<p>Tampoco es un documento cerrado. La fecha de corte es una frontera real: cualquier estructura depositada o
+cualquier artículo publicado después del 11 de septiembre de 2026 queda fuera, y la sección de limitaciones
+dice con qué magnitud. Si encuentras una contradicción con una fuente primaria, la fuente primaria manda.</p>
+<p><strong>Sugerencia de cita:</strong> Bustos, D. (2026). <em>Compendio de evidencia sobre la interfaz OMF–MFP y el mecanismo de
+rotación y registro en bombas de eflujo RND de</em> Pseudomonas aeruginosa. Laboratorio de Bioinformática y
+Química Computacional, Universidad Católica del Maule. Material de profundización del proyecto ANID–Fondecyt
+Regular 1260886.</p></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="https://danielbustosg.github.io/">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>

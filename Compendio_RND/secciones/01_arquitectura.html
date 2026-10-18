@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eje (a) · Arquitectura tripartita y estequiometrías observadas — Compendio RND</title>
+<meta name="description" content="Qué compone una bomba RND, qué estequiometrías se han observado realmente y por qué 3:6:3 no es una propiedad universal.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arquitectura tripartita y estequiometrías observadas">
+<meta property="og:description" content="Qué compone una bomba RND, qué estequiometrías se han observado realmente y por qué 3:6:3 no es una propiedad universal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129516;</text></svg>">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+
+/* añadidos propios del compendio */
+.tagrow{font-family:system-ui,sans-serif;font-size:.78rem;margin:.6rem 0 0}
+.tag{display:inline-block;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:.1rem .6rem;margin:.15rem .25rem .15rem 0}
+.tag.exp{border-color:var(--good);color:#2c6134}
+.tag.comp{border-color:#6a4c93;color:#55397a}
+.tag.inf{border-color:var(--accent2);color:#a8521a}
+.units{display:grid;gap:1.1rem;margin:1.5rem 0}
+.unit{display:grid;grid-template-columns:72px 1fr;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem;background:#fff}
+.unit:hover{border-color:var(--accent)}
+.unit-num{font-family:system-ui,sans-serif;font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
+.unit-num small{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:600;margin-bottom:.2rem}
+.unit h2{font-size:1.18rem;margin:0 0 .25rem;border:0;padding:0;color:#17365c}
+.unit h2 a{text-decoration:none;color:inherit}
+.unit h2 a:hover{color:var(--accent)}
+.unit .desc{margin:.35rem 0 0;font-size:.95rem;color:#2e3744}
+table.data{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:.84rem;margin:1.1rem 0;display:block;overflow-x:auto}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel);font-weight:600}
+table.data tr:nth-child(even) td{background:#fbfcfd}
+blockquote{margin:1.2rem 0;padding:.9rem 1.2rem;background:var(--panel);border-left:4px solid var(--good);border-radius:0 6px 6px 0;font-size:.95rem}
+blockquote p{margin:.35rem 0}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:0;border-bottom:1px solid var(--line);padding-bottom:1rem;max-height:none}.unit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="course-backbar" aria-label="Compendio" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#1f3f66;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../index.html" style="color:#fff;text-decoration:none">&larr; Índice del compendio</a>
+  <span><a href="https://danielbustosg.github.io/" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+<header class="banner"><div class="inner">
+<div class="kicker">Compendio RND · interfaz OMF–MFP · ANID–Fondecyt Regular 1260886</div>
+<h1>Arquitectura tripartita y estequiometrías observadas</h1>
+<div class="meta">Material de profundización para estudiantes del proyecto · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule · Fecha de corte de la búsqueda: 11 de septiembre de 2026</div>
+</div></header>
+<div class="layout"><nav class="toc"><h2>Contenido</h2><ol><li><a href="#a0-advertencia-de-transferencia-por-analogia-se-repite-en-ca">a0. Advertencia de transferencia por analogía (se repite en cada transferencia</a></li><li><a href="#a1-los-tres-componentes-y-la-topologia-del-complejo">a1. Los tres componentes y la topología del complejo</a><ol><li><a href="#a1-1-el-transportador-rnd">a1.1 El transportador RND</a></li><li><a href="#a1-2-la-proteina-adaptadora-periplasmica-mfp">a1.2 La proteína adaptadora periplásmica (MFP)</a></li><li><a href="#a1-3-el-factor-de-membrana-externa-omf">a1.3 El factor de membrana externa (OMF)</a></li><li><a href="#a1-4-topologia-del-conjunto">a1.4 Topología del conjunto</a></li></ol></li><li><a href="#a2-la-estequiometria-con-su-historia-completa">a2. La estequiometría, con su historia completa</a><ol><li><a href="#a2-1-el-estado-de-la-cuestion-antes-de-2014-mediciones-indir">a2.1 El estado de la cuestion antes de 2014: mediciones indirectas contradicto</a></li><li><a href="#a2-2-como-se-zanjo-contar-cadenas-en-un-mapa">a2.2 Como se zanjo: contar cadenas en un mapa</a></li><li><a href="#a2-3-la-conclusion-obligatoria-con-su-reserva">a2.3 La conclusión obligatoria, con su reserva</a></li></ol></li><li><a href="#a3-contraejemplos-que-impiden-universalizar">a3. Contraejemplos que impiden universalizar</a></li><li><a href="#a4-componentes-accesorios-hay-equivalente-de-acrz-o-de-ybjp-">a4. Componentes accesorios: hay equivalente de AcrZ o de YbjP en MexAB-OprM?</a><ol><li><a href="#a4-1-que-son-acrz-y-ybjp">a4.1 Que son AcrZ y YbjP</a></li><li><a href="#a4-2-la-busqueda-y-el-resultado-negativo">a4.2 La búsqueda, y el resultado negativo</a></li></ol></li><li><a href="#a5-la-separacion-axial-y-su-dispersion-de-16-a">a5. La separación axial y su dispersión de ~16 Å</a></li><li><a href="#a6-es-3-oprm-6-mexa-3-mexb-una-propiedad-del-sistema-o-de-la">a6. Es 3 OprM : 6 MexA : 3 MexB una propiedad del sistema o de la preparación </a></li><li><a href="#a7-tablas-del-eje-a">a7. Tablas del eje (a)</a><ol><li><a href="#a7-1-tabla-arquitectura-estequiometrias-csv">a7.1 tabla_arquitectura_estequiometrias.csv</a></li><li><a href="#a7-2-tabla-busquedas-negativas-arquitectura-csv">a7.2 tabla_busquedas_negativas_arquitectura.csv</a></li></ol></li><li><a href="#a8-elementos-marcados-por-verificar-en-este-eje">a8. Elementos marcados POR VERIFICAR en este eje</a></li><li><a href="#a9-referencias-del-eje-a-todas-verificadas-en-crossref-el-20">a9. Referencias del eje (a) — todas verificadas en Crossref el 2026-09-11</a></li></ol></nav><main><blockquote>
+<p><strong>Cómo leer esta página.</strong> Forma parte de un compendio de evidencia verificada sobre el ensamblaje
+de las bombas de eflujo RND. Cada afirmación lleva una etiqueta que dice de dónde viene:
+<code>EXP</code> evidencia experimental directa · <code>EXP-IND</code> experimental indirecta · <code>COMP</code> predicción
+computacional · <code>INF</code> inferencia del autor del compendio · <code>POR VERIFICAR</code> no comprobado.
+Toda numeración de residuo va acompañada de su sistema de numeración, porque las dos convenciones
+en uso —cadena madura y precursor— difieren y confundirlas es el error silencioso más frecuente
+en este campo. Fecha de corte de la búsqueda bibliográfica: <strong>11 de septiembre de 2026</strong>.</p>
+</blockquote>
+<p><strong>Fecha de corte: 2026-09-11.</strong> Todos los DOI citados en este archivo fueron resueltos por el autor de esta sección contra <code>https://api.crossref.org/works/{DOI}</code> el 2026-09-11 (64 DOI, ninguno fallido). Las mediciones sobre coordenadas provienen de las mediciones previas del proyecto y de <code>el archivo de hechos verificados</code> y se citan como "medido en el proyecto, 2026-09-11". Los metadatos de depósito se consultaron contra la API de RCSB (<code>data.rcsb.org/rest/v1/core/entry</code>) el 2026-09-11.
+<strong>Etiquetas de evidencia:</strong> EXP (experimental directa), EXP-IND (experimental indirecta), COMP (predicción o modelo computacional), INF (inferencia del autor de esta sección), POR VERIFICAR (no comprobado en esta revisión).</p>
+<hr />
+<h2 id="a0-advertencia-de-transferencia-por-analogia-se-repite-en-ca"><span class="num">Secci&oacute;n 1</span>a0. Advertencia de transferencia por analogía (se repite en cada transferencia de esta sección)</h2>
+<p>Identidades de secuencia medidas en el proyecto el 2026-09-11 (alineamiento global Needleman–Wunsch, BLOSUM62, hueco −11/−1, identidad sobre columnas sin huecos, secuencias UniProt completas en los dos lados): <strong>MexB/AcrB 70,14 %; MexA/AcrA 59,63 %; OprM/TolC 23,06 %</strong> (EXP, medido en el proyecto). El componente sobre el que este proyecto quiere disenar el inhibidor —OprM— es el <strong>menos</strong> conservado entre los dos sistemas modelo. Todo lo que se sabe de la interfaz AcrA–TolC se transfiere a MexA–OprM por un puente de 23 %. En esta revisión se reprodujo la identidad AcrB/MexB con la misma convención: 70,14 % sobre 1.045 columnas sin huecos (EXP, medido en esta revisión).</p>
+<p>A esa advertencia esta sección anade una segunda, nueva y medida en esta revisión, que es <strong>cualitativa y no cuantitativa</strong>: OprM y TolC no difieren solo en grado de conservación, difieren en <strong>topología de anclaje</strong>. UniProt anota en OprM (Q51487) lipidación en Cys18 —N-palmitoil-cisteina y S-diacilglicerol-cisteina— y en TolC (P02930) <strong>ninguna</strong> lipidación (EXP, verificado en UniProt 2026-09-11). La misma consulta muestra que las tres OMF de <em>P. aeruginosa</em> estan lipidadas (OprM Cys18, OprJ Cys20, OprN Cys26), que las cuatro MFP del sistema Mex también lo estan (MexA Cys24, MexX Cys24, MexC Cys22, MexE Cys24), que AcrA de <em>E. coli</em> si lo esta (Cys25) y que la OMF plasmidica TOprJ1 (A0A411AKN6) <strong>no</strong> lo esta. La consecuencia se desarrolla en a1 y a4, y es que en <em>P. aeruginosa</em> la interfaz OMF–MFP se establece entre <strong>dos lipoproteinas ancladas cada una a su propia membrana</strong>, mientras en <em>E. coli</em> solo una de las dos partes lo esta. Esto no es una glosa: es un grado de libertad menos en el sistema diana que en el sistema modelo.</p>
+<h2 id="a1-los-tres-componentes-y-la-topologia-del-complejo"><span class="num">Secci&oacute;n 2</span>a1. Los tres componentes y la topología del complejo</h2>
+<h3 id="a1-1-el-transportador-rnd">a1.1 El transportador RND</h3>
+<p>MexB (UniProt P52002, 1046 aa, <strong>sin peptido senal</strong>, numeración PDB identica a la de UniProt, desplazamiento 0; EXP, verificado en UniProt y en <code>_struct_ref_seq</code> de 17 entradas) atraviesa la membrana interna doce veces y forma un homotrimero obligado. Cada protomero consta de un dominio transmembrana de doce helices que alberga la red del rele de protones y un gran dominio periplásmico que contiene los bolsillos de union de farmaco y se subdivide en un dominio poro (PN1, PN2, PC1, PC2) y un dominio de embudo (FL) (EXP, Nakashima2013 doi 10.1038/nature12300; Wu2026 doi 10.1126/sciadv.aee7036). La energía proviene de la fuerza protonmotriz, no de ATP: el transportador es un antiportador farmaco/proton. La trimerización es obligatoria para el ensamblaje de la bomba y para la union de sustrato (EXP, Lu2014 doi 10.1371/journal.pone.0089143).</p>
+<h3 id="a1-2-la-proteina-adaptadora-periplasmica-mfp">a1.2 La proteína adaptadora periplásmica (MFP)</h3>
+<p>MexA (UniProt P52477, 383 aa, peptido senal 1–23, cadena madura de 360 residuos; <strong>numeración PDB = UniProt − 23</strong>, verificado en <code>_struct_ref_seq</code> de todas las entradas de MexA) tiene cuatro dominios dispuestos linealmente: horquilla α, lipoilo, β-barril y membrana-proximal (MP). UniProt anota en <strong>Cys24</strong> —el residuo 1 de la cadena madura— <strong>N-palmitoil-cisteina y S-diacilglicerol-cisteina</strong> (EXP, verificado en UniProt 2026-09-11).</p>
+<p>La consecuencia topologica de esa lipidación es que MexA <strong>no es una proteína periplásmica soluble</strong>: es una lipoproteina anclada por su extremo N-terminal a la cara periplásmica de la membrana interna, con el resto de la cadena proyectandose hacia la membrana externa. Tres consecuencias operativas, la primera y la segunda EXP y la tercera INF:</p>
+<ol>
+<li>El anclaje fija el extremo del que parte la molecula y por tanto fija también el radio y la altura a los que llega la punta de la horquilla α. En las estructuras del ensamblaje esa punta es exactamente la superficie que toca OprM (EXP: 12 residuos de MexA, 96, 97, 99, 100 y 103–110 en numeración de cadena madura = 119, 120, 122, 123 y 126–133 en P52477; medido en el proyecto sobre 6IOK).</li>
+<li>Las estructuras cristalograficas aisladas de MexA <strong>no</strong> contienen ese anclaje: 1VF7 y 2V4D llevan la sustitución C1S de la cisteina madura, es decir se elimino deliberadamente el sitio de lipidación para poder cristalizar (EXP, verificado en la tabla de estructuras y en Akama2004a doi 10.1074/jbc.C400164200, Symmons2009 doi 10.1073/pnas.0900693106). Cualquier medición de la geometría interdominio de MexA hecha sobre esas entradas se hizo sobre una molecula a la que se le quito el anclaje. Esto es coherente con la medición del proyecto de que <strong>ninguna de las 39 cadenas cristalograficas aisladas de MexA esta en la conformación del ensamblaje</strong> (horquilla α girada 36–54 grados en todas; medido en el proyecto, 2026-09-11).</li>
+<li><strong>INF del autor de esta sección:</strong> un peptido que mimetice la punta de la horquilla α de MexA competira con una MFP que esta pre-orientada por su anclaje lipidico, mientras que el peptido llegara por difusión libre desde el periplasma. La competencia no es entre dos ligandos equivalentes; el competidor nativo tiene una ventaja entropica de orientación que el peptido no tiene. Esto no invalida la estrategia, pero significa que el <code>IC50</code> de un peptido libre no es predecible a partir de la afinidad del contacto nativo. Marcado como inferencia, no como resultado.</li>
+</ol>
+<h3 id="a1-3-el-factor-de-membrana-externa-omf">a1.3 El factor de membrana externa (OMF)</h3>
+<p>OprM (UniProt Q51487, 485 aa, peptido senal 1–17, cadena madura de 468 residuos; <strong>numeración PDB = UniProt − 17</strong>) forma un trimero con simetría de orden 3 en el que cada protomero aporta cuatro cadenas β al barril de membrana y cuatro helices al barril α periplásmico. Dos pares de helices enrolladas, H3–H4 y H7–H8, forman la compuerta periplásmica; en las estructuras del trimero aislado esa compuerta esta <strong>cerrada</strong>, y en las del ensamblaje esta <strong>abierta</strong> (EXP, Phan2010 doi 10.1016/j.str.2010.01.018; Tsutsumi2019 doi 10.1038/s41467-019-09463-9). El proyecto midio la magnitud de esa diferencia: superponiendo el barril de membrana (≤ 0,8 Å de RMSD entre todas las entradas), la punta periplásmica de contacto esta desplazada <strong>6,98–7,72 Å (máximo 12,07 Å)</strong> en 3D5K frente a la referencia unida, y <strong>0,65–0,71 Å</strong> entre 6TA5 y 6IOK, es decir la conformación unida se reproduce entre laboratorios (medido en el proyecto, 2026-09-11).</p>
+<p>Lo que anade esta revisión: OprM esta <strong>lipidada en Cys18 = residuo 1 de la cadena madura = residuo 1 de la numeración PDB</strong> (EXP, UniProt 2026-09-11), y esa lipidación esta <strong>observada</strong> en coordenadas: el ligando PLM (acido palmitico) aparece en 4Y1K, 6ZRE y 7AKZ (EXP, tabla de estructuras del proyecto). De modo que OprM esta anclada por dos vías a la membrana externa: por su barril β y por su lipido N-terminal.</p>
+<h3 id="a1-4-topologia-del-conjunto">a1.4 Topología del conjunto</h3>
+<p>El complejo atraviesa las dos membranas y el periplasma como un tubo continuo. El punto central, y el que sostiene toda la estrategia del proyecto, es que <strong>el OMF y el transportador RND no se tocan</strong>: el proyecto midio <strong>cero contactos OprM–MexB a menos de 5 Å</strong> en 6IOK (medido en el proyecto), y los autores de las dos estructuras de MexAB–OprM lo declaran explicitamente (EXP, Tsutsumi2019; Glavier2020 doi 10.1038/s41467-020-18770-5). La MFP es el único puente. Una interfaz que es el único puente es, en principio, un punto único de fallo del ensamblaje: esa es la premisa arquitectonica de la hipótesis del proyecto, y es solida.</p>
+<p>Lo que <strong>no</strong> se sigue de ello, y conviene decirlo aquí para no repetirlo: que romper el puente baste para inactivar la bomba. Hay evidencia experimental directa de disociación entre <strong>ensamblar</strong> y <strong>funcionar</strong>: el hibrido de OprM de <em>P. aeruginosa</em> con AcrAB de <em>E. coli</em> <strong>se ensambla</strong> —el entrecruzamiento lo demuestra— y sin embargo <strong>no es funcional</strong> (EXP, Stegmeier2006 doi 10.1021/bi060320g). El intercambio del dominio de horquilla de AcrA por el de MexA modifica la funcionalidad del hibrido, lo que localiza la especificidad en la horquilla. La lección para el proyecto va en la dirección favorable: la horquilla no solo pega, decide. Pero también advierte que un ensayo de co-purificación o de entrecruzamiento no es un ensayo de función, y que el criterio de exito de un peptido debe ser la restauración de susceptibilidad, no la reducción de un complejo detectable.</p>
+<p>Una observación adicional de <em>in situ</em> que el compendio debe registrar: <strong>AcrA contacta la capa de peptidoglicano</strong> en celulas intactas, y la separación entre la membrana externa y la interna se mantiene <strong>constante</strong> en los sitios donde hay bombas, lo que sugiere que el periplasma queda "pinzado" por el ensamblaje (EXP, Shi2019 doi 10.1038/s41467-019-10512-6). Esto significa que el entorno real de la interfaz incluye una tercera estructura —el peptidoglicano— que no esta en ninguna estructura purificada. <strong>POR VERIFICAR:</strong> no se localizo en esta revisión evidencia equivalente para MexA de <em>P. aeruginosa</em>.</p>
+<h2 id="a2-la-estequiometria-con-su-historia-completa"><span class="num">Secci&oacute;n 3</span>a2. La estequiometría, con su historia completa</h2>
+<h3 id="a2-1-el-estado-de-la-cuestion-antes-de-2014-mediciones-indir">a2.1 El estado de la cuestion antes de 2014: mediciones indirectas contradictorias</h3>
+<p>La pregunta de cuantas moleculas de MFP hay por bomba se planteo durante quince anos con herramientas que no podian contar. El recorrido documentado:</p>
+<ul>
+<li><strong>1999–2000.</strong> La reconstitución del sistema AcrAB evitando el periplasma establece el acoplamiento funcional entre componentes (EXP, Zgurskaya1999 doi 10.1073/pnas.96.13.7190). Al ano siguiente, un complejo entrecruzado entre la lipoproteina periplásmica <strong>oligomerica</strong> AcrA y AcrB aporta la primera evidencia bioquimica de que la MFP no es monomerica en el complejo (EXP, Zgurskaya2000 doi 10.1128/jb.182.15.4264-4267.2000). "Oligomerica" era todo lo que la tecnica permitia decir.</li>
+<li><strong>2004–2007.</strong> El entrecruzamiento químico demuestra la interacción física directa TolC–AcrA, independiente de sustrato y de AcrB (EXP, Husain2004 doi 10.1128/jb.186.24.8533-8536.2004). El entrecruzamiento por disulfuros dirigidos entre las puntas de las horquillas de AcrB y las bases de las helices de TolC detecta un complejo AcrB–TolC (EXP, Tamura2005 doi 10.1021/bi050452u). Este último resultado merece un comentario: <strong>las estructuras posteriores muestran que AcrB y TolC no se tocan</strong> (cero contactos a &lt; 5 Å, medido en el proyecto para el par homólogo OprM–MexB). El entrecruzamiento detectaba proximidad alcanzable por la geometría del reactivo y por la flexibilidad del sistema, no un contacto del estado ensamblado. Es el ejemplo mas limpio del compendio de por que una restricción de entrecruzamiento no es una interfaz.</li>
+<li><strong>2007.</strong> El mapeo por entrecruzamiento in vivo de la interfaz de helices enrolladas entre el conducto y el adaptador fija el <strong>modelo de interpenetración</strong>: las horquillas α de la MFP se intercalarian entre las helices del OMF (EXP, Lobedanz2007 doi 10.1073/pnas.0610160104).</li>
+<li><strong>2009.</strong> Symmons y colaboradores completan el dominio β-roll de MexA re-refinando el cristal (entrada <strong>2V4D</strong>, 3,2 Å, 13 cadenas, C1S) y, usando restricciones de distancia de entrecruzamiento in vivo mas acoplamiento multidominio, construyen un modelo del ensamblaje completo. El modelo es <strong>AcrA₃–AcrB₃–TolC₃</strong>: 610 kDa, 270 Å de largo (COMP con restricciones EXP, Symmons2009 doi 10.1073/pnas.0900693106). El comentario editorial que acompano al articulo se titula, sin ambigüedad, "Trinity revealed: Stoichiometric complex assembly of a bacterial multidrug efflux pump" (Pos2009a doi 10.1073/pnas.0902837106). En 2009 la comunidad daba por resuelta la estequiometría de tres MFP.</li>
+<li><strong>2010–2011.</strong> En paralelo, el grupo de Ha propone por cristalografia y entrecruzamiento un <strong>ensamblaje hexamerico en forma de embudo</strong> de la proteína adaptadora (EXP-IND, Xu2011a doi 10.1074/jbc.m111.238535), con un modelo de contacto de <strong>engranajes entrelazados</strong> entre TolC y MacA (EXP-IND, Xu2011b doi 10.1074/jbc.m110.202598) y con la punta de la horquilla α de MacA como determinante de la union (EXP, Xu2010 doi 10.1016/j.bbrc.2010.03.097). La cifra correcta estaba publicada ocho anos antes de las estructuras de MexAB–OprM, pero convivia con la otra.</li>
+<li><strong>2016.</strong> El número de moleculas de AcrA sigue "en debate" —el termino es de los autores— y se construyen <strong>proteínas de fusión AcrB–AcrA</strong> funcionales precisamente para forzar una estequiometría conocida. El articulo resume la contradicción sin resolverla: el entrecruzamiento con disulfuros indicaba 1:1:1, la crio-EM indicaba otra cosa (EXP, Hayashi2016 doi 10.1128/jb.00587-15).</li>
+</ul>
+<p><strong>Síntesis de a2.1 (INF):</strong> el desacuerdo 3:3:3 frente a 3:6:3 no fue un desacuerdo entre laboratorios rivales sino entre <strong>clases de observable</strong>. El entrecruzamiento y la reconstitución informan sobre proximidad y sobre requisito funcional; no cuentan copias. Un modelo acoplado con restricciones de entrecruzamiento hereda el número de copias de la hipótesis con que se construyo, no lo mide.</p>
+<h3 id="a2-2-como-se-zanjo-contar-cadenas-en-un-mapa">a2.2 Como se zanjo: contar cadenas en un mapa</h3>
+<p>La cuestion se cerro cuando fue posible <strong>contar cadenas</strong>. La secuencia es:</p>
+<ul>
+<li><strong>2014.</strong> Primera estructura de crio-EM del ensamblaje AcrAB–TolC, que establece el hexamero de AcrA y la ausencia de contacto directo AcrB–TolC (EXP, Du2014 doi 10.1038/nature13205). <strong>Declaración de alcance:</strong> el texto completo de Du2014 esta tras un muro de pago y <strong>no se consulto</strong> en esta revisión; la fila correspondiente se apoya en el registro de Crossref y PubMed y en como lo citan los articulos posteriores que si se leyeron. No se cita como si se hubiera leido el texto completo.</li>
+<li><strong>2016–2017.</strong> Estructura pseudoatomica de AcrAB–TolC (EXP, Du2016 doi 10.1016/j.str.2015.12.007; revisión Du2015 doi 10.1515/hsz-2015-0118) y ensamblaje tripartito de bombas RND reconstituido y visualizado por EM (EXP, Daury2016 doi 10.1038/ncomms10731), este último el precedente metodologico del automontaje en nanodiscos que se usaria en 6TA5/6TA6.</li>
+<li><strong>2019.</strong> Estructuras del ensamblaje <strong>MexAB–OprM</strong> de <em>P. aeruginosa</em> a 3,64 y 3,76 Å, con las doce cadenas modeladas y la región de interfaz a ~3 Å de resolución local (EXP, Tsutsumi2019). Aquí deja de haber duda para el sistema de interes.</li>
+<li><strong>2019, in situ.</strong> Crio-tomografia electronica de celulas intactas de <em>E. coli</em> y promediado de 1.321 subtomogramas: la arquitectura del ensamblaje completo <strong>in situ</strong> indica una relación 3:6:3 de TolC:AcrA:AcrB, con una longitud total de ~330 Å (EXP-IND, Shi2019 doi 10.1038/s41467-019-10512-6). Es el único dato de esta sección obtenido sin detergente, sin amfipol y sin nanodisco. Su limitación, declarada: <strong>~15 Å de resolución y simetría C3 impuesta</strong> en el promediado, de modo que la relación 3:6:3 se lee de la arquitectura y no de un recuento de cadenas, y el mapa no puede, por construcción, detectar no equivalencia entre protomeros.</li>
+</ul>
+<h3 id="a2-3-la-conclusion-obligatoria-con-su-reserva">a2.3 La conclusión obligatoria, con su reserva</h3>
+<p><strong>La estequiometría observada en las estructuras de MexAB–OprM es 3 OprM : 6 MexA : 3 MexB</strong> (EXP; 6IOK, 6IOL, 6TA5 y 6TA6, cuatro depósitos, 12 cadenas cada uno; verificado contra RCSB el 2026-09-11).</p>
+<p>Las reservas, todas explicitas:</p>
+<ul>
+<li>** Las cuatro entradas no son cuatro observaciones independientes.** 6IOK y 6IOL son <strong>dos clases del mismo conjunto de datos</strong> del mismo preparado (37.971 y 42.338 particulas; EXP, Tsutsumi2019 y metadatos de RCSB). 6TA5 y 6TA6 son <strong>dos secciones focalizadas del mismo conjunto de datos</strong> de otro preparado: los propios autores declaran "6TA6 y EMD-10395 para la sección MexA–MexB-trio, 6TA5 y EMD-10372 para la sección MexA–OprM" (EXP, Glavier2020). <strong>Esto corrige el supuesto de partida de este compendio</strong>, que las describia como "replicas del estado tipo A": no son replicas, son dos mapas focalizados de distintas regiones del mismo especimen, cada uno depositado como un modelo compuesto de doce cadenas. El número de preparados independientes que sostienen la estequiometría de MexAB–OprM es <strong>dos</strong>, no cuatro; el número de laboratorios independientes es <strong>dos</strong>.</li>
+<li>Los tres protomeros de OprM y las seis copias de MexA de un mismo ensamblaje tampoco son observaciones independientes.</li>
+<li>Ninguna de las cuatro entradas es del complejo <strong>nativo aislado de <em>P. aeruginosa</em></strong>. Las dos de 2019 provienen de <strong>reconstitución in vitro a partir de componentes purificados por separado</strong>; las dos de 2020, de <strong>automontaje</strong> de MexB en nanodisco con MexA y OprM también en nanodisco (EXP; ver a6).</li>
+<li>Para <strong>MexXY-OprM, MexCD-OprJ y MexEF-OprN no existe ninguna estructura experimental</strong>: la búsqueda por accesión UniProt en RCSB devuelve 0 entradas para MexX (G3XD21), MexC (G3XD25), MexD (Q9HVI9), MexE (Q9I0Y9) y MexF (Q9I0Y8) (dato heredado de <code>el archivo de hechos verificados</code>, etiquetado POR VERIFICAR en esta revisión porque no se repitio la consulta). Toda afirmación estequiometrica sobre esas tres bombas es transferencia por analogía desde MexAB-OprM.</li>
+</ul>
+<h2 id="a3-contraejemplos-que-impiden-universalizar"><span class="num">Secci&oacute;n 4</span>a3. Contraejemplos que impiden universalizar</h2>
+<p>Las cifras de esta subsección se escriben <strong>con cada número etiquetado con su componente</strong>, porque la literatura usa ordenes distintos: el propio Tsutsumi2019 escribe la razon de MexAB–OprM como "<strong>1:2:1</strong> de OprM, MexA y MexB", y Glavier2020 la escribe igual, mientras Shi2025 la escribe como "<strong>3:6:3</strong> (TOprJ1 : TMexC1 : TMexD1)". Las tres son la misma arquitectura. Un triplete de digitos sin etiquetas no es un dato.</p>
+<ol>
+<li><strong>MacAB–TolC (familia ABC).</strong> 5NIK y 5NIL: <strong>OMF 3 (TolC) : MFP 6 (MacA) : transportador 2 (MacB)</strong>, 11 cadenas (EXP, Fitzpatrick2017 doi 10.1038/nmicrobiol.2017.70; verificado en RCSB). El dato mecanicamente relevante no es el 2: es que <strong>el anillo hexamerico de los dominios MP de MacA se deforma a una forma oval para acomodar la simetría binaria del dimero de MacB</strong>, y que tres dominios β-barril de MacA contactan MacB de forma <strong>no equivalente</strong> (EXP, texto de Fitzpatrick2017). El anillo de MFP no impone su simetría al transportador: se adapta a ella. <strong>9QGY</strong> (2026, 2,48 Å, 233.775 particulas) anade la lipoproteina YbjP al mismo sistema: <strong>OMF 3 : MFP 6 : transportador 2 + YbjP 3</strong>, 14 cadenas. RCSB lista 9QGY como "To Be Published"; la fuente primaria, localizada y verificada en esta revisión, es Horne2026 (doi 10.7554/eLife.110666). <strong>Esto corrige este compendio, que describia 9QGY como "TolC 3 + MacA 6 + MacB 2" sin mencionar las tres copias de YbjP.</strong></li>
+<li><strong>EmrAB–TolC (familia MFS).</strong> 8ZAL y 8ZAR: <strong>OMF 3 (TolC) : MFP 6 (EmrA) : transportador 1 (EmrB)</strong>, 10 cadenas (EXP, Zhong2026 doi 10.1038/s41467-026-70500-5; verificado en RCSB). Los autores declaran que la estequiometría de este sistema estaba en disputa entre 3:6:1 y 3:6:2 y que su estructura resuelve a favor de <strong>un solo EmrB</strong>. Dos cautelas de lectura: el modelo es <strong>compuesto</strong>, construido segmentando dos mapas distintos (mapa-1: seis EmrA y un EmrB; mapa-2: tres TolC), y el especimen se extrajo en DDM y se <strong>reconstituyo en Peptidisc</strong>.</li>
+<li><strong>Subcomplejo OMF + lipoproteina, sin MFP y sin transportador.</strong> <strong>9V52</strong>: <strong>OMF 3 (TolC) : YbjP 3</strong>, 6 cadenas (EXP, Ge2026 doi 10.7554/eLife.109684). <strong>Corrección importante a este compendio:</strong> este compendio agrupaba "9V55 y 9V52 con OMF+MFP SIN transportador". Eso es exacto para 9V52 en el sentido de que no hay MFP ni transportador, pero es <strong>incorrecto para 9V55</strong>. Los propios autores depositan 9V55 con el nombre <strong>"TolC-YbjP-AcrA local"</strong> (EMD-64787): es un <strong>refinamiento local del mismo conjunto de datos de la bomba completa 9V53</strong>, no un ensamblaje sin transportador. El transportador esta en el especimen; lo que no esta es en el modelo. Tratar 9V55 como evidencia de un ensamblaje OMF–MFP sin RND seria un error de lectura con consecuencias directas para este proyecto, porque es justo el subcomplejo que el proyecto quiere atacar y seria tentador leerlo como prueba de que existe de forma autonoma. <strong>No lo prueba.</strong> Lo que si aporta evidencia de subcomplejos sin OMF es otra cosa: la crio-tomografia in situ observa <strong>complejos AcrAB intermedios sin TolC</strong> en celulas vivas (EXP, Shi2019), y la bioquimica establece un mecanismo de ensamblaje <strong>secuencial</strong> que empieza por AcrAB (EXP, Tikhonova2011 doi 10.1016/j.chembiol.2011.02.011; Tikhonova2009 doi 10.1073/pnas.0906601106).</li>
+<li><strong>Ensamblajes de 18 cadenas.</strong> <strong>9V53</strong> y <strong>9TG4</strong>: <strong>OMF 3 (TolC) : MFP 6 (AcrA) : transportador 3 (AcrB) + YbjP 3 + AcrZ 3</strong> (EXP, Ge2026; Horne2026). En 9V53 el trimero de AcrB presenta <strong>simultaneamente los tres estados L, T y O</strong>, es decir un ciclo de transporte completo en una sola particula (EXP, Ge2026). La fuente primaria de 9TG4, que RCSB lista como "To Be Published", es Horne2026 (verificado en esta revisión).</li>
+<li><strong>5O66 y 5NG5 con AcrZ.</strong> <strong>OMF 3 (TolC) : MFP 6 (AcrA) : transportador 3 (AcrB) + AcrZ 3</strong>, 15 cadenas (EXP, Wang2017 doi 10.7554/eLife.24905). Detalle del depósito que hay que registrar: el articulo describe la estructura con el inhibidor MBX3132 a <strong>3,6 Å</strong> refinada con simetría de orden 3 impuesta, mientras los <strong>metadatos EM del depósito 5NG5 declaran 6,5 Å y 13.544 particulas con el rotulo "apo state", identicos a los de 5V5S</strong> (verificado en RCSB 2026-09-11). Es una discrepancia entre el depósito y el articulo primario: <strong>[POR VERIFICAR]</strong>. No se resuelve aquí y no se promedia.</li>
+<li><strong>TriABC (dos MFP distintas).</strong> <strong>6VEJ</strong>: el sistema funcional es TriABC-OpmH y tiene <strong>cuatro</strong> subunidades —el transportador TriC, la OMF OpmH y <strong>dos MFP diferentes</strong>, TriA y TriB (EXP, Fabre2021 doi 10.1016/j.str.2020.09.001). <strong>Corrección a este compendio:</strong> el depósito 6VEJ <strong>no contiene OpmH</strong>. Son 6 cadenas: tres de TriC y tres de una <strong>fusión de ingenieria TriA-TriB</strong>. Los autores declaran que el estado corresponde a un intermedio de ensamblaje <strong>previo</strong> al acoplamiento del OMF, con el tunel constrenido —lo llaman estado de "barrido de farmaco"—. De modo que 6VEJ es a la vez el contraejemplo de "una sola especie de MFP" y un ejemplo de subcomplejo MFP–RND sin OMF, y además una construcción fusionada: tres advertencias en una entrada.</li>
+<li><strong>MexJK: el contraejemplo de la propia <em>P. aeruginosa</em>.</strong> <strong>20YY</strong> (liberada 2026-07-08, 2,57 Å, 240.140 particulas, C1): <strong>OMF 0 (ausente) : MFP 6 (MexJ) : transportador 3 (MexK)</strong>, 9 cadenas, con <strong>triclosan</strong> unido (EXP; fuente primaria localizada y verificada en esta revisión: Wu2026 doi 10.1126/sciadv.aee7036, Science Advances, PMID 42566533 — <strong><code>el archivo de hechos verificados</code> la registraba como "sin DOI de revista", y esa entrada queda corregida</strong>). Es el subcomplejo MFP–RND de <em>P. aeruginosa</em> que este compendio pedia localizar. Su aportación mas importante para el eje (a) no es la cifra 6:3, sino la reserva con que los propios autores la publican: <strong>"la densidad de MexJ varia en las posiciones relacionadas por simetría C3, lo que sugiere que no todos los sitios de union de MexJ en la superficie de MexK estan saturados"</strong> (EXP, Wu2026). Dicho de otro modo: el modelo deposita seis MFP, pero la ocupancia observada es <strong>parcial</strong>. Esto es evidencia directa, en la especie de interes, de que <strong>el 6 no es un número obligado sino un máximo de sitios</strong>. La entrada acompanante <strong>9XWG</strong> es MexK trimerica aislada (3 cadenas, 3,38 Å).</li>
+</ol>
+<p><strong>Síntesis de a3 (INF).</strong> Lo que se conserva a traves de RND, ABC y MFS no es un triplete de números: es el par <strong>OMF trimerico + anillo hexamerico de MFP</strong>. El <strong>transportador</strong> varia libremente (3 en RND, 2 en MacB, 1 en EmrB) y puede faltar del modelo; los <strong>componentes accesorios</strong> varian (AcrZ, YbjP, ninguno); la <strong>identidad</strong> de la MFP puede desdoblarse en dos proteínas (TriA/TriB); la <strong>ocupancia</strong> de las seis posiciones de MFP puede ser parcial (MexJK). Para este proyecto la lectura es favorable y precisa: <strong>el modulo que el proyecto quiere atacar —OMF 3 + MFP 6 con contacto punta a punta— es la parte invariante de la arquitectura</strong>, de modo que un inhibidor de esa interfaz apunta al elemento conservado y no a un accidente de un sistema. La contrapartida es que esa misma conservación implica <strong>riesgo de promiscuidad</strong>: OprM es la OMF compartida por MexAB-OprM, MexXY-OprM y, con OprJ y OprN, por MexCD y MexEF, con identidades OprM/OprJ 46,85 % y OprM/OprN 33,41 % (medido en el proyecto). Un inhibidor de la interfaz de OprM no sera selectivo de una sola bomba; en este caso concreto eso es probablemente deseable, pero debe declararse antes y no descubrirse después.</p>
+<h2 id="a4-componentes-accesorios-hay-equivalente-de-acrz-o-de-ybjp-"><span class="num">Secci&oacute;n 5</span>a4. Componentes accesorios: hay equivalente de AcrZ o de YbjP en MexAB-OprM?</h2>
+<h3 id="a4-1-que-son-acrz-y-ybjp">a4.1 Que son AcrZ y YbjP</h3>
+<p><strong>AcrZ</strong> (UniProt P0AAW9, 49 aa, <strong>sin peptido senal y sin lipidación anotada</strong>, verificado en UniProt 2026-09-11) es una proteína pequena de una sola helice transmembrana que se asocia a AcrB y afecta de forma <strong>diferencial</strong> a la resistencia: modula el eflujo de un subconjunto de antibioticos y no de otros (EXP, Hobbs2012 doi 10.1073/pnas.1210093109). Esta en estructuras con estequiometría <strong>AcrZ 3 : AcrB 3</strong> (4C48, 4CDI, 6SGR, 6SGS; EXP, Du2020 doi 10.1016/j.str.2020.03.013) y en los ensamblajes completos 5O66, 5NG5, 9V53 y 9TG4.</p>
+<p><strong>YbjP</strong> (UniProt P75818, 171 aa, peptido senal 1–18, <strong>lipidación anotada en Cys19</strong>, verificado en UniProt 2026-09-11) es una lipoproteina que hasta 2025 estaba sin caracterizar. Se une a TolC en estequiometría <strong>3:3</strong>, situandose en el dominio ecuatorial y <strong>puenteando los protomeros de TolC</strong>; cada copia cabalga la interfaz entre dos protomeros, con 787 Å² de superficie enterrada con un protomero y 1037,4 Å² con el adyacente (EXP, Ge2026). La densidad de su Cys19 N-terminal madura es clara e indica anclaje lipidico a la membrana externa (EXP, Ge2026). Permanece unida cuando AcrA abre el canal de TolC.</p>
+<p>El hallazgo que explica <strong>por que</strong> existe YbjP es el que mas importa para este compendio, y es de Horne2026: <strong>muchos homólogos de TolC llevan una modificación lipidica N-terminal que se inserta en la monocapa interna de la membrana externa, un rasgo que parece haber sido conservado; en TolC de <em>E. coli</em> esa modificación esta completamente ausente</strong>, y YbjP imita las interacciones intramoleculares y con la membrana que en los homólogos hace el propio lipido (EXP, Horne2026 doi 10.7554/eLife.110666). Los autores anaden que la asociación YbjP–TolC ocurre espontaneamente in vitro e in vivo pero <strong>no es necesaria para la actividad de eflujo en condiciones estandar de laboratorio</strong>.</p>
+<p>Enlazando con a0: la medición de UniProt de esta revisión muestra que <strong>OprM si tiene esa lipidación N-terminal</strong> (Cys18) y <strong>TolC no</strong>. <strong>INF del autor de esta sección:</strong> <em>E. coli</em> recluta una lipoproteina accesoria para hacer lo que OprM hace con su propio lipido. Bajo esa lectura, no cabe esperar un equivalente de YbjP en <em>P. aeruginosa</em>, porque el problema que YbjP resuelve no existe en OprM. Es una inferencia, no un resultado, pero es comprobable y a4.2 la comprueba.</p>
+<h3 id="a4-2-la-busqueda-y-el-resultado-negativo">a4.2 La búsqueda, y el resultado negativo</h3>
+<p>La pregunta obligatoria se atacó por cuatro vías independientes, todas ejecutadas el 2026-09-11 y todas registradas en <code>tabla_busquedas_negativas_arquitectura.csv</code>:</p>
+<ol>
+<li><strong>Literatura (PubMed).</strong> <code>(AcrZ) AND (Pseudomonas aeruginosa)</code> → <strong>0</strong>. <code>(AcrZ) AND (MexB OR MexAB)</code> → <strong>0</strong>. <code>(AcrZ[Title/Abstract]) AND (homolog* OR ortholog*)</code> → <strong>0</strong>. Control de indexación: <code>AcrZ</code> solo devuelve <strong>14</strong> registros y <code>AcrZ[Title/Abstract]</code> <strong>12</strong>, de modo que los ceros no son un fallo de indexación del termino. <code>(YbjP) AND (Pseudomonas)</code> → <strong>0</strong>; <code>YbjP</code> solo → <strong>3</strong> registros, todos de 2026 y todos de <em>E. coli</em>.</li>
+<li><strong>Familia de dominios (InterPro, EBI).</strong> La familia AcrB-asociada <strong>IPR019702 / Pfam PF10766</strong> tiene <strong>508</strong> proteínas en toda UniProt, <strong>0 en el genero <em>Pseudomonas</em> (taxid 286)</strong> y <strong>0 en <em>P. aeruginosa</em> (taxid 287)</strong>. El dominio de YbjP, <strong>DUF3828 / IPR024289</strong>, tiene <strong>1.051</strong> proteínas, <strong>17 en el genero <em>Pseudomonas</em></strong> —entre ellas Q4K5B6 de <em>P. fluorescens</em>, A0A2C9EUD4 de <em>P. protegens</em> y A0ABR5KR82 de <em>P. syringae</em> pv. <em>lachrymans</em>— y <strong>0 en <em>P. aeruginosa</em></strong>. Este segundo resultado es mas informativo que un cero simple: la familia existe en el genero y <strong>falta en la especie</strong>.</li>
+<li><strong>Barrido de secuencia sobre el proteoma completo.</strong> Se descargo el proteoma de referencia de PAO1 (<strong>UniProt UP000002438, 5.563 secuencias</strong>) y se hizo un barrido Smith–Waterman local (BLOSUM62, hueco −11/−1) de AcrZ y de YbjP contra las 5.563. Resultado para <strong>AcrZ</strong>: mejor puntuación <strong>54</strong>, con aciertos sin relación funcional (un transportador de citrato, una permeasa de ABC, una quinasa de histidina) — ruido. Resultado para <strong>YbjP</strong>: mejor puntuación <strong>65</strong> (glutamina sintetasa) — ruido. <strong>Control positivo del mismo barrido, imprescindible para que el negativo signifique algo:</strong> AcrA (P0AE06) contra el mismo proteoma encuentra <strong>MexA con puntuación 1025 e identidad local 61,4 % (224/365)</strong>, seguida de MexC (845; 46,0 %) y MexX (662; 40,9 %). El barrido detecta ortologos reales al 60 % de identidad. (EXP, medido en esta revisión.)</li>
+<li><strong>Estructuras (RCSB).</strong> Ninguna de las entradas de <em>P. aeruginosa</em> de la tabla de estructuras contiene una cadena adicional pequena no asignada a MexA, MexB u OprM (verificado en la columna <code>componentes</code> de las 112 entradas).</li>
+</ol>
+<p><strong>Conclusión de a4 (EXP para los datos, INF para la lectura): no hay evidencia de un equivalente de AcrZ ni de YbjP en <em>P. aeruginosa</em>.</strong> No lo hay en la literatura, no lo hay como familia de dominios, y no hay ninguna secuencia detectable por similitud en el proteoma de referencia de PAO1 con un barrido que si detecta el ortologo de AcrA al 61 %. El resultado negativo se registra como resultado.</p>
+<p>Dos matices que impiden convertirlo en una negación absoluta: <strong>(i)</strong> AcrZ tiene 49 residuos y una sola helice transmembrana, y una proteína de ese tamano con sesgo hidrofóbico es precisamente el caso en que un barrido de similitud tiene menos poder; un equivalente <strong>funcional no homólogo</strong> no seria detectado por ninguna de las cuatro vías. <strong>(ii)</strong> <em>P. aeruginosa</em> tiene proteínas pequenas de membrana sin caracterizar, y la búsqueda <code>(small protein* OR "small membrane protein") AND (efflux) AND (Pseudomonas aeruginosa)</code> devuelve 79 registros en PubMed que no se cribaron uno por uno en esta revisión. <strong>Declaración de reducción de alcance:</strong> de esos 79 registros no se examino ninguno individualmente; la afirmación de ausencia se sostiene en las cuatro vías anteriores y se etiqueta <strong>provisional respecto a un equivalente funcional no homólogo</strong>.</p>
+<p><strong>Consecuencia operativa para el proyecto (INF):</strong> la ausencia de un componente accesorio conocido en MexAB-OprM simplifica el blanco. El sistema diana tiene tres proteínas y no cinco, y la interfaz OprM–MexA no tiene, por lo que hoy se sabe, ninguna lipoproteina accesoria posada en ella que pudiera competir con un peptido o modificar el sitio. Al mismo tiempo, y en dirección contraria, obliga a no importar de <em>E. coli</em> los cuatro depósitos de 15 y 18 cadenas como si describieran el entorno del blanco: <strong>5O66, 5NG5, 9V53 y 9TG4 contienen componentes que el blanco no tiene</strong>.</p>
+<h2 id="a5-la-separacion-axial-y-su-dispersion-de-16-a"><span class="num">Secci&oacute;n 6</span>a5. La separación axial y su dispersión de ~16 Å</h2>
+<p>Valores medidos en el proyecto el 2026-09-11, con la convención declarada (<strong>eje = centroide del trimero RND → centroide del trimero OMF; distancia entre los dos centroides proyectada sobre ese eje</strong>):</p>
+<table class="data">
+<thead>
+<tr>
+<th>sistema</th>
+<th>entradas</th>
+<th>separación axial (Å)</th>
+<th>entorno de membrana</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MexAB–OprM</td>
+<td>6IOK, 6IOL</td>
+<td><strong>196,6</strong></td>
+<td>amfipol A8-35</td>
+</tr>
+<tr>
+<td>MexAB–OprM</td>
+<td>6TA5, 6TA6</td>
+<td><strong>198,6</strong></td>
+<td>nanodisco lipidico</td>
+</tr>
+<tr>
+<td>AcrABZ–TolC</td>
+<td>5O66</td>
+<td><strong>199,6</strong></td>
+<td>amfipol A8-35</td>
+</tr>
+<tr>
+<td>TMexCD1–TOprJ1</td>
+<td>9J3E, 9J3D</td>
+<td><strong>204,3 / 207,3</strong></td>
+<td>detergente DDM</td>
+</tr>
+<tr>
+<td>AcrAB–TolC</td>
+<td>5V5S</td>
+<td><strong>213,0</strong></td>
+<td>amfipol A8-35, disulfuro diseñado, C3 impuesta</td>
+</tr>
+</tbody>
+</table>
+<p>El rango es de <strong>16,4 Å</strong> entre el mínimo (196,6) y el máximo (213,0). Las explicaciones candidatas, ordenadas por lo que los datos permiten decir:</p>
+<ol>
+<li><strong>Especie y sistema.</strong> La dispersión <strong>dentro</strong> de un mismo sistema y especie es muy pequena: 196,6 frente a 198,6 para MexAB–OprM son <strong>2,0 Å</strong> entre dos laboratorios, dos entornos de membrana y dos protocolos. La dispersión <strong>entre</strong> sistemas es de 16 Å. La partición de la varianza es inequivoca: <strong>casi toda la dispersión es entre sistemas, no entre preparados del mismo sistema</strong>. Esta es la lectura mejor sostenida (INF sobre datos EXP medidos en el proyecto).</li>
+<li><strong>Resolución y modelado.</strong> El valor extremo (213,0) corresponde a <strong>5V5S, la peor resolución del conjunto (6,5 Å)</strong> y al único mapa con <strong>simetría C3 impuesta</strong>, construido además por ajuste de cuerpo rigido de estructuras cristalinas en la densidad con restricciones estereoquimicas reforzadas, según declara el propio depósito. A 6,5 Å la posición axial del centroide del OMF depende del ajuste de cuerpo rigido mas que de la densidad. Descontando 5V5S, el rango se reduce a <strong>196,6–207,3 Å, es decir 10,7 Å</strong> (INF sobre datos EXP).</li>
+<li><strong>Grosor del periplasma.</strong> Es la explicación biologica natural, pero <strong>esta sección no puede sostenerla con los datos disponibles</strong>, porque las cinco entradas son complejos <strong>purificados</strong> en los que no hay periplasma: la separación axial del complejo aislado mide la longitud del propio ensamblaje, no el grosor de un periplasma. El único dato pertinente es in situ: la distancia entre la membrana externa y la interna <strong>se mantiene constante</strong> en los sitios donde hay bombas, con una longitud total del ensamblaje de <strong>~330 Å (33 nm)</strong> (EXP, Shi2019). Eso apunta a que en la celula es el ensamblaje el que fija la separación y no al contrario. <strong>POR VERIFICAR:</strong> no existe un dato in situ equivalente para <em>P. aeruginosa</em>, y el valor de ~330 Å no es comparable con los 196,6–213,0 Å porque mide otra cosa (longitud total del complejo frente a separación entre centroides de trimeros).</li>
+<li><strong>Entorno de membrana.</strong> No explica la dispersión: amfipol produce 196,6, 199,6 y 213,0; nanodisco produce 198,6; DDM produce 204,3 y 207,3. Los tres entornos se solapan en el rango (INF sobre datos EXP).</li>
+</ol>
+<p><strong>Lectura para el proyecto (INF).</strong> La separación axial de MexAB–OprM esta determinada con un margen de ±1 Å (196,6–198,6 en dos preparados independientes). Eso importa porque un peptido que compita por la punta de OprM opera en un espacio cuyas dimensiones estan bien definidas en el sistema diana, y no hay que heredar la incertidumbre de 16 Å del conjunto entre sistemas. Lo que <strong>no</strong> debe hacerse es usar 5V5S o 9J3D para calibrar distancias en un modelo de MexAB–OprM.</p>
+<h2 id="a6-es-3-oprm-6-mexa-3-mexb-una-propiedad-del-sistema-o-de-la"><span class="num">Secci&oacute;n 7</span>a6. Es 3 OprM : 6 MexA : 3 MexB una propiedad del sistema o de la preparación de la muestra?</h2>
+<p>Esta es la pregunta que este compendio exige responder explicitamente, y la que motivo resolver las celdas <code>[POR VERIFICAR]</code> de la columna <code>entorno_membrana</code>. Las resoluciones, leidas en los articulos primarios en esta revisión:</p>
+<table class="data">
+<thead>
+<tr>
+<th>entrada</th>
+<th>lo que decia el material de partida</th>
+<th>lo que dice el articulo primario (leido en esta revisión)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6IOK, 6IOL</td>
+<td>"detergente (purificación en DDM según articulo primario) [POR VERIFICAR]"</td>
+<td><strong>Reconstitución in vitro</strong> de MexA, MexB y OprM purificados por separado; <strong>los detergentes se retiraron y se sustituyeron por amfipol A8-35</strong> (20 mg, con Bio-Beads SM2) <strong>antes de preparar la rejilla</strong>; la densidad del amfipol se <strong>sustrajo</strong> para el refinamiento final. Entorno real: <strong>amfipol A8-35</strong>, no DDM. Reconstrucción <strong>C1</strong> (metadato de RCSB), 37.971 y 42.338 particulas</td>
+</tr>
+<tr>
+<td>6TA5, 6TA6</td>
+<td>"nanodisco"</td>
+<td>Confirmado y precisado: <strong>MexB reconstituida en nanodiscos lipidicos y mezclada con MexA y OprM también estabilizadas en nanodisco</strong>, dando un complejo tripartito <strong>automontado</strong>. Reconstrucción <strong>C1</strong>. 6TA5 = sección MexA–OprM (EMD-10372, 35.819 particulas); 6TA6 = sección MexA–MexB (EMD-10395, 82.432 particulas)</td>
+</tr>
+<tr>
+<td>9J3D, 9J3E</td>
+<td>"[POR VERIFICAR: detergente o nanodisco]"</td>
+<td><strong>Detergente DDM</strong>: solubilización de membranas en DDM 1 %, lavado y elución en DDM 0,03 %</td>
+</tr>
+<tr>
+<td>5V5S</td>
+<td>"[POR VERIFICAR]"</td>
+<td><strong>Amfipol A8-35</strong>, sobre un complejo estabilizado por un <strong>disulfuro diseñado AcrA-S273C / AcrB-S258C</strong>; reconstrucción con <strong>simetría puntual C3 impuesta</strong> (<code>em_single_particle_entity.point_symmetry = C3</code> en RCSB), 13.544 particulas, 6,5 Å</td>
+</tr>
+<tr>
+<td>5O66</td>
+<td>"[POR VERIFICAR]"</td>
+<td><strong>Amfipol A8-35</strong>; mapa reconstruido <strong>sin simetría impuesta</strong> desde el subconjunto del <strong>30,2 %</strong> de las particulas que contiene exactamente un protomero en estado de extrusión; 26.950 particulas, 5,9 Å</td>
+</tr>
+<tr>
+<td>5NG5</td>
+<td>"[POR VERIFICAR]"</td>
+<td><strong>Amfipol A8-35</strong>; el articulo describe refinamiento <strong>con simetría de orden 3</strong> hasta 3,6 Å (estado TTT). <strong>Discrepancia no resuelta</strong> con los metadatos del depósito (6,5 Å, 13.544 particulas, rotulo "apo state", identicos a 5V5S): <strong>[POR VERIFICAR]</strong></td>
+</tr>
+<tr>
+<td>5NIK, 5NIL</td>
+<td>"[POR VERIFICAR]"</td>
+<td><strong>Detergente DDM o DMNG</strong>; autoafinamiento 3D <strong>sin simetría impuesta</strong> desde 92.913 particulas de las dos clases mayores</td>
+</tr>
+<tr>
+<td>8ZAL, 8ZAR</td>
+<td>"[POR VERIFICAR]"</td>
+<td>Extracción en <strong>DDM 1,5 %</strong> seguida de reconstitución en <strong>Peptidisc</strong> en columna</td>
+</tr>
+<tr>
+<td>9V52, 9V53, 9V55</td>
+<td>"[POR VERIFICAR]"</td>
+<td><strong>DDM 2 %</strong>, purificación <strong>endogena</strong> desde membranas de <em>E. coli</em>. Nota de rigor: los revisores del articulo objetaron el uso del termino "nativo" y senalaron que <strong>no puede excluirse que el subcomplejo se formara durante la purificación</strong>; los autores aceptaron sustituirlo por "endogeno"</td>
+</tr>
+<tr>
+<td>6VEJ</td>
+<td>"detergente/lipidos (LMU, E2V, PLM)"</td>
+<td>Precisado: purificado en <strong>DDM</strong> (corona de detergente, masa aparente ~620 kDa), sobre una construcción de <strong>fusión TriA-TriB</strong></td>
+</tr>
+<tr>
+<td>20YY, 9XWG</td>
+<td>"[POR VERIFICAR]"</td>
+<td><strong>DDM 2 %</strong>; complejo <strong>coexpresado y purificado desde <em>E. coli</em></strong>, no desde <em>P. aeruginosa</em>; reconstrucción <strong>C1</strong></td>
+</tr>
+<tr>
+<td>9QGY, 9TG4</td>
+<td>"[POR VERIFICAR]"</td>
+<td><strong>[POR VERIFICAR]</strong>: no se localizo el detalle de detergente en los metadatos del depósito y no se leyo la sección de métodos correspondiente de Horne2026 en esta revisión</td>
+</tr>
+</tbody>
+</table>
+<p>Con esto, la respuesta a la pregunta de a6 se puede dar en tres partes:</p>
+<p><strong>Primera: la estequiometría no depende del entorno de membrana.</strong> La misma relación 3 OMF : 6 MFP : 3 RND aparece en <strong>amfipol A8-35</strong> (6IOK, 6IOL, 5O66, 5NG5, 5V5S), en <strong>nanodisco lipidico</strong> (6TA5, 6TA6), en <strong>DDM</strong> (9J3D, 9J3E, 9V53) y en <strong>Peptidisc</strong> para la variante MFS (8ZAL, 8ZAR). Cinco entornos quimicamente distintos, la misma relación. Y aparece <strong>in situ</strong>, en celulas intactas y sin ningún agente solubilizante (EXP-IND, Shi2019). Esa es la evidencia mas fuerte de que la relación es del sistema y no del tubo de ensayo. Su limitación, ya declarada: ~15 Å y C3 impuesta.</p>
+<p><strong>Segunda: la simetría del trimero RND si depende del procesamiento, y eso hay que separarlo de la estequiometría.</strong> Este es el hallazgo metodologico de la sección y resuelve una supuesta contradicción sin promediarla. El proyecto midio que <strong>5V5S es simétrico (RMSD Cα entre protomeros 0,52–0,57 Å) y 5O66 asimétrico (2,25–3,26 Å)</strong>, siendo los dos depósitos del mismo sistema y del mismo articulo. La explicación <strong>no</strong> es que dos observaciones del mismo sistema discrepen: <strong>5V5S se refino con simetría puntual C3 impuesta y 5O66 se reconstruyo sin simetría impuesta</strong> (verificado en los metadatos de RCSB y en el texto del articulo, 2026-09-11). Un mapa con C3 impuesta <strong>no puede</strong> producir protomeros distintos: la simetría del trimero de 5V5S es una restricción del procesamiento, no un resultado. Anadase que 5V5S proviene de un complejo con un <strong>disulfuro diseñado</strong> entre AcrA y AcrB, es decir de una construcción covalentemente restringida. La forma correcta de escribirlo en el compendio es que <strong>5O66 y 5V5S no son dos medidas discrepantes de la simetría del trimero, sino una medida (5O66) y una restricción (5V5S)</strong>.</p>
+<p>El caso contrario, y ejemplar, es <strong>9J3D</strong>: los autores anticiparon esta objeción y <strong>reprocesaron su conjunto de datos sin imponer simetría</strong>; el mapa resultante a 3,5 Å <strong>sigue mostrando C3 aparente</strong> (EXP, Shi2025). Por tanto la simetría del trimero de TMexD1 (RMSD 0,26–0,29 Å) <strong>si es un resultado</strong>. Y las cuatro entradas de MexAB–OprM se reconstruyeron en <strong>C1</strong> (metadato de RCSB verificado en esta revisión), de modo que su asimetría medida (2,07–2,72 Å entre protomeros de MexB) también es un resultado y no un artefacto. La conclusión es que <strong>MexB es asimétrica y TMexD1 es simétrica, y las dos afirmaciones estan bien fundadas</strong>; no hay que elegir ni promediar.</p>
+<p><strong>Tercera: donde si hay dependencia del preparado es en la ocupancia y en el estado, no en el número de sitios.</strong> Tres observaciones convergentes:</p>
+<ul>
+<li><strong>MexJK</strong> (la propia <em>P. aeruginosa</em>): los sitios de MexJ <strong>no estan saturados</strong> y la densidad varia entre posiciones equivalentes por C3 (EXP, Wu2026). El modelo deposita 6 MFP; el especimen contiene menos de 6 en parte de las particulas.</li>
+<li><strong>9V55</strong> es un mapa focalizado: si se lo tomara por un ensamblaje, se contaria un complejo OMF–MFP sin transportador que <strong>no existe como especie separada en ese experimento</strong> (EXP, Ge2026).</li>
+<li><strong>El estado conformacional si cambia con el preparado</strong>: MexB <strong>en nanodisco y sin socios</strong> (6T7S) es la menos asimétrica de todas las MexB medidas (1,43–1,96 Å), mientras en los cristales aislados es la mas asimétrica (2,67–3,40 Å) y en el ensamblaje es intermedia (2,07–2,72 Å) (medido en el proyecto). Glavier2020 interpreta precisamente esto: <strong>MexB insertada en membrana lipidica no esta lista para transportar</strong> (forma inactiva LTC con la compuerta de salida cerrada) y son MexA y OprM los que, actuando como un corset, la convierten en la forma activa LTO (EXP, Glavier2020).</li>
+</ul>
+<p><strong>Respuesta directa a la pregunta de a6:</strong> el <strong>número de sitios</strong> (3 OMF, 6 MFP, 3 RND) es una propiedad del sistema — aparece en cinco entornos de membrana distintos, en dos laboratorios independientes para MexAB–OprM, y en celulas intactas para el sistema homólogo de <em>E. coli</em>. La <strong>ocupancia</strong> de esos sitios y el <strong>estado conformacional</strong> de los componentes si dependen del preparado, y la <strong>simetría aparente del trimero RND</strong> depende de si se impuso simetría al reconstruir. Un compendio que confunda estas tres cosas producira decisiones equivocadas: por ejemplo, tratar el trimero simétrico de 5V5S como evidencia de que MexB puede ser simétrica, o tratar la ocupancia parcial de MexJ como evidencia de que hay menos de seis sitios en MexA.</p>
+<h2 id="a7-tablas-del-eje-a"><span class="num">Secci&oacute;n 8</span>a7. Tablas del eje (a)</h2>
+<h3 id="a7-1-tabla-arquitectura-estequiometrias-csv">a7.1 <code>tabla_arquitectura_estequiometrias.csv</code></h3>
+<table class="data">
+<thead>
+<tr>
+<th>pdb_id</th>
+<th>sistema</th>
+<th>familia</th>
+<th>n_OMF</th>
+<th>n_MFP</th>
+<th>n_transportador</th>
+<th>componentes_accesorios</th>
+<th>n_cadenas_total</th>
+<th>separacion_axial_A</th>
+<th>metodo_preparacion_muestra</th>
+<th>entorno_membrana</th>
+<th>etiqueta_evidencia</th>
+<th>referencia_doi</th>
+<th>fecha_corte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6IOK</td>
+<td>MexAB-OprM (P. aeruginosa)</td>
+<td>RND</td>
+<td>3 (OprM)</td>
+<td>6 (MexA)</td>
+<td>3 (MexB)</td>
+<td>ninguno</td>
+<td>12</td>
+<td>196,6</td>
+<td>reconstitución in vitro a partir de MexA, MexB y OprM purificados por separado; DDM 1-2% en la extracción, retirado y sustituido por amfipol A8-35 con Bio-Beads antes de la rejilla; reconstrucción C1 (sin simetría impuesta), 37.971 particulas</td>
+<td>amfipol A8-35</td>
+<td>EXP</td>
+<td>10.1038/s41467-019-09463-9</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>6IOL</td>
+<td>MexAB-OprM (P. aeruginosa)</td>
+<td>RND</td>
+<td>3 (OprM)</td>
+<td>6 (MexA)</td>
+<td>3 (MexB)</td>
+<td>ninguno</td>
+<td>12</td>
+<td>196,6</td>
+<td>mismo preparado y mismo conjunto de datos que 6IOK; clase del estado 60 grados, C1, 42.338 particulas</td>
+<td>amfipol A8-35</td>
+<td>EXP</td>
+<td>10.1038/s41467-019-09463-9</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>6TA5</td>
+<td>MexAB-OprM (P. aeruginosa)</td>
+<td>RND</td>
+<td>3 (OprM)</td>
+<td>6 (MexA)</td>
+<td>3 (MexB)</td>
+<td>ninguno</td>
+<td>12</td>
+<td>198,6</td>
+<td>MexB reconstituida en nanodiscos lipidicos y mezclada con MexA y OprM también estabilizadas en nanodisco; automontaje del complejo tripartito; mapa SECCIONADO de la región MexA-OprM (EMD-10372), C1, 35.819 particulas</td>
+<td>nanodisco lipidico</td>
+<td>EXP</td>
+<td>10.1038/s41467-020-18770-5</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>6TA6</td>
+<td>MexAB-OprM (P. aeruginosa)</td>
+<td>RND</td>
+<td>3 (OprM)</td>
+<td>6 (MexA)</td>
+<td>3 (MexB)</td>
+<td>ninguno</td>
+<td>12</td>
+<td>198,6</td>
+<td>mismo preparado y mismo conjunto de datos que 6TA5; mapa SECCIONADO de la región MexA-MexB (EMD-10395), C1, 82.432 particulas. NO es una replica independiente de 6TA5</td>
+<td>nanodisco lipidico</td>
+<td>EXP</td>
+<td>10.1038/s41467-020-18770-5</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9J3D</td>
+<td>TMexCD1-TOprJ1 (K. pneumoniae, plasmidico)</td>
+<td>RND</td>
+<td>3 (TOprJ1)</td>
+<td>6 (TMexC1)</td>
+<td>3 (TMexD1)</td>
+<td>ninguno</td>
+<td>12</td>
+<td>207,3</td>
+<td>membranas solubilizadas en DDM 1%, mantenimiento en DDM 0,03%; los autores reprocesaron el conjunto SIN imponer simetría y el mapa a 3,5 A sigue mostrando C3 aparente, control explicito contra el artefacto de simetría; 41.168 particulas</td>
+<td>detergente DDM</td>
+<td>EXP</td>
+<td>10.1038/s41467-025-65038-x</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9J3E</td>
+<td>TMexCD1-TOprJ1 + NMP (K. pneumoniae)</td>
+<td>RND</td>
+<td>3 (TOprJ1)</td>
+<td>6 (TMexC1)</td>
+<td>3 (TMexD1)</td>
+<td>inhibidor A1EAN (NMP) x3</td>
+<td>12</td>
+<td>204,3</td>
+<td>igual que 9J3D con NMP anadido; 52.844 particulas</td>
+<td>detergente DDM</td>
+<td>EXP</td>
+<td>10.1038/s41467-025-65038-x</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>5V5S</td>
+<td>AcrAB-TolC (E. coli), estado apo/cerrado</td>
+<td>RND</td>
+<td>3 (TolC)</td>
+<td>6 (AcrA)</td>
+<td>3 (AcrB)</td>
+<td>ninguno (AcrZ no modelada)</td>
+<td>12</td>
+<td>213,0</td>
+<td>complejo estabilizado por un DISULFURO DISENADO entre AcrA-S273C y AcrB-S258C; detergente intercambiado a amfipol A8-35; reconstrucción con simetría puntual C3 IMPUESTA (em_single_particle_entity.point_symmetry = C3 en RCSB), 13.544 particulas, 6,5 A</td>
+<td>amfipol A8-35</td>
+<td>EXP</td>
+<td>10.7554/eLife.24905</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>5O66</td>
+<td>AcrABZ-TolC (E. coli), mapa asimétrico con puromicina</td>
+<td>RND</td>
+<td>3 (TolC)</td>
+<td>6 (AcrA)</td>
+<td>3 (AcrB)</td>
+<td>AcrZ x3</td>
+<td>15</td>
+<td>199,6</td>
+<td>amfipol A8-35; subconjunto del 30,2% de las particulas con un protomero en estado de extrusión, reconstruido SIN simetría impuesta a 5,9 A; 26.950 particulas</td>
+<td>amfipol A8-35</td>
+<td>EXP</td>
+<td>10.7554/eLife.24905</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>5NG5</td>
+<td>AcrABZ-TolC (E. coli) + piranopiridina MBX3132</td>
+<td>RND</td>
+<td>3 (TolC)</td>
+<td>6 (AcrA)</td>
+<td>3 (AcrB)</td>
+<td>AcrZ x3; ligando 5QF (MBX3132) x3</td>
+<td>15</td>
+<td>[POR VERIFICAR] no medido en el proyecto</td>
+<td>amfipol A8-35; el articulo describe refinamiento CON simetría de orden 3 impuesta hasta 3,6 A (estado TTT); los metadatos EM del depósito declaran 6,5 A y 13.544 particulas con el rotulo 'apo state', identicos a los de 5V5S: DISCREPANCIA entre depósito y articulo [POR VERIFICAR]</td>
+<td>amfipol A8-35</td>
+<td>EXP con metadato discrepante</td>
+<td>10.7554/eLife.24905</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>5NIK</td>
+<td>MacAB-TolC (E. coli)</td>
+<td>ABC</td>
+<td>3 (TolC)</td>
+<td>6 (MacA)</td>
+<td>2 (MacB)</td>
+<td>ninguno</td>
+<td>11</td>
+<td>[POR VERIFICAR] no medido en el proyecto</td>
+<td>detergentes DDM o DMNG; autoafinamiento 3D SIN simetría impuesta desde 92.913 particulas de las dos clases mayores; el anillo hexamerico de MacA se deforma a una forma oval para acomodar la simetría binaria del dimero de MacB</td>
+<td>detergente DDM/DMNG</td>
+<td>EXP</td>
+<td>10.1038/nmicrobiol.2017.70</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>5NIL</td>
+<td>MacAB-TolC (E. coli), sección MacB</td>
+<td>ABC</td>
+<td>3 (TolC)</td>
+<td>6 (MacA)</td>
+<td>2 (MacB)</td>
+<td>ninguno</td>
+<td>11</td>
+<td>[POR VERIFICAR]</td>
+<td>mismo conjunto de datos que 5NIK, sección centrada en MacB, 5,3 A, 17.154 particulas</td>
+<td>detergente DDM/DMNG</td>
+<td>EXP</td>
+<td>10.1038/nmicrobiol.2017.70</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9QGY</td>
+<td>YbjP-MacAB-TolC (E. coli)</td>
+<td>ABC</td>
+<td>3 (TolC)</td>
+<td>6 (MacA)</td>
+<td>2 (MacB)</td>
+<td>lipoproteina YbjP x3</td>
+<td>14</td>
+<td>[POR VERIFICAR]</td>
+<td>233.775 particulas, 2,48 A; RCSB lista el articulo como 'To Be Published', pero la fuente primaria localizada y verificada en esta revisión es Horne et al. 2026 eLife 15:RP110666</td>
+<td>[POR VERIFICAR] detergente no especificado en los metadatos del depósito</td>
+<td>EXP</td>
+<td>10.7554/eLife.110666</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>8ZAL</td>
+<td>EmrAB-TolC (E. coli), familia MFS</td>
+<td>MFS</td>
+<td>3 (TolC)</td>
+<td>6 (EmrA)</td>
+<td>1 (EmrB)</td>
+<td>ninguno</td>
+<td>10</td>
+<td>[POR VERIFICAR]</td>
+<td>extracción con DDM 1,5%, luego reconstitución en Peptidisc en columna; modelo COMPUESTO a partir de dos mapas segmentados (mapa-1: seis EmrA + un EmrB; mapa-2: tres TolC); 19.180 particulas</td>
+<td>Peptidisc</td>
+<td>EXP</td>
+<td>10.1038/s41467-026-70500-5</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>8ZAR</td>
+<td>EmrAB-TolC (E. coli), familia MFS</td>
+<td>MFS</td>
+<td>3 (TolC)</td>
+<td>6 (EmrA)</td>
+<td>1 (EmrB)</td>
+<td>ninguno</td>
+<td>10</td>
+<td>[POR VERIFICAR]</td>
+<td>mismo preparado que 8ZAL, clase FA, 3,59 A, 18.440 particulas</td>
+<td>Peptidisc</td>
+<td>EXP</td>
+<td>10.1038/s41467-026-70500-5</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9V52</td>
+<td>TolC-YbjP (E. coli), subcomplejo sin MFP ni transportador</td>
+<td>no aplica (subcomplejo OMF + lipoproteina)</td>
+<td>3 (TolC)</td>
+<td>0</td>
+<td>0</td>
+<td>lipoproteina YbjP x3</td>
+<td>6</td>
+<td>no aplica</td>
+<td>purificación endogena de membranas de E. coli con DDM 2%; los revisores del articulo objetaron el uso del termino 'nativo' y no puede excluirse que el subcomplejo se formara durante la purificación; 63.022 particulas</td>
+<td>detergente DDM</td>
+<td>EXP</td>
+<td>10.7554/eLife.109684</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9V53</td>
+<td>TolC-YbjP-AcrABZ (E. coli), bomba completa</td>
+<td>RND</td>
+<td>3 (TolC)</td>
+<td>6 (AcrA)</td>
+<td>3 (AcrB)</td>
+<td>YbjP x3 + AcrZ x3</td>
+<td>18</td>
+<td>[POR VERIFICAR]</td>
+<td>purificación endogena con DDM 2%; 31.000 particulas, 3,39 A; el trimero de AcrB presenta simultaneamente los tres estados L, T y O</td>
+<td>detergente DDM</td>
+<td>EXP</td>
+<td>10.7554/eLife.109684</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9V55</td>
+<td>TolC-YbjP-AcrA (E. coli)</td>
+<td>RND (refinamiento local del mismo conjunto que 9V53)</td>
+<td>3 (TolC)</td>
+<td>6 (AcrA)</td>
+<td>0 EN EL MODELO; el transportador SI esta en el especimen</td>
+<td>YbjP x3</td>
+<td>12</td>
+<td>no aplica</td>
+<td>refinamiento LOCAL ('TolC-YbjP-AcrA local', EMD-64787) del mismo conjunto de datos de la bomba completa 9V53; 17.043 particulas. NO es un ensamblaje sin transportador</td>
+<td>detergente DDM</td>
+<td>EXP (mapa focalizado)</td>
+<td>10.7554/eLife.109684</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9TG4</td>
+<td>YbjP-AcrABZ-TolC (E. coli)</td>
+<td>RND</td>
+<td>3 (TolC)</td>
+<td>6 (AcrA)</td>
+<td>3 (AcrB)</td>
+<td>YbjP x3 + AcrZ x3</td>
+<td>18</td>
+<td>[POR VERIFICAR]</td>
+<td>97.441 particulas, 3,17 A; RCSB lista 'To Be Published'; fuente primaria localizada y verificada en esta revisión: Horne et al. 2026 eLife 15:RP110666</td>
+<td>[POR VERIFICAR]</td>
+<td>EXP</td>
+<td>10.7554/eLife.110666</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>6VEJ</td>
+<td>TriABC (P. aeruginosa), componente de membrana interna del sistema TriABC-OpmH</td>
+<td>RND</td>
+<td>0 (OpmH AUSENTE del depósito)</td>
+<td>3 cadenas, cada una una FUSION de dos MFP distintas (TriA-TriB) = 6 modulos MFP</td>
+<td>3 (TriC)</td>
+<td>ninguno; lipidos/detergente LMU, E2V, PLM</td>
+<td>6</td>
+<td>no aplica (no hay OMF)</td>
+<td>complejo purificado en DDM (corona de detergente, masa aparente ~620 kDa); construcción de INGENIERIA con TriA y TriB fusionadas; 35.220 particulas, 4,5 A; el estado corresponde a un intermedio previo al acoplamiento con OpmH</td>
+<td>detergente DDM</td>
+<td>EXP</td>
+<td>10.1016/j.str.2020.09.001</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>20YY</td>
+<td>MexJK (P. aeruginosa), subcomplejo MFP-RND sin OMF</td>
+<td>RND</td>
+<td>0 (sin OMF en el depósito)</td>
+<td>6 (MexJ) en el modelo, con ocupancia PARCIAL</td>
+<td>3 (MexK)</td>
+<td>triclosan (TCL) x3</td>
+<td>9</td>
+<td>no aplica</td>
+<td>coexpresión y purificación en E. coli; membranas en DDM 2%; reconstrucción C1, 240.140 particulas, 2,57 A; los autores declaran que la densidad de MexJ VARIA entre las posiciones relacionadas por C3, es decir NO todos los sitios de union de MexJ estan saturados</td>
+<td>detergente DDM</td>
+<td>EXP</td>
+<td>10.1126/sciadv.aee7036</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>9XWG</td>
+<td>MexK aislada (P. aeruginosa)</td>
+<td>RND</td>
+<td>0</td>
+<td>0</td>
+<td>3 (MexK)</td>
+<td>ninguno</td>
+<td>3</td>
+<td>no aplica</td>
+<td>apo-MexK, DDM, C1, 200.794 particulas, 3,38 A</td>
+<td>detergente DDM</td>
+<td>EXP</td>
+<td>10.1126/sciadv.aee7036</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>2V4D + modelo acoplado (no es un ensamblaje depositado)</td>
+<td>AcrA-AcrB-TolC, modelo de acoplamiento de Symmons et al. 2009 basado en el re-refinamiento de MexA 2V4D</td>
+<td>RND</td>
+<td>3 (TolC)</td>
+<td>3 (AcrA) -- estequiometría PROPUESTA, posteriormente corregida a 6 por crio-EM</td>
+<td>3 (AcrB)</td>
+<td>ninguno</td>
+<td>13 cadenas cristalograficas de MexA en 2V4D; el modelo acoplado tiene 9 cadenas</td>
+<td>longitud total declarada 270 A; 610 kDa</td>
+<td>cristalografia de MexA (2V4D, 3,2 A, C1S) que completa el dominio beta-roll, mas entrecruzamiento in vivo para restricciones de distancia y acoplamiento multidominio</td>
+<td>cristal (soluble)</td>
+<td>COMP (modelo acoplado con restricciones EXP de entrecruzamiento)</td>
+<td>10.1073/pnas.0900693106</td>
+<td>2026-09-11</td>
+</tr>
+<tr>
+<td>n/a (crio-ET in situ, promediado de subtomogramas; sin depósito en PDB)</td>
+<td>AcrAB-TolC de E. coli EN CELULAS VIVAS</td>
+<td>RND</td>
+<td>3 (TolC)</td>
+<td>6 (AcrA)</td>
+<td>3 (AcrB)</td>
+<td>contacto de AcrA con la capa de peptidoglicano</td>
+<td>no aplica (mapa a ~15 A)</td>
+<td>longitud total del ensamblaje ~330 A (33 nm); la separación entre membranas se mantiene CONSTANTE donde hay bombas</td>
+<td>crio-tomografia electronica de celulas intactas y promediado de 1321 subtomogramas CON simetría C3 impuesta; ~15 A</td>
+<td>membranas nativas in situ</td>
+<td>EXP-IND (la relación 3:6:3 se lee de la arquitectura a ~15 A con C3 impuesta, no de un recuento de cadenas)</td>
+<td>10.1038/s41467-019-10512-6</td>
+<td>2026-09-11</td>
+</tr>
+</tbody>
+</table>
+<h3 id="a7-2-tabla-busquedas-negativas-arquitectura-csv">a7.2 <code>tabla_busquedas_negativas_arquitectura.csv</code></h3>
+<table class="data">
+<thead>
+<tr>
+<th>consulta</th>
+<th>base</th>
+<th>fecha</th>
+<th>n_resultados</th>
+<th>interpretación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(AcrZ) AND (Pseudomonas aeruginosa)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>No existe literatura que asocie AcrZ con P. aeruginosa. Control de que el termino si esta indexado: 'AcrZ' solo devuelve 14 registros y 'AcrZ[Title/Abstract]' 12, de modo que el cero no es un fallo de indexación. Respuesta a la pregunta obligatoria a4: no hay evidencia publicada de un AcrZ de P. aeruginosa.</td>
+</tr>
+<tr>
+<td>(AcrZ) AND (MexB OR MexAB)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>Nadie ha propuesto ni buscado un componente accesorio de tipo AcrZ para MexAB-OprM.</td>
+</tr>
+<tr>
+<td>(AcrZ[Title/Abstract]) AND (homolog* OR ortholog*)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>No hay estudios de homología de AcrZ fuera de las enterobacterias, pese a que el articulo fundacional lo llama 'proteína pequena conservada' (doi 10.1073/pnas.1210093109): la conservación declarada se refiere a las enterobacterias.</td>
+</tr>
+<tr>
+<td>familia AcrZ, InterPro IPR019702 / Pfam PF10766, filtrada por taxon Pseudomonas (taxid 286)</td>
+<td>InterPro (EBI)</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>508 proteínas en la familia AcrZ en toda UniProt, 0 en el genero Pseudomonas y 0 en P. aeruginosa (taxid 287). Negativo a nivel de familia de dominios.</td>
+</tr>
+<tr>
+<td>barrido Smith-Waterman de AcrZ (P0AAW9, 49 aa) contra las 5.563 secuencias del proteoma de referencia PAO1 (BLOSUM62, hueco -11/-1)</td>
+<td>UniProt UP000002438 + calculo local</td>
+<td>2026-09-11</td>
+<td>0 por encima del ruido (mejor puntuación 54, hits sin relación funcional: transportador de citrato, permeasa ABC, quinasa de histidina)</td>
+<td>Control positivo del mismo barrido: AcrA (P0AE06) encuentra MexA con puntuación 1025 e identidad local 61,4% (224/365). El barrido detecta ortologos reales al 60% de identidad, de modo que la ausencia de un hit de AcrZ es informativa. CONCLUSION: no hay equivalente de AcrZ detectable en el proteoma de PAO1.</td>
+</tr>
+<tr>
+<td>barrido Smith-Waterman de YbjP (P75818, 171 aa) contra el proteoma de referencia PAO1</td>
+<td>UniProt UP000002438 + calculo local</td>
+<td>2026-09-11</td>
+<td>0 por encima del ruido (mejor puntuación 65: glutamina sintetasa)</td>
+<td>Tampoco hay equivalente de YbjP en PAO1 por secuencia.</td>
+</tr>
+<tr>
+<td>dominio DUF3828 (InterPro IPR024289, el dominio de YbjP) filtrado por taxon</td>
+<td>InterPro (EBI)</td>
+<td>2026-09-11</td>
+<td>1051 en total; 17 en el genero Pseudomonas; 0 en P. aeruginosa</td>
+<td>Hay proteínas DUF3828 en Pseudomonas (P. fluorescens Q4K5B6, P. protegens, P. syringae pv. lachrymans, entre otras 17) pero NINGUNA en P. aeruginosa. El resultado es mas informativo que un cero simple: la familia esta presente en el genero y ausente en la especie de interes.</td>
+</tr>
+<tr>
+<td>(YbjP) AND (Pseudomonas)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>'YbjP' solo devuelve 3 registros en PubMed, todos de 2026 y todos sobre E. coli: la proteína se caracterizo estructuralmente en 2025-2026 y no hay literatura de Pseudomonas.</td>
+</tr>
+<tr>
+<td>(MexAB-OprM OR MexAB) AND (rotation*) AND (kinetic* OR turnover OR single-molecule)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>Pregunta obligatoria (ii): NO existe evidencia cinetica publicada, ni a favor ni en contra, del ciclo de rotación de 60 grados del registro OMF-MFP.</td>
+</tr>
+<tr>
+<td>kinetics rotational state OprM MexA sixty degree cycle efflux</td>
+<td>OpenAlex</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>Cero en OpenAlex con la misma pregunta formulada en lenguaje natural. Dos bases, dos ceros.</td>
+</tr>
+<tr>
+<td>single-molecule FRET MexA OprM efflux pump assembly</td>
+<td>OpenAlex</td>
+<td>2026-09-11</td>
+<td>11, ninguno de smFRET sobre MexA-OprM</td>
+<td>Los 11 resultados son revisiones y estructuras (entre ellas doi 10.1038/s41467-020-18770-5); no hay ningún trabajo de FRET de molecula única sobre la interfaz MexA-OprM. El experimento propuesto en la sección c2 no se ha hecho.</td>
+</tr>
+<tr>
+<td>(single-molecule FRET OR smFRET) AND (efflux pump) AND (assembly)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>Confirmación en PubMed: no hay smFRET de ensamblaje de bombas de eflujo.</td>
+</tr>
+<tr>
+<td>(tripartite efflux) AND (intermediate state*) AND (cryo-EM) AND (rotation OR registry)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>Pregunta obligatoria (iii): no hay literatura sobre estados intermedios de registro.</td>
+</tr>
+<tr>
+<td>intermediate rotational registry state tripartite efflux cryo-EM deposited</td>
+<td>OpenAlex</td>
+<td>2026-09-11</td>
+<td>3, ninguno pertinente (LolCDE x2, Cdr1)</td>
+<td>Tampoco en OpenAlex. Comprobación independiente sobre los depósitos: los ocho registros medidos en el proyecto se agrupan en 41,9 / 45,4 / 46,0 / 59,0 / 101,1 / 101,7 / 101,9 / 105,5 grados (modulo 120). Para MexAB-OprM solo existen dos valores, 101,9 y 41,9, y no hay ningún depósito con un registro intermedio entre ellos. NO HAY ESTADOS INTERMEDIOS DEPOSITADOS.</td>
+</tr>
+<tr>
+<td>(OprM OR TolC) AND (cryo-EM) AND (rotational state* OR azimuthal)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>Nadie ha escrito sobre el registro azimutal de estas bombas como tema propio; el fenomeno solo aparece de pasada en los dos articulos de MexAB-OprM.</td>
+</tr>
+<tr>
+<td>lock rotational register inhibitor tripartite efflux pump freeze</td>
+<td>OpenAlex</td>
+<td>2026-09-11</td>
+<td>6, ninguno pertinente (resumenes de congreso de temas ajenos)</td>
+<td>Pregunta de la sección c6: la idea de congelar el registro OMF-MFP como mecanismo de inhibición NO ha sido propuesta en la literatura. Es una hipótesis original del proyecto y, por tanto, sin respaldo externo.</td>
+</tr>
+<tr>
+<td>(efflux pump) AND (assembly inhibitor) AND (peptide) AND (Pseudomonas aeruginosa)</td>
+<td>PubMed</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>No hay literatura de peptidos inhibidores del ensamblaje de bombas de eflujo en P. aeruginosa. El espacio esta vacio; eso es oportunidad y a la vez ausencia de precedente de viabilidad.</td>
+</tr>
+<tr>
+<td>búsqueda por accesión UniProt de MexX (G3XD21), MexC (G3XD25), MexD (Q9HVI9), MexE (Q9I0Y9), MexF (Q9I0Y8)</td>
+<td>RCSB (heredado del material de partida, no repetido en esta revisión)</td>
+<td>2026-09-11</td>
+<td>0</td>
+<td>Ninguna de las cuatro MFP alternativas ni sus transportadores tiene estructura experimental. Todo el eje (a) para MexXY-OprM, MexCD-OprJ y MexEF-OprN es transferencia por analogía. Etiqueta: POR VERIFICAR en esta revisión (dato heredado del material de partida).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a8-elementos-marcados-por-verificar-en-este-eje"><span class="num">Secci&oacute;n 9</span>a8. Elementos marcados POR VERIFICAR en este eje</h2>
+<ol>
+<li>Separación axial de 5NG5, 5NIK, 5NIL, 8ZAL, 8ZAR, 9V53, 9TG4 y 9QGY: no medida en el proyecto.</li>
+<li>Discrepancia de 5NG5 entre los metadatos EM del depósito (6,5 Å, 13.544 particulas, "apo state") y el articulo primario (3,6 Å con MBX3132): sin resolver.</li>
+<li>Entorno de membrana de 9QGY y 9TG4: no localizado en los metadatos del depósito; no se leyo la sección de métodos correspondiente de Horne2026.</li>
+<li>Ausencia de estructura experimental de MexX, MexC, MexD, MexE y MexF: dato heredado de <code>el archivo de hechos verificados</code>, no reconsultado en esta revisión.</li>
+<li>Simetría del trimero RND de 5NG5, 5NIK, 5NIL, 6VEJ, 20YY, 9TG4 y 9V53: no medida en el proyecto.</li>
+<li>Equivalente <strong>funcional no homólogo</strong> de AcrZ en <em>P. aeruginosa</em>: descartado por homología de secuencia y de dominio, no descartable por función; 79 registros de PubMed sobre proteínas pequenas de membrana y eflujo en <em>P. aeruginosa</em> no cribados individualmente.</li>
+<li>Contacto de la MFP con el peptidoglicano en <em>P. aeruginosa</em>: solo hay dato in situ para <em>E. coli</em>.</li>
+<li>Texto completo de Du2014 (doi 10.1038/nature13205): tras muro de pago, <strong>resumen unicamente — texto completo no consultado</strong>.</li>
+</ol>
+<h2 id="a9-referencias-del-eje-a-todas-verificadas-en-crossref-el-20"><span class="num">Secci&oacute;n 10</span>a9. Referencias del eje (a) — todas verificadas en Crossref el 2026-09-11</h2>
+<p>La tabla completa, compartida con el eje (c), esta en <code>tabla_referencias_arquitectura.csv</code> y se reproduce en la sección c8 de <code>eje_c_rotacion_registro.md</code>. <strong>64 DOI resueltos por el autor de esta sección contra <code>api.crossref.org</code> el 2026-09-11; ninguno quedo sin verificar; ningún DOI de este archivo se cito de memoria.</strong></p></main></div>
+<footer style="border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p>&copy; 2026 Daniel Bustos &middot; Laboratorio de Bioinform&aacute;tica y Qu&iacute;mica Computacional, Universidad Cat&oacute;lica del Maule. Material de profundizaci&oacute;n del proyecto ANID&ndash;Fondecyt Regular 1260886.</p>
+    <p>Fecha de corte de la b&uacute;squeda: 11 de septiembre de 2026. Cada DOI citado fue resuelto contra Crossref o PubMed en esa fecha.
+    <a href="../index.html">Volver al &iacute;ndice del compendio</a> &middot; <a href="https://danielbustosg.github.io/">Sitio principal</a></p>
+  </div>
+</footer>
+</body></html>
