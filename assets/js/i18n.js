@@ -483,12 +483,18 @@ var I18N_EN = {
   s6_title: 'Contact',
   contact_p:
     'If you are interested in collaborating, doing your thesis in the lab, or asking about any ' +
-    'of our work, write to me. I answer all academic email.',
+    'of our work, write to me.',
   contact_email_l: 'Email',
   contact_addr_l: 'Address',
   contact_addr:
     'Faculty of Medicine, Universidad Católica del Maule<br>Av. San Miguel 3605, Talca, Chile',
   contact_profiles_h: 'Profiles',
+  cf_title: 'Leave me a comment',
+  cf_intro: 'Questions, suggestions or comments about the site or the course material. If you would like a reply, leave your email.',
+  cf_name: 'Name (optional)',
+  cf_email: 'Email (optional)',
+  cf_msg: 'Comment',
+  cf_send: 'Send comment',
 
   /* ── Pie ───────────────────────────────────────────────── */
   footer_copy:

@@ -1039,7 +1039,7 @@
       <div class="prose">
         <p data-i18n="contact_p">
           Si te interesa colaborar, hacer tu tesis en el laboratorio o consultar sobre
-          alguno de nuestros trabajos, escríbeme. Respondo a todo el correo académico.
+          alguno de nuestros trabajos, escríbeme.
         </p>
         <!-- EDITA: reemplaza por tu correo institucional -->
         <p class="contact-line">
@@ -1051,6 +1051,25 @@
           <span data-i18n="contact_addr">Facultad de Medicina, Universidad Católica del Maule<br>Av. San Miguel 3605, Talca, Chile</span>
         </p>
       </div>
+
+      <!-- Formulario de comentarios: envía a un Google Apps Script que agrega cada mensaje
+           a un archivo .txt en Google Drive (ver scripts/comentarios_apps_script.gs).
+           Pega la URL del despliegue en data-endpoint. -->
+      <form class="card comment-form" id="commentForm" data-endpoint="" novalidate>
+        <h3 data-i18n="cf_title">Déjame un comentario</h3>
+        <p class="card-note cf-intro" data-i18n="cf_intro">Preguntas, sugerencias o comentarios sobre el sitio o el material de los cursos. Si quieres respuesta, deja tu correo.</p>
+        <label class="cf-field"><span data-i18n="cf_name">Nombre (opcional)</span>
+          <input type="text" name="nombre" maxlength="120" autocomplete="name"></label>
+        <label class="cf-field"><span data-i18n="cf_email">Correo (opcional)</span>
+          <input type="email" name="correo" maxlength="160" autocomplete="email"></label>
+        <label class="cf-field"><span data-i18n="cf_msg">Comentario</span>
+          <textarea name="mensaje" rows="5" maxlength="4000" required></textarea></label>
+        <label class="cf-hp" aria-hidden="true">Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        <div class="cf-actions">
+          <button type="submit" class="btn btn-primary" data-i18n="cf_send">Enviar comentario</button>
+          <span class="cf-status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
 
       <div class="card">
         <h3 data-i18n="contact_profiles_h">Perfiles</h3>
@@ -1076,5 +1095,6 @@
 
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/contact.js"></script>
 </body>
 </html>
