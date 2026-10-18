@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 3 · Molecular Docking — BGM324 Bioinformatics, Universidad Católica del Maule</title>
+<meta name="description" content="Study material on molecular docking: binding thermodynamics, receptor and ligand preparation, search algorithms, scoring functions, pose validation by re-docking, ligand efficiency and virtual screening. BGM324 Bioinformatics, Medical Bioengineering, Universidad Católica del Maule.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+button{font-family:system-ui,sans-serif;font-size:.84rem;padding:.3rem .7rem;border:1px solid var(--line);border-radius:4px;background:var(--panel);cursor:pointer}button:hover{background:#e6ecf3}
+</style>
+</head>
+<body>
+<!-- bgm324-backbar -->
+<nav class="bgm324-backbar" aria-label="BGM324" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformatics · Medical Bioengineering · Universidad Católica del Maule</div>
+<h1>Unit 3 — Molecular Docking: Pose Prediction, Scoring and Virtual Screening</h1>
+<div class="meta">Study material accompanying lecture 03 (<em>Molecular docking</em>) · Prepared by Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · Third unit of the module: sequence analysis → protein structure prediction → <strong>molecular docking</strong> → computer-aided drug design → molecular dynamics</div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contents</h2>
+<ol>
+<li><a href="#how">How to use this material</a></li>
+<li><a href="#s1">1. Vocabulary</a></li>
+<li><a href="#s2">2. What docking is and why it matters</a></li>
+<li><a href="#s3">3. The physics of binding</a></li>
+<li><a href="#s4">4. Preparation</a>
+  <ol><li><a href="#s4-1">Receptor</a></li><li><a href="#s4-2">Ligand</a></li><li><a href="#s4-3">Binding site and box</a></li></ol></li>
+<li><a href="#s5">5. Search algorithms</a>
+  <ol><li><a href="#s5-1">The size of the problem</a></li><li><a href="#s5-2">Rigid docking</a></li><li><a href="#s5-3">Flexible ligand</a></li><li><a href="#s5-4">Genetic algorithms</a></li><li><a href="#s5-5">Receptor flexibility</a></li></ol></li>
+<li><a href="#s6">6. Scoring functions</a>
+  <ol><li><a href="#s6-1">Four families</a></li><li><a href="#s6-2">The Vina function</a></li><li><a href="#s6-3">What scoring cannot do</a></li></ol></li>
+<li><a href="#s7">7. Validation: a worked re-docking</a>
+  <ol><li><a href="#s7-1">The system</a></li><li><a href="#s7-2">Results</a></li><li><a href="#s7-3">Size bias and ligand efficiency</a></li></ol></li>
+<li><a href="#s8">8. Virtual screening</a></li>
+<li><a href="#s9">9. Beyond protein–ligand docking</a></li>
+<li><a href="#s10">10. Software</a></li>
+<li><a href="#s11">11. Practical work</a></li>
+<li><a href="#s12">12. Self-assessment</a></li>
+<li><a href="#gloss">Glossary</a></li>
+<li><a href="#refs">References and further reading</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">This document expands the third lecture of the module. Unit 2 ended with a structure — experimental or predicted — and the warning that its quality bounds everything downstream. This unit uses that structure to answer a new question: given a small molecule, where and how does it bind, and how tightly? The answer comes from two separable machines, a <em>search</em> that generates candidate poses and a <em>scoring function</em> that ranks them, and most of what a practitioner needs to know is which of the two is failing. To make that concrete, Section 7 reports a complete re-docking experiment performed for this document — indinavir into HIV-1 protease (PDB <code>1HSG</code>) with AutoDock Vina — whose outcome is instructive precisely because one of the five runs fails.</p>
+<div class="box key"><h4>Learning objectives</h4>
+<ul class="objectives">
+<li>Use the vocabulary of docking correctly: ligand, receptor, binding site, pose, binding mode, scoring function, ranking.</li>
+<li>Explain binding thermodynamics well enough to know what a docking score does and does not represent (ΔG, K<sub>d</sub>, enthalpy–entropy, desolvation).</li>
+<li>Prepare a receptor and a ligand: protonation states, tautomers, waters, partial charges, rotatable bonds, box definition.</li>
+<li>Quantify the combinatorial size of the search and describe systematic, incremental and stochastic strategies, including how a genetic algorithm works.</li>
+<li>Distinguish rigid, flexible-ligand, induced-fit and ensemble docking, and choose between them for a given target.</li>
+<li>Classify scoring functions into force-field, empirical, knowledge-based and machine-learned families, and state the known failure modes of each.</li>
+<li>Validate a docking protocol by re-docking, compute symmetry-corrected RMSD and interpret the 2 Å criterion.</li>
+<li>Diagnose whether a docking failure comes from preparation, search or scoring.</li>
+<li>Design a virtual screening campaign and evaluate it with enrichment factor, ROC-AUC and BEDROC.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Section 1</span>Vocabulary</h2>
+<p>The terms below are used precisely in the literature, and confusing two of them is the commonest source of misunderstanding in a docking report.</p>
+<dl class="gloss">
+<dt>Ligand</dt><dd>The molecule being placed — usually a small organic compound (&lt; ~700 g mol⁻¹), but also a peptide, a metabolite or a fragment.</dd>
+<dt>Receptor (target)</dt><dd>The macromolecule that provides the site — usually a protein, sometimes DNA, RNA or a membrane protein assembly.</dd>
+<dt>Binding site</dt><dd>The set of residues that physically contact the ligand, conventionally those with any heavy atom within 4–6 Å of a ligand heavy atom. An <strong>orthosteric</strong> site is the one occupied by the natural substrate or agonist; an <strong>allosteric</strong> site is elsewhere and modulates activity at a distance; a <strong>cryptic</strong> site is not visible in the apo structure and opens only on ligand binding.</dd>
+<dt>Pose</dt><dd>One candidate placement: a position, an orientation and an internal conformation of the ligand. A docking run produces many poses.</dd>
+<dt>Binding mode</dt><dd>The <em>correct</em> pose — the orientation and conformation that the complex actually adopts, as determined experimentally. A pose is a hypothesis; a binding mode is a fact.</dd>
+<dt>Scoring function</dt><dd>The function that assigns a number to a pose, intended to correlate with binding free energy.</dd>
+<dt>Ranking</dt><dd>Ordering of poses (pose ranking) or of different ligands (affinity ranking) by score. The two tasks are different and a program may be good at one and poor at the other.</dd>
+<dt>Docking</dt><dd>The computational procedure that samples poses and scores them.</dd>
+</dl>
+<div class="box warn"><h4>Three tasks, three different success criteria</h4>
+<p>Docking literature evaluates three distinct abilities, and papers that conflate them are the reason docking has a mixed reputation.</p>
+<ul>
+<li><strong>Pose prediction</strong> (docking power): can the program reproduce a known crystallographic binding mode? Measured by RMSD, success threshold 2 Å. Modern programs succeed in roughly 60–80 % of cases on curated benchmarks.<sup class="c"><a href="#r20">[20]</a></sup></li>
+<li><strong>Affinity prediction</strong> (scoring power): does the score correlate with measured ΔG for a series of complexes? Pearson r is typically 0.4–0.6 on the CASF benchmark — enough to separate strong from weak binders, far from enough to rank analogues differing by a factor of three.<sup class="c"><a href="#r20">[20]</a>,<a href="#r21">[21]</a></sup></li>
+<li><strong>Virtual screening</strong> (screening power): is the score able to place true actives above decoys? Measured by enrichment and ROC-AUC (Section 8). This is the task docking is actually good at, and it only requires the ranking to be right on average.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Section 2</span>What docking is and why it matters</h2>
+<p>Molecular docking predicts the preferred geometry of a complex between two molecules. The classical image is Emil Fischer's 1894 <strong>lock and key</strong>: a rigid ligand whose shape complements a rigid site. It is a useful first approximation and the basis of the earliest docking program, DOCK (Kuntz <em>et al.</em>, 1982), which matched ligand atoms onto a negative image of the cavity built from overlapping spheres.<sup class="c"><a href="#r1">[1]</a></sup> But proteins are not rigid. Koshland's <strong>induced fit</strong> (1958) describes a site that reorganises on binding, and the modern <strong>conformational selection</strong> view says that the apo protein already visits the bound conformation as part of its thermal ensemble and the ligand merely selects and stabilises it — the two basins of the energy landscape of Unit 2. The lecture's "hand in glove" analogy captures this: both partners adjust. Which model a docking program implements determines which errors it makes.</p>
+<p>Two applications justify the effort.</p>
+<ul>
+<li><strong>Understanding molecular recognition.</strong> Cellular signalling depends on which molecules associate, in what orientation and how strongly; the orientation itself can determine the biological outcome, since an agonist and an antagonist may occupy the same pocket and differ only in which residues they contact and which conformational change they stabilise. Docking provides testable hypotheses about those contacts — hypotheses that mutagenesis can falsify.</li>
+<li><strong>Structure-based drug design.</strong> Given a validated target structure, docking is used to (i) screen compound libraries of 10⁵–10⁹ molecules for candidates worth buying and testing, (ii) explain the structure–activity relationship of a series and suggest which substituent to modify, and (iii) propose selectivity-determining contacts between a target and its off-target paralogues. The economics are the point: a docking run costs seconds of CPU per molecule, a biochemical assay costs orders of magnitude more per molecule, and a clinical candidate costs on the order of 10⁹ US dollars. Docking does not replace experiment; it decides which experiments to run first. Unit 4 develops this into a full design cycle.</li>
+</ul>
+<p>Well-documented successes include HIV-1 protease inhibitors (the system used in Section 7), neuraminidase inhibitors, several kinase inhibitors, and — in the ultra-large library era — ligands for the D<sub>4</sub> dopamine receptor and the melatonin receptors discovered by docking hundreds of millions of compounds.<sup class="c"><a href="#r22">[22]</a>,<a href="#r23">[23]</a></sup> Equally well documented are the failures, and the rest of this unit is largely about recognising them before they reach a publication.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Section 3</span>The physics that a score tries to approximate</h2>
+<p>Binding is an equilibrium: R + L ⇌ RL, with dissociation constant K<sub>d</sub> = [R][L]/[RL]. The standard free energy of binding is</p>
+<div class="eq">ΔG° = −RT ln(1/K<sub>d</sub> · c°) = ΔH° − TΔS°
+<span class="where">R = 1.987 cal mol⁻¹ K⁻¹; at T = 298 K, RT = 0.593 kcal mol⁻¹ and a factor of ten in K<sub>d</sub> corresponds to 1.36 kcal mol⁻¹. Thus K<sub>d</sub> = 1 µM ⇒ ΔG ≈ −8.2 kcal mol⁻¹; K<sub>d</sub> = 1 nM ⇒ ΔG ≈ −12.3 kcal mol⁻¹.</span></div>
+<p>Two consequences deserve emphasis. First, the whole pharmacologically relevant range — millimolar fragment to picomolar drug — spans about 15 kcal mol⁻¹, and distinguishing a 10 nM from a 100 nM compound requires an accuracy of 1.4 kcal mol⁻¹, which is below the error of any scoring function and comparable to the thermal energy RT. Second, ΔG is a <em>difference</em> between the bound and the free states, so it includes contributions that a single pose cannot show: the ligand and the site must each be stripped of their ordered water (<strong>desolvation</strong>, a large positive enthalpy for polar groups), the ligand loses translational, rotational and torsional entropy on binding (roughly 0.5–0.7 kcal mol⁻¹ per frozen rotatable bond), and the protein may pay a reorganisation cost. A pose that looks perfect can still correspond to weak binding because the price of desolvating it exceeds the reward of its contacts.</p>
+<figure>
+<img src="figures/fig06_interactions.png" alt="Horizontal bars showing typical distance ranges and energies of covalent, ionic, hydrogen bond, pi-stacking, cation-pi, halogen bond, van der Waals and hydrophobic interactions">
+<figcaption><b>Figure 1. The interactions a scoring function must reproduce.</b> Typical heavy-atom distance ranges and order-of-magnitude energies in an aqueous protein environment. The covalent bond is shown only for scale: every interaction that docking models is one to three orders of magnitude weaker, which is why dozens of them must be summed and why small geometric errors matter. Hydrogen bonds are strongly directional (donor–H···acceptor angles above ~150°); hydrophobic and van der Waals contacts are not directional but are numerous, and in practice contribute most of the affinity of a drug-sized ligand. Energies in water are much smaller than in vacuum because the interaction competes with solvation of the same groups.</figcaption>
+</figure>
+<p>In a real complex these interactions are summed over dozens of atom pairs. The indinavir complex analysed in Section 7 illustrates the mixture: the drug makes nine short polar contacts, including the hydroxyl that bridges both catalytic aspartates of the protease dimer, while most of its surface — the phenyl, indanyl, pyridyl and <em>tert</em>-butyl groups — makes hydrophobic contact with valines, isoleucines and alanines on both subunits.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Section 4</span>Preparation: where most errors are introduced</h2>
+<figure>
+<img src="figures/fig01_workflow.png" alt="Workflow: receptor preparation and ligand preparation feed into binding-site definition, then search, then scoring, then analysis">
+<figcaption><b>Figure 2. The docking workflow.</b> Preparation, search and scoring are independent sources of error, and the first is the one most often blamed last. A mis-assigned protonation state or a removed structural water cannot be repaired by a better search or a better score.</figcaption>
+</figure>
+
+<h3 id="s4-1">4.1 Receptor preparation</h3>
+<ol>
+<li><strong>Choose the structure and the state.</strong> Prefer an experimental structure of adequate resolution (≤ 2.5 Å) with a ligand of the same chemotype bound; prefer holo over apo when the site is known to reorganise. Check the Unit 2 criteria: resolution, R-free, B-factors of the site, residues missing from <code>REMARK 465</code>, and the validation report's ligand fit. An AlphaFold model may be used when nothing else exists, but remember that it is apo, single-state and ligand-free (Unit 2, Section 10.3).</li>
+<li><strong>Select chains and the biological assembly.</strong> A crystallographic asymmetric unit is not necessarily the biological unit. HIV-1 protease is an obligate homodimer and its site lies <em>on the dimer axis</em>: docking into a single chain is meaningless. Conversely, docking into a site formed by a crystallographic contact is a classic artefact.</li>
+<li><strong>Decide about waters.</strong> The default is to remove them, because a water in the way of the ligand blocks it. But conserved, buried, well-ordered waters that bridge ligand and protein are part of the site. The canonical example is the <em>flap water</em> of HIV-1 protease, which accepts hydrogen bonds from both flap Ile50 amides and donates to two carbonyls of the inhibitor; it is present in almost every protease–inhibitor structure, and keeping it improves re-docking (Section 7).<sup class="c"><a href="#r26">[26]</a></sup> Criteria for keeping a water: buried, B-factor comparable to the protein, present in several independent structures, and making ≥ 2 hydrogen bonds to the protein.</li>
+<li><strong>Add hydrogens and assign protonation.</strong> X-ray structures have no hydrogens. Most positions are unambiguous; the ones that are not are exactly the ones that matter — Asp/Glu (could be protonated in a buried, low-dielectric site), His (which of the two tautomers, or doubly protonated), Cys (thiol or thiolate), Lys (rarely neutral), and the orientation of Asn/Gln amides and His rings, which X-ray cannot distinguish because N and O have almost the same electron count. Use PROPKA/PDB2PQR<sup class="c"><a href="#r33">[33]</a></sup> or H++, and check the result by eye against the hydrogen-bond network. In HIV-1 protease, the catalytic dyad Asp25/Asp25′ is widely modelled with one aspartate protonated when a hydroxyl-containing inhibitor is bound, and the choice changes the score.</li>
+<li><strong>Assign partial charges and atom types</strong> as required by the program (Gasteiger charges for AutoDock-family programs; force-field charges for others).</li>
+<li><strong>Keep cofactors, metals and structural ions</strong> that form part of the site, with the correct charge and coordination geometry. Zinc, magnesium and nickel sites are handled poorly by generic scoring functions and may need specialised parameters.</li>
+</ol>
+
+<h3 id="s4-2">4.2 Ligand preparation</h3>
+<p>A docking program needs a chemically sensible three-dimensional molecule, not a drawing. The steps are:</p>
+<ul>
+<li><strong>From 2D to 3D.</strong> Generate coordinates from SMILES with a conformer generator (RDKit ETKDG, OMEGA, CORINA) and relax with a force field. <em>This starting conformer is not innocuous</em>: most programs keep ring conformations, bond lengths and bond angles fixed and vary only the declared rotatable torsions, so the input conformer silently fixes part of the answer. Section 7 quantifies this with two conformers of the same molecule that give completely different results.</li>
+<li><strong>Stereochemistry.</strong> Every undefined stereocentre doubles the number of molecules to dock. Enumerate them explicitly; never let the program choose.</li>
+<li><strong>Protonation and tautomers at the assay pH.</strong> A carboxylic acid is ionised at pH 7.4, an aliphatic amine is protonated, an imidazole may be either; a 2-hydroxypyridine may exist as the pyridone. Each form has different hydrogen-bond donors and acceptors and therefore a different pose. The lecture gives the two acceptable strategies: dock the single form expected at physiological pH, or enumerate all plausible forms, dock each and keep the best — stating which was done.</li>
+<li><strong>Partial charges and rotatable-bond definition.</strong> Amide bonds are usually treated as non-rotatable; terminal groups such as methyl and hydroxyl may be ignored to save degrees of freedom.</li>
+<li><strong>Sanity filters</strong> for libraries: remove salts and solvents, keep one form per molecule, apply drug-likeness or lead-likeness rules if appropriate, and remove known assay-interfering substructures (PAINS) before, not after, docking.</li>
+</ul>
+
+<h3 id="s4-3">4.3 Defining the binding site and the box</h3>
+<p>Docking programs search inside a user-defined region. Three situations arise:</p>
+<ol>
+<li><strong>A ligand is already bound</strong> in the structure or in a homologous structure: centre the box on it. This is the <em>re-docking</em> or <em>cross-docking</em> situation and is the only one in which a protocol can be validated (Section 7).</li>
+<li><strong>The site is known from biochemistry</strong> (catalytic residues, mutagenesis): centre the box on the centroid of those residues.</li>
+<li><strong>The site is unknown.</strong> Use a cavity-detection algorithm — fpocket, SiteMap, CASTp, DoGSiteScorer — which rank surface pockets by volume, enclosure and hydrophobicity, or perform <strong>blind docking</strong> over the whole protein with a large box. Blind docking is much less reliable: the search space is larger, the scoring function has more opportunities to be fooled, and the result must be treated as a hypothesis to be tested by site-directed mutagenesis.</li>
+</ol>
+<p>The box should enclose the site with a margin of roughly 5–8 Å beyond the expected ligand extent; too small truncates poses, too large degrades both speed and accuracy because the search has more decoy space to explore. In Section 7 the box is 26 × 22 × 22 Å centred on the crystallographic ligand, whose own extent is 14.9 × 10.2 × 8.6 Å.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Section 5</span>Search algorithms</h2>
+<h3 id="s5-1">5.1 The size of the problem</h3>
+<p>Placing a rigid body requires six degrees of freedom — three translations and three rotations. Each rotatable bond in the ligand adds one torsional degree of freedom, and allowing side chains of the site to move adds several more. If each torsion is sampled in steps of θ degrees, a ligand with <em>N</em> rotatable bonds has (360/θ)<sup><em>N</em></sup> conformations, before the six rigid-body degrees of freedom are even considered.</p>
+<figure>
+<img src="figures/fig02_explosion.png" alt="Log-scale plot of conformations enumerated versus number of rotatable bonds for 30, 60 and 120 degree increments, with indinavir marked at 11 bonds">
+<figcaption><b>Figure 3. The combinatorial explosion.</b> Number of conformations generated by systematic enumeration, (360/θ)<sup><em>N</em></sup>. Indinavir, the ligand of Section 7, has 11 rotatable bonds (AutoDock counts 14 torsional degrees of freedom including terminal groups): at a 30° step that is 7.4 × 10<sup>11</sup> conformations for the internal geometry alone. At 10<sup>4</sup> pose evaluations per second — a realistic figure for a grid-based scoring function — enumerating 10<sup>9</sup> poses already takes about a CPU-day.</figcaption>
+</figure>
+<p>Exhaustive enumeration is therefore out of the question for anything larger than a fragment, exactly as in the protein-folding case of Unit 2. Every practical algorithm either reduces the dimensionality (dock rigid conformers generated beforehand) or samples intelligently (incremental construction, stochastic optimisation).</p>
+<figure>
+<img src="figures/fig05_search.png" alt="Three schematic energy landscapes illustrating systematic grid search, incremental construction from an anchor fragment, and stochastic population-based search">
+<figcaption><b>Figure 4. Three search strategies on a schematic landscape.</b> Systematic search evaluates a grid of points and is exhaustive but exponential. Incremental construction docks an anchor fragment and grows the rest, exploring only the region around a good anchor. Stochastic search starts from a random population and uses selection, crossover and mutation (genetic algorithm) or accept/reject moves (Monte Carlo) to concentrate sampling in low-energy basins; it does not guarantee the global minimum but finds good solutions in practical time.</figcaption>
+</figure>
+
+<h3 id="s5-2">5.2 Rigid docking: shape complementarity</h3>
+<p>In rigid docking the ligand conformation is fixed during the run; ligand flexibility is handled by pre-generating many conformers and docking each separately. The original DOCK algorithm — described in the lecture — constructs a <em>negative image</em> of the cavity as a set of overlapping spheres whose centres fill the empty space, then matches ligand atoms to sphere centres so that the inter-atomic distances reproduce the inter-centre distances within a tolerance, orients the ligand by least-squares superposition of the matched pairs, rejects placements with steric clashes, and scores the rest.<sup class="c"><a href="#r1">[1]</a></sup> New orientations come from new atom–sphere matchings, exhaustively. The approach is fast, it is still the basis of shape-based methods (and of protein–protein docking by Fourier correlation, Section 9), and its weakness is obvious: a ligand whose bound conformation is not in the pre-generated set can never be placed correctly.</p>
+
+<h3 id="s5-3">5.3 Flexible-ligand docking</h3>
+<p>Flexible-ligand docking, the standard today, generates ligand conformations during the run. Two strategies dominate.</p>
+<p><strong>Incremental construction</strong> (FlexX, DOCK 4+, Glide's hierarchical funnel, Surflex) splits the ligand at its rotatable bonds, docks a rigid <em>base fragment</em> chosen for its ability to make specific interactions, and then adds the remaining fragments one at a time, enumerating their torsions and keeping the best partial solutions at each stage. It is deterministic and fast, and its failure mode is an early commitment to the wrong anchor placement.</p>
+<p><strong>Stochastic optimisation</strong> (AutoDock, AutoDock Vina, GOLD, rDock, ICM) samples the pose space with randomness: Monte Carlo with simulated annealing, genetic algorithms, Lamarckian genetic algorithms (a GA whose offspring are locally energy-minimised, with the minimised coordinates written back into the genome), particle swarms, or — in Vina — a Monte Carlo chain of randomised steps each followed by a quasi-Newton local optimisation, run several times in parallel.<sup class="c"><a href="#r2">[2]</a>,<a href="#r3">[3]</a>,<a href="#r4">[4]</a></sup> Stochastic methods find good solutions in minutes but give a <em>different answer each run</em> unless the random seed is fixed, and their thoroughness is controlled by a parameter — <code>exhaustiveness</code> in Vina, the number of GA runs in AutoDock — that must be raised for ligands with many rotatable bonds.</p>
+
+<h3 id="s5-4">5.4 How a genetic algorithm works</h3>
+<p>The lecture describes the genetic algorithm used by GOLD and AutoDock; it is worth stating precisely, since it is the clearest example of a stochastic search.</p>
+<ol>
+<li><strong>Encoding.</strong> A pose is represented as a <em>chromosome</em>: a string of genes holding the translation (3 numbers), the orientation (4 numbers as a quaternion, or 3 Euler angles), and one gene per rotatable torsion. GOLD adds genes that pair ligand and protein hydrogen-bonding groups.</li>
+<li><strong>Initial population.</strong> A few hundred chromosomes are generated at random inside the box.</li>
+<li><strong>Fitness.</strong> Each chromosome is decoded into coordinates and scored; the score is its fitness.</li>
+<li><strong>Selection.</strong> Parents are drawn preferentially from the fitter half (roulette-wheel or tournament selection).</li>
+<li><strong>Crossover.</strong> Two parents exchange blocks of genes — for example the translation of one with the torsions of the other — producing children that combine a good position with a good conformation.</li>
+<li><strong>Mutation.</strong> Genes are perturbed at random with small probability, which is what allows the population to escape a local minimum.</li>
+<li><strong>Replacement and iteration.</strong> The children replace the least fit members, and steps 3–6 repeat for a fixed number of generations or until the best fitness stops improving.</li>
+</ol>
+<p>The <strong>Lamarckian</strong> variant of AutoDock inserts a local minimisation after decoding and writes the optimised values back into the chromosome, so that acquired improvements are inherited. In practice this converges with far fewer energy evaluations than a pure GA.<sup class="c"><a href="#r2">[2]</a></sup></p>
+
+<h3 id="s5-5">5.5 Receptor flexibility: induced fit and ensembles</h3>
+<p>Treating the receptor as rigid is the strongest approximation in routine docking, and it is often the reason a known active fails to dock. Four levels of treatment exist, in increasing cost.</p>
+<table class="data">
+<thead><tr><th>Approach</th><th>What moves</th><th>Cost</th><th>When to use</th></tr></thead>
+<tbody>
+<tr><td><strong>Rigid receptor</strong></td><td>Nothing</td><td>Baseline</td><td>Default; adequate when a holo structure with a similar ligand exists</td></tr>
+<tr><td><strong>Soft potentials</strong></td><td>Nothing, but clashes are penalised less steeply</td><td>Negligible</td><td>Quick tolerance for small side-chain adjustments; degrades pose discrimination</td></tr>
+<tr><td><strong>Flexible side chains</strong> (Vina <code>--flex</code>, GOLD, AutoDock)</td><td>Torsions of selected side chains, usually those within a radius of the site</td><td>Each added side chain multiplies the search space; typically ≤ 5–8 residues</td><td>Known rotameric flexibility (e.g. a tyrosine or methionine gating the pocket)</td></tr>
+<tr><td><strong>Induced fit protocols</strong> (Schrödinger IFD, RosettaLigand)</td><td>Iterated docking → side-chain repacking and backbone minimisation → re-docking</td><td>Hours per ligand</td><td>A handful of lead compounds, not a screen</td></tr>
+<tr><td><strong>Ensemble docking</strong></td><td>Nothing within a run; several receptor conformations are docked in parallel and the results combined</td><td>Linear in the number of structures</td><td>Targets with documented conformational states; the practical compromise for screening</td></tr>
+</tbody></table>
+<p><strong>Ensemble docking</strong> deserves the emphasis the lecture gives it. Instead of one structure, one uses several — crystal structures of the same protein with different ligands, NMR models, frames extracted from a molecular dynamics trajectory (Unit 5), or alternative AlphaFold predictions — docks every ligand into every receptor, and keeps for each ligand its best score across the ensemble.<sup class="c"><a href="#r12">[12]</a>,<a href="#r13">[13]</a></sup> This is a direct implementation of conformational selection and it recovers actives that any single structure misses. Its cost is that each additional receptor also gives decoys a new chance to score well, so enrichment does not always improve; the ensemble should be chosen deliberately (distinct, experimentally supported states) rather than by taking arbitrary trajectory snapshots.</p>
+<p>The lecture's slide also notes that AlphaFold ranks kinase models across the inactive and active basins — a reminder that predicted structures can themselves supply an ensemble, provided the states are checked against what is known about the target.</p>
+<div class="box key"><h4>Key points — Section 5</h4><ul>
+<li>Search space = 6 rigid-body + <em>N</em> torsional degrees of freedom; exhaustive enumeration scales as (360/θ)<sup><em>N</em></sup>.</li>
+<li>Rigid docking fixes the conformer; flexible-ligand docking builds it incrementally or samples it stochastically.</li>
+<li>Genetic algorithms encode a pose as a chromosome and evolve a population by selection, crossover and mutation; Lamarckian GAs add local minimisation.</li>
+<li>Stochastic runs are not reproducible unless the seed is fixed, and their thoroughness is a parameter (exhaustiveness) that must scale with ligand flexibility.</li>
+<li>Receptor flexibility is the biggest remaining approximation; ensemble docking is the practical compromise.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Section 6</span>Scoring functions</h2>
+<h3 id="s6-1">6.1 Four families</h3>
+<p>A scoring function must be evaluated millions of times per run, so it trades rigour for speed. The lecture's classification is the standard one.<sup class="c"><a href="#r14">[14]</a></sup></p>
+<table class="data">
+<thead><tr><th>Family</th><th>Construction</th><th>Terms</th><th>Examples</th><th>Characteristic weakness</th></tr></thead>
+<tbody>
+<tr><td><strong>Force-field</strong></td><td>Molecular-mechanics energy of the complex, sometimes with a solvation model</td><td>Lennard-Jones van der Waals, Coulomb electrostatics with a distance-dependent dielectric, explicit hydrogen-bond term, torsional strain</td><td>DOCK, AutoDock 4, GoldScore</td><td>No entropy; gas-phase electrostatics overweights charged groups; desolvation treated crudely</td></tr>
+<tr><td><strong>Empirical</strong></td><td>Weighted sum of physically motivated terms, with weights fitted by regression to measured affinities of a training set of complexes</td><td>Counts of hydrogen bonds, ionic contacts, hydrophobic surface, rotatable bonds frozen, buried area</td><td>ChemScore, PLP, GlideScore, X-Score, AutoDock Vina</td><td>Transferability — accuracy depends on how similar the target is to the training set</td></tr>
+<tr><td><strong>Knowledge-based</strong></td><td>Statistical potentials from the observed distribution of atom-pair distances in the PDB, inverted through a Boltzmann relation</td><td>Pairwise atom-type potentials as a function of distance</td><td>PMF, DrugScore, ITScore, DFIRE</td><td>The reference state is arbitrary; favours frequent interactions rather than strong ones</td></tr>
+<tr><td><strong>Machine-learned</strong></td><td>Non-linear model (random forest, gradient boosting, graph or 3D convolutional network) trained on structures with measured affinities</td><td>Learned features of the complex</td><td>RF-Score, NNScore, PLEC, Pafnucy, gnina/CNN scores, DiffDock-type generative models</td><td>Dataset bias: performance can come from memorising ligand or protein identity rather than interactions; needs careful splits (Unit 2, Section 9)</td></tr>
+</tbody></table>
+<p><strong>Consensus scoring</strong> combines several functions — by rank, vote or normalised score — on the assumption that their errors are partly independent. It typically improves screening enrichment modestly and is cheap, since the expensive step is pose generation.<sup class="c"><a href="#r15">[15]</a></sup> It does not improve pose prediction much and it cannot fix a systematic error shared by all the functions.</p>
+
+<h3 id="s6-2">6.2 A concrete function: AutoDock Vina</h3>
+<p>Because Section 7 uses it, the Vina function is worth writing out. It is empirical and additive over ligand–protein heavy-atom pairs, with each term a simple function of the <em>surface distance</em> <em>d</em><sub><em>ij</em></sub> = <em>r</em><sub><em>ij</em></sub> − <em>R</em><sub><em>i</em></sub> − <em>R</em><sub><em>j</em></sub> (the interatomic distance minus the two van der Waals radii):<sup class="c"><a href="#r3">[3]</a></sup></p>
+<div class="eq">
+<em>c</em> = Σ<sub><em>i</em>&lt;<em>j</em></sub> [ −0.0356 · gauss<sub>1</sub> − 0.00516 · gauss<sub>2</sub> + 0.840 · repulsion + (−0.0351) · hydrophobic + (−0.587) · H-bond ]
+<span class="where">gauss<sub>1</sub> = e<sup>−(d/0.5)²</sup>; gauss<sub>2</sub> = e<sup>−((d−3)/2)²</sup>; repulsion = d² if d &lt; 0, else 0; hydrophobic = a linear ramp from 1 to 0 between d = 0.5 and 1.5 Å for carbon/halogen pairs; H-bond = a ramp from 1 to 0 between d = −0.7 and 0 Å for donor–acceptor pairs. The reported affinity is the inter-molecular part divided by (1 + 0.0585 · <em>N</em><sub>rot</sub>), an entropic penalty for the rotatable bonds frozen on binding.</span></div>
+<p>Three features are typical of the whole empirical family. There is no explicit electrostatic term — charge interactions are absorbed into the hydrogen-bond and steric terms, which is why Vina handles metals and highly charged sites poorly. There is no desolvation term. And the score is reported in kcal mol⁻¹, which invites the reader to interpret it as a free energy; the weights were fitted to reproduce affinities of a training set, so the units are meaningful on average and misleading in any individual case.</p>
+
+<h3 id="s6-3">6.3 What scoring functions cannot do</h3>
+<div class="box warn"><h4>Known limitations, with their consequences</h4><ul>
+<li><strong>Entropy is approximated by a count.</strong> Torsional entropy enters as a penalty per rotatable bond; the translational and rotational entropy of binding and the entropy of released water are essentially absent.</li>
+<li><strong>Desolvation is poorly modelled</strong>, so polar and charged ligands are usually overrated and the burial of a charged group is not penalised as it should be.</li>
+<li><strong>Scores grow with molecular size.</strong> More atoms make more contacts; nearly every scoring function therefore prefers bigger molecules, independently of their real affinity. Section 7.3 measures this bias and shows the standard correction, <strong>ligand efficiency</strong> = −ΔG/heavy atom.<sup class="c"><a href="#r16">[16]</a></sup></li>
+<li><strong>Protein reorganisation and the cost of the ligand's bound conformation</strong> are usually ignored.</li>
+<li><strong>Water-mediated interactions</strong> are missed unless the relevant waters are kept explicitly.</li>
+<li><strong>Consequence.</strong><sup class="c"><a href="#r24">[24]</a></sup> Treat a docking score as a classifier — likely binder / unlikely binder — and never as a measured affinity. Do not report a score as "predicted ΔG" or convert it to a K<sub>d</sub>. Do not compare scores obtained with different programs, receptors or box definitions. For quantitative estimates, use the more expensive methods of Unit 5 (MM/PBSA, MM/GBSA, free-energy perturbation).</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Section 7</span>Validation: a re-docking experiment performed for this document</h2>
+<p>A docking protocol is only credible if it can reproduce a known answer. The standard test is <strong>re-docking</strong>: take a crystal structure of a complex, remove the ligand, dock it back, and measure how far the predicted pose is from the experimental one. The conventional success criterion is an RMSD below <strong>2.0 Å</strong>, roughly the resolution at which a ligand's orientation can be considered correctly reproduced.<sup class="c"><a href="#r17">[17]</a></sup> The experiment reported here was run specifically for this document; every number is reproducible with the code in Section 11.</p>
+
+<h3 id="s7-1">7.1 The system</h3>
+<p>The target is <strong>HIV-1 protease</strong> in complex with <strong>indinavir</strong> (PDB <code>1HSG</code>, X-ray, 2.0 Å), the structure that supported the development of one of the first antiretroviral drugs.<sup class="c"><a href="#r27">[27]</a></sup> The protease is an obligate homodimer of 99 residues per chain whose active site lies on the two-fold axis, with the catalytic Asp25–Thr26–Gly27 triad contributed by both subunits and covered by two mobile β-hairpin flaps. Indinavir (PDB chemical component <code>MK1</code>) is a 613.8 g mol⁻¹ peptidomimetic with 45 heavy atoms, 11 rotatable bonds, 4 hydrogen-bond donors, 7 acceptors, cLogP 2.87 and TPSA 118 Å² (computed here with RDKit).</p>
+<p>Analysis of the crystallographic complex gives the reference against which the docking is judged. Twenty-six residues have a heavy atom within 4 Å of the ligand, thirteen from each subunit — the site is strictly shared between the two copies — and forty residues within 6 Å. Nine polar contacts shorter than 3.5 Å are present:</p>
+<table class="data"><thead><tr><th>Indinavir atom</th><th>Protein partner</th><th>Distance (Å)</th></tr></thead><tbody><tr><td><code>O2</code></td><td>A:Asp25 OD1</td><td>2.77</td></tr><tr><td><code>O2</code></td><td>A:Asp25 OD2</td><td>2.93</td></tr><tr><td><code>O2</code></td><td>B:Asp25 OD1</td><td>2.63</td></tr><tr><td><code>O2</code></td><td>B:Asp25 OD2</td><td>3.04</td></tr><tr><td><code>N4</code></td><td>B:Gly27 O</td><td>3.03</td></tr><tr><td><code>O4</code></td><td>B:Gly27 O</td><td>3.16</td></tr><tr><td><code>O4</code></td><td>B:Asp29 N</td><td>3.23</td></tr><tr><td><code>O4</code></td><td>B:Asp29 OD2</td><td>3.06</td></tr><tr><td><code>N5</code></td><td>B:Arg8 NH2</td><td>3.46</td></tr></tbody></table>
+<p>The central hydroxyl (<code>O2</code>) bridges all four carboxylate oxygens of the two catalytic aspartates at 2.63–3.04 Å, which is the hallmark of the transition-state-mimetic design of this drug class. Six water molecules lie within 3.5 Å of a ligand nitrogen or oxygen, among them <strong>HOH 308</strong>, the conserved flap water. The remaining contacts are hydrophobic, as Figure 5 shows.</p>
+<figure>
+<img src="figures/fig03_contacts.png" alt="Heat map of minimum distances between each indinavir atom and each binding-site residue of both protease chains, with dots marking contacts below 3.5 angstrom">
+<figcaption><b>Figure 5. Contact map of the crystallographic complex (computed here from <code>1HSG</code>).</b> Minimum heavy-atom distance between each indinavir atom (rows, PDB atom names) and each binding-site residue (columns, chain:residue); distances above 8 Å are left white and dots mark contacts ≤ 3.5 Å. Both chains A and B contribute, confirming that the site lies on the dimer axis. The polar contacts cluster on the two catalytic Asp25 residues and on Gly27/Asp29 of chain B; the large hydrophobic surface of the drug contacts Leu23, Val32, Ile47, Gly48/Gly49, Pro81, Val82 and Ile84 of both subunits.</figcaption>
+</figure>
+<p>Preparation followed Section 4: protein atoms only, hydrogens added at pH 7.4 with Gasteiger charges, the flap water <code>HOH 308</code> retained as part of the receptor, the ligand's bond orders restored from the PDB chemical-component SMILES, and a 26 × 22 × 22 Å box centred on the crystallographic ligand centroid. AutoDock Vina 1.2.7 was used throughout, with a fixed random seed.</p>
+
+<h3 id="s7-2">7.2 Results: the search, not the score, is what fails</h3>
+<p>Two control calculations come first. Scoring the crystallographic pose exactly as deposited gives <strong>−11.30 kcal mol⁻¹</strong>; allowing a local optimisation of that pose, which relieves the small clashes inevitable when hydrogens are added to a 2.0 Å structure, gives <strong>−11.73 kcal mol⁻¹</strong>. This is the value a successful docking run should approach. (Without the flap water the same two numbers are −10.95 and −11.34, so the water contributes about 0.35–0.40 kcal mol⁻¹ to the score of the native pose.)</p>
+<p>Five docking runs were then performed, differing only in the input conformer and in the exhaustiveness. All RMSD values are symmetry-corrected: they are the minimum over the molecule's own topological symmetry (RDKit <code>CalcRMS</code>) and over the C<sub>2</sub> symmetry of the protease dimer, which maps chain A onto chain B with a Cα RMSD of 0.52 Å — without this correction a pose that is correct but related to the reference by the dimer axis would be scored as a failure.</p>
+<table class="data"><thead><tr><th>Run</th><th>Input conformer</th><th>Exhaustiveness</th><th>Best score (kcal mol⁻¹)</th><th>RMSD of rank-1 pose (Å)</th><th>Best RMSD in top 20 (Å)</th><th>Rank of that pose</th><th>CPU time</th></tr></thead><tbody><tr><td>1</td><td>Crystallographic (bound) conformer</td><td>64</td><td>−11.95</td><td>0.45</td><td>0.43</td><td>2</td><td>157 s</td></tr><tr><td>2</td><td>De-novo conformer B (3.36 Å from bound)</td><td>16</td><td>−11.94</td><td>0.48</td><td>0.48</td><td>1</td><td>46 s</td></tr><tr><td>3</td><td>De-novo conformer A (4.20 Å from bound)</td><td>32</td><td>−9.96</td><td>4.36</td><td>2.93</td><td>10</td><td>121 s</td></tr><tr><td>4</td><td>De-novo conformer A</td><td>128</td><td>−9.95</td><td>4.36</td><td>1.93</td><td>7</td><td>354 s</td></tr><tr><td>5</td><td>De-novo conformer A, different seed</td><td>128</td><td>−9.93</td><td>4.37</td><td>1.92</td><td>9</td><td>368 s</td></tr></tbody></table>
+<figure>
+<img src="figures/fig04_funnel.png" alt="Scatter of Vina score against RMSD for 100 poses from five runs; the near-native poses at low RMSD score about 2 kcal/mol better, but three runs never reach them">
+<figcaption><b>Figure 6. Score against RMSD for all 100 poses of the five runs.</b> Each point is one output pose. The runs that reach the native basin (orange, green) find poses at 0.4–0.6 Å that score −11.9 to −12.0 kcal mol⁻¹, close to the locally minimised crystal pose (dotted line) and about 2 kcal mol⁻¹ better than anything else in the plot. The runs started from conformer A (blues) never reach that basin: their best poses sit at 4.4 Å and −9.9 kcal mol⁻¹, and raising the exhaustiveness fourfold or changing the seed does not help. The scoring function is therefore <em>not</em> the limiting factor here — it ranks the native pose correctly and by a wide margin — but the search, constrained by the fixed internal geometry of the input conformer, cannot generate it.</figcaption>
+</figure>
+<p>The decisive comparison is between runs 2 and 4–5, which differ only in the three-dimensional conformer supplied to the program. Conformer B, generated by RDKit with one random seed, differs from the bound conformation by 3.36 Å after optimal alignment; conformer A, generated with another seed, by 4.20 Å. From conformer B, Vina reproduces the crystallographic pose to <strong>0.48 Å</strong> at an exhaustiveness of only 16, in 46 s. From conformer A, the rank-1 pose is <strong>4.36 Å</strong> away — a failure by the 2 Å criterion — and remains so at exhaustiveness 128 with two different seeds, although a near-native pose at 1.9 Å does appear further down the list, at rank 7.</p>
+<div class="box key"><h4>What this experiment teaches</h4><ul>
+<li><strong>Re-docking from the bound conformer is not a validation.</strong> Run 1 reproduces the pose to 0.45 Å, but it was given the answer: Vina varies only the declared torsions and keeps ring conformations, bond lengths and bond angles exactly as supplied. A paper that reports re-docking RMSD without stating how the input conformer was generated has demonstrated very little.<sup class="c"><a href="#r25">[25]</a></sup></li>
+<li><strong>Conformer generation is part of the docking protocol.</strong> The same molecule, the same program and the same receptor gave 0.48 Å and 4.36 Å depending on which conformer entered. Generate several conformers, or use a program that samples ring and angle geometry.</li>
+<li><strong>Distinguish search failure from scoring failure.</strong> Here the score of the native pose is 2 kcal mol⁻¹ better than any decoy, so scoring is adequate and search is the bottleneck. The diagnostic is exactly the one performed above: score the experimental pose. If it scores better than everything the search produced, the search failed; if the search produced a near-native pose but ranked it below a wrong one, the scoring failed; if the experimental pose scores badly, the preparation is wrong.</li>
+<li><strong>Exhaustiveness is not a cure.</strong> Multiplying it by four changed the rank-1 RMSD from 4.36 to 4.36 Å. More sampling cannot create a degree of freedom the program does not have.</li>
+<li><strong>Report the full pose list, not only rank 1.</strong> In runs 4 and 5 a near-native pose existed at rank 7 and 9. In prospective work, inspecting the top five to ten poses, and clustering them, is standard practice.</li>
+</ul></div>
+
+<h3 id="s7-3">7.3 Size bias and ligand efficiency</h3>
+<p>The second experiment docks eight molecules into the same prepared site: five HIV-1 protease inhibitors (amprenavir, darunavir, indinavir, saquinavir, ritonavir) and three unrelated drugs as negative controls (aspirin, caffeine, ibuprofen). All were built from their PDB chemical-component SMILES, embedded and optimised identically, and docked with exhaustiveness 16.</p>
+<table class="data"><thead><tr><th>Ligand</th><th>PDB chem. comp.</th><th>Heavy atoms</th><th>MW (g mol⁻¹)</th><th>Rotatable bonds</th><th>Vina score (kcal mol⁻¹)</th><th>Ligand efficiency</th><th>CPU time</th></tr></thead><tbody><tr><td>aspirin</td><td><code>AIN</code></td><td>13</td><td>180.2</td><td>2</td><td>-5.82</td><td>0.447</td><td>2 s</td></tr><tr><td>caffeine</td><td><code>CFF</code></td><td>14</td><td>194.2</td><td>0</td><td>-5.80</td><td>0.414</td><td>1 s</td></tr><tr><td>ibuprofen</td><td><code>IBP</code></td><td>15</td><td>206.3</td><td>4</td><td>-7.16</td><td>0.477</td><td>2 s</td></tr><tr style="background:#eafaf1"><td>amprenavir</td><td><code>478</code></td><td>35</td><td>505.6</td><td>11</td><td>-8.93</td><td>0.255</td><td>28 s</td></tr><tr style="background:#eafaf1"><td>darunavir</td><td><code>017</code></td><td>38</td><td>547.7</td><td>11</td><td>-9.64</td><td>0.254</td><td>34 s</td></tr><tr style="background:#eafaf1"><td>indinavir</td><td><code>MK1</code></td><td>45</td><td>613.8</td><td>11</td><td>-11.93</td><td>0.265</td><td>46 s</td></tr><tr style="background:#eafaf1"><td>saquinavir</td><td><code>ROC</code></td><td>49</td><td>670.9</td><td>12</td><td>-11.12</td><td>0.227</td><td>71 s</td></tr><tr style="background:#eafaf1"><td>ritonavir</td><td><code>RIT</code></td><td>50</td><td>721.0</td><td>17</td><td>-10.03</td><td>0.201</td><td>110 s</td></tr></tbody></table>
+<figure>
+<img src="figures/fig07_size_bias.png" alt="Left: Vina score versus heavy-atom count, strongly correlated. Right: ligand efficiency versus heavy atoms, with the small control drugs above the protease inhibitors">
+<figcaption><b>Figure 7. The size bias of a docking score, measured on eight ligands in the HIV-1 protease site.</b> Left: the Vina score correlates almost perfectly with the number of heavy atoms (Pearson r = −0.94, p = 5 × 10⁻⁴; slope −0.14 kcal mol⁻¹ per heavy atom). Right: dividing by the heavy-atom count gives the ligand efficiency, which inverts the ranking — the three control drugs, which are not protease inhibitors, are the most "efficient" molecules in the set. Neither metric alone identifies the true actives; the score separates them by size, the efficiency separates them by size in the opposite direction.</figcaption>
+</figure>
+<p>The interpretation requires care, and it is the point of including the experiment. The five true inhibitors all score better than the three controls (−8.9 to −11.9 against −5.8 to −7.2), so the scoring function would have enriched them in a screen — the task docking is good at. But within the inhibitors the ranking is wrong: ritonavir, a picomolar inhibitor, scores worse than indinavir, and the ordering reflects heavy-atom count more than potency. And the ligand-efficiency column, which is the correct metric for comparing molecules of different size in a fragment or hit-finding campaign, makes aspirin and ibuprofen look better than every antiretroviral drug — because ligand efficiency is meaningful only among molecules that actually bind. The lesson is that a score, a ligand efficiency and an experimental affinity answer three different questions, and that a docking campaign must say which question it is asking.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Section 8</span>Virtual screening</h2>
+<p><strong>Structure-based virtual screening</strong> applies docking to a library of compounds in order to rank them and buy or synthesise only the top fraction. Commercial libraries now reach 10⁹–10¹⁰ make-on-demand molecules (Enamine REAL, ZINC-22), and campaigns at that scale have delivered potent ligands directly from the docking output.<sup class="c"><a href="#r22">[22]</a>,<a href="#r23">[23]</a></sup> Two things make it work: the task requires only that actives be <em>enriched</em> near the top, not correctly ordered; and the hit rate of docking (typically 1–20 % at the chosen cut-off, depending on the target) is one to two orders of magnitude above random screening.</p>
+<h3>Design of a campaign</h3>
+<ol>
+<li><strong>Validate the protocol first</strong> by re-docking (Section 7) and, better, by <em>retrospective screening</em>: dock a set of known actives together with decoys and check that the actives are enriched. Decoys must be property-matched (similar MW, logP, charge, rotatable bonds) but topologically dissimilar, as in the DUD-E and LIT-PCBA sets; unmatched decoys produce flattering, meaningless enrichment.<sup class="c"><a href="#r18">[18]</a>,<a href="#r19">[19]</a></sup></li>
+<li><strong>Prepare the library</strong>: desalt, enumerate protonation states and stereoisomers, filter by drug-likeness or lead-likeness and remove PAINS and reactive groups.</li>
+<li><strong>Dock in stages</strong>: a fast, coarse pass over the whole library, then a more exhaustive pass over the top 1–5 %, then rescoring with an orthogonal function or with MM/GBSA.</li>
+<li><strong>Cluster and inspect by hand.</strong> Chemical diversity of the selected set matters more than squeezing the last 0.2 kcal mol⁻¹, and visual inspection of poses still catches artefacts that no filter does — a ligand making no interaction with any conserved residue, a buried unsatisfied charge, a pose jammed into a crystallographic artefact.</li>
+<li><strong>Test experimentally</strong> and feed the result back. A campaign that is never tested has produced no information.</li>
+</ol>
+<h3>Metrics</h3>
+<table class="data">
+<thead><tr><th>Metric</th><th>Definition</th><th>Reading</th></tr></thead>
+<tbody>
+<tr><td><strong>Enrichment factor</strong> EF<sub>x %</sub></td><td>(actives found in the top <em>x</em> % / total actives) ÷ (<em>x</em>/100)</td><td>EF<sub>1 %</sub> = 20 means twenty times more actives in the top 1 % than random. The most practically relevant number, because only the top fraction is ever bought.</td></tr>
+<tr><td><strong>ROC-AUC</strong></td><td>Area under the true-positive vs false-positive curve</td><td>0.5 = random, 1.0 = perfect. Insensitive to <em>where</em> in the ranking the actives are, so it can look respectable with a useless top 1 %.</td></tr>
+<tr><td><strong>BEDROC</strong> (α = 20)</td><td>Exponentially weighted ROC emphasising early recognition</td><td>Designed for the "early recognition" problem; reported alongside AUC in careful papers.</td></tr>
+<tr><td><strong>Hit rate</strong></td><td>Fraction of purchased compounds confirmed active experimentally</td><td>The only metric that matters prospectively.</td></tr>
+</tbody></table>
+<p>Finally, the practical counterpart of Unit 1's sensitivity/specificity discussion applies: lowering the score cut-off buys sensitivity at the cost of precision, and because the cost asymmetry in screening is extreme — a missed active costs nothing visible, a purchased false positive costs money and time — campaigns are tuned for precision in the top fraction rather than for recall.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Section 9</span>Beyond protein–ligand docking</h2>
+<p><strong>Protein–protein docking</strong> addresses a different geometry: two large, mostly rigid bodies with a broad, flat interface and no deep pocket. The classical algorithms search the six rigid-body degrees of freedom exhaustively using fast Fourier transform correlation of shape and electrostatic grids (ZDOCK, FTDock, ClusPro), then rescore and refine the top thousands of orientations. <strong>HADDOCK</strong> takes a different route, converting experimental or predicted information about which residues are at the interface — mutagenesis, chemical shift perturbation, crosslinking, coevolution — into <em>ambiguous interaction restraints</em> that drive a flexible docking in CNS.<sup class="c"><a href="#r11">[11]</a></sup> Since 2021 the field has been reshaped by AlphaFold-Multimer and AlphaFold 3, which predict many complexes more accurately than docking, although they remain weaker for transient, antibody–antigen and peptide interactions.</p>
+<p><strong>Covalent docking</strong> handles ligands that form a bond with a residue (acrylamide warheads targeting cysteine, β-lactams targeting serine) by tethering the ligand to the nucleophile and sampling around the forming bond; the score then reports only the non-covalent part and must be complemented by the chemistry of the warhead. <strong>Fragment docking</strong> deals with molecules of 10–20 heavy atoms, where scores are small and discrimination is poor, and is therefore normally paired with experimental fragment screening (X-ray, NMR, SPR). <strong>Docking into nucleic acids</strong> and into membrane proteins require their own parameters: both environments are dominated by interactions that generic functions describe badly — charged phosphate backbones in one case, a low-dielectric lipid interior in the other.</p>
+<p>Finally, <strong>deep-learning pose prediction</strong> (EquiBind, TankBind, DiffDock, and the ligand-aware AlphaFold 3) treats docking as a generative problem rather than a search, producing poses in seconds. Benchmarks show high apparent success on the PDBBind test set but a sharp drop on proteins dissimilar to the training set, and a tendency to produce poses with non-physical geometry; they are an active research area rather than a replacement for the methods in this unit.<sup class="c"><a href="#r34">[34]</a>,<a href="#r35">[35]</a></sup></p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Section 10</span>Software</h2>
+<table class="data">
+<thead><tr><th>Program</th><th>Search</th><th>Scoring</th><th>Licence</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><strong>AutoDock 4</strong><sup class="c"><a href="#r2">[2]</a></sup></td><td>Lamarckian genetic algorithm</td><td>Force-field based with desolvation</td><td>Free, open source</td><td>Grid maps per atom type; flexible side chains; the reference implementation for teaching</td></tr>
+<tr><td><strong>AutoDock Vina / Vina 1.2</strong><sup class="c"><a href="#r3">[3]</a>,<a href="#r4">[4]</a></sup></td><td>Monte Carlo + BFGS local optimisation, multithreaded</td><td>Empirical (Section 6.2); also AD4 and Vinardo functions</td><td>Free, open source</td><td>Two orders of magnitude faster than AutoDock 4; Python API; the most used docking program in the literature</td></tr>
+<tr><td><strong>Smina / gnina</strong></td><td>Vina search</td><td>Custom and CNN-based scoring</td><td>Free, open source</td><td>Convenient for rescoring and for machine-learned scores</td></tr>
+<tr><td><strong>DOCK 6</strong><sup class="c"><a href="#r1">[1]</a></sup></td><td>Sphere matching, incremental construction</td><td>Force-field, with optional GB/SA</td><td>Free for academics</td><td>The original program; strong shape-based matching</td></tr>
+<tr><td><strong>GOLD</strong><sup class="c"><a href="#r5">[5]</a></sup></td><td>Genetic algorithm with H-bond pairing genes</td><td>GoldScore, ChemScore, ChemPLP, ASP</td><td>Commercial (CCDC)</td><td>Side-chain flexibility, ensemble docking, consistently high in benchmarks</td></tr>
+<tr><td><strong>Glide</strong><sup class="c"><a href="#r6">[6]</a></sup></td><td>Hierarchical filtering funnel</td><td>GlideScore (empirical), SP and XP modes</td><td>Commercial (Schrödinger)</td><td>XP mode adds desolvation and shape terms; paired with the Induced Fit Docking protocol</td></tr>
+<tr><td><strong>FlexX</strong><sup class="c"><a href="#r7">[7]</a></sup></td><td>Incremental construction</td><td>Empirical (Böhm-derived)</td><td>Commercial (BioSolveIT)</td><td>Deterministic and fast</td></tr>
+<tr><td><strong>rDock</strong></td><td>Genetic algorithm + Monte Carlo + minimisation</td><td>Empirical, with pharmacophore and nucleic-acid terms</td><td>Free, open source</td><td>Designed also for RNA and DNA targets</td></tr>
+<tr><td><strong>SwissDock / AutoDock Vina web</strong><sup class="c"><a href="#r8">[8]</a></sup></td><td>Server front ends</td><td>—</td><td>Free web service</td><td>Convenient for a few ligands and for teaching; limited control of preparation</td></tr>
+<tr><td><strong>ZDOCK, ClusPro, HADDOCK</strong><sup class="c"><a href="#r9">[9]</a>,<a href="#r10">[10]</a>,<a href="#r11">[11]</a></sup></td><td>FFT rigid-body / restraint-driven flexible</td><td>Shape, electrostatics, desolvation / CNS energies</td><td>Free web services</td><td>Protein–protein and protein–nucleic acid complexes</td></tr>
+</tbody></table>
+<p>Supporting tools used in this unit: <strong>Open Babel</strong><sup class="c"><a href="#r29">[29]</a></sup> for format conversion and hydrogen addition, <strong>Meeko</strong> for PDBQT preparation, <strong>RDKit</strong><sup class="c"><a href="#r30">[30]</a></sup> for conformer generation, descriptors and symmetry-corrected RMSD, <strong>PDB2PQR/PROPKA</strong><sup class="c"><a href="#r33">[33]</a></sup> for protonation, <strong>fpocket</strong><sup class="c"><a href="#r32">[32]</a></sup> for cavity detection, <strong>PLIP</strong><sup class="c"><a href="#r31">[31]</a></sup> and <strong>Arpeggio</strong> for interaction fingerprints, and <strong>PyMOL</strong> or <strong>ChimeraX</strong> for inspection. AutoDockTools remains the classical GUI for AutoDock preparation, though the Python API used below is now the more reproducible route; the AutoDock suite protocol paper is the standard reference for the whole workflow.<sup class="c"><a href="#r28">[28]</a></sup></p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Section 11</span>Practical work</h2>
+<h3>11.1 Interactive view of the system</h3>
+<p>The viewer loads <code>1HSG</code> from the RCSB (internet connection required). Indinavir is shown as green sticks, the two catalytic aspartates in orange, the flap water as a red sphere.</p>
+<div id="viewer" style="width:100%;height:420px;position:relative;border:1px solid var(--line);border-radius:6px;background:#fff"></div>
+<p style="font-family:system-ui,sans-serif;font-size:.86rem"><button onclick="vChains()">Chains and ligand</button> <button onclick="vSite()">Binding-site residues</button> <button onclick="vSurf()">Pocket surface</button></p>
+<script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+<script>
+var viewer=null;
+var SITE={resi:[8,23,25,27,28,29,30,32,47,48,49,50,81,82,84]};
+function base(){ viewer.removeAllSurfaces(); viewer.setStyle({},{cartoon:{colorscheme:{prop:'chain',map:{A:'#2b5d9b',B:'#c0392b'}},opacity:0.85}});
+  viewer.setStyle({resn:'MK1'},{stick:{colorscheme:'greenCarbon',radius:0.18}});
+  viewer.setStyle({resn:'HOH',resi:308},{sphere:{radius:0.45,color:'#c0392b'}}); }
+function vChains(){ if(!viewer)return; base(); viewer.render(); }
+function vSite(){ if(!viewer)return; base(); viewer.addStyle(SITE,{stick:{colorscheme:'whiteCarbon',radius:0.1}});
+  viewer.addStyle({resi:25},{stick:{colorscheme:'orangeCarbon',radius:0.2}}); viewer.render(); }
+function vSurf(){ if(!viewer)return; base(); viewer.addSurface($3Dmol.SurfaceType.MS,{opacity:0.75,colorscheme:'whiteCarbon'},SITE); viewer.render(); }
+(function(){ try{ viewer=$3Dmol.createViewer('viewer',{backgroundColor:'white'});
+  $3Dmol.download('pdb:1HSG',viewer,{},function(){ base(); viewer.zoomTo({resn:'MK1'}); viewer.zoom(0.55); viewer.render(); }); }
+  catch(e){ document.getElementById('viewer').innerHTML='<p style="padding:1rem;color:#777">3D viewer unavailable offline. Open https://www.rcsb.org/3d-view/1HSG instead.</p>'; } })();
+</script>
+
+<h3>11.2 Reproducing the re-docking of Section 7</h3>
+<p>The experiment uses the Vina Python API, RDKit and Meeko. Install with <code>conda install -c conda-forge vina rdkit openbabel</code> and <code>pip install meeko</code>.</p>
+<pre><code>import json, urllib.request, numpy as np, subprocess
+from rdkit import Chem
+from rdkit.Chem import AllChem, rdMolAlign
+from Bio.PDB import PDBParser, Superimposer
+from vina import Vina
+
+# ---- 1. Receptor: protein + the conserved flap water, hydrogens at pH 7.4 ----
+urllib.request.urlretrieve("https://files.rcsb.org/download/1HSG.pdb", "1HSG.pdb")
+keep = [l for l in open("1HSG.pdb")
+        if l.startswith("ATOM") or (l.startswith("HETATM") and l[17:20] == "HOH"
+                                    and int(l[22:26]) == 308)]
+open("rec.pdb", "w").write("".join(keep) + "END\n")
+subprocess.run("obabel rec.pdb -xr -O rec.pdbqt -h -p 7.4 --partialcharge gasteiger",
+               shell=True, check=True)
+
+# ---- 2. Ligand: bond orders from the PDB chemical component, then a de-novo conformer ----
+cc = json.loads(urllib.request.urlopen(
+        "https://data.rcsb.org/rest/v1/core/chemcomp/MK1").read())
+smiles = cc["rcsb_chem_comp_descriptor"]["SMILES_stereo"]
+open("lig_xtal.pdb", "w").write("".join(l for l in open("1HSG.pdb")
+                                        if l.startswith("HETATM") and l[17:20] == "MK1"))
+xtal = AllChem.AssignBondOrdersFromTemplate(Chem.MolFromSmiles(smiles),
+                                            Chem.MolFromPDBFile("lig_xtal.pdb"))
+m = Chem.AddHs(Chem.MolFromSmiles(smiles))
+AllChem.EmbedMolecule(m, randomSeed=7)          # change this seed and the result changes
+AllChem.MMFFOptimizeMolecule(m)
+Chem.MolToMolFile(m, "lig.sdf")
+subprocess.run("mk_prepare_ligand.py -i lig.sdf -o lig.pdbqt", shell=True, check=True)
+
+# ---- 3. Box centred on the crystallographic ligand ----
+centre = np.array(xtal.GetConformer().GetPositions()).mean(0).tolist()
+
+# ---- 4. Control: score the experimental pose, then dock ----
+v = Vina(sf_name="vina", cpu=8, seed=2026)
+v.set_receptor("rec.pdbqt")
+v.set_ligand_from_file("lig.pdbqt")
+v.compute_vina_maps(center=centre, box_size=[26, 22, 22])
+v.dock(exhaustiveness=16, n_poses=10)
+v.write_poses("poses.pdbqt", n_poses=10, overwrite=True)
+print(v.energies(n_poses=10)[:, 0])
+subprocess.run("mk_export.py poses.pdbqt -s poses.sdf", shell=True, check=True)
+
+# ---- 5. Symmetry-corrected RMSD: molecular symmetry AND the C2 axis of the dimer ----
+model = PDBParser(QUIET=True).get_structure("x", "1HSG.pdb")[0]
+caA = [r["CA"] for r in model["A"] if "CA" in r]; caB = [r["CA"] for r in model["B"] if "CA" in r]
+sup = Superimposer(); sup.set_atoms(caB + caA, caA + caB)      # A->B and B->A at once
+rot, tran = sup.rotran
+xtal_sym = Chem.Mol(xtal); conf = xtal_sym.GetConformer()
+for i, p in enumerate(np.array(xtal.GetConformer().GetPositions()) @ rot + tran):
+    conf.SetAtomPosition(i, p.tolist())
+for i, pose in enumerate(Chem.SDMolSupplier("poses.sdf", removeHs=False)):
+    p = Chem.RemoveHs(pose)
+    rmsd = min(rdMolAlign.CalcRMS(p, xtal), rdMolAlign.CalcRMS(p, xtal_sym))
+    print(f"pose {i+1}: RMSD {rmsd:.2f} A")</code></pre>
+<p>Command-line equivalent, for the same box: <code>vina --receptor rec.pdbqt --ligand lig.pdbqt --center_x 13.07 --center_y 22.47 --center_z 5.56 --size_x 26 --size_y 22 --size_z 22 --exhaustiveness 16 --seed 2026 --out poses.pdbqt</code>.</p>
+<h3>11.3 A protocol checklist</h3>
+<ol>
+<li>Record the provenance of the receptor (PDB ID and date, or model source and version) and of every ligand (source, SMILES, protonation).</li>
+<li>State explicitly: which waters were kept and why; how protonation states were assigned; how the box was defined; how conformers were generated; the program, version, scoring function, exhaustiveness and random seed.</li>
+<li>Validate by re-docking from an <em>independently generated</em> conformer, and report the RMSD definition used (heavy atoms, symmetry correction).</li>
+<li>Score the experimental pose as a control, so that a failure can be attributed to search or to scoring.</li>
+<li>Repeat stochastic runs with several seeds and report the spread, not a single number.</li>
+<li>Inspect the top poses visually and list the interactions each makes with named residues.</li>
+<li>Never convert a score into an affinity; compare scores only within one protocol.</li>
+<li>For screening, add a retrospective enrichment test with property-matched decoys before the prospective run.</li>
+</ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="s12">
+<h2><span class="num">Section 12</span>Self-assessment</h2>
+<p>Attempt each question before opening the answer.</p>
+<details><summary>1. Distinguish "pose" from "binding mode", and explain why the distinction matters when writing a results section.</summary><p>A pose is any candidate placement produced by the program; the binding mode is the placement the complex actually adopts, known only from experiment. Writing "the ligand binds in the following mode" when one has only a docking pose asserts an experimental fact that has not been established. The correct phrasing is that the best-scoring pose <em>suggests</em> interactions with named residues, which mutagenesis or a structure could test.</p></details>
+<details><summary>2. A ligand with 8 rotatable bonds is sampled at 30° increments. How many internal conformations does systematic enumeration generate, and what does this imply?</summary><p>(360/30)<sup>8</sup> = 12<sup>8</sup> = 429,981,696 ≈ 4.3 × 10<sup>8</sup>, before any rigid-body placement. At 10<sup>4</sup> evaluations per second that is about twelve hours for one ligand, which is why systematic search is abandoned in favour of incremental or stochastic strategies.</p></details>
+<details><summary>3. Your docking of a known nanomolar inhibitor gives a best score of −6.2 kcal mol⁻¹ and a pose that makes no contact with the catalytic residues. List, in order, the things you would check.</summary><p>(i) Preparation of the receptor: correct biological assembly and chains, no missing loops bordering the site, protonation states, essential waters, metals or cofactors present. (ii) The box: does it actually enclose the site, with margin? (iii) Preparation of the ligand: protonation and tautomer at assay pH, stereochemistry, sensible 3D conformer. (iv) Score the experimental pose if one exists for a related complex — if it scores well, the search failed; if it scores badly, the preparation or the scoring function is at fault. (v) Only then raise exhaustiveness, allow side-chain flexibility or try an ensemble.</p></details>
+<details><summary>4. Why is re-docking the crystallographic conformer a weak validation, and what is the stronger test?</summary><p>Most programs keep ring conformations, bond lengths and bond angles fixed from the input and vary only the declared torsions, so supplying the bound conformer gives away part of the answer; Section 7 obtained 0.45 Å this way and 4.36 Å from an independently generated conformer of the same molecule. The stronger tests are re-docking from a de-novo conformer (reported with the generation method), <em>cross-docking</em> — docking the ligand into a structure solved with a different ligand — and retrospective enrichment against property-matched decoys.</p></details>
+<details><summary>5. In Section 7, the score of the locally minimised crystal pose is −11.73 kcal mol⁻¹ and the best pose from conformer A is −9.95 kcal mol⁻¹ at 4.36 Å. Is this a scoring failure or a search failure? Justify.</summary><p>A search failure. The scoring function correctly ranks the native pose nearly 2 kcal mol⁻¹ better than the best decoy — so if the search had generated the native pose, the score would have selected it. The failure is that the search, constrained by the internal geometry of conformer A, never produced a pose in that basin, and four times more sampling did not change this.</p></details>
+<details><summary>6. Why must the RMSD in Section 7 be corrected for the symmetry of the protease dimer as well as for the symmetry of the ligand?</summary><p>Ligand symmetry: topologically equivalent atoms (the two methyls of a <em>tert</em>-butyl, the carbons of a phenyl) can be matched in several ways, and naive atom-by-atom RMSD would penalise a correct pose that happens to label them differently. Dimer symmetry: HIV-1 protease is a C<sub>2</sub> homodimer whose site lies on the symmetry axis, so a pose related to the reference by that axis is physically the same binding mode in an indistinguishable copy of the site. Without both corrections, correct poses are recorded as failures.</p></details>
+<details><summary>7. Why does the Vina score correlate with heavy-atom count, and when is ligand efficiency the right correction?</summary><p>The score is a sum over ligand–protein atom pairs, so adding atoms that make any favourable contact improves it; the only size-dependent penalty is the small torsional term. Ligand efficiency (−ΔG or −score per heavy atom) corrects for this and is the appropriate metric when comparing molecules of different size that are all known or presumed to bind — fragment screening, hit-to-lead optimisation. It is meaningless when applied to molecules that do not bind at all, as Figure 7 shows: aspirin's high "efficiency" in the protease site reflects a small molecule making a few contacts, not affinity.</p></details>
+<details><summary>8. What is ensemble docking, what problem does it address, and what is its cost?</summary><p>Docking each ligand into several receptor conformations — crystal structures with different ligands, NMR models, MD frames or alternative predicted models — and keeping the best result per ligand. It addresses receptor flexibility and implements conformational selection, recovering actives that a single rigid structure cannot accommodate. Its cost is linear in the number of structures, and because each extra receptor also gives decoys another chance to score well, enrichment can degrade if the ensemble members are not genuine, experimentally supported states.</p></details>
+<details><summary>9. A screening campaign reports ROC-AUC 0.78 but a hit rate of 2 % among the 50 compounds purchased from the top of the ranking. Are these consistent, and which number should guide the next campaign?</summary><p>They are consistent: AUC measures the whole ranking and is insensitive to the composition of the extreme top, where purchases are made. A respectable AUC with poor early recognition is common. Report EF<sub>1 %</sub> or BEDROC alongside AUC, and let the experimentally confirmed hit rate guide the next campaign, since it is the only prospective measure.</p></details>
+<details><summary>10. Name three situations in which you would not trust a docking score at all, and say what you would do instead.</summary><p>(i) A metal-containing site (zinc protease, nickel urease): generic functions lack proper coordination terms — use specialised parameters, a QM/MM treatment, or rely on pose geometry rather than score. (ii) Binding dominated by water-mediated networks or by large desolvation penalties — keep waters explicitly and move to MM/GBSA or free-energy methods (Unit 5). (iii) Comparing congeneric analogues that differ by a methyl or a halogen, where the real ΔΔG is a few tenths of a kcal mol⁻¹ — use relative free-energy perturbation, or simply make and test the compounds.</p></details>
+<details><summary>11. Your target has no experimental structure; you have an AlphaFold model with pLDDT &gt; 90 over the whole domain. What are the two main risks when docking into it?</summary><p>First, the model is apo and in one conformational state: the pocket may be collapsed, occupied by side chains that would move on binding, or in the wrong state (inactive vs active) for the ligands of interest. Second, cofactors, metals and structural waters are absent, so a site that requires them is incomplete. High pLDDT tells you the backbone is reliable, not that the pocket is ready for docking. Mitigations: compare with holo structures of homologs, relax the pocket, use an ensemble (MD frames or alternative predictions), and validate with known actives before trusting any prospective result.</p></details>
+<details><summary>12. Write, in two sentences, what you would report about the Section 7 experiment in the methods of a paper.</summary><p>Example: "Indinavir was re-docked into the HIV-1 protease structure 1HSG (2.0 Å; protein plus the conserved flap water HOH 308, hydrogens added at pH 7.4 with Gasteiger charges) using AutoDock Vina 1.2.7 in a 26 × 22 × 22 Å box centred on the crystallographic ligand, with ligand conformers generated independently with RDKit ETKDG and exhaustiveness 16–128 at fixed seeds. The locally minimised crystallographic pose scored −11.73 kcal mol⁻¹; docking reproduced it to 0.48 Å from one de-novo conformer but failed (rank-1 RMSD 4.36 Å) from another, with all RMSD values corrected for ligand symmetry and for the C<sub>2</sub> symmetry of the dimer."</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Appendix</span>Glossary</h2>
+<dl class="gloss">
+<dt>Allosteric site</dt><dd>Site distinct from the orthosteric one whose occupancy modulates activity at a distance.</dd>
+<dt>Binding mode</dt><dd>The experimentally determined orientation and conformation of a bound ligand.</dd>
+<dt>Blind docking</dt><dd>Docking over the whole surface of a receptor when the site is unknown.</dd>
+<dt>BEDROC</dt><dd>Boltzmann-enhanced discrimination of ROC; an early-recognition-weighted screening metric.</dd>
+<dt>Consensus scoring</dt><dd>Combining several scoring functions by rank, vote or normalised score.</dd>
+<dt>Cross-docking</dt><dd>Docking a ligand into a receptor structure solved with a different ligand; a realistic validation.</dd>
+<dt>Cryptic site</dt><dd>Pocket absent in the apo structure that opens only on ligand binding.</dd>
+<dt>Desolvation</dt><dd>Removal of ordered water from ligand and site on binding; a major, poorly modelled energetic contribution.</dd>
+<dt>Enrichment factor</dt><dd>Ratio of the proportion of actives in a top fraction of a ranking to the proportion in the whole library.</dd>
+<dt>Ensemble docking</dt><dd>Docking into several receptor conformations and combining the results.</dd>
+<dt>Exhaustiveness</dt><dd>Vina's parameter controlling the number of independent search runs; thoroughness of sampling.</dd>
+<dt>Genetic algorithm</dt><dd>Stochastic optimisation by selection, crossover and mutation of a population of encoded poses.</dd>
+<dt>Induced fit</dt><dd>Reorganisation of the site on ligand binding (Koshland); contrasted with conformational selection.</dd>
+<dt>Lamarckian GA</dt><dd>Genetic algorithm in which locally minimised coordinates are written back into the chromosome.</dd>
+<dt>Ligand efficiency</dt><dd>−ΔG (or −score) divided by the number of heavy atoms; corrects the size bias of scores.</dd>
+<dt>PAINS</dt><dd>Pan-assay interference compounds; substructures that produce false positives in many assays.</dd>
+<dt>PDBQT</dt><dd>AutoDock file format: coordinates plus partial charges (Q), atom types (T) and the torsion tree.</dd>
+<dt>Pose</dt><dd>A candidate placement of a ligand: position, orientation and conformation.</dd>
+<dt>Re-docking</dt><dd>Docking a ligand back into the structure it was crystallised in; the minimum validation of a protocol.</dd>
+<dt>RMSD (pose)</dt><dd>Root-mean-square deviation between predicted and experimental ligand heavy atoms; success threshold 2 Å.</dd>
+<dt>Scoring function</dt><dd>Function approximating the binding free energy of a pose.</dd>
+<dt>Virtual screening</dt><dd>Ranking a compound library computationally to select candidates for experimental testing.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Appendix</span>References and further reading</h2>
+<h3>Primary literature cited in the text</h3>
+<ol class="refs">
+<li id="r1">Kuntz ID, Blaney JM, Oatley SJ, Langridge R, Ferrin TE. A geometric approach to macromolecule–ligand interactions. <em>J Mol Biol</em>. 1982;161(2):269–288. <a href="https://doi.org/10.1016/0022-2836(82)90153-X">doi:10.1016/0022-2836(82)90153-X</a></li>
+<li id="r2">Morris GM, Huey R, Lindstrom W, et al. AutoDock4 and AutoDockTools4: automated docking with selective receptor flexibility. <em>J Comput Chem</em>. 2009;30(16):2785–2791. <a href="https://doi.org/10.1002/jcc.21256">doi:10.1002/jcc.21256</a></li>
+<li id="r3">Trott O, Olson AJ. AutoDock Vina: improving the speed and accuracy of docking with a new scoring function, efficient optimization, and multithreading. <em>J Comput Chem</em>. 2010;31(2):455–461. <a href="https://doi.org/10.1002/jcc.21334">doi:10.1002/jcc.21334</a></li>
+<li id="r4">Eberhardt J, Santos-Martins D, Tillack AF, Forli S. AutoDock Vina 1.2.0: new docking methods, expanded force field, and Python bindings. <em>J Chem Inf Model</em>. 2021;61(8):3891–3898. <a href="https://doi.org/10.1021/acs.jcim.1c00203">doi:10.1021/acs.jcim.1c00203</a></li>
+<li id="r5">Jones G, Willett P, Glen RC, Leach AR, Taylor R. Development and validation of a genetic algorithm for flexible docking. <em>J Mol Biol</em>. 1997;267(3):727–748. <a href="https://doi.org/10.1006/jmbi.1996.0897">doi:10.1006/jmbi.1996.0897</a></li>
+<li id="r6">Friesner RA, Banks JL, Murphy RB, et al. Glide: a new approach for rapid, accurate docking and scoring. 1. Method and assessment of docking accuracy. <em>J Med Chem</em>. 2004;47(7):1739–1749. <a href="https://doi.org/10.1021/jm0306430">doi:10.1021/jm0306430</a></li>
+<li id="r7">Rarey M, Kramer B, Lengauer T, Klebe G. A fast flexible docking method using an incremental construction algorithm. <em>J Mol Biol</em>. 1996;261(3):470–489. <a href="https://doi.org/10.1006/jmbi.1996.0477">doi:10.1006/jmbi.1996.0477</a></li>
+<li id="r8">Bugnon M, Röhrig UF, Goullieux M, et al. SwissDock 2024: major enhancements for small-molecule docking with Attracting Cavities and AutoDock Vina. <em>Nucleic Acids Res</em>. 2024;52(W1):W324–W332. <a href="https://doi.org/10.1093/nar/gkae300">doi:10.1093/nar/gkae300</a></li>
+<li id="r9">Pierce BG, Wiehe K, Hwang H, Kim BH, Vreven T, Weng Z. ZDOCK server: interactive docking prediction of protein–protein complexes and symmetric multimers. <em>Bioinformatics</em>. 2014;30(12):1771–1773. <a href="https://doi.org/10.1093/bioinformatics/btu097">doi:10.1093/bioinformatics/btu097</a></li>
+<li id="r10">Kozakov D, Hall DR, Xia B, et al. The ClusPro web server for protein–protein docking. <em>Nat Protoc</em>. 2017;12(2):255–278. <a href="https://doi.org/10.1038/nprot.2016.169">doi:10.1038/nprot.2016.169</a></li>
+<li id="r11">Dominguez C, Boelens R, Bonvin AMJJ. HADDOCK: a protein–protein docking approach based on biochemical or biophysical information. <em>J Am Chem Soc</em>. 2003;125(7):1731–1737. <a href="https://doi.org/10.1021/ja026939x">doi:10.1021/ja026939x</a></li>
+<li id="r12">Amaro RE, Baudry J, Chodera J, et al. Ensemble docking in drug discovery. <em>Biophys J</em>. 2018;114(10):2271–2278. <a href="https://doi.org/10.1016/j.bpj.2018.02.038">doi:10.1016/j.bpj.2018.02.038</a></li>
+<li id="r13">Lin JH, Perryman AL, Schames JR, McCammon JA. Computational drug design accommodating receptor flexibility: the relaxed complex scheme. <em>J Am Chem Soc</em>. 2002;124(20):5632–5633. <a href="https://doi.org/10.1021/ja0260162">doi:10.1021/ja0260162</a></li>
+<li id="r14">Liu J, Wang R. Classification of current scoring functions. <em>J Chem Inf Model</em>. 2015;55(3):475–482. <a href="https://doi.org/10.1021/ci500731a">doi:10.1021/ci500731a</a></li>
+<li id="r15">Charifson PS, Corkery JJ, Murcko MA, Walters WP. Consensus scoring: a method for obtaining improved hit rates from docking databases of three-dimensional structures into proteins. <em>J Med Chem</em>. 1999;42(25):5100–5109. <a href="https://doi.org/10.1021/jm990352k">doi:10.1021/jm990352k</a></li>
+<li id="r16">Hopkins AL, Keserü GM, Leeson PD, Rees DC, Reynolds CH. The role of ligand efficiency metrics in drug discovery. <em>Nat Rev Drug Discov</em>. 2014;13(2):105–121. <a href="https://doi.org/10.1038/nrd4163">doi:10.1038/nrd4163</a></li>
+<li id="r17">Warren GL, Andrews CW, Capelli AM, et al. A critical assessment of docking programs and scoring functions. <em>J Med Chem</em>. 2006;49(20):5912–5931. <a href="https://doi.org/10.1021/jm050362n">doi:10.1021/jm050362n</a></li>
+<li id="r18">Mysinger MM, Carchia M, Irwin JJ, Shoichet BK. Directory of useful decoys, enhanced (DUD-E): better ligands and decoys for better benchmarking. <em>J Med Chem</em>. 2012;55(14):6582–6594. <a href="https://doi.org/10.1021/jm300687e">doi:10.1021/jm300687e</a></li>
+<li id="r19">Tran-Nguyen VK, Jacquemard C, Rognan D. LIT-PCBA: an unbiased data set for machine learning and virtual screening. <em>J Chem Inf Model</em>. 2020;60(9):4263–4273. <a href="https://doi.org/10.1021/acs.jcim.0c00155">doi:10.1021/acs.jcim.0c00155</a></li>
+<li id="r20">Su M, Yang Q, Du Y, et al. Comparative assessment of scoring functions: the CASF-2016 update. <em>J Chem Inf Model</em>. 2019;59(2):895–913. <a href="https://doi.org/10.1021/acs.jcim.8b00545">doi:10.1021/acs.jcim.8b00545</a></li>
+<li id="r21">Li Y, Han L, Liu Z, Wang R. Comparative assessment of scoring functions on an updated benchmark: 2. Evaluation methods and general results. <em>J Chem Inf Model</em>. 2014;54(6):1717–1736. <a href="https://doi.org/10.1021/ci500081m">doi:10.1021/ci500081m</a></li>
+<li id="r22">Lyu J, Wang S, Balius TE, et al. Ultra-large library docking for discovering new chemotypes. <em>Nature</em>. 2019;566(7743):224–229. <a href="https://doi.org/10.1038/s41586-019-0917-9">doi:10.1038/s41586-019-0917-9</a></li>
+<li id="r23">Stein RM, Kang HJ, McCorvy JD, et al. Virtual discovery of melatonin receptor ligands to modulate circadian rhythms. <em>Nature</em>. 2020;579(7800):609–614. <a href="https://doi.org/10.1038/s41586-020-2027-0">doi:10.1038/s41586-020-2027-0</a></li>
+<li id="r24">Chen H, Xu H, Deng Y, et al. Beware of docking! <em>Trends Pharmacol Sci</em>. 2015;36(2):78–95. <a href="https://doi.org/10.1016/j.tips.2014.12.001">doi:10.1016/j.tips.2014.12.001</a></li>
+<li id="r25">Corbeil CR, Williams CI, Labute P. Variability in docking success rates due to dataset preparation. <em>J Comput Aided Mol Des</em>. 2012;26(6):775–786. <a href="https://doi.org/10.1007/s10822-012-9570-1">doi:10.1007/s10822-012-9570-1</a></li>
+<li id="r26">Hong L, Zhang XC, Hartsuck JA, Tang J. Crystal structure of an in vivo HIV-1 protease mutant in complex with saquinavir: insights into the mechanisms of drug resistance. <em>Protein Sci</em>. 2000;9(10):1898–1904. <a href="https://doi.org/10.1110/ps.9.10.1898">doi:10.1110/ps.9.10.1898</a></li>
+<li id="r27">Chen Z, Li Y, Chen E, et al. Crystal structure at 1.9-Å resolution of human immunodeficiency virus (HIV) II protease complexed with L-735,524, an orally bioavailable inhibitor of the HIV proteases. <em>J Biol Chem</em>. 1994;269(42):26344–26348. <a href="https://doi.org/10.1016/S0021-9258(18)47199-2">doi:10.1016/S0021-9258(18)47199-2</a></li>
+<li id="r28">Forli S, Huey R, Pique ME, Sanner MF, Goodsell DS, Olson AJ. Computational protein–ligand docking and virtual drug screening with the AutoDock suite. <em>Nat Protoc</em>. 2016;11(5):905–919. <a href="https://doi.org/10.1038/nprot.2016.051">doi:10.1038/nprot.2016.051</a></li>
+<li id="r29">O'Boyle NM, Banck M, James CA, Morley C, Vandermeersch T, Hutchison GR. Open Babel: an open chemical toolbox. <em>J Cheminform</em>. 2011;3:33. <a href="https://doi.org/10.1186/1758-2946-3-33">doi:10.1186/1758-2946-3-33</a></li>
+<li id="r30">Landrum G, et al. RDKit: open-source cheminformatics. <a href="https://www.rdkit.org">https://www.rdkit.org</a> · <a href="https://doi.org/10.5281/zenodo.591637">doi:10.5281/zenodo.591637</a></li>
+<li id="r31">Adasme MF, Linnemann KL, Bolz SN, et al. PLIP 2021: expanding the scope of the protein–ligand interaction profiler to DNA and RNA. <em>Nucleic Acids Res</em>. 2021;49(W1):W530–W534. <a href="https://doi.org/10.1093/nar/gkab294">doi:10.1093/nar/gkab294</a></li>
+<li id="r32">Le Guilloux V, Schmidtke P, Tuffery P. Fpocket: an open source platform for ligand pocket detection. <em>BMC Bioinformatics</em>. 2009;10:168. <a href="https://doi.org/10.1186/1471-2105-10-168">doi:10.1186/1471-2105-10-168</a></li>
+<li id="r33">Dolinsky TJ, Czodrowski P, Li H, et al. PDB2PQR: expanding and upgrading automated preparation of biomolecular structures for molecular simulations. <em>Nucleic Acids Res</em>. 2007;35(suppl 2):W522–W525. <a href="https://doi.org/10.1093/nar/gkm276">doi:10.1093/nar/gkm276</a></li>
+<li id="r34">Corso G, Stärk H, Jing B, Barzilay R, Jaakkola T. DiffDock: diffusion steps, twists, and turns for molecular docking. <em>Proceedings of ICLR 2023</em>. <a href="https://doi.org/10.48550/arXiv.2210.01776">doi:10.48550/arXiv.2210.01776</a></li>
+<li id="r35">Buttenschoen M, Morris GM, Deane CM. PoseBusters: AI-based docking methods fail to generate physically valid poses or generalise to novel sequences. <em>Chem Sci</em>. 2024;15(9):3130–3139. <a href="https://doi.org/10.1039/D3SC04185A">doi:10.1039/D3SC04185A</a></li>
+</ol>
+<h3>Reviews and textbooks</h3>
+<ol class="refs" start="36">
+<li>Singh DB, ed. <em>Computer-Aided Drug Design</em>. Springer; 2020. — Recommended in the lecture; chapters on docking, scoring and virtual screening.</li>
+<li>Zhang W, ed. <em>Computer-Aided Drug Discovery</em>. Methods in Pharmacology and Toxicology. Humana Press; 2016. — Recommended in the lecture; protocol-oriented.</li>
+<li>Saharan VA, ed. <em>Computer Aided Pharmaceutics and Drug Delivery</em>. Springer; 2022. — Recommended in the lecture.</li>
+<li>Leach AR. <em>Molecular Modelling: Principles and Applications</em>. 2nd ed. Prentice Hall; 2001. — Chapter 12 on docking and the conformational search problem; the clearest textbook treatment of the algorithms.</li>
+<li>Gilson MK, Zhou HX. Calculation of protein–ligand binding affinities. <em>Annu Rev Biophys Biomol Struct</em>. 2007;36:21–42. <a href="https://doi.org/10.1146/annurev.biophys.36.040306.132550">doi:10.1146/annurev.biophys.36.040306.132550</a> — The thermodynamics behind Section 3.</li>
+<li>Pagadala NS, Syed K, Tuszynski J. Software for molecular docking: a review. <em>Biophys Rev</em>. 2017;9(2):91–102. <a href="https://doi.org/10.1007/s12551-016-0247-1">doi:10.1007/s12551-016-0247-1</a></li>
+<li>Meng XY, Zhang HX, Mezei M, Cui M. Molecular docking: a powerful approach for structure-based drug discovery. <em>Curr Comput Aided Drug Des</em>. 2011;7(2):146–157. <a href="https://doi.org/10.2174/157340911795677602">doi:10.2174/157340911795677602</a></li>
+</ol>
+<h3>Online resources and tutorials</h3>
+<ul>
+<li>AutoDock Vina documentation and tutorials — <a href="https://autodock-vina.readthedocs.io">https://autodock-vina.readthedocs.io</a> (the basic docking tutorial uses this same 1HSG system)</li>
+<li>AutoDock suite and AutoDockTools — <a href="https://autodock.scripps.edu">https://autodock.scripps.edu</a></li>
+<li>RCSB PDB entry 1HSG and its ligand page — <a href="https://www.rcsb.org/structure/1HSG">https://www.rcsb.org/structure/1HSG</a></li>
+<li>PLIP interaction profiler — <a href="https://plip-tool.biotec.tu-dresden.de">https://plip-tool.biotec.tu-dresden.de</a></li>
+<li>TeachOpenCADD, a teaching platform for computer-aided drug design in Python — <a href="https://projects.volkamerlab.org/teachopencadd/">https://projects.volkamerlab.org/teachopencadd/</a></li>
+<li>EMBL-EBI Training, "Protein–ligand interactions" and ChEMBL courses — <a href="https://www.ebi.ac.uk/training/">https://www.ebi.ac.uk/training/</a></li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Study material for BGM324 Bioinformatics, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Figures 1–7 were generated for this document; the docking experiments of Section 7 were run with AutoDock Vina 1.2.7, RDKit 2026.03.1, Meeko 0.8.0, Open Babel 3.2.1 and Biopython 1.88 on the structure PDB 1HSG, and may be reused with attribution. Worked examples follow the lecture slides <em>03_DockingMolecular_EN</em>. Last revised 17 October 2026.
+</footer>
+
+</body>
+</html>

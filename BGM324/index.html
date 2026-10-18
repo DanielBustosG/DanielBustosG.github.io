@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BGM324 · Bioinformática — Daniel Bustos</title>
+<meta name="description" content="Material de estudio de BGM324 Bioinformática, Bioingeniería Médica, Universidad Católica del Maule. Alineamiento de secuencias, predicción de estructura, docking, diseño de fármacos y dinámica molecular.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BGM324 · Bioinformática — Material de estudio">
+<meta property="og:description" content="Cinco unidades: alineamiento de secuencias, estructura de proteínas, docking molecular, diseño de fármacos asistido por computador y dinámica molecular.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+<script>
+  /* Tema antes de pintar, para evitar el destello claro en modo oscuro. */
+  try {
+    var t = localStorage.getItem('db-theme');
+    if (!t) t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+<style>
+  .course-hero { padding: 64px 0 40px; background: linear-gradient(180deg, var(--accent-soft), transparent 75%); }
+  .course-code {
+    display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .1em;
+    color: #fff; background: var(--accent); border-radius: 6px; padding: 3px 10px; margin-bottom: 14px;
+  }
+  :root[data-theme="dark"] .course-code { color: #04222c; }
+  .course-hero h1 { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 600; letter-spacing: -.02em; }
+  .course-meta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 0 0; padding: 0; list-style: none; color: var(--text-soft); font-size: .93rem; }
+  .course-meta strong { color: var(--text); font-weight: 600; }
+  .course-lede { max-width: 70ch; color: var(--text-soft); font-size: 1.05rem; margin-top: 18px; }
+
+  .flow { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 0; padding: 0; counter-reset: u; }
+  .flow li {
+    counter-increment: u; display: flex; align-items: center; gap: 8px;
+    background: var(--bg-card); border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 14px 6px 6px; font-size: .86rem; font-weight: 550; color: var(--text);
+  }
+  .flow li::before {
+    content: counter(u); display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-size: .75rem; font-weight: 700;
+  }
+  :root[data-theme="dark"] .flow li::before { color: #04222c; }
+  .flow li:not(:last-child)::after { content: '→'; margin-left: 6px; color: var(--text-mute); }
+
+  .note {
+    display: flex; gap: 12px; align-items: flex-start; max-width: 78ch;
+    background: var(--bg-card); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm); padding: 12px 16px; font-size: .88rem; color: var(--text-soft); margin-top: 26px;
+  }
+
+  .units { display: grid; gap: 18px; }
+  .unit {
+    display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 22px; align-items: start;
+    background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; box-shadow: var(--shadow); transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .unit:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .unit-num { font-family: var(--serif); font-size: 2.6rem; line-height: 1; font-weight: 600; color: var(--accent); }
+  .unit-num small { display: block; font-family: var(--sans); font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 6px; }
+  .unit h2 { font-size: 1.22rem; margin-bottom: 4px; }
+  .unit h2 a { color: var(--text); }
+  .unit h2 a:hover { color: var(--accent); text-decoration: none; }
+  .unit-sub { font-size: .84rem; color: var(--text-mute); margin: 0 0 10px; font-style: italic; }
+  .unit p.desc { font-size: .92rem; color: var(--text-soft); margin-bottom: 12px; }
+  .unit .tags li { font-size: .74rem; }
+  .unit-includes { font-size: .78rem; color: var(--text-mute); margin: 12px 0 0; }
+  .unit-cta { align-self: center; white-space: nowrap; }
+
+  @media (max-width: 760px) {
+    .unit { grid-template-columns: 1fr; gap: 10px; padding: 20px; }
+    .unit-num { font-size: 2rem; }
+    .unit-num small { display: inline; margin: 0 8px 0 0; }
+    .unit-cta { justify-self: start; }
+    .flow li:not(:last-child)::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-es="Saltar al contenido" data-en="Skip to content">Saltar al contenido</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="../">
+      <span class="brand-mark">DB</span>
+      <span class="brand-text">
+        <strong>Daniel Bustos</strong>
+        <small data-es="Bioinformática Estructural · UCM" data-en="Structural Bioinformatics · UCM">Bioinformática Estructural · UCM</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="BGM324">
+      <a href="../" data-es="← Volver al sitio" data-en="← Back to main site">← Volver al sitio</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="course-hero">
+    <div class="wrap">
+      <span class="course-code">BGM324</span>
+      <h1 data-es="Bioinformática" data-en="Bioinformatics">Bioinformática</h1>
+      <ul class="course-meta">
+        <li data-es="<strong>Carrera:</strong> Bioingeniería Médica" data-en="<strong>Degree:</strong> Medical Bioengineering"><strong>Carrera:</strong> Bioingeniería Médica</li>
+        <li data-es="<strong>Nivel:</strong> 3.<sup>er</sup> año, 2.º semestre" data-en="<strong>Level:</strong> 3rd year, 2nd semester"><strong>Nivel:</strong> 3.<sup>er</sup> año, 2.º semestre</li>
+        <li data-es="<strong>Profesor:</strong> Daniel Bustos, PhD" data-en="<strong>Lecturer:</strong> Daniel Bustos, PhD"><strong>Profesor:</strong> Daniel Bustos, PhD</li>
+        <li><strong>Universidad Católica del Maule</strong></li>
+      </ul>
+      <p class="course-lede"
+         data-es="Material de estudio que acompaña cada clase. El módulo avanza desde la secuencia hasta el fármaco: cada unidad usa lo aprendido en la anterior."
+         data-en="Study material accompanying each lecture. The module moves from sequence to drug: each unit builds on the previous one.">
+        Material de estudio que acompaña cada clase. El módulo avanza desde la secuencia hasta el fármaco: cada unidad usa lo aprendido en la anterior.
+      </p>
+      <ol class="flow" aria-label="Secuencia del módulo">
+        <li data-es="Secuencias" data-en="Sequences">Secuencias</li>
+        <li data-es="Estructura" data-en="Structure">Estructura</li>
+        <li>Docking</li>
+        <li data-es="Diseño de fármacos" data-en="Drug design">Diseño de fármacos</li>
+        <li data-es="Dinámica molecular" data-en="Molecular dynamics">Dinámica molecular</li>
+      </ol>
+      <p class="note"
+         data-es="📘 Los documentos están escritos en inglés, el idioma de la literatura y de las herramientas que usarán. Cada unidad incluye trabajo práctico, autoevaluación, glosario y referencias."
+         data-en="📘 Each unit includes practical work, a self-assessment, a glossary and references.">
+        📘 Los documentos están escritos en inglés, el idioma de la literatura y de las herramientas que usarán. Cada unidad incluye trabajo práctico, autoevaluación, glosario y referencias.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:28px">
+    <div class="wrap">
+      <!-- EDITA: para agregar una clase, copia la carpeta con scripts/sync_bgm324.py y duplica un <article class="unit">. -->
+      <div class="units">
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>1</div>
+          <div>
+            <h2><a href="01_Sequence_Alignment/" data-es="Alineamiento de secuencias" data-en="Sequence alignment">Alineamiento de secuencias</a></h2>
+            <p class="unit-sub">Sequence Alignment: Theory, Algorithms and Statistical Interpretation</p>
+            <p class="desc"
+               data-es="Por qué y cómo se alinean secuencias: fundamentos evolutivos, sistemas de puntuación, alineamiento global (Needleman–Wunsch) y local (Smith–Waterman), búsqueda en bases de datos con BLAST y alineamiento múltiple."
+               data-en="Why and how sequences are aligned: evolutionary foundations, scoring systems, global (Needleman–Wunsch) and local (Smith–Waterman) alignment, database searching with BLAST, and multiple sequence alignment.">
+              Por qué y cómo se alinean secuencias: fundamentos evolutivos, sistemas de puntuación, alineamiento global (Needleman–Wunsch) y local (Smith–Waterman), búsqueda en bases de datos con BLAST y alineamiento múltiple.
+            </p>
+            <ul class="tags subtle"><li>Homology</li><li>BLOSUM</li><li>Needleman–Wunsch</li><li>Smith–Waterman</li><li>BLAST</li><li>MSA</li></ul>
+          </div>
+          <a class="btn btn-primary unit-cta" href="01_Sequence_Alignment/" data-es="Abrir material →" data-en="Open material →">Abrir material →</a>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>2</div>
+          <div>
+            <h2><a href="02_Protein_Structure_Prediction/" data-es="Estructura y predicción de proteínas" data-en="Protein structure prediction">Estructura y predicción de proteínas</a></h2>
+            <p class="unit-sub">Protein Structure: Principles, Experimental Determination and Computational Prediction</p>
+            <p class="desc"
+               data-es="De la química de los aminoácidos a la jerarquía estructural; estructuras experimentales y el Protein Data Bank; el problema del plegamiento; predicción basada en plantillas y ab initio; evaluación de modelos; y AlphaFold. Incluye visualización 3D interactiva."
+               data-en="From amino-acid chemistry to the structural hierarchy; experimental structures and the Protein Data Bank; the folding problem; template-based and ab initio prediction; model evaluation; and AlphaFold. Includes interactive 3D viewing.">
+              De la química de los aminoácidos a la jerarquía estructural; estructuras experimentales y el Protein Data Bank; el problema del plegamiento; predicción basada en plantillas y ab initio; evaluación de modelos; y AlphaFold. Incluye visualización 3D interactiva.
+            </p>
+            <ul class="tags subtle"><li>Ramachandran</li><li>PDB</li><li>Homology modelling</li><li>CASP / GDT</li><li>AlphaFold</li></ul>
+          </div>
+          <a class="btn btn-primary unit-cta" href="02_Protein_Structure_Prediction/" data-es="Abrir material →" data-en="Open material →">Abrir material →</a>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>3</div>
+          <div>
+            <h2><a href="03_Molecular_Docking/" data-es="Docking molecular" data-en="Molecular docking">Docking molecular</a></h2>
+            <p class="unit-sub">Molecular Docking: Pose Prediction, Scoring and Virtual Screening</p>
+            <p class="desc"
+               data-es="Qué predice un docking y qué no: la física que una función de puntuación intenta aproximar, preparación de receptor y ligando, algoritmos de búsqueda, funciones de puntuación, validación por re-docking y cribado virtual. Incluye visualización 3D interactiva."
+               data-en="What docking does and does not predict: the physics a scoring function approximates, receptor and ligand preparation, search algorithms, scoring functions, re-docking validation and virtual screening. Includes interactive 3D viewing.">
+              Qué predice un docking y qué no: la física que una función de puntuación intenta aproximar, preparación de receptor y ligando, algoritmos de búsqueda, funciones de puntuación, validación por re-docking y cribado virtual. Incluye visualización 3D interactiva.
+            </p>
+            <ul class="tags subtle"><li>AutoDock Vina</li><li>Scoring functions</li><li>Re-docking</li><li>Virtual screening</li></ul>
+          </div>
+          <a class="btn btn-primary unit-cta" href="03_Molecular_Docking/" data-es="Abrir material →" data-en="Open material →">Abrir material →</a>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>4</div>
+          <div>
+            <h2><a href="04_Computer_Aided_Drug_Design/" data-es="Diseño de fármacos asistido por computador" data-en="Computer-aided drug design">Diseño de fármacos asistido por computador</a></h2>
+            <p class="unit-sub">Computer-Aided Drug Design: Descriptors, QSAR, Pharmacophores and Virtual Screening</p>
+            <p class="desc"
+               data-es="El proceso de descubrimiento de fármacos: identificación de blancos y druggability, descriptores moleculares, reglas de drug-likeness y ADMET, QSAR, similitud y activity cliffs, farmacóforos y diseño de nuevas moléculas, integrados en un flujo de trabajo."
+               data-en="The drug discovery pipeline: target identification and druggability, molecular descriptors, drug-likeness rules and ADMET, QSAR, similarity and activity cliffs, pharmacophores and the design of new molecules, combined into one workflow.">
+              El proceso de descubrimiento de fármacos: identificación de blancos y druggability, descriptores moleculares, reglas de drug-likeness y ADMET, QSAR, similitud y activity cliffs, farmacóforos y diseño de nuevas moléculas, integrados en un flujo de trabajo.
+            </p>
+            <ul class="tags subtle"><li>Lipinski</li><li>ADMET</li><li>QSAR</li><li>Activity cliffs</li><li>Pharmacophores</li><li>RDKit</li></ul>
+          </div>
+          <a class="btn btn-primary unit-cta" href="04_Computer_Aided_Drug_Design/" data-es="Abrir material →" data-en="Open material →">Abrir material →</a>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>5</div>
+          <div>
+            <h2><a href="05_Molecular_Dynamics/" data-es="Simulaciones de dinámica molecular" data-en="Molecular dynamics simulations">Simulaciones de dinámica molecular</a></h2>
+            <p class="unit-sub">Molecular Dynamics Simulations: Force Fields, Protocols, Analysis and Free Energies</p>
+            <p class="desc"
+               data-es="Ecuaciones de movimiento, campos de fuerza, solvente, condiciones periódicas y ensembles; un protocolo de simulación paso a paso; análisis de trayectorias; limitaciones de la dinámica clásica; y estimación de energías libres y afinidad de unión."
+               data-en="Equations of motion, force fields, solvent, periodic boundaries and ensembles; a step-by-step simulation protocol; trajectory analysis; limitations of classical dynamics; and estimation of free energies and binding affinity.">
+              Ecuaciones de movimiento, campos de fuerza, solvente, condiciones periódicas y ensembles; un protocolo de simulación paso a paso; análisis de trayectorias; limitaciones de la dinámica clásica; y estimación de energías libres y afinidad de unión.
+            </p>
+            <ul class="tags subtle"><li>Force fields</li><li>PBC</li><li>Equilibration</li><li>RMSD / RMSF</li><li>Free energy</li><li>GROMACS / OpenMM</li></ul>
+          </div>
+          <a class="btn btn-primary unit-cta" href="05_Molecular_Dynamics/" data-es="Abrir material →" data-en="Open material →">Abrir material →</a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p data-es="© <span class='yr'>2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule."
+       data-en="© <span class='yr'>2026</span> Daniel Bustos · Bioinformatics and Computational Chemistry Laboratory, Universidad Católica del Maule.">© <span class="yr">2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule.</p>
+    <p class="footer-meta"><a href="../" data-es="Volver al sitio principal" data-en="Back to main site">Volver al sitio principal</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var LANG_KEY = 'db-lang', THEME_KEY = 'db-theme';   // mismas claves que el sitio principal
+  var TITLES = { es: 'BGM324 · Bioinformática — Daniel Bustos', en: 'BGM324 · Bioinformatics — Daniel Bustos' };
+
+  function apply(lang) {
+    lang = lang === 'en' ? 'en' : 'es';
+    document.querySelectorAll('[data-es]').forEach(function (el) {
+      var v = el.getAttribute('data-' + lang);
+      if (v != null) el.innerHTML = v;
+    });
+    document.querySelectorAll('.yr').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+    document.documentElement.lang = lang;
+    document.title = TITLES[lang];
+    document.querySelectorAll('.lang-btn').forEach(function (b) {
+      var on = b.getAttribute('data-lang') === lang;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  }
+
+  var stored = null;
+  try { stored = localStorage.getItem(LANG_KEY); } catch (e) {}
+  apply(stored || ((navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'es'));
+  document.querySelectorAll('.lang-btn').forEach(function (b) {
+    b.addEventListener('click', function () { apply(b.getAttribute('data-lang')); });
+  });
+
+  var btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', function () {
+    var root = document.documentElement;
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  });
+
+  var header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', function () { header.classList.toggle('scrolled', window.scrollY > 8); }, { passive: true });
+})();
+</script>
+</body>
+</html>

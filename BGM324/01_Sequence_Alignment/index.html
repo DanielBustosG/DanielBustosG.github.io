@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 · Sequence Alignment — BGM324 Bioinformatics, Universidad Católica del Maule</title>
+<meta name="description" content="Study material on pairwise and multiple sequence alignment, substitution matrices, BLAST statistics and their role in structural bioinformatics and drug design. BGM324 Bioinformatics, Medical Bioengineering, Universidad Católica del Maule.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+</style>
+</head>
+<body>
+<!-- bgm324-backbar -->
+<nav class="bgm324-backbar" aria-label="BGM324" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformatics · Medical Bioengineering · Universidad Católica del Maule</div>
+<h1>Unit 1 — Sequence Alignment: Theory, Algorithms and Statistical Interpretation</h1>
+<div class="meta">Study material accompanying lecture 01 (<em>Sequence alignments</em>) · Prepared by Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · First unit of the module: sequence analysis → protein structure prediction → molecular docking → computer-aided drug design → molecular dynamics</div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contents</h2>
+<ol>
+<li><a href="#how">How to use this material</a></li>
+<li><a href="#s1">1. Why align sequences?</a></li>
+<li><a href="#s2">2. Evolutionary foundations</a>
+  <ol><li><a href="#s2-1">Homology, orthology, paralogy</a></li><li><a href="#s2-2">Similarity is not homology</a></li><li><a href="#s2-3">How sequences diverge</a></li></ol></li>
+<li><a href="#s3">3. What an alignment is</a></li>
+<li><a href="#s4">4. Scoring systems</a>
+  <ol><li><a href="#s4-1">Nucleotide scoring</a></li><li><a href="#s4-2">Log-odds matrices</a></li><li><a href="#s4-3">PAM</a></li><li><a href="#s4-4">BLOSUM</a></li><li><a href="#s4-5">Choosing a matrix</a></li><li><a href="#s4-6">Gap penalties</a></li><li><a href="#s4-7">Worked example</a></li></ol></li>
+<li><a href="#s5">5. Global alignment (Needleman–Wunsch)</a></li>
+<li><a href="#s6">6. Local alignment (Smith–Waterman)</a></li>
+<li><a href="#s7">7. Database searching with BLAST</a>
+  <ol><li><a href="#s7-1">History and programs</a></li><li><a href="#s7-2">The algorithm</a></li><li><a href="#s7-3">Statistics: bit score and E-value</a></li><li><a href="#s7-4">Sensitivity and specificity</a></li><li><a href="#s7-5">PSSMs and PSI-BLAST</a></li></ol></li>
+<li><a href="#s8">8. Multiple sequence alignment</a></li>
+<li><a href="#s9">9. From alignment to structure</a></li>
+<li><a href="#s10">10. Practical work</a></li>
+<li><a href="#s11">11. Self-assessment</a></li>
+<li><a href="#gloss">Glossary</a></li>
+<li><a href="#refs">References and further reading</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">This document expands the content of the first lecture of the module. The slides are a map; this text is the territory. It is written to be read linearly once and then consulted by section. Every algorithm is accompanied by a fully worked numerical example that you can reproduce by hand, every claim about the biology or the statistics carries a citation to the primary literature, and each section ends with a short list of points you should be able to explain without notes.</p>
+<div class="box key"><h4>Learning objectives</h4>
+<ul class="objectives">
+<li>Define homology, orthology and paralogy and explain why "percent similarity" is evidence for, but not equivalent to, homology.</li>
+<li>Describe the mutational processes (substitutions, insertions, deletions) that an alignment attempts to reconstruct.</li>
+<li>Explain how substitution matrices (PAM, BLOSUM) are derived as log-odds scores, and choose an appropriate matrix and gap scheme for a given problem.</li>
+<li>Fill in and trace back a dynamic-programming matrix for the Needleman–Wunsch (global) and Smith–Waterman (local) algorithms.</li>
+<li>Describe the BLAST heuristic (word seeding, extension, HSPs) and interpret raw scores, bit scores and E-values in terms of the Karlin–Altschul statistics.</li>
+<li>Explain how a PSSM is built and why PSI-BLAST detects remote homologs that BLASTp misses.</li>
+<li>Describe progressive multiple sequence alignment and its known limitations.</li>
+<li>Connect sequence alignment to the downstream tasks of this module: template selection for homology modelling, MSAs for structure prediction, and conservation analysis for binding-site identification.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Section 1</span>Why align sequences?</h2>
+<p>Sequence alignment is the operation on which almost everything else in bioinformatics rests. A sequence of nucleotides or amino acids, considered on its own, is a string with no meaning; it acquires meaning only when it is compared with other sequences whose properties are already known. The comparison is performed through an <em>alignment</em>: an arrangement of two or more sequences that places, one above the other, the characters inferred to descend from the same ancestral position.</p>
+<p>The reason this works is evolutionary. Related sequences are related because they were copied, with errors, from a common ancestor; the errors accumulate slowly compared with the rate at which function is lost, so a protein that still performs the ancestral function tends to retain the ancestral sequence at the positions that matter. Alignment therefore allows us to transfer information — function, structure, the location of a catalytic residue, a disease-associated mutation — from a characterised sequence to an uncharacterised one. The principal applications are summarised below.<sup class="c"><a href="#r13">[13]</a></sup></p>
+<table class="data">
+<thead><tr><th>Application</th><th>What is compared</th><th>What is inferred</th></tr></thead>
+<tbody>
+<tr><td>Functional annotation of a new protein</td><td>Query protein against a database of characterised proteins (UniProtKB/Swiss-Prot)</td><td>Probable molecular function, family membership, conserved catalytic or binding residues</td></tr>
+<tr><td>Gene finding</td><td>Genomic DNA against known transcripts, proteins or conserved regions of other genomes</td><td>Location of exons, coding regions and regulatory elements</td></tr>
+<tr><td>Evolutionary relationships</td><td>Homologous genes or proteins across organisms</td><td>Phylogenetic trees; identification of orthologs and paralogs</td></tr>
+<tr><td>Family and superfamily analysis</td><td>Multiple sequence alignments of many relatives</td><td>Conserved motifs and domains, position-specific profiles, new family members</td></tr>
+<tr><td>Variant interpretation</td><td>Patient sequence against the reference genome or protein</td><td>Location of mutations; whether an affected residue is conserved and therefore likely to matter</td></tr>
+<tr><td>Experimental design</td><td>Candidate primer sequences against the genome</td><td>Primer specificity (Primer-BLAST); vector contamination (VecScreen)</td></tr>
+<tr><td>Structural bioinformatics</td><td>Target protein against proteins of known 3D structure (PDB)</td><td>Templates for homology modelling; MSAs used by AlphaFold-type methods; residue conservation mapped on a structure</td></tr>
+</tbody></table>
+<div class="box bridge"><h4>Bridge to the rest of the module</h4>
+<p>The last row of the table is the one that connects this unit to the lectures that follow. The protein structure prediction lecture begins by searching the Protein Data Bank for a template with BLAST and then aligning the target to it; the quality of that alignment determines the quality of the model more than any other factor. The docking and drug-design lectures use multiple alignments to decide which residues of a binding pocket are conserved across species or across a protein family, and therefore which interactions a ligand must satisfy. The molecular dynamics lecture starts from models whose sequence numbering is reconciled with the experimental protein through an alignment. Every downstream mistake traceable to a poor alignment is cheap to avoid here and expensive to fix later.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Section 2</span>Evolutionary foundations</h2>
+
+<h3 id="s2-1">2.1 Homology, orthology and paralogy</h3>
+<p>Two sequences are <strong>homologous</strong> if they descend from a common ancestral sequence. Homology is a statement about history, and it is therefore binary: two genes either share an ancestor or they do not. Expressions such as "70 % homologous" are incorrect; the quantity that can be measured and expressed as a percentage is <em>identity</em> or <em>similarity</em>, which are properties of an alignment (Section 2.2).<sup class="c"><a href="#r13">[13]</a>,<a href="#r14">[14]</a></sup></p>
+<p>Walter Fitch introduced in 1970 the distinction that is still used to classify homologs according to the evolutionary event that separated them.<sup class="c"><a href="#r14">[14]</a></sup></p>
+<ul>
+<li><strong>Orthologs</strong> are homologs in <em>different species</em> that diverged by a <em>speciation</em> event. Human haemoglobin β and horse haemoglobin β are orthologs. Orthologs usually, though not invariably, retain the ancestral function, which is why orthology is the preferred basis for transferring functional annotation between organisms.</li>
+<li><strong>Paralogs</strong> are homologs that diverged by a <em>gene duplication</em> event. They may reside in the same genome (human haemoglobin α and haemoglobin β) or, after a subsequent speciation, in different genomes. After duplication one copy is released from selective pressure and may acquire a new function (neofunctionalisation), partition the ancestral function with its partner (subfunctionalisation) or degenerate into a pseudogene.</li>
+<li><strong>Xenologs</strong> are homologs whose history includes horizontal gene transfer; they are common in bacteria and relevant, for instance, to the spread of antibiotic-resistance genes.</li>
+</ul>
+<figure>
+<img src="figures/fig01_homology.png" alt="Schematic gene tree showing a duplication followed by two speciation events, with orthologous and paralogous pairs labelled">
+<figcaption><b>Figure 1. Orthologs and paralogs are defined by the event at their last common ancestor.</b> An ancestral gene duplicates into copies A and B (orange circle). Each copy is then inherited by two species after a speciation event (green squares). A in species 1 and A in species 2 are orthologs; A and B in the same species are paralogs; all four genes are homologs. Note that A in species 1 and B in species 2 are also paralogs, because the node that separates them is the duplication, not the speciation. Koonin (2005) reviews the finer vocabulary (in-paralogs, out-paralogs, co-orthologs) needed when duplications and speciations interleave.<sup class="c"><a href="#r15">[15]</a></sup></figcaption>
+</figure>
+<p>The haemoglobin example is worth keeping in mind for the rest of the unit: the globin family (haemoglobin α and β chains, myoglobin, plant leghaemoglobins) descends from a single ancestral oxygen-binding protein, its members share the same three-dimensional fold, and yet some pairs retain less than 20 % sequence identity. It is the canonical case in which sequence comparison alone struggles while structural comparison succeeds, and we shall return to it in Sections 8 and 9.</p>
+
+<h3 id="s2-2">2.2 Similarity is evidence for homology, not homology itself</h3>
+<p>The lecture slides illustrate the concept of homology with the pentadactyl limb: the wing of a bat, the flipper of a dolphin and the human hand share the same skeletal plan because they inherited it from a common tetrapod ancestor, even though they now serve flight, swimming and grasping. Comparative anatomists reached this conclusion from structural correspondence, and sequence analysis reasons the same way: we <em>observe</em> similarity and we <em>infer</em> homology when the similarity is too great to have arisen by chance.</p>
+<p>Three terms must be kept separate:</p>
+<ul>
+<li><strong>Identity</strong>: the percentage of aligned positions at which the two residues are the same.</li>
+<li><strong>Similarity</strong>: the percentage of aligned positions at which the residues are the same <em>or</em> have a positive substitution score (e.g. isoleucine aligned to leucine). Similarity is always at least as large as identity and depends on the matrix used.</li>
+<li><strong>Homology</strong>: the inference of common ancestry. It is justified when the alignment score is statistically significant (Section 7.3), and it is strengthened by shared structure, shared function and consistent phylogenetic placement.</li>
+</ul>
+<p>The converse also matters. Sequences can be similar without being homologous — short low-complexity segments, transmembrane helices rich in leucine, or coiled coils all generate chance similarity — and homologous sequences can be dissimilar when they have diverged for long enough. Pearson's review on similarity searching is the clearest short treatment of these distinctions and of the practical thresholds that follow from them.<sup class="c"><a href="#r13">[13]</a></sup></p>
+
+<h3 id="s2-3">2.3 How sequences diverge</h3>
+<p>An alignment is a hypothesis about the mutational events that transformed an ancestral sequence into the sequences we observe today. Three classes of event are represented explicitly.</p>
+<table class="data">
+<thead><tr><th>Event</th><th>Effect on the DNA</th><th>Representation in the alignment</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Substitution (point mutation)</td><td>One nucleotide is replaced by another</td><td>A mismatch between two aligned characters</td><td>AT<b>A</b> → AT<b>G</b></td></tr>
+<tr><td>Insertion</td><td>One or more nucleotides are added</td><td>A gap ("–") in the sequence that lacks the material</td><td>AA → A<b>G</b>A</td></tr>
+<tr><td>Deletion</td><td>One or more nucleotides are removed</td><td>A gap in the sequence that lost the material</td><td>ACTG → AC–G</td></tr>
+</tbody></table>
+<p>Because a pairwise alignment cannot tell whether a gap reflects an insertion in one lineage or a deletion in the other, the two are grouped under the term <strong>indel</strong>. Only an outgroup — a third sequence that diverged earlier — can polarise the event, which is one of the reasons multiple alignments carry more information than pairwise ones.</p>
+<p>At the protein level the consequence of a nucleotide substitution depends on the genetic code. A <strong>synonymous</strong> substitution changes the codon but not the encoded amino acid (UUA → UUG, both leucine); it is largely invisible to selection on the protein and accumulates at approximately the neutral rate. A <strong>non-synonymous</strong> substitution changes the amino acid (UUA → UUC, leucine → phenylalanine) or creates a stop codon (UGG → UGA, tryptophan → stop, a <em>nonsense</em> mutation that truncates the protein). Non-synonymous changes are filtered by selection: substitutions between physicochemically similar residues (leucine ↔ isoleucine, aspartate ↔ glutamate) are tolerated far more often than radical ones (tryptophan ↔ glycine). The substitution matrices of Section 4 are, in essence, quantitative tables of this tolerance.</p>
+<p>Two consequences for nucleotide-level comparison follow from chemistry. Purines (A, G) are two-ring bases and pyrimidines (C, T) are one-ring bases; a substitution that preserves the ring class is a <strong>transition</strong> (A↔G, C↔T) and one that changes it is a <strong>transversion</strong>. Although there are twice as many possible transversions as transitions, transitions are observed roughly twice as often in most genomes, in part because they are more easily generated by the common deamination and tautomerisation errors and more easily tolerated by the structure of the double helix (Figure 3, Section 4.1). Finally, in protein-coding DNA the three codon positions evolve at different rates: third positions, where most synonymous changes occur, are the fastest, and this is why protein alignments are more sensitive than DNA alignments for detecting distant relationships.</p>
+<div class="box key"><h4>Key points — Section 2</h4><ul>
+<li>Homology is binary and historical; identity and similarity are measured on an alignment.</li>
+<li>Orthologs are separated by speciation, paralogs by duplication; orthologs are the safer basis for functional transfer.</li>
+<li>Alignments model substitutions as mismatches and indels as gaps; pairwise data cannot distinguish an insertion from a deletion.</li>
+<li>The genetic code and physicochemistry make some substitutions far more frequent than others; this is what scoring matrices encode.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Section 3</span>What an alignment is</h2>
+<p>Formally, an alignment of two sequences <em>s</em> and <em>t</em> is obtained by inserting gap characters ("–") into either sequence so that the two padded strings have the same length and no column contains two gaps. Each column is then one of three things: a <strong>match</strong> (identical characters), a <strong>mismatch</strong> (different characters) or an <strong>indel</strong> (a character paired with a gap). The slide example for the toy sequences <em>s</em> = VIVALASVEGAS and <em>t</em> = VIVADAVIS is one such arrangement:</p>
+<div class="aln">V I V A L A S V E G A S
+| | | |   |   |       |
+V I V A D A - V - - I S</div>
+<p>The vertical bars mark identities (7 of 12 columns); the remaining columns are two mismatches (L/D, E/I) and three gaps. The question posed in the lecture — <em>which of two alignments is better?</em> — has no answer until we decide how to score columns. An alignment with more identities is not automatically better if it achieves them by opening many gaps, because each gap postulates an additional mutational event. Section 4 develops the scoring system; Sections 5 and 6 then show how to find the arrangement that maximises the score.</p>
+<p>Two further quantities are reported routinely and will be needed when interpreting BLAST output. <strong>Coverage</strong> is the fraction of the query that participates in the alignment; a 98 %-identical alignment covering 20 residues of a 500-residue protein tells us something about a shared motif, not about the proteins as wholes. <strong>Alignment length</strong> is the number of columns, including gaps, and it is the denominator conventionally used for percent identity, although different programs make different choices (identity over the shorter sequence, over the alignment length, or over aligned columns only), so the convention should always be checked before two numbers are compared.</p>
+<div class="box warn"><h4>A note on the slide's statement that global alignment has been "discarded"</h4>
+<p>It is true that for <em>database searching</em> global alignment was superseded by local methods, because a query domain rarely corresponds to the full length of every database entry. Global alignment remains the method of choice, however, whenever two sequences are known to be homologous along their whole length: comparing orthologous proteins, aligning a target to its template for homology modelling, computing percent identity for a family, and — as the core operation inside every progressive multiple-alignment program — aligning profiles to profiles. Treat the two approaches as tools for different questions rather than as old and new.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Section 4</span>Scoring systems</h2>
+<p>A scoring system assigns a number to every column of an alignment; the score of the alignment is the sum over columns. It therefore has two components: a <strong>substitution score</strong> σ(<em>a</em>, <em>b</em>) for every pair of residues, and a <strong>gap penalty</strong> for columns that contain a gap.</p>
+
+<h3 id="s4-1">4.1 Nucleotide scoring</h3>
+<p>The simplest scheme used in the lecture is the <em>unit</em> or <em>edit</em> scheme: σ(<em>a</em>,<em>a</em>) = +1, σ(<em>a</em>,<em>b</em>) = −1 for <em>a</em> ≠ <em>b</em>, and −1 per gap position. It is adequate for teaching the algorithms and for very similar sequences, and under it the maximum score is related to the <em>edit distance</em> (the minimum number of substitutions and indels that converts one string into the other). For real data a 4 × 4 matrix is preferred because, as discussed in Section 2.3, transitions are more frequent than transversions and should therefore be penalised less. The lecture uses the following illustrative matrix:</p>
+<table class="score"><thead><tr><th></th><th>A</th><th>G</th><th>C</th><th>T</th></tr></thead>
+<tbody><tr><th>A</th><td>10</td><td>−1</td><td>−3</td><td>−4</td></tr>
+<tr><th>G</th><td>−1</td><td>7</td><td>−5</td><td>−3</td></tr>
+<tr><th>C</th><td>−3</td><td>−5</td><td>9</td><td>0</td></tr>
+<tr><th>T</th><td>−4</td><td>−3</td><td>0</td><td>8</td></tr></tbody></table>
+<p>Note the structure: the two transitions, A/G (−1) and C/T (0), score higher than the four transversions (−3 to −5). The default matrices of BLASTn (match +2, mismatch −3) and megaBLAST (match +1, mismatch −2) are simpler; they are tuned, respectively, to sequences of roughly 85–90 % and &gt;95 % identity, which is one reason the choice of program matters.</p>
+<figure>
+<img src="figures/fig03_transitions.png" alt="Diagram of the four DNA bases with transitions (A-G, C-T) drawn as solid arrows and transversions as dashed arrows" style="max-width:420px">
+<figcaption><b>Figure 2. Transitions and transversions.</b> Transitions exchange a purine for a purine or a pyrimidine for a pyrimidine; transversions exchange ring classes. Despite having only four of the twelve possible directed changes, transitions dominate observed substitutions, and nucleotide scoring matrices penalise them less.</figcaption>
+</figure>
+
+<h3 id="s4-2">4.2 Log-odds substitution matrices for proteins</h3>
+<p>With twenty amino acids of very different size, charge and hydrophobicity, a protein matrix cannot be written down from first principles; it must be <em>estimated</em> from alignments of proteins already known to be related. Both families of matrices in common use are <strong>log-odds</strong> matrices, which means that each entry compares two hypotheses about a column containing residues <em>i</em> and <em>j</em>:</p>
+<div class="eq">
+<em>s</em><sub><em>ij</em></sub> = (1/λ) · log ( <em>p</em><sub><em>ij</em></sub> / <em>q</em><sub><em>i</em></sub> <em>q</em><sub><em>j</em></sub> )
+<span class="where"><em>p</em><sub><em>ij</em></sub>: observed probability that <em>i</em> and <em>j</em> are aligned in homologous proteins (the "target frequency"); <em>q</em><sub><em>i</em></sub>, <em>q</em><sub><em>j</em></sub>: background frequencies of each residue, so that <em>q</em><sub><em>i</em></sub><em>q</em><sub><em>j</em></sub> is the probability of the pair under the hypothesis of no relationship; λ: a scale factor that sets the units.</span></div>
+<p>A positive score means the pair is observed more often in homologs than chance predicts; a negative score means it is observed less often. A score of zero is a pair that is uninformative. The logarithm makes scores additive, so that summing over the columns of an alignment yields the log-odds ratio of the whole alignment — the alignment score is the logarithm of how much more likely the alignment is under homology than under chance. Altschul's analysis showed that <em>every</em> sensible scoring matrix is implicitly a log-odds matrix for some set of target frequencies, so the real question is not whether to use log-odds but which target frequencies — which evolutionary distance — the matrix should represent.<sup class="c"><a href="#r40">[32]</a>,<a href="#r6">[6]</a></sup> When λ is chosen as ln 2 the scores are in <em>bits</em>; BLOSUM62 is tabulated in <em>half-bits</em> (λ = ln 2 / 2) and rounded to integers.</p>
+
+<h3 id="s4-3">4.3 PAM matrices (Dayhoff, 1978)</h3>
+<p>Margaret Dayhoff and colleagues built the first systematic substitution matrices from 71 families of closely related proteins (≥ 85 % identity), in which the alignment was unambiguous and each difference could reasonably be attributed to a single accepted mutation.<sup class="c"><a href="#r4">[4]</a></sup> The procedure, summarised on the slides, is as follows.</p>
+<ol>
+<li>Within each family, reconstruct a phylogenetic tree and count every amino-acid exchange <em>i</em> → <em>j</em> along its branches. These are <em>accepted point mutations</em>: substitutions that passed through natural selection.</li>
+<li>Normalise the counts by the <em>mutability</em> of each residue (how often it changes at all) and by its frequency, to obtain a matrix of substitution probabilities <em>M</em><sub><em>ij</em></sub> for an evolutionary distance of <strong>1 PAM</strong> — defined as the amount of change in which 1 % of positions have undergone an accepted mutation.</li>
+<li>Extrapolate to larger distances by matrix multiplication: <em>M</em><sup>(<em>n</em>)</sup> = (<em>M</em><sup>(1)</sup>)<sup><em>n</em></sup>. PAM250 corresponds to 250 accepted mutations per 100 residues; because many positions mutate more than once, and some revert, this leaves roughly 20 % of positions identical.</li>
+<li>Convert each probability matrix to log-odds scores by dividing by the background frequencies and taking the logarithm.</li>
+</ol>
+<p>The PAM model therefore assumes that evolution is a <em>Markov process</em> with the same substitution probabilities at every position and every time, and that the exchanges observed between near-identical proteins can be extrapolated to distant ones. Both assumptions are approximations: conserved active-site positions and surface positions evolve at very different rates, and the substitutions that are accepted between 85 %-identical proteins are not the same as those tolerated after hundreds of millions of years. The <strong>numbering convention</strong> follows the extrapolation: a <em>larger</em> PAM number means a <em>greater</em> evolutionary distance (PAM30 for very similar sequences, PAM250 for distant ones).</p>
+
+<h3 id="s4-4">4.4 BLOSUM matrices (Henikoff &amp; Henikoff, 1992)</h3>
+<p>Steven and Jorja Henikoff took the opposite approach: instead of extrapolating from close relatives, measure the substitutions directly in the type of alignment one wishes to score — conserved, ungapped <em>blocks</em> from alignments of distantly related proteins (the BLOCKS database, ~2,000 blocks from ~500 families at the time).<sup class="c"><a href="#r5">[5]</a></sup></p>
+<ol>
+<li>In every column of every block, count all pairs of residues (<em>i</em>, <em>j</em>). A column with residues A, A, A, S contributes three A–A pairs and three A–S pairs.</li>
+<li>To prevent large groups of near-identical sequences from dominating the counts, <em>cluster</em> the sequences in each block at a chosen identity threshold and treat each cluster as a single weighted sequence. The threshold gives the matrix its number: for <strong>BLOSUM62</strong>, sequences more than 62 % identical were merged.</li>
+<li>Compute target frequencies <em>p</em><sub><em>ij</em></sub> and background frequencies <em>q</em><sub><em>i</em></sub> from the weighted counts; convert to log-odds in half-bits (the formula of Section 4.2).</li>
+</ol>
+<p>Because clustering at a <em>lower</em> identity merges more sequences and leaves only the more divergent pairs to be counted, the <strong>numbering runs in the opposite direction to PAM</strong>: a <em>smaller</em> BLOSUM number corresponds to a <em>greater</em> evolutionary distance (BLOSUM80 for close relatives, BLOSUM45 for remote ones). BLOSUM62 is the default of BLASTp and of most protein alignment tools because it performed best in the original benchmarks across a wide range of distances. A curious historical footnote is that the BLOSUM62 actually distributed and used everywhere differs slightly from the one the published algorithm produces, owing to a programming error in the original computation; the "wrong" matrix turns out to perform marginally <em>better</em> in homology searches, a reminder that matrix construction is as much empirical as theoretical.<sup class="c"><a href="#r6">[6]</a>,<a href="#r7">[7]</a></sup></p>
+<figure>
+<img src="figures/fig04_blosum62.png" alt="Heat map of the BLOSUM62 matrix with residues grouped by physicochemical class; positive scores concentrate within groups">
+<figcaption><b>Figure 3. The BLOSUM62 matrix, reordered by physicochemical class.</b> Values are the standard half-bit scores (Biopython <code>substitution_matrices.load("BLOSUM62")</code>). Positive scores (red) are concentrated inside the boxed groups — aliphatic/aromatic hydrophobic residues, the small polar residues, the acidic pair D/E and the basic pair K/R — and most inter-group substitutions are negative. The diagonal is not uniform: rare residues such as W (+11) and C (+9) score higher when matched than common ones such as A (+4) or L (+4), because a match between rare residues is less likely to occur by chance. Colour is clipped at ±4 for legibility; the printed value is exact.</figcaption>
+</figure>
+
+<h3 id="s4-5">4.5 Choosing a matrix</h3>
+<p>The slide summarising "PAM versus BLOSUM differences" compresses several ideas and deserves an expansion. The two families differ in <em>how</em> they were built, not in what they represent: both are log-odds matrices, both have positive diagonals and mostly negative off-diagonals, and both exist in series spanning close to distant relationships. The practically useful statements are these.</p>
+<table class="data">
+<thead><tr><th></th><th>PAM</th><th>BLOSUM</th></tr></thead>
+<tbody>
+<tr><td>Data</td><td>71 families of ≥85 %-identical proteins (1978)</td><td>Ungapped conserved blocks from ~500 families of divergent proteins (1992)</td></tr>
+<tr><td>Model</td><td>Explicit evolutionary model; distant matrices extrapolated by matrix multiplication</td><td>No extrapolation; each matrix measured directly from blocks clustered at its identity threshold</td></tr>
+<tr><td>Numbering</td><td>Evolutionary distance in accepted mutations per 100 residues: higher = more distant</td><td>Clustering identity threshold: lower = more distant</td></tr>
+<tr><td>Approximate correspondence</td><td colspan="2">PAM120 ≈ BLOSUM80 &nbsp;·&nbsp; PAM160 ≈ BLOSUM62 &nbsp;·&nbsp; PAM250 ≈ BLOSUM45</td></tr>
+<tr><td>Typical use today</td><td>Short or very similar sequences (PAM30, PAM70 for short queries in BLAST); phylogenetic model fitting</td><td>General-purpose protein alignment and database searching (BLOSUM62 default; BLOSUM45 for remote homologs; BLOSUM80 for close relatives)</td></tr>
+</tbody></table>
+<p>Two rules of thumb follow. First, use the matrix that matches the relationship you expect: a matrix tuned for 20 % identity will over-reward conservative substitutions between 90 %-identical sequences, and a matrix tuned for 90 % identity will fail to see that isoleucine and valine are nearly interchangeable in a remote homolog. Second, when a search fails with BLOSUM62, repeat it with BLOSUM45 and a lower gap-open penalty before concluding that no homolog exists; and when it succeeds with hundreds of near-identical hits, BLOSUM80 or PAM30 will sharpen the ranking among them.</p>
+
+<h3 id="s4-6">4.6 Gap penalties</h3>
+<p>A gap of length <em>k</em> represents an indel of <em>k</em> residues. Under a <strong>linear</strong> penalty each gap position costs the same amount, <em>d</em>, so a gap of length <em>k</em> costs <em>k·d</em>. This is simple but biologically inappropriate: a single insertion of five residues is a single mutational event and is far more probable than five independent single-residue insertions, yet a linear scheme charges both the same. The standard remedy is the <strong>affine</strong> penalty introduced into dynamic programming by Gotoh:<sup class="c"><a href="#r3">[3]</a></sup></p>
+<div class="eq">γ(<em>k</em>) = −<em>o</em> − (<em>k</em> − 1)·<em>e</em>
+<span class="where"><em>o</em>: gap-opening penalty (large); <em>e</em>: gap-extension penalty per additional position (small). BLASTp defaults with BLOSUM62: <em>o</em> = 11, <em>e</em> = 1. EMBOSS Needle/Water defaults: <em>o</em> = 10, <em>e</em> = 0.5.</span></div>
+<p>With affine penalties the algorithm prefers one long gap to several short ones, which is what the biology suggests. The values of <em>o</em> and <em>e</em> are not independent of the matrix: a matrix in half-bits requires larger penalties than one in bits, and NCBI publishes, for each matrix, the gap pairs for which Karlin–Altschul parameters (Section 7.3) have been estimated. Two additional refinements are common. <em>End-gap</em> (terminal) penalties are often waived in <strong>semi-global</strong> alignment, which is the right mode for aligning a fragment to a full-length sequence or a target to a longer template. Position-specific gap penalties, which make gaps cheaper in loops than in secondary-structure elements, are used by ClustalW and by most structure-aware aligners (Section 8).</p>
+
+<h3 id="s4-7">4.7 Worked example: scoring a given alignment</h3>
+<p>The lecture asks for the score of the following alignment under the 4 × 4 matrix of Section 4.1 and a linear gap penalty of −5 per gap position.</p>
+<table class="score"><tbody><tr><th>s</th><td>A</td><td>G</td><td>A</td><td>C</td><td>T</td><td>A</td><td>G</td><td>T</td><td>T</td><td>A</td><td>C</td></tr><tr><th>t</th><td>C</td><td>G</td><td>A</td><td>-</td><td>-</td><td>-</td><td>G</td><td>A</td><td>C</td><td>G</td><td>T</td></tr><tr><th>σ</th><td>-3</td><td>+7</td><td>+10</td><td>-5</td><td>-5</td><td>-5</td><td>+7</td><td>-4</td><td>+0</td><td>-1</td><td>+0</td></tr></tbody></table>
+<p>Summing the column scores: (−3) + 7 + 10 + (−5) + (−5) + (−5) + 7 + (−4) + 0 + (−1) + 0 = <strong>1</strong>. The three gap positions cost −15 and consume all the benefit of the three identities; under an affine scheme with <em>o</em> = 5, <em>e</em> = 1 the same gap would cost −7 and the alignment would score 9. This illustrates why the gap scheme is reported alongside the score — a raw score is meaningless without it — and motivates the <em>normalised</em> bit score of Section 7.3.</p>
+<div class="box key"><h4>Key points — Section 4</h4><ul>
+<li>Substitution scores are log-odds ratios: positive when a pair is over-represented in homologs, negative when under-represented; summing them over an alignment gives the log-odds of the alignment.</li>
+<li>PAM extrapolates from close relatives (higher number = more distant); BLOSUM measures blocks directly (lower number = more distant). PAM160 ≈ BLOSUM62.</li>
+<li>Affine gap penalties (open + extend) model a long indel as one event; default BLASTp scheme is BLOSUM62 with 11/1.</li>
+<li>A raw score is only interpretable together with the matrix and gap scheme used.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Section 5</span>Global alignment: the Needleman–Wunsch algorithm</h2>
+<h3>5.1 Why enumeration is impossible</h3>
+<p>Given a scoring system, the best alignment is simply the one with the highest score. The naive approach — enumerate every alignment and keep the best — fails because the number of alignments grows explosively. Torres and colleagues derived an exact expression for the number of distinct global alignments of two sequences of lengths <em>m</em> and <em>n</em> (counting every pattern of matches/mismatches and gaps):<sup class="c"><a href="#r26">[26]</a></sup></p>
+<div class="eq"><em>f</em>(<em>n</em>, <em>m</em>) = Σ<sub><em>k</em>=0</sub><sup>min(<em>n</em>,<em>m</em>)</sup> 2<sup><em>k</em></sup> · C(<em>m</em>, <em>k</em>) · C(<em>n</em>, <em>k</em>)</div>
+<p>The table below evaluates the formula for equal lengths. The right-hand column anticipates the resolution: the dynamic-programming algorithm examines only (<em>n</em>+1)(<em>m</em>+1) cells, yet is guaranteed to find the optimum.</p>
+<table class="data"><thead><tr><th>n = m</th><th>Number of possible global alignments</th><th>Cells in the DP matrix (n+1)²</th></tr></thead><tbody><tr><td>1</td><td>3</td><td>4</td></tr><tr><td>2</td><td>13</td><td>9</td></tr><tr><td>3</td><td>63</td><td>16</td></tr><tr><td>4</td><td>321</td><td>25</td></tr><tr><td>5</td><td>1,683</td><td>36</td></tr><tr><td>6</td><td>8,989</td><td>49</td></tr><tr><td>7</td><td>48,639</td><td>64</td></tr><tr><td>8</td><td>265,729</td><td>81</td></tr><tr><td>9</td><td>1,462,563</td><td>100</td></tr><tr><td>10</td><td>8,097,453</td><td>121</td></tr><tr><td>12</td><td>251,595,969</td><td>169</td></tr><tr><td>15</td><td>44,642,381,823</td><td>256</td></tr><tr><td>20</td><td>2.60 × 10<sup>14</sup></td><td>441</td></tr><tr><td>30</td><td>9.64 × 10<sup>21</sup></td><td>961</td></tr><tr><td>50</td><td>1.53 × 10<sup>37</sup></td><td>2,601</td></tr><tr><td>100</td><td>2.05 × 10<sup>75</sup></td><td>10,201</td></tr></tbody></table>
+<p>For two typical protein domains of 100 residues there are about 2 × 10<sup>75</sup> alignments — more than the number of atoms in the observable universe — while the dynamic-programming matrix has 10,201 cells. The R function distributed with the course (<code>Alig_global.R</code>) implements exactly this formula; for <em>m</em> = 30 and <em>n</em> = 34 it returns 2.66 × 10<sup>23</sup>.</p>
+
+<h3>5.2 The dynamic-programming principle</h3>
+<p>Needleman and Wunsch (1970) observed that the optimal alignment of two sequences can be assembled from optimal alignments of their prefixes.<sup class="c"><a href="#r1">[1]</a></sup> Consider the best alignment of <em>s</em><sub>1..<em>i</em></sub> with <em>t</em><sub>1..<em>j</em></sub>. Its last column must be one of three things: <em>s</em><sub><em>i</em></sub> aligned to <em>t</em><sub><em>j</em></sub>, <em>s</em><sub><em>i</em></sub> aligned to a gap, or <em>t</em><sub><em>j</em></sub> aligned to a gap. Whichever it is, the columns that precede it must form an optimal alignment of the corresponding shorter prefixes — otherwise we could improve the whole by improving the part. Writing <em>F</em>(<em>i</em>, <em>j</em>) for the best score of aligning the two prefixes, this gives the recurrence:</p>
+<div class="eq">
+<em>F</em>(<em>i</em>, <em>j</em>) = max { <em>F</em>(<em>i</em>−1, <em>j</em>−1) + σ(<em>s</em><sub><em>i</em></sub>, <em>t</em><sub><em>j</em></sub>) ;&nbsp; <em>F</em>(<em>i</em>−1, <em>j</em>) + <em>d</em> ;&nbsp; <em>F</em>(<em>i</em>, <em>j</em>−1) + <em>d</em> }
+<span class="where">with boundary conditions <em>F</em>(0, 0) = 0, <em>F</em>(<em>i</em>, 0) = <em>i·d</em>, <em>F</em>(0, <em>j</em>) = <em>j·d</em>, where <em>d</em> &lt; 0 is the (linear) gap penalty. The three terms correspond to a diagonal move (match/mismatch), a vertical move (gap in <em>t</em>) and a horizontal move (gap in <em>s</em>).</span></div>
+<p>The algorithm has three steps:</p>
+<ol>
+<li><strong>Initialisation.</strong> Fill the first row and column with cumulative gap penalties.</li>
+<li><strong>Matrix fill.</strong> Compute every cell from its three neighbours (upper-left, upper, left), row by row. Record for each cell which neighbour produced the maximum (the <em>pointer</em>).</li>
+<li><strong>Traceback.</strong> The score of the optimal global alignment is <em>F</em>(<em>n</em>, <em>m</em>), in the bottom-right cell. Follow the pointers back to <em>F</em>(0, 0); a diagonal step emits a column of two residues, a vertical step emits <em>s</em><sub><em>i</em></sub> over a gap, a horizontal step emits a gap over <em>t</em><sub><em>j</em></sub>.</li>
+</ol>
+<p>Time and memory are both proportional to <em>n·m</em> — <em>O</em>(<em>nm</em>) — because each cell is computed once from a constant number of neighbours. With affine gap penalties, three matrices are needed instead of one (one for each type of move ending the alignment), but the complexity remains quadratic.<sup class="c"><a href="#r3">[3]</a></sup></p>
+
+<h3>5.3 Worked example</h3>
+<p>Align <em>s</em> = GATTACA (rows) with <em>t</em> = GCATGCG (columns) under the unit scheme (match +1, mismatch −1, gap −1). The completed matrix is shown below; the shaded cells mark the traceback path from <em>F</em>(7, 7) to <em>F</em>(0, 0).</p>
+<table class="dp"><thead><tr><th></th><th></th><th>G</th><th>C</th><th>A</th><th>T</th><th>G</th><th>C</th><th>G</th></tr></thead><tbody>
+<tr><th></th><td class="tb">0</td><td>-1</td><td>-2</td><td>-3</td><td>-4</td><td>-5</td><td>-6</td><td>-7</td></tr>
+<tr><th>G</th><td>-1</td><td class="tb">1</td><td class="tb">0</td><td>-1</td><td>-2</td><td>-3</td><td>-4</td><td>-5</td></tr>
+<tr><th>A</th><td>-2</td><td>0</td><td>0</td><td class="tb">1</td><td>0</td><td>-1</td><td>-2</td><td>-3</td></tr>
+<tr><th>T</th><td>-3</td><td>-1</td><td>-1</td><td class="tb">0</td><td>2</td><td>1</td><td>0</td><td>-1</td></tr>
+<tr><th>T</th><td>-4</td><td>-2</td><td>-2</td><td>-1</td><td class="tb">1</td><td>1</td><td>0</td><td>-1</td></tr>
+<tr><th>A</th><td>-5</td><td>-3</td><td>-3</td><td>-1</td><td>0</td><td class="tb">0</td><td>0</td><td>-1</td></tr>
+<tr><th>C</th><td>-6</td><td>-4</td><td>-2</td><td>-2</td><td>-1</td><td>-1</td><td class="tb">1</td><td>0</td></tr>
+<tr><th>A</th><td>-7</td><td>-5</td><td>-3</td><td>-1</td><td>-2</td><td>-2</td><td>0</td><td class="tb">0</td></tr>
+</tbody></table>
+<p>Verify a cell yourself. For <em>F</em>(2, 3) — row A (second residue of <em>s</em>), column A (third residue of <em>t</em>) — the three candidates are <em>F</em>(1, 2) + σ(A, A) = 0 + 1 = 1, <em>F</em>(1, 3) + <em>d</em> = −1 − 1 = −2, and <em>F</em>(2, 2) + <em>d</em> = 0 − 1 = −1; the maximum is 1, from the diagonal. Following the pointers from the bottom-right cell gives:</p>
+<div class="aln">G-ATTACA
+| | | | 
+GCA-TGCG</div>
+<p>The optimal score is <strong>0</strong>: four matches (+4), two mismatches (−2) and two gaps (−2). Ties are frequent in small examples — here several paths achieve the same score — and implementations resolve them by a fixed preference order (typically diagonal, then vertical, then horizontal). This means that the <em>score</em> of the optimal alignment is unique, but the <em>alignment</em> may not be; when a residue could be placed in either of two positions, no alignment program can tell you which is historically correct.</p>
+<div class="box key"><h4>Key points — Section 5</h4><ul>
+<li>The number of possible alignments is astronomically large; dynamic programming finds the optimum in <em>O</em>(<em>nm</em>) by solving prefixes first.</li>
+<li>Three steps: initialise the borders, fill each cell from three neighbours, trace back from the bottom-right corner.</li>
+<li>Global alignment aligns every residue of both sequences; it is the right tool for full-length homologs and for target–template alignment.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Section 6</span>Local alignment: the Smith–Waterman algorithm</h2>
+<p>Proteins are modular. A kinase domain may be fused to very different regulatory domains in different proteins; a transcription factor may share a DNA-binding domain with hundreds of proteins and nothing else. A global alignment of two multidomain proteins that share one domain would be forced to align the unrelated regions as well, accumulating mismatch and gap penalties until the shared domain's contribution is swamped. <strong>Local alignment</strong> addresses this by seeking the highest-scoring pair of <em>subsequences</em>, with no requirement that the flanks be aligned at all.</p>
+<figure>
+<img src="figures/fig02_global_local.png" alt="Two schematics: global alignment pairs all four domains end to end; local alignment pairs only the shared domains D2 and D3 even though they appear in different order">
+<figcaption><b>Figure 4. Global versus local alignment of multidomain proteins.</b> Top: two proteins with the same domain architecture are appropriately compared end to end. Bottom: when only domains D2 and D3 are shared, and in a different order, a global alignment would be forced to align unrelated regions (grey) at a cost that can obscure the shared domains; a local alignment reports each conserved region independently. Domain shuffling of this kind is common and is one reason database searches are local.</figcaption>
+</figure>
+<p>Smith and Waterman (1981) showed that two small modifications to the Needleman–Wunsch recurrence achieve this:<sup class="c"><a href="#r2">[2]</a></sup></p>
+<div class="eq">
+<em>H</em>(<em>i</em>, <em>j</em>) = max { 0 ;&nbsp; <em>H</em>(<em>i</em>−1, <em>j</em>−1) + σ(<em>s</em><sub><em>i</em></sub>, <em>t</em><sub><em>j</em></sub>) ;&nbsp; <em>H</em>(<em>i</em>−1, <em>j</em>) + <em>d</em> ;&nbsp; <em>H</em>(<em>i</em>, <em>j</em>−1) + <em>d</em> }
+<span class="where">with <em>H</em>(<em>i</em>, 0) = <em>H</em>(0, <em>j</em>) = 0. The zero allows an alignment to <em>start</em> anywhere; the traceback begins at the <em>highest</em> cell in the matrix rather than at the corner and stops at the first zero, allowing the alignment to <em>end</em> anywhere.</span></div>
+<p>For the zero to have its intended effect the scoring system must have a <em>negative expected score</em> for random pairs — otherwise long random alignments would accumulate positive scores and the "local" alignment would simply grow to cover everything. All log-odds matrices built from realistic target frequencies satisfy this condition, and it is also a requirement of the statistical theory in Section 7.3.</p>
+<h3>Worked example</h3>
+<p>Align <em>s</em> = TGTTACGG (rows) with <em>t</em> = GGTTGACTA (columns) using match +3, mismatch −3, gap −2. The matrix and the traceback from its maximum (13) are shown.</p>
+<table class="dp"><thead><tr><th></th><th></th><th>G</th><th>G</th><th>T</th><th>T</th><th>G</th><th>A</th><th>C</th><th>T</th><th>A</th></tr></thead><tbody>
+<tr><th></th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><th>T</th><td>0</td><td class="tb">0</td><td>0</td><td>3</td><td>3</td><td>1</td><td>0</td><td>0</td><td>3</td><td>1</td></tr>
+<tr><th>G</th><td>0</td><td>3</td><td class="tb">3</td><td>1</td><td>1</td><td>6</td><td>4</td><td>2</td><td>1</td><td>0</td></tr>
+<tr><th>T</th><td>0</td><td>1</td><td>1</td><td class="tb">6</td><td>4</td><td>4</td><td>3</td><td>1</td><td>5</td><td>3</td></tr>
+<tr><th>T</th><td>0</td><td>0</td><td>0</td><td>4</td><td class="tb">9</td><td class="tb">7</td><td>5</td><td>3</td><td>4</td><td>2</td></tr>
+<tr><th>A</th><td>0</td><td>0</td><td>0</td><td>2</td><td>7</td><td>6</td><td class="tb">10</td><td>8</td><td>6</td><td>7</td></tr>
+<tr><th>C</th><td>0</td><td>0</td><td>0</td><td>0</td><td>5</td><td>4</td><td>8</td><td class="tb">13</td><td>11</td><td>9</td></tr>
+<tr><th>G</th><td>0</td><td>3</td><td>3</td><td>1</td><td>3</td><td>8</td><td>6</td><td>11</td><td>10</td><td>8</td></tr>
+<tr><th>G</th><td>0</td><td>3</td><td>6</td><td>4</td><td>2</td><td>6</td><td>5</td><td>9</td><td>8</td><td>7</td></tr>
+</tbody></table>
+<div class="aln">GTT-AC
+||| ||
+GTTGAC</div>
+<p>The optimal local alignment has score <strong>13</strong>: five matches (+15) and one gap (−2). The flanking residues (the initial T of <em>s</em>; the initial G and the terminal TA of <em>t</em>) are not aligned and incur no penalty. Note how the zeros in the first rows and columns and scattered throughout the matrix reset the score whenever the running total would become negative; each non-zero region of the matrix is a candidate local alignment, and the algorithm can report several non-overlapping ones (a feature exploited by BLAST, whose HSPs are precisely such regions).</p>
+<p>Both Needleman–Wunsch and Smith–Waterman are <strong>optimal</strong>: they are guaranteed to return the highest-scoring alignment under the given scoring system. Their cost is <em>O</em>(<em>nm</em>) time per pair, which is negligible for two sequences but prohibitive for searching a query of 300 residues against the ~250 million sequences of UniProtKB or the hundreds of billions of nucleotides in GenBank. This is the problem that BLAST solves — at the price of optimality.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Section 7</span>Database searching with BLAST</h2>
+<h3 id="s7-1">7.1 History and the family of programs</h3>
+<p>The Basic Local Alignment Search Tool was published by Altschul, Gish, Miller, Myers and Lipman in 1990, building on the earlier FASTA heuristic of Pearson and Lipman.<sup class="c"><a href="#r8">[8]</a>,<a href="#r12">[12]</a></sup> The original program computed ungapped local alignments and, crucially, reported for each a <em>p</em>-value derived from the Karlin–Altschul theory published the same year.<sup class="c"><a href="#r11">[11]</a></sup> Three milestones followed.</p>
+<ul>
+<li><strong>1990 — BLAST.</strong> Ungapped alignments; statistical significance of each hit. The paper is among the most cited in all of science.<sup class="c"><a href="#r8">[8]</a></sup></li>
+<li><strong>1997 — Gapped BLAST and PSI-BLAST.</strong> Gapped extension of hits, the two-hit seeding heuristic (roughly three times faster), and Position-Specific Iterated BLAST, which builds a profile from the first search and re-searches with it.<sup class="c"><a href="#r9">[9]</a></sup></li>
+<li><strong>2009 — BLAST+.</strong> A complete rewrite in C++ with a modular architecture, faster database handling and the command-line tools (<code>blastp</code>, <code>blastn</code>, <code>makeblastdb</code>, …) used today.<sup class="c"><a href="#r10">[10]</a></sup></li>
+</ul>
+<p>The program to use depends on the type of query and of database. Translated searches use the genetic code to compare nucleotides with proteins in all six reading frames (three on each strand), which is how one finds a protein-coding gene in an unannotated genome or a protein homolog in a transcriptome assembly.</p>
+<table class="data">
+<thead><tr><th>Program</th><th>Query</th><th>Database</th><th>Typical use</th></tr></thead>
+<tbody>
+<tr><td><strong>megaBLAST</strong></td><td>Nucleotide</td><td>Nucleotide</td><td>Highly similar sequences (same or closely related species); word size 28; fastest</td></tr>
+<tr><td><strong>BLASTn</strong></td><td>Nucleotide</td><td>Nucleotide</td><td>More divergent nucleotide sequences; word size 11; cross-species searches</td></tr>
+<tr><td><strong>BLASTp</strong></td><td>Protein</td><td>Protein</td><td>The standard search for protein homologs; BLOSUM62, word size 3</td></tr>
+<tr><td><strong>BLASTx</strong></td><td>Nucleotide, translated in 6 frames</td><td>Protein</td><td>Identify the protein encoded by a DNA/EST/contig sequence</td></tr>
+<tr><td><strong>tBLASTn</strong></td><td>Protein</td><td>Nucleotide, translated in 6 frames</td><td>Find genes encoding a protein in unannotated genomes or transcriptomes</td></tr>
+<tr><td><strong>tBLASTx</strong></td><td>Nucleotide, translated</td><td>Nucleotide, translated</td><td>Compare coding potential of two nucleotide sets; slow</td></tr>
+<tr><td><strong>PSI-BLAST</strong></td><td>Protein → PSSM</td><td>Protein</td><td>Iterative profile search for remote homologs (Section 7.5)</td></tr>
+<tr><td><strong>RPS-BLAST / CD-Search</strong></td><td>Protein</td><td>Database of PSSMs (CDD)</td><td>Identify conserved domains in a query</td></tr>
+</tbody></table>
+<p>Because the genetic code is degenerate and the third codon position evolves quickly, <em>protein-level comparison is more sensitive than nucleotide-level comparison</em> for anything but close relatives. When the query is a coding sequence, BLASTx against a protein database will usually detect homologs that BLASTn against a nucleotide database misses.</p>
+
+<h3 id="s7-2">7.2 The algorithm</h3>
+<p>BLAST rests on one empirical observation: two related sequences almost always share at least one short stretch of high-scoring identity or near-identity. If so, one can first look for such short "words" — a fast operation that can be done with a lookup table — and run the expensive alignment only where a word hit exists. The procedure, for BLASTp with default parameters, is as follows (Figure 5).</p>
+<figure>
+<img src="figures/fig05_blast_pipeline.png" alt="Five-step flow chart: seeding, hit lookup, extension, gapped dynamic programming, statistics">
+<figcaption><b>Figure 5. The BLAST heuristic.</b> Exhaustive dynamic programming is replaced by seeding with short words, exact-match lookup in the database, extension of hits into high-scoring segment pairs, and gapped alignment confined to the neighbourhood of those segments. Each stage discards candidates that cannot produce a significant alignment, which is where speed is gained and where sensitivity can be lost.</figcaption>
+</figure>
+<ol>
+<li><strong>Seeding.</strong> The query is decomposed into all overlapping words of length <em>k</em> (<em>k</em> = 3 for proteins, 11 for BLASTn, 28 for megaBLAST). For each query word, BLAST also generates the <em>neighbourhood</em>: every 3-letter word whose BLOSUM62 score against the query word is at least a threshold <em>T</em> (default 11). The protein neighbourhood is what gives BLASTp its sensitivity to conservative substitutions; nucleotide BLAST uses exact words only.</li>
+<li><strong>Hit lookup.</strong> The database is scanned for exact occurrences of any neighbourhood word. Since 1997, an extension is triggered only when <em>two</em> non-overlapping hits occur on the same diagonal within a short distance (the two-hit method), which eliminates most spurious single-word hits.<sup class="c"><a href="#r9">[9]</a></sup></li>
+<li><strong>Ungapped extension.</strong> Each triggering hit is extended in both directions, one residue at a time, as long as the cumulative score does not fall more than <em>X</em> below the best score seen so far. The result is a <strong>high-scoring segment pair (HSP)</strong>: a maximal ungapped local alignment.</li>
+<li><strong>Gapped extension.</strong> HSPs whose score exceeds a second threshold are subjected to a Smith–Waterman-type gapped extension, restricted to a band around the HSP, with affine penalties (11/1 by default).</li>
+<li><strong>Statistics.</strong> Each resulting alignment is assigned a bit score and an E-value (Section 7.3); hits are ranked by E-value and those above the user-defined cut-off (default 10) are discarded.</li>
+</ol>
+<h4>Worked example from the lecture</h4>
+<p>Take the query LIAWHCMPNAAA. Its ten overlapping 3-letter words and their self-scores under BLOSUM62 (the score a word obtains when matched exactly) are:</p>
+<table class="data"><thead><tr><th>Word</th><th>Residue scores</th><th>Self-score</th></tr></thead><tbody>
+<tr><td>LIA</td><td>4 + 4 + 4</td><td>12</td></tr><tr><td>IAW</td><td>4 + 4 + 11</td><td>19</td></tr><tr><td>AWH</td><td>4 + 11 + 8</td><td>23</td></tr><tr><td>WHC</td><td>11 + 8 + 9</td><td><strong>28</strong></td></tr><tr><td>HCM</td><td>8 + 9 + 5</td><td>22</td></tr><tr><td>CMP</td><td>9 + 5 + 7</td><td>21</td></tr><tr><td>MPN</td><td>5 + 7 + 6</td><td>18</td></tr><tr><td>PNA</td><td>7 + 6 + 4</td><td>17</td></tr><tr><td>NAA</td><td>6 + 4 + 4</td><td>14</td></tr><tr><td>AAA</td><td>4 + 4 + 4</td><td>12</td></tr></tbody></table>
+<p>Words containing rare residues (W, C, H) carry the most information and dominate the seeding, which is why BLAST is less sensitive for sequences made only of common residues. Suppose a database sequence IIAWHCAMPNDDA contains hits for WHC and MPN. Extending the WHC hit and the MPN hit and joining them with a one-residue gap yields the following alignment, scored with BLOSUM62 and a total gap cost of −2 for the single-residue gap:</p>
+<div class="aln">I I A W H C A M P N D D A
+. | | | | |   | | |     |
+L I A W H C - M P N A A A
+
+I/L  I/I  A/A  W/W  H/H  C/C  A/–  M/M  P/P  N/N  D/A  D/A  A/A
+ +2   +4   +4  +11   +8   +9   –2   +5   +7   +6   –2   –2   +4   = 54</div>
+<p>The raw score is 54. Whether 54 is <em>good</em> cannot be decided from the number alone; it depends on the lengths of the sequences and on the size of the database. That is the question the statistics answer.</p>
+
+<h3 id="s7-3">7.3 Statistics: raw score, bit score and E-value</h3>
+<p>Consider the lecture's thought experiment. The 12-residue query LIAWHCMPNAAA has 12! ≈ 4.8 × 10<sup>8</sup> distinct permutations. If we shuffled it, aligned each shuffled version against the same database sequence and recorded the best local score, we would obtain the distribution of scores expected <em>by chance</em> for a sequence of this length and composition. The score of the real query can then be judged against that distribution. Figure 6 performs this experiment with real proteins.</p>
+<figure>
+<img src="figures/fig06_shuffle_distribution.png" alt="Histogram of Smith-Waterman scores of 2000 shuffled myoglobin sequences against human haemoglobin beta, with a fitted Gumbel curve, and the real myoglobin score of 102 far to the right">
+<figcaption><b>Figure 6. The score of a true homolog against the distribution of chance scores.</b> Human haemoglobin β (147 aa) was aligned locally (BLOSUM62, gap open −11, extend −1) against 2,000 random permutations of sperm-whale myoglobin (154 aa), which preserve length and composition but destroy order. The chance scores (mean 29.4, maximum 55) follow an extreme-value (Gumbel) distribution: right-skewed, with a tail that decays exponentially rather than as a Gaussian. The real myoglobin scores 102. Not one of 2,000 shuffles approaches it, and the fitted Gumbel tail gives a probability of ≈ 4 × 10<sup>−9</sup> of reaching 102 by chance. Haemoglobin β and myoglobin share only about 25 % identity, yet the alignment is unambiguously significant. Sequences from the globin alignment in Section 8; computation with Biopython.</figcaption>
+</figure>
+<p>Karlin and Altschul proved that, for ungapped local alignments of random sequences under a scoring system with negative expected score, the maximal score <em>S</em> follows an <strong>extreme-value distribution</strong>, and they derived its parameters analytically.<sup class="c"><a href="#r11">[11]</a></sup> The practical consequence is a closed-form expression for the <strong>expected number of alignments with score ≥ <em>S</em> that would occur by chance</strong>:</p>
+<div class="eq"><em>E</em> = <em>K</em> · <em>m</em> · <em>n</em> · e<sup>−λ<em>S</em></sup>
+<span class="where"><em>m</em>: length of the query; <em>n</em>: total length of the database (sum of all sequence lengths); <em>K</em> and λ: constants that depend on the scoring matrix, gap penalties and residue composition (for BLOSUM62 ungapped, λ ≈ 0.318 and <em>K</em> ≈ 0.134; the gapped values are estimated by simulation and tabulated by NCBI).</span></div>
+<p>Three features of this formula are worth internalising. The E-value grows <em>linearly</em> with the query length and with the database size — the same alignment found in a database ten times larger is ten times more likely to be a chance event, which is why a hit's E-value changes when the database is updated. It decays <em>exponentially</em> with the score — a few extra points of score change the E-value by orders of magnitude. And the raw score <em>S</em> enters only through the product λ<em>S</em>, which suggests normalising it. The <strong>bit score</strong> is this normalisation:</p>
+<div class="eq"><em>S′</em> = ( λ<em>S</em> − ln <em>K</em> ) / ln 2 &nbsp;&nbsp;&nbsp;so that&nbsp;&nbsp;&nbsp; <em>E</em> = <em>m</em> · <em>n</em> · 2<sup>−<em>S′</em></sup></div>
+<p>Bit scores are comparable across searches that used different matrices and gap penalties, because λ and <em>K</em> have been absorbed. The formula also gives an intuition for their size: a bit score of <em>S′</em> is significant when 2<sup><em>S′</em></sup> is comfortably larger than <em>m·n</em>. For a 300-residue query against a database of 10<sup>11</sup> residues, <em>m·n</em> ≈ 3 × 10<sup>13</sup> ≈ 2<sup>45</sup>, so bit scores above roughly 50 begin to be significant and above 100 are overwhelmingly so.</p>
+<p>Finally, the relationship between E-value and <em>p</em>-value (the probability of at least one chance alignment with score ≥ <em>S</em>) follows from the Poisson distribution: <em>p</em> = 1 − e<sup>−<em>E</em></sup>. For small values the two are numerically identical (E = 0.001 ⇒ <em>p</em> = 0.000999), which is why BLAST reports only E; for large values they diverge (E = 5 is possible, <em>p</em> = 5 is not). The lecture's shorthand that "an E-value of 0.05 means a 5 % chance of a random match" is therefore accurate to within 2.5 %.</p>
+<h4>Interpreting E-values</h4>
+<table class="data"><thead><tr><th>E-value</th><th>Interpretation</th><th>Comment</th></tr></thead><tbody>
+<tr><td>&lt; 10<sup>−50</sup></td><td>Essentially identical or very closely related</td><td>Same protein from closely related species, isoforms, near-duplicates</td></tr>
+<tr><td>10<sup>−50</sup> – 10<sup>−10</sup></td><td>Clear homology</td><td>Function can usually be transferred, subject to orthology and coverage checks</td></tr>
+<tr><td>10<sup>−10</sup> – 10<sup>−3</sup></td><td>Probable homology</td><td>Pearson's recommended threshold for inferring homology from a single search is E &lt; 10<sup>−3</sup> (conservatively 10<sup>−6</sup>); check coverage and the alignment itself<sup class="c"><a href="#r13">[13]</a></sup></td></tr>
+<tr><td>10<sup>−3</sup> – 1</td><td>Suggestive, unresolved</td><td>May be a remote homolog or chance; use PSI-BLAST, structure-aware methods or additional evidence</td></tr>
+<tr><td>&gt; 1</td><td>Expected by chance</td><td>Not evidence of homology, even if the alignment "looks" convincing</td></tr>
+</tbody></table>
+<div class="box warn"><h4>Caveats that the formula does not capture</h4><ul>
+<li><strong>Low-complexity regions</strong> (poly-Q tracts, proline-rich linkers, transmembrane segments) violate the random-composition assumption and generate spurious significant hits. BLAST masks them by default (SEG for proteins, DUST for nucleotides); do not switch this off without reason.</li>
+<li><strong>Short queries</strong> cannot reach significant scores against large databases regardless of identity — a 15-residue peptide with a perfect match has a bit score of about 30. Use a smaller database, PAM30, and the short-query settings.</li>
+<li><strong>Composition bias</strong> (e.g. very acidic or very hydrophobic proteins) is partly corrected by the compositional adjustment that BLASTp applies by default since 2005.</li>
+<li>A significant E-value establishes <em>homology of the aligned region</em>, not of the whole protein, and not identity of function. Always inspect coverage and the alignment.</li>
+</ul></div>
+
+<h3 id="s7-4">7.4 Sensitivity, specificity and the trade-off in heuristics</h3>
+<p>Every search has a decision threshold (the E-value cut-off), and every threshold produces four kinds of outcome when compared with the truth about homology.</p>
+<table class="data"><thead><tr><th></th><th>Truly homologous</th><th>Truly unrelated</th></tr></thead><tbody>
+<tr><th>Reported as a hit</th><td>True positive (TP)</td><td>False positive (FP) — type I error</td></tr>
+<tr><th>Not reported</th><td>False negative (FN) — type II error</td><td>True negative (TN)</td></tr>
+</tbody></table>
+<p><strong>Sensitivity</strong> (recall), TP / (TP + FN), is the fraction of true homologs that the search finds; <strong>specificity</strong>, TN / (TN + FP), is the fraction of unrelated sequences correctly excluded; <strong>precision</strong>, TP / (TP + FP), is the fraction of reported hits that are real. Lowering the E-value cut-off increases specificity and precision at the cost of sensitivity; raising it does the reverse. The heuristics of BLAST introduce an additional, independent loss of sensitivity: a true homolog that happens to share no word of score ≥ <em>T</em> with the query will never be extended and will be missed no matter how permissive the cut-off. This is why Smith–Waterman (e.g. SSEARCH in the FASTA package) finds a few per cent more remote homologs than BLASTp in benchmarks, and why profile methods (Section 7.5) find many more still. In practice, a false negative in a database search is far more common than a false positive with E &lt; 10<sup>−3</sup>; the usual error of a beginner is to trust an absence of hits.</p>
+
+<h3 id="s7-5">7.5 Position-specific scoring matrices and PSI-BLAST</h3>
+<p>A substitution matrix applies the same scores to every position of a protein. But a protein family does not behave this way: a catalytic aspartate is invariant, a buried leucine tolerates isoleucine and valine, and a surface loop tolerates almost anything. A <strong>position-specific scoring matrix</strong> (PSSM, or profile) captures this by storing, for every <em>column</em> of a multiple alignment, a score for each of the twenty amino acids.<sup class="c"><a href="#r39">[31]</a></sup></p>
+<h4>Worked example from the lecture</h4>
+<p>Consider five aligned 7-residue sequences:</p>
+<div class="aln">D R S W L E I
+D K S W I D V
+E K T W L D I
+D K S W V E L
+E E S W L E I</div>
+<p>The simplest profile records the frequency of each residue in each column: position 1 is D in 3/5 (0.6) and E in 2/5 (0.4); position 2 is K 0.6, R 0.2, E 0.2; position 3 is S 0.8, T 0.2; position 4 is W 1.0; position 5 is L 0.6, I 0.2, V 0.2; position 6 is E 0.6, D 0.4; position 7 is I 0.6, V 0.2, L 0.2. A new candidate sequence E R S W V E I scores, column by column, 0.4 + 0.2 + 0.8 + 1.0 + 0.2 + 0.6 + 0.6 = <strong>3.8 out of a maximum of 7</strong> (0.54 per position). Is this good? The sequence matches the invariant tryptophan, the near-invariant serine and the acidic character of positions 1 and 6, and it uses residues seen in the family at every position; a random 7-mer would score close to zero, because most of its residues would never have been observed in the corresponding column. The sequence is therefore a plausible family member, even though it is identical to none of the five.</p>
+<p>Real PSSMs improve on raw frequencies in two ways. They are converted to <em>log-odds</em> against background frequencies (so that a tryptophan match, rare by chance, is rewarded more than an alanine match), and they add <em>pseudocounts</em> derived from the substitution matrix, so that a residue never observed in a column of five sequences receives a small, non-zero probability instead of an infinite penalty. The resulting matrix can be used in exactly the same way as BLOSUM62 — the recurrence of Section 6 simply looks up σ(position, residue) instead of σ(residue, residue).</p>
+<h4>PSI-BLAST</h4>
+<p>Position-Specific Iterated BLAST automates the construction and use of a PSSM:<sup class="c"><a href="#r9">[9]</a></sup></p>
+<ol>
+<li>Run a standard BLASTp with the query.</li>
+<li>Take all hits below an inclusion threshold (default E &lt; 0.005), build a multiple alignment of them anchored on the query, and compute a PSSM of the query's length.</li>
+<li>Search the database again with the PSSM instead of the query sequence.</li>
+<li>Add the new significant hits to the alignment, rebuild the PSSM, and repeat until no new sequences are found (convergence) or a fixed number of iterations is reached.</li>
+</ol>
+<p>Each iteration incorporates the variability of the family, so that the profile learns which positions may vary and which may not. PSI-BLAST detects roughly three times as many remote homologs as BLASTp at the same error rate, and it is the method with which, for example, most of the distant members of the GPCR and kinase superfamilies were first recognised. Its danger is <em>profile drift</em>: a single false positive included at iteration 2 will pull the profile toward an unrelated family and recruit its members at iteration 3. Inspect the hits added at each round, lower the inclusion threshold when the query contains repetitive or low-complexity segments, and treat a hit that appears only at iteration 5 with appropriate suspicion.</p>
+<p><strong>RPS-BLAST</strong> (Reverse Position-Specific BLAST) inverts the search: a single query <em>sequence</em> is compared against a database of precomputed <em>PSSMs</em>, one for each known domain family. This is the engine behind NCBI's <strong>Conserved Domain Database</strong> and the CD-Search service, which annotates the domain architecture of a query in seconds; it integrates Pfam, SMART, COG and NCBI-curated models.<sup class="c"><a href="#r25">[25]</a></sup> Running CD-Search on a protein of unknown function is normally the first step after BLASTp.</p>
+<div class="box key"><h4>Key points — Section 7</h4><ul>
+<li>BLAST is a heuristic: word seeding → two-hit trigger → ungapped extension (HSP) → gapped extension → statistics. It is fast because most of the database is never aligned, and it may miss homologs for the same reason.</li>
+<li>E = <em>K m n</em> e<sup>−λS</sup>: expected number of chance hits with at least this score; linear in query and database size, exponential in score.</li>
+<li>Bit scores are normalised and comparable across scoring systems; E = <em>m n</em> 2<sup>−S′</sup>.</li>
+<li>E &lt; 10<sup>−3</sup> is a reasonable single-search threshold for homology; always check coverage and low-complexity masking.</li>
+<li>PSSMs score each position differently; PSI-BLAST builds them iteratively and detects remote homologs at the risk of profile drift.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Section 8</span>Multiple sequence alignment</h2>
+<h3>8.1 Purpose</h3>
+<p>A multiple sequence alignment (MSA) arranges three or more sequences so that homologous positions share a column. Compared with a collection of pairwise alignments it offers qualitatively new information: a position conserved across fifty sequences spanning a billion years of evolution is almost certainly structurally or functionally essential, whereas conservation between two sequences may be chance; a gap present in one lineage but absent in all others can be polarised as an insertion; and covariation between two columns suggests that the residues are in physical contact. MSAs are the input for phylogenetic reconstruction, for building PSSMs and hidden Markov models (Pfam), for identifying catalytic and binding residues, for distinguishing orthologs from paralogs within a family, and — since 2020 — for the coevolution-based structure prediction of AlphaFold and related methods.<sup class="c"><a href="#r30">[30]</a></sup></p>
+<h3>8.2 The globin example</h3>
+<p>The lecture shows the classical Clustal alignment of seven globins. It is reproduced below because it illustrates every concept of this section.</p>
+<div class="aln small">Human beta        --------VHLTPEEKSAVTALWGKVN--VDEVGGEALGRLLVVYPWTQRFFESFGDLST
+Horse beta        --------VQLSGEEKAAVLALWDKVN--EEEVGGEALGRLLVVYPWTQRFFDSFGDLSN
+Human alpha       ---------VLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLS-
+Horse alpha       ---------VLSAADKTNVKAAWSKVGGHAGEYGAEALERMFLGFPTTKTYFPHF-DLS-
+Whale myoglobin   ---------VLSEGEWQLVLHVWAKVEADVAGHGQDILIRLFKSHPETLEKFDRFKHLKT
+Lamprey globin    PIVDTGSVAPLSAAEKTKIRSAWAPVYSTYETSGVDILVKFFTSTPAAQEFFPKFKGLTT
+Lupin globin      --------GALTESQAALVKSSWEEFNANIPKHTHRFFILVLEIAPAAKDLFSFLKGTSE
+                            *:  :   :   *  .           :  .:   * :   *  :   .
+
+Human beta        PDAVMGNPKVKAHGKKVLGAFSDGLAHLDN-----LKGTFATLSELHCDKLHVDPENFRL
+Horse beta        PGAVMGNPKVKAHGKKVLHSFGEGVHHLDN-----LKGTFAALSELHCDKLHVDPENFRL
+Human alpha       ----HGSAQVKGHGKKVADALTNAVAHVDD-----MPNALSALSDLHAHKLRVDPVNFKL
+Horse alpha       ----HGSAQVKAHGKKVGDALTLAVGHLDD-----LPGALSNLSDLHAHKLRVDPVNFKL
+Whale myoglobin   EAEMKASEDLKKHGVTVLTALGAILKKKGH-----HEAELKPLAQSHATKHKIPIKYLEF
+Lamprey globin    ADQLKKSADVRWHAERIINAVNDAVASMDDT--EKMSMKLRDLSGKHAKSFQVDPQYFKV
+Lupin globin      VP--QNNPELQAHAGKVFKLVYEAAIQLQVTGVVVTDATLKNLGSVHVSKGVAD-AHFPV
+                        . .:: *.  :   .                  :  *.  *  .       : .
+
+Human beta        LGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH------
+Horse beta        LGNVLVVVLARHFGKDFTPELQASYQKVVAGVANALAHKYH------
+Human alpha       LSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR------
+Horse alpha       LSHCLLSTLAVHLPNDFTPAVHASLDKFLSSVSTVLTSKYR------
+Whale myoglobin   ISEAIIHVLHSRHPGDFGADAQGAMNKALELFRKDIAAKYKELGYQG
+Lamprey globin    LAAVIADTVAAG---D------AGFEKLMSMICILLRSAY-------
+Lupin globin      VKEAILKTIKEVVGAKWSEELNSAWTIAYDELAIVIKKEMNDAA---
+                  :   :  .:      .      ..       .   :</div>
+<p>The symbols under each block are Clustal's conservation annotation: an asterisk (<code>*</code>) marks a column that is fully conserved, a colon (<code>:</code>) a column in which all residues belong to a strongly conserved physicochemical group (e.g. ILV, FYW, KR, DE), and a full stop (<code>.</code>) a weaker group. Observe that the orthologous pairs (human/horse β; human/horse α) are nearly identical; that the paralogous α and β chains of the same species are more different from each other than each is from its ortholog in the other species, as expected because the α/β duplication (~450 million years ago) predates the human–horse split (~90 million years ago); and that the two invariant residues of the first block — the tryptophan of helix A and the histidine of the second block (the proximal haem-binding histidine, F8) — are the positions that structural biology independently identifies as essential to the fold and to oxygen binding. The lamprey and lupin (plant) globins share less than 20 % identity with human haemoglobin and could not be aligned with confidence pairwise; in the MSA, the more similar sequences bridge the gap.</p>
+
+<h3>8.3 Why exact MSA is impossible and progressive alignment is used</h3>
+<p>Dynamic programming generalises to <em>N</em> sequences in principle: the matrix becomes <em>N</em>-dimensional and each cell has 2<sup><em>N</em></sup> − 1 predecessors. The cost is therefore proportional to <em>L</em><sup><em>N</em></sup> cells, each requiring 2<sup><em>N</em></sup> operations, where <em>L</em> is the sequence length. The table shows the number of cells, and the time to fill them at an optimistic 10<sup>9</sup> cells per second, for sequences of 100 residues:</p>
+<table class="data"><thead><tr><th>Sequences (N)</th><th>DP cells, L = 100 (100<sup>N</sup>)</th><th>Time at 10<sup>9</sup> cells s<sup>-1</sup></th></tr></thead><tbody><tr><td>2</td><td>10<sup>4</sup></td><td>10 µs</td></tr><tr><td>3</td><td>10<sup>6</sup></td><td>1 ms</td></tr><tr><td>4</td><td>10<sup>8</sup></td><td>100 ms</td></tr><tr><td>5</td><td>10<sup>10</sup></td><td>10 s</td></tr><tr><td>6</td><td>10<sup>12</sup></td><td>16.7 min</td></tr><tr><td>7</td><td>10<sup>14</sup></td><td>1.16 days</td></tr><tr><td>8</td><td>10<sup>16</sup></td><td>116 days</td></tr><tr><td>10</td><td>10<sup>20</sup></td><td>3.17e+03 years</td></tr></tbody></table>
+<p>Memory grows at the same rate. Exact MSA is thus feasible for three sequences, marginal for four or five and impossible beyond; the problem is NP-hard under the sum-of-pairs score. All practical methods are heuristics, and the dominant one since 1987 is <strong>progressive alignment</strong>, introduced by Feng and Doolittle and popularised by the Clustal programs.<sup class="c"><a href="#r16">[16]</a>,<a href="#r17">[17]</a></sup></p>
+<figure>
+<img src="figures/fig07_progressive.png" alt="Three panels: a pairwise distance matrix of four globins, the guide tree derived from it, and the resulting progressive alignment">
+<figcaption><b>Figure 7. Progressive alignment in three steps.</b> (i) All pairs of sequences are aligned and a distance (here, percent divergence; values illustrative) is computed for each pair. (ii) A guide tree is built from the distances by a fast clustering method (UPGMA or neighbour-joining); the most similar pair is joined first. (iii) Sequences are aligned in the order given by the tree: the two β chains first, then the α chain to the β profile, then myoglobin to the three-globin profile. Gaps introduced at an early step are retained at all later steps.</figcaption>
+</figure>
+<ol>
+<li><strong>Pairwise distances.</strong> All <em>N</em>(<em>N</em>−1)/2 pairs are aligned (quickly, often with a <em>k</em>-mer heuristic rather than full dynamic programming) and converted to a distance.</li>
+<li><strong>Guide tree.</strong> A tree is built from the distance matrix. It is <em>not</em> a phylogeny — it is a schedule — but its topology determines the result.</li>
+<li><strong>Progressive alignment.</strong> Following the tree from the leaves to the root, sequences are aligned to sequences, sequences to profiles, and profiles to profiles, using a global dynamic-programming alignment in which the score of a column is averaged over all pairs of residues it contains (sum of pairs). Once two sequences have been aligned, their relative gaps are frozen: <em>once a gap, always a gap</em>.</li>
+</ol>
+<p>The frozen-gap rule is the heuristic's strength — it makes the problem polynomial — and its weakness: an error made when aligning the first two sequences, which are aligned with the least information, can never be corrected. The modern programs differ mainly in how they mitigate this.</p>
+<table class="data"><thead><tr><th>Program</th><th>Year</th><th>Distinctive feature</th><th>Use</th></tr></thead><tbody>
+<tr><td>ClustalW<sup class="c"><a href="#r17">[17]</a></sup></td><td>1994</td><td>Sequence weighting, position-specific gap penalties, matrix choice by divergence</td><td>Historical standard; superseded</td></tr>
+<tr><td>T-Coffee<sup class="c"><a href="#r21">[21]</a></sup></td><td>2000</td><td>Consistency: a library of pairwise (global and local) alignments guides the progressive step so that early errors are less likely</td><td>High accuracy for small sets; can integrate structural information (Expresso)</td></tr>
+<tr><td>MAFFT<sup class="c"><a href="#r20">[20]</a></sup></td><td>2002 / 2013</td><td>Fast Fourier transform to find homologous segments; iterative refinement (L-INS-i, G-INS-i)</td><td>Accurate and scalable; the usual choice for most datasets</td></tr>
+<tr><td>MUSCLE<sup class="c"><a href="#r19">[19]</a></sup></td><td>2004</td><td>Fast <em>k</em>-mer distances, then iterative refinement by tree-partitioning</td><td>Fast, accurate for medium sets</td></tr>
+<tr><td>Clustal Omega<sup class="c"><a href="#r18">[18]</a></sup></td><td>2011</td><td>mBed guide trees in <em>O</em>(<em>N</em> log <em>N</em>); HMM profile–profile alignment (HHalign)</td><td>Hundreds of thousands of sequences; the EBI web service default</td></tr>
+</tbody></table>
+<p><strong>Iterative refinement</strong>, used by MAFFT and MUSCLE, partially lifts the frozen-gap limitation: after the progressive alignment is complete, the alignment is split into two groups along a branch of the tree, the two profiles are realigned, and the result is kept if the objective score improves; this is repeated for many branches. <strong>Consistency</strong>, used by T-Coffee and by the probabilistic aligner ProbCons, uses information from all pairwise alignments when deciding any one, so that the alignment of sequences A and B is informed by how each aligns to C. For a dozen to a few hundred protein sequences, MAFFT L-INS-i and T-Coffee are the most accurate choices in benchmarks such as BAliBASE; Clustal Omega is preferred when the set reaches thousands.</p>
+<div class="box warn"><h4>Practical cautions</h4><ul>
+<li>An MSA is a hypothesis. Columns in highly variable regions and near gaps are frequently wrong; downstream analyses (phylogeny, conservation scores) should either trim those columns (trimAl, Gblocks) or weight them down.</li>
+<li>The composition of the sequence set matters as much as the program. Fifty near-identical mammalian orthologs contribute less information than ten sequences spanning vertebrates, invertebrates and plants; sequence redundancy is normally reduced (CD-HIT, UniRef) before alignment.</li>
+<li>Always inspect the alignment in a viewer (Jalview, AliView). A one-residue shift of a secondary-structure element is immediately visible to the eye and invisible in a score.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Section 9</span>From alignment to structure: what the next lectures will assume</h2>
+<p>The lectures that follow — protein structure prediction, docking, drug design and molecular dynamics — all begin from sequence comparisons made with the tools of this unit. Three empirical relationships justify that dependence.</p>
+<h3>9.1 Sequence identity predicts structural similarity</h3>
+<p>Chothia and Lesk compared pairs of homologous proteins of known structure and found that the root-mean-square deviation of their common core increases smoothly, approximately exponentially, with sequence divergence: pairs above 50 % identity superimpose to within about 1 Å, while pairs near 20 % identity diverge to 2–2.5 Å and share a shrinking core.<sup class="c"><a href="#r22">[22]</a></sup> This relationship is the theoretical basis of <strong>homology (comparative) modelling</strong>: if a template of known structure can be found with sufficient identity to the target, the target's backbone can be built on the template's coordinates, and the expected accuracy of the model can be estimated from the identity alone. The quality of the <em>alignment</em> between target and template sets a hard ceiling on the quality of the model, because a residue aligned to the wrong template position will be placed in the wrong location in space no matter how well the side chains are optimised. Target–template alignments are therefore built with the most information available — PSI-BLAST or HMM profiles, secondary-structure prediction, and manual inspection — rather than with a single pairwise alignment.</p>
+<h3>9.2 The twilight zone</h3>
+<p>Sander and Schneider, and later Rost, quantified the identity below which sequence alignment can no longer be trusted to indicate common structure.<sup class="c"><a href="#r23">[23]</a>,<a href="#r24">[24]</a></sup> The threshold depends on alignment length: for alignments of more than about 100 residues, above ~30–35 % identity nearly all pairs share the same fold; between ~20 % and ~35 % — the <strong>twilight zone</strong> — true homologs and chance alignments overlap and sequence identity alone cannot discriminate them; below ~20 % (the "midnight zone") pairwise sequence methods are essentially uninformative even though many such pairs are genuinely homologous, as the globin family demonstrates. The practical consequences are that identity thresholds must always be read together with alignment length, that a BLAST E-value is a far better guide than a percentage, and that in the twilight zone one should move to profile- and HMM-based methods (PSI-BLAST, HHpred, HMMER) or to structure-based comparison. The success of AlphaFold rests on the same principle taken to its conclusion: a deep MSA of a protein family, built with the methods of Section 8, contains enough covariation signal to infer the residue contacts that define the fold.<sup class="c"><a href="#r30">[30]</a></sup></p>
+<h3>9.3 Conservation locates function</h3>
+<p>Residues that bind a ligand, catalyse a reaction or stabilise the fold are under purifying selection and appear as conserved columns in an MSA. Mapping column conservation (as computed, for instance, by ConSurf or by the Shannon entropy of each column) onto a three-dimensional structure typically highlights the active site and the binding pockets while the surface remains variable. In the docking and drug-design lectures this is used in two ways: to identify or validate the binding site of a target when no ligand-bound structure exists, and to assess <em>selectivity</em> — a drug that contacts residues conserved across a protein family will inhibit all its members, whereas a drug that exploits residues variable between paralogs (or between a pathogen enzyme and its human ortholog) can be made selective. Conversely, when a mutation is observed in a patient or arises in a pathogen under drug pressure, the MSA tells us immediately whether the affected position tolerates variation; this is how resistance mutations are prioritised for the mutational studies performed with molecular dynamics.</p>
+<div class="box bridge"><h4>What you will be asked to do with alignments in the following lectures</h4><ul>
+<li>Run BLASTp of a target sequence against the PDB (<code>pdbaa</code>), interpret E-value, identity and coverage, and choose templates.</li>
+<li>Build and inspect a target–template alignment, identify insertions/deletions relative to the template and anticipate where loops will need to be modelled.</li>
+<li>Generate an MSA of a receptor family (e.g. GPCRs, ion channels, kinases), compute per-position conservation and map it onto a structure to define a binding pocket.</li>
+<li>Reconcile residue numbering between a model, a crystal structure and the literature — an alignment problem that is trivial in principle and the source of many errors in practice.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Section 10</span>Practical work: tools and minimal workflows</h2>
+<h3>10.1 Web services</h3>
+<table class="data"><thead><tr><th>Task</th><th>Tool</th><th>Location</th></tr></thead><tbody>
+<tr><td>Pairwise global / local alignment</td><td>EMBOSS Needle / Water<sup class="c"><a href="#r27">[27]</a></sup></td><td>https://www.ebi.ac.uk/jdispatcher/psa</td></tr>
+<tr><td>Database search</td><td>NCBI BLAST (BLASTp, BLASTn, BLASTx, tBLASTn, PSI-BLAST)</td><td>https://blast.ncbi.nlm.nih.gov</td></tr>
+<tr><td>Database search against curated proteins</td><td>UniProt BLAST</td><td>https://www.uniprot.org/blast</td></tr>
+<tr><td>Domain identification</td><td>CD-Search (RPS-BLAST) · InterProScan</td><td>https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi · https://www.ebi.ac.uk/interpro</td></tr>
+<tr><td>Multiple sequence alignment</td><td>Clustal Omega, MAFFT, MUSCLE, T-Coffee</td><td>https://www.ebi.ac.uk/jdispatcher/msa</td></tr>
+<tr><td>Alignment visualisation and editing</td><td>Jalview<sup class="c"><a href="#r29">[29]</a></sup> (desktop or JalviewJS) · AliView</td><td>https://www.jalview.org</td></tr>
+<tr><td>Remote homology / template detection</td><td>HHpred (HMM–HMM comparison)</td><td>https://toolkit.tuebingen.mpg.de/tools/hhpred</td></tr>
+<tr><td>Conservation on structure</td><td>ConSurf</td><td>https://consurf.tau.ac.il</td></tr>
+<tr><td>Related NCBI tools</td><td>SmartBLAST, Primer-BLAST, Global Align, IgBLAST, VecScreen, CDART, MOLE-BLAST</td><td>https://blast.ncbi.nlm.nih.gov (Specialized searches)</td></tr>
+</tbody></table>
+<h3>10.2 Programmatic alignment</h3>
+<p>Reproducing the worked examples in code is the quickest way to verify that you have understood them. In Python, Biopython's <code>PairwiseAligner</code> implements Needleman–Wunsch, Smith–Waterman and their affine-gap variants:<sup class="c"><a href="#r28">[28]</a></sup></p>
+<pre><code>from Bio import Align
+from Bio.Align import substitution_matrices
+
+# Section 5.3: global alignment under the unit scheme
+aligner = Align.PairwiseAligner(mode="global", match_score=1,
+                                mismatch_score=-1, gap_score=-1)
+aln = aligner.align("GATTACA", "GCATGCG")[0]
+print(aln.score)      # 0
+print(aln)
+
+# Section 6: local alignment, +3 / -3 / -2
+aligner = Align.PairwiseAligner(mode="local", match_score=3,
+                                mismatch_score=-3, gap_score=-2)
+aln = aligner.align("TGTTACGG", "GGTTGACTA")[0]
+print(aln.score)      # 13
+
+# Protein alignment with BLOSUM62 and affine gaps (BLASTp defaults)
+aligner = Align.PairwiseAligner(mode="local")
+aligner.substitution_matrix = substitution_matrices.load("BLOSUM62")
+aligner.open_gap_score = -11
+aligner.extend_gap_score = -1
+hbb = "VHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH"
+mb  = "VLSEGEWQLVLHVWAKVEADVAGHGQDILIRLFKSHPETLEKFDRFKHLKTEAEMKASEDLKKHGVTVLTALGAILKKKGHHEAELKPLAQSHATKHKIPIKYLEFISEAIIHVLHSRHPGDFGADAQGAMNKALELFRKDIAAKYKELGYQG"
+print(aligner.score(hbb, mb))   # 102 (Figure 6)</code></pre>
+<p>In R, the Bioconductor package <code>pwalign</code> (formerly part of <code>Biostrings</code>) provides the same functionality; the course's own script counts the number of possible global alignments with the formula of Section 5.1:</p>
+<pre><code># Alig_global.R (course material): number of global alignments, Torres et al. (2003)
+num_alineamientos_globales &lt;- function(m, n) {
+  suma &lt;- 0
+  for (k in 0:min(m, n)) {
+    suma &lt;- suma + 2^k * choose(m, k) * choose(n, k)
+  }
+  return(suma)
+}
+num_alineamientos_globales(30, 34)   # 2.66e+23
+
+# Pairwise alignment with Bioconductor
+# BiocManager::install("pwalign")
+library(pwalign)
+data(BLOSUM62)
+pairwiseAlignment("GATTACA", "GCATGCG", type = "global",
+                  substitutionMatrix = NULL, gapOpening = 0, gapExtension = 1)</code></pre>
+<p>Command-line BLAST+ is installed with <code>conda install -c bioconda blast</code>; a local search is <code>makeblastdb -in proteins.fasta -dbtype prot</code> followed by <code>blastp -query q.fasta -db proteins.fasta -evalue 1e-3 -outfmt 6</code>. Tabular output (<code>-outfmt 6</code>) is what you will parse in later practicals.</p>
+<h3>10.3 A minimal homology-search protocol</h3>
+<ol>
+<li>Obtain the query in FASTA format and check it: length, composition, presence of low-complexity or transmembrane segments.</li>
+<li>Run BLASTp against UniProtKB/Swiss-Prot first (small, curated, every hit is annotated) and then against the non-redundant database (<code>nr</code>) or the PDB as needed.</li>
+<li>Sort by E-value; for each hit of interest, record E-value, bit score, percent identity, alignment length and <strong>query coverage</strong>.</li>
+<li>Decide whether the relationship is full-length (coverage &gt; 80 %) or domain-level; for the latter, run CD-Search to name the domains.</li>
+<li>If no hit has E &lt; 10<sup>−3</sup>, run PSI-BLAST (3–5 iterations, inspecting the newly added hits) or HHpred before concluding that the protein has no known homolog.</li>
+<li>For functional transfer, verify that the best hit is a plausible ortholog (reciprocal best hit, consistent species distribution) and not a paralog with a different function.</li>
+<li>Record the database version and the date: E-values and hit lists are not reproducible otherwise.</li>
+</ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Section 11</span>Self-assessment</h2>
+<p>Attempt each question before opening the answer.</p>
+<details><summary>1. A colleague reports that two proteins are "45 % homologous". What is wrong with the statement, and how should it be rephrased?</summary><p>Homology is the inference of common ancestry and is a yes/no property; the quantity that can be 45 % is identity (or similarity) over an alignment. Rephrase as "the proteins share 45 % sequence identity over an alignment of <em>N</em> residues, which indicates that they are homologous" — and report the alignment length and E-value, because 45 % over 20 residues and 45 % over 300 residues have very different meanings.</p></details>
+<details><summary>2. Human haemoglobin α and chimpanzee haemoglobin α; human haemoglobin α and human haemoglobin β; human haemoglobin α and chimpanzee haemoglobin β. Classify each pair.</summary><p>Orthologs (separated by the human–chimpanzee speciation); paralogs (separated by the α/β duplication); paralogs (the last common ancestor of the two genes is the α/β duplication, which predates the speciation — the fact that they are in different species does not make them orthologs).</p></details>
+<details><summary>3. Under the 4 × 4 matrix of Section 4.1, a gap penalty of −5, and the alignment of Section 4.7, the score was 1. Recompute the score with an affine scheme: open −5, extend −1.</summary><p>The single gap of length 3 now costs −5 − 2 × 1 = −7 instead of −15, so the score becomes 1 + 15 − 7 = 9. The identities and mismatches contribute the same: −3 + 7 + 10 + 7 − 4 + 0 − 1 + 0 = 16; 16 − 7 = 9.</p></details>
+<details><summary>4. Why does the BLOSUM62 diagonal give W a score of 11 but L a score of 4, when both are conserved when matched?</summary><p>The score is a log-odds ratio against the background. Tryptophan is rare (~1 % of residues), so two tryptophans aligned by chance are very unlikely and a W–W match is strong evidence of homology. Leucine is the most abundant residue (~10 %), so L–L matches arise often by chance and carry less information.</p></details>
+<details><summary>5. In the Needleman–Wunsch matrix of Section 5.3, compute <em>F</em>(3, 4) from its neighbours and state which move produced it.</summary><p>Row 3 is T (third residue of GATTACA), column 4 is T (fourth residue of GCATGCG). Candidates: diagonal <em>F</em>(2, 3) + σ(T, T) = 1 + 1 = 2; up <em>F</em>(2, 4) + (−1) = 0 − 1 = −1; left <em>F</em>(3, 3) + (−1) = 0 − 1 = −1. <em>F</em>(3, 4) = 2, from the diagonal (a match).</p></details>
+<details><summary>6. What single change converts the Needleman–Wunsch recurrence into Smith–Waterman, and what two consequences does it have for the traceback?</summary><p>Adding 0 as a fourth candidate in the maximum (and setting the first row and column to 0). The traceback starts at the highest cell of the matrix rather than the bottom-right corner, and it stops at the first cell with value 0 rather than at the origin; the alignment may therefore start and end anywhere.</p></details>
+<details><summary>7. A BLASTp hit has E = 2 × 10<sup>−8</sup> against Swiss-Prot. You repeat the search against <code>nr</code>, which is about 400 times larger, and find the same alignment. What E-value do you expect, approximately, and why?</summary><p>About 400 × 2 × 10<sup>−8</sup> ≈ 8 × 10<sup>−6</sup>, because E is proportional to the database length <em>n</em>; the bit score is unchanged. The hit remains significant, but this illustrates why E-values are not comparable across databases while bit scores are.</p></details>
+<details><summary>8. A bit score of 40 is obtained for a 200-residue query against a database of 5 × 10<sup>10</sup> residues. Estimate E.</summary><p>E = <em>m n</em> 2<sup>−S′</sup> = 200 × 5 × 10<sup>10</sup> × 2<sup>−40</sup> = 10<sup>13</sup> / 1.1 × 10<sup>12</sup> ≈ 9. About nine alignments this good are expected by chance; the hit is not significant.</p></details>
+<details><summary>9. Using the frequency PSSM of Section 7.5, score the sequence D K S W L E I and the sequence A A A A A A A, and explain the difference.</summary><p>D K S W L E I: 0.6 + 0.6 + 0.8 + 1.0 + 0.6 + 0.6 + 0.6 = 4.8 / 7 (it is the consensus sequence and obtains the maximum possible score). A A A A A A A: 0 at every position, total 0 / 7, because alanine was never observed in any column. A real log-odds PSSM with pseudocounts would give the alanine sequence a strongly negative rather than zero score.</p></details>
+<details><summary>10. Why can a true homolog be missed by BLASTp even with the E-value cut-off set to 10?</summary><p>Because the cut-off is applied only to alignments that were actually computed. If the two sequences share no 3-letter word with neighbourhood score ≥ <em>T</em> (or no pair of such words on one diagonal), no extension is triggered and the alignment is never produced. This is a sensitivity loss of the heuristic, independent of the statistics; Smith–Waterman (SSEARCH) or profile methods would be needed.</p></details>
+<details><summary>11. Explain "once a gap, always a gap" and name two strategies that modern aligners use to mitigate it.</summary><p>In progressive alignment, once two sequences (or profiles) are aligned, the gaps placed between them are fixed and cannot be moved when further sequences are added, so errors made early propagate. Mitigations: iterative refinement (MAFFT, MUSCLE — realign subgroups after the first pass and keep improvements) and consistency-based scoring (T-Coffee, ProbCons — use a library of all pairwise alignments to inform each progressive step).</p></details>
+<details><summary>12. You want to model the 3D structure of a 320-residue protein. BLASTp against the PDB returns a template with 28 % identity over 300 residues (E = 10<sup>−20</sup>) and another with 65 % identity over 90 residues (E = 10<sup>−30</sup>). Discuss.</summary><p>The second hit has the lower E-value but covers only 28 % of the target — it is a template for one domain. The first covers almost the whole protein but is in the twilight zone, where the alignment will contain errors and the expected model accuracy (by Chothia–Lesk) is around 2 Å or worse in the core, with unreliable loops. A sound strategy would be to use the first as the global template, improve the alignment with profile methods (PSI-BLAST/HHpred) and secondary-structure prediction, and use the second to refine the domain it covers; or, today, to compare with an AlphaFold model, whose MSA-based inference is designed for precisely this regime.</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Appendix</span>Glossary</h2>
+<dl class="gloss">
+<dt>Affine gap penalty</dt><dd>Gap cost of the form −<em>o</em> − (<em>k</em>−1)<em>e</em>, with a large opening cost <em>o</em> and a small extension cost <em>e</em>; models an indel of <em>k</em> residues as a single event.</dd>
+<dt>Bit score (S′)</dt><dd>Raw alignment score normalised by the Karlin–Altschul parameters λ and <em>K</em>, in units of bits; comparable across scoring systems.</dd>
+<dt>BLOSUM</dt><dd>BLOcks SUbstitution Matrix; log-odds matrices measured from ungapped conserved blocks clustered at a given identity (BLOSUM62: 62 %). Lower number = more divergent.</dd>
+<dt>Coverage</dt><dd>Fraction of the query (or subject) included in the alignment.</dd>
+<dt>Dynamic programming</dt><dd>Algorithmic technique that solves a problem by combining optimal solutions of its sub-problems; the basis of Needleman–Wunsch and Smith–Waterman.</dd>
+<dt>E-value</dt><dd>Expected number of alignments with a score at least as high as the observed one that would arise by chance in a search of this query against this database.</dd>
+<dt>Extreme-value (Gumbel) distribution</dt><dd>Distribution of the maximum of many random variables; the distribution followed by optimal local alignment scores of random sequences.</dd>
+<dt>Global alignment</dt><dd>Alignment of two sequences over their entire lengths (Needleman–Wunsch).</dd>
+<dt>Homology</dt><dd>Descent from a common ancestor. Binary; inferred, not measured.</dd>
+<dt>HSP</dt><dd>High-scoring segment pair; a maximal ungapped local alignment produced by BLAST's extension step.</dd>
+<dt>Identity</dt><dd>Percentage of aligned columns containing identical residues.</dd>
+<dt>Indel</dt><dd>Insertion or deletion; represented by a gap. Pairwise alignment cannot distinguish the two.</dd>
+<dt>Local alignment</dt><dd>Alignment of the highest-scoring subsequences of two sequences, ignoring the flanks (Smith–Waterman, BLAST).</dd>
+<dt>Log-odds score</dt><dd>Logarithm of the ratio between the probability of an observation under the hypothesis of homology and under the hypothesis of chance.</dd>
+<dt>MSA</dt><dd>Multiple sequence alignment; alignment of three or more sequences.</dd>
+<dt>Ortholog</dt><dd>Homolog in another species, separated by speciation.</dd>
+<dt>PAM</dt><dd>Point Accepted Mutation; Dayhoff's evolutionary-model matrices. 1 PAM = 1 accepted mutation per 100 residues. Higher number = more divergent.</dd>
+<dt>Paralog</dt><dd>Homolog separated by gene duplication.</dd>
+<dt>Progressive alignment</dt><dd>MSA heuristic that aligns sequences in the order dictated by a guide tree, freezing gaps once placed.</dd>
+<dt>PSSM / profile</dt><dd>Position-specific scoring matrix: for each column of an alignment, a score for each residue type.</dd>
+<dt>Sensitivity</dt><dd>Fraction of true homologs detected (TP / (TP + FN)).</dd>
+<dt>Specificity</dt><dd>Fraction of non-homologs correctly rejected (TN / (TN + FP)).</dd>
+<dt>Similarity</dt><dd>Percentage of aligned columns with identical or positively scoring residue pairs.</dd>
+<dt>Transition / transversion</dt><dd>Nucleotide substitution within the purine or pyrimidine class / between classes.</dd>
+<dt>Twilight zone</dt><dd>Range of ~20–35 % sequence identity in which sequence similarity alone cannot reliably distinguish homologs from unrelated pairs.</dd>
+<dt>Word (k-mer)</dt><dd>Substring of fixed length <em>k</em> used by BLAST to seed alignments.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Appendix</span>References and further reading</h2>
+<h3>Primary literature cited in the text</h3>
+<ol class="refs">
+<li id="r1">Needleman SB, Wunsch CD. A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>J Mol Biol</em>. 1970;48(3):443–453. <a href="https://doi.org/10.1016/0022-2836(70)90057-4">doi:10.1016/0022-2836(70)90057-4</a></li>
+<li id="r2">Smith TF, Waterman MS. Identification of common molecular subsequences. <em>J Mol Biol</em>. 1981;147(1):195–197. <a href="https://doi.org/10.1016/0022-2836(81)90087-5">doi:10.1016/0022-2836(81)90087-5</a></li>
+<li id="r3">Gotoh O. An improved algorithm for matching biological sequences. <em>J Mol Biol</em>. 1982;162(3):705–708. <a href="https://doi.org/10.1016/0022-2836(82)90398-9">doi:10.1016/0022-2836(82)90398-9</a></li>
+<li id="r4">Dayhoff MO, Schwartz RM, Orcutt BC. A model of evolutionary change in proteins. In: Dayhoff MO, ed. <em>Atlas of Protein Sequence and Structure</em>, vol. 5, suppl. 3. Washington DC: National Biomedical Research Foundation; 1978. p. 345–352.</li>
+<li id="r5">Henikoff S, Henikoff JG. Amino acid substitution matrices from protein blocks. <em>Proc Natl Acad Sci USA</em>. 1992;89(22):10915–10919. <a href="https://doi.org/10.1073/pnas.89.22.10915">doi:10.1073/pnas.89.22.10915</a></li>
+<li id="r6">Eddy SR. Where did the BLOSUM62 alignment score matrix come from? <em>Nat Biotechnol</em>. 2004;22(8):1035–1036. <a href="https://doi.org/10.1038/nbt0804-1035">doi:10.1038/nbt0804-1035</a></li>
+<li id="r7">Styczynski MP, Jensen KL, Rigoutsos I, Stephanopoulos G. BLOSUM62 miscalculations improve search performance. <em>Nat Biotechnol</em>. 2008;26(3):274–275. <a href="https://doi.org/10.1038/nbt0308-274">doi:10.1038/nbt0308-274</a></li>
+<li id="r8">Altschul SF, Gish W, Miller W, Myers EW, Lipman DJ. Basic local alignment search tool. <em>J Mol Biol</em>. 1990;215(3):403–410. <a href="https://doi.org/10.1016/S0022-2836(05)80360-2">doi:10.1016/S0022-2836(05)80360-2</a></li>
+<li id="r9">Altschul SF, Madden TL, Schäffer AA, Zhang J, Zhang Z, Miller W, Lipman DJ. Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. <em>Nucleic Acids Res</em>. 1997;25(17):3389–3402. <a href="https://doi.org/10.1093/nar/25.17.3389">doi:10.1093/nar/25.17.3389</a></li>
+<li id="r10">Camacho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL. BLAST+: architecture and applications. <em>BMC Bioinformatics</em>. 2009;10:421. <a href="https://doi.org/10.1186/1471-2105-10-421">doi:10.1186/1471-2105-10-421</a></li>
+<li id="r11">Karlin S, Altschul SF. Methods for assessing the statistical significance of molecular sequence features by using general scoring schemes. <em>Proc Natl Acad Sci USA</em>. 1990;87(6):2264–2268. <a href="https://doi.org/10.1073/pnas.87.6.2264">doi:10.1073/pnas.87.6.2264</a></li>
+<li id="r12">Pearson WR, Lipman DJ. Improved tools for biological sequence comparison. <em>Proc Natl Acad Sci USA</em>. 1988;85(8):2444–2448. <a href="https://doi.org/10.1073/pnas.85.8.2444">doi:10.1073/pnas.85.8.2444</a></li>
+<li id="r13">Pearson WR. An introduction to sequence similarity ("homology") searching. <em>Curr Protoc Bioinformatics</em>. 2013;42:3.1.1–3.1.8. <a href="https://doi.org/10.1002/0471250953.bi0301s42">doi:10.1002/0471250953.bi0301s42</a></li>
+<li id="r14">Fitch WM. Distinguishing homologous from analogous proteins. <em>Syst Zool</em>. 1970;19(2):99–113. <a href="https://doi.org/10.2307/2412448">doi:10.2307/2412448</a></li>
+<li id="r15">Koonin EV. Orthologs, paralogs, and evolutionary genomics. <em>Annu Rev Genet</em>. 2005;39:309–338. <a href="https://doi.org/10.1146/annurev.genet.39.073003.114725">doi:10.1146/annurev.genet.39.073003.114725</a></li>
+<li id="r16">Feng DF, Doolittle RF. Progressive sequence alignment as a prerequisite to correct phylogenetic trees. <em>J Mol Evol</em>. 1987;25(4):351–360. <a href="https://doi.org/10.1007/BF02603120">doi:10.1007/BF02603120</a></li>
+<li id="r17">Thompson JD, Higgins DG, Gibson TJ. CLUSTAL W: improving the sensitivity of progressive multiple sequence alignment through sequence weighting, position-specific gap penalties and weight matrix choice. <em>Nucleic Acids Res</em>. 1994;22(22):4673–4680. <a href="https://doi.org/10.1093/nar/22.22.4673">doi:10.1093/nar/22.22.4673</a></li>
+<li id="r18">Sievers F, Wilm A, Dineen D, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG. Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. <em>Mol Syst Biol</em>. 2011;7:539. <a href="https://doi.org/10.1038/msb.2011.75">doi:10.1038/msb.2011.75</a></li>
+<li id="r19">Edgar RC. MUSCLE: multiple sequence alignment with high accuracy and high throughput. <em>Nucleic Acids Res</em>. 2004;32(5):1792–1797. <a href="https://doi.org/10.1093/nar/gkh340">doi:10.1093/nar/gkh340</a></li>
+<li id="r20">Katoh K, Standley DM. MAFFT multiple sequence alignment software version 7: improvements in performance and usability. <em>Mol Biol Evol</em>. 2013;30(4):772–780. <a href="https://doi.org/10.1093/molbev/mst010">doi:10.1093/molbev/mst010</a></li>
+<li id="r21">Notredame C, Higgins DG, Heringa J. T-Coffee: a novel method for fast and accurate multiple sequence alignment. <em>J Mol Biol</em>. 2000;302(1):205–217. <a href="https://doi.org/10.1006/jmbi.2000.4042">doi:10.1006/jmbi.2000.4042</a></li>
+<li id="r22">Chothia C, Lesk AM. The relation between the divergence of sequence and structure in proteins. <em>EMBO J</em>. 1986;5(4):823–826. <a href="https://doi.org/10.1002/j.1460-2075.1986.tb04288.x">doi:10.1002/j.1460-2075.1986.tb04288.x</a></li>
+<li id="r23">Rost B. Twilight zone of protein sequence alignments. <em>Protein Eng</em>. 1999;12(2):85–94. <a href="https://doi.org/10.1093/protein/12.2.85">doi:10.1093/protein/12.2.85</a></li>
+<li id="r24">Sander C, Schneider R. Database of homology-derived protein structures and the structural meaning of sequence alignment. <em>Proteins</em>. 1991;9(1):56–68. <a href="https://doi.org/10.1002/prot.340090107">doi:10.1002/prot.340090107</a></li>
+<li id="r25">Lu S, Wang J, Chitsaz F, et al. CDD/SPARCLE: the conserved domain database in 2020. <em>Nucleic Acids Res</em>. 2020;48(D1):D265–D268. <a href="https://doi.org/10.1093/nar/gkz991">doi:10.1093/nar/gkz991</a></li>
+<li id="r26">Torres A, Cabada A, Nieto JJ. An exact formula for the number of alignments between two DNA sequences. <em>DNA Seq</em>. 2003;14(6):427–430. <a href="https://doi.org/10.1080/10425170310001617894">doi:10.1080/10425170310001617894</a></li>
+<li id="r27">Rice P, Longden I, Bleasby A. EMBOSS: the European Molecular Biology Open Software Suite. <em>Trends Genet</em>. 2000;16(6):276–277. <a href="https://doi.org/10.1016/S0168-9525(00)02024-2">doi:10.1016/S0168-9525(00)02024-2</a></li>
+<li id="r28">Cock PJA, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em>. 2009;25(11):1422–1423. <a href="https://doi.org/10.1093/bioinformatics/btp163">doi:10.1093/bioinformatics/btp163</a></li>
+<li id="r29">Waterhouse AM, Procter JB, Martin DMA, Clamp M, Barton GJ. Jalview Version 2 — a multiple sequence alignment editor and analysis workbench. <em>Bioinformatics</em>. 2009;25(9):1189–1191. <a href="https://doi.org/10.1093/bioinformatics/btp033">doi:10.1093/bioinformatics/btp033</a></li>
+<li id="r30">Jumper J, Evans R, Pritzel A, et al. Highly accurate protein structure prediction with AlphaFold. <em>Nature</em>. 2021;596(7873):583–589. <a href="https://doi.org/10.1038/s41586-021-03819-2">doi:10.1038/s41586-021-03819-2</a></li>
+<li id="r39" value="31">Gribskov M, McLachlan AD, Eisenberg D. Profile analysis: detection of distantly related proteins. <em>Proc Natl Acad Sci USA</em>. 1987;84(13):4355–4358. <a href="https://doi.org/10.1073/pnas.84.13.4355">doi:10.1073/pnas.84.13.4355</a></li>
+<li id="r40">Altschul SF. Amino acid substitution matrices from an information theoretic perspective. <em>J Mol Biol</em>. 1991;219(3):555–565. <a href="https://doi.org/10.1016/0022-2836(91)90193-A">doi:10.1016/0022-2836(91)90193-A</a></li>
+</ol>
+<h3>Textbooks</h3>
+<ol class="refs" start="33">
+<li id="r31">Durbin R, Eddy SR, Krogh A, Mitchison G. <em>Biological Sequence Analysis: Probabilistic Models of Proteins and Nucleic Acids</em>. Cambridge University Press; 1998. — The rigorous treatment of pairwise alignment, alignment statistics, profiles and HMMs; chapters 2, 5 and 6 cover this unit.</li>
+<li id="r32">Mount DW. <em>Bioinformatics: Sequence and Genome Analysis</em>. 2nd ed. Cold Spring Harbor Laboratory Press; 2004. — Chapter 3 (pairwise alignment), 4 (statistics), 5 (MSA), 6 (database searching). The most detailed textbook account of PAM and BLOSUM derivation.</li>
+<li id="r33">Lesk AM. <em>Introduction to Bioinformatics</em>. 5th ed. Oxford University Press; 2019. — Accessible introduction; chapter 5 on alignment and phylogeny.</li>
+<li id="r34">Pevsner J. <em>Bioinformatics and Functional Genomics</em>. 3rd ed. Wiley-Blackwell; 2015. — Chapters 3–6 on pairwise alignment, BLAST, advanced database searching and MSA, with many worked web examples.</li>
+<li id="r35">Markel S, León D. <em>Sequence Analysis in a Nutshell: A Guide to Common Tools and Databases</em>. O'Reilly; 2003. — Command-line reference for EMBOSS and BLAST.</li>
+</ol>
+<h3>Popular-science reading recommended in the lecture</h3>
+<ol class="refs" start="38">
+<li>Ridley M. <em>Genome: The Autobiography of a Species in 23 Chapters</em>. Fourth Estate / HarperCollins; 1999.</li>
+<li>Carey N. <em>The Epigenetics Revolution: How Modern Biology Is Rewriting Our Understanding of Genetics, Disease and Inheritance</em>. Icon Books; 2011.</li>
+<li>Carey N. <em>Junk DNA: A Journey Through the Dark Matter of the Genome</em>. Icon Books; 2015.</li>
+</ol>
+<h3>Online training resources</h3>
+<ul>
+<li>EMBL-EBI Training — <a href="https://www.ebi.ac.uk/training/">https://www.ebi.ac.uk/training/</a> (courses on pairwise alignment, BLAST, MSA and Clustal Omega)</li>
+<li>NCBI Learn — <a href="https://www.ncbi.nlm.nih.gov/home/learn/">https://www.ncbi.nlm.nih.gov/home/learn/</a> and the BLAST Help pages, including the tabulated Karlin–Altschul parameters for each matrix and gap scheme</li>
+<li>Galaxy Training Network — <a href="https://training.galaxyproject.org/training-material/">https://training.galaxyproject.org/training-material/</a></li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Study material for BGM324 Bioinformatics, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Figures 1–7 were generated for this document (Python/matplotlib; alignment computations with Biopython 1.88) and may be reused with attribution. Worked examples follow the lecture slides <em>01_AlineamientoDeSecuencias_EN</em>. Last revised 17 October 2026.
+</footer>
+</body>
+</html>

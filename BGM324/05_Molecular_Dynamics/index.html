@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 5 · Molecular Dynamics Simulations — BGM324 Bioinformatics</title>
+<meta name="description" content="Study guide on molecular dynamics simulations: force fields, integration, thermostats and barostats, periodic boundaries, PME, constraints, equilibration and trajectory analysis, with a complete OpenMM simulation of the Trp-cage miniprotein run and analysed for this document.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+button{font-family:system-ui,sans-serif;font-size:.84rem;padding:.3rem .7rem;border:1px solid var(--line);border-radius:4px;background:var(--panel);cursor:pointer}button:hover{background:#e6ecf3}
+</style>
+</head>
+<body>
+<!-- bgm324-backbar -->
+<nav class="bgm324-backbar" aria-label="BGM324" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformatics · Medical Bioengineering · Universidad Católica del Maule</div>
+<h1>Unit 5 — Molecular Dynamics Simulations: Force Fields, Protocols, Analysis and Free Energies</h1>
+<div class="meta">Study material accompanying lecture 05 (<em>An introduction to molecular dynamics simulations</em>) · Prepared by Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · Fifth and final unit of the module: sequence analysis → protein structure prediction → molecular docking → computer-aided drug design → <strong>molecular dynamics</strong></div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contents</h2>
+<ol>
+<li><a href="#how">How to use this material</a></li>
+<li><a href="#s1">1. Why simulate</a></li>
+<li><a href="#s2">2. The equations of motion</a>
+  <ol><li><a href="#s2-1">Newton and the integrator</a></li><li><a href="#s2-2">Verlet and its variants</a></li><li><a href="#s2-3">The timestep</a></li></ol></li>
+<li><a href="#s3">3. The force field</a>
+  <ol><li><a href="#s3-1">Functional form</a></li><li><a href="#s3-2">The families</a></li><li><a href="#s3-3">Non-bonded cost, cutoffs and PME</a></li></ol></li>
+<li><a href="#s4">4. Solvent, boundaries and ensembles</a>
+  <ol><li><a href="#s4-1">Solvent models</a></li><li><a href="#s4-2">Periodic boundaries</a></li><li><a href="#s4-3">Thermostats, barostats, ensembles</a></li></ol></li>
+<li><a href="#s5">5. A simulation protocol, step by step</a></li>
+<li><a href="#s6">6. A simulation run for this document</a>
+  <ol><li><a href="#s6-1">System and protocol</a></li><li><a href="#s6-2">Equilibration</a></li><li><a href="#s6-3">Energy conservation and the timestep</a></li></ol></li>
+<li><a href="#s7">7. Analysing a trajectory</a>
+  <ol><li><a href="#s7-1">RMSD</a></li><li><a href="#s7-2">RMSF</a></li><li><a href="#s7-3">Other observables</a></li><li><a href="#s7-4">Convergence and sampling</a></li></ol></li>
+<li><a href="#s8">8. Limitations</a></li>
+<li><a href="#s9">9. Free energies and affinity</a>
+  <ol><li><a href="#s9-1">The hierarchy</a></li><li><a href="#s9-2">MM/PBSA and MM/GBSA</a></li><li><a href="#s9-3">Alchemical methods</a></li><li><a href="#s9-4">Enhanced sampling and PMF</a></li></ol></li>
+<li><a href="#s10">10. Software and resources</a></li>
+<li><a href="#s11">11. Practical work</a></li>
+<li><a href="#s12">12. Self-assessment</a></li>
+<li><a href="#gloss">Glossary</a></li>
+<li><a href="#refs">References and further reading</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">This document expands the fifth and last lecture of the module, and closes the chain that began with a sequence. Units 2–4 produced static pictures: a structure, a pose, a predicted affinity. Molecular dynamics removes the "static": it integrates Newton's equations for every atom and produces a trajectory — a film of the system at femtosecond resolution — from which thermodynamic and kinetic properties can be computed. Sections 6 and 7 report a complete simulation performed for this document: the 20-residue mini-protein Trp-cage in explicit water, minimised, equilibrated and simulated for 6 ns with OpenMM, plus a controlled experiment on timestep and constraints whose numbers explain why every protocol in the field looks the way it does.</p>
+<div class="box key"><h4>Learning objectives</h4>
+<ul class="objectives">
+<li>Explain what statistical mechanics licenses: how a trajectory of a microscopic system yields macroscopic observables.</li>
+<li>Write Newton's equation for an atom in a force field and describe how the Verlet family of integrators advances it.</li>
+<li>Justify the choice of timestep from the fastest vibration, and explain how constraints and hydrogen-mass repartitioning allow a larger one.</li>
+<li>Write out the terms of a classical force field and identify what each parameter controls.</li>
+<li>Explain why non-bonded interactions dominate the cost, which of them may be truncated, and what PME does.</li>
+<li>Compare explicit and implicit solvent, describe periodic boundary conditions and the minimum-image convention.</li>
+<li>Distinguish the NVE, NVT and NPT ensembles and name the thermostats and barostats used for each.</li>
+<li>Execute and justify the six steps of a standard protocol, and judge from the output whether a system is equilibrated.</li>
+<li>Compute and interpret RMSD, RMSF, radius of gyration, secondary-structure evolution and interaction fingerprints.</li>
+<li>State the main limitations of classical MD — timescale, fixed bonding and protonation, force-field error, sampling — and recognise them in published work.</li>
+<li>Place MM/GBSA, alchemical free-energy methods and PMF calculations on a scale of cost and accuracy, and choose between them.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Section 1</span>Why simulate</h2>
+<p>The lecture opens with the reason the whole field exists: experiment is sometimes impossible, sometimes too slow, sometimes too expensive, and almost always blind to the atomic detail of a process in motion. A crystal structure is a time- and space-average over 10<sup>15</sup> molecules; an NMR ensemble is a set of models consistent with averaged restraints; a kinetic measurement reports a rate without saying what moves. Simulation supplies the missing trajectory<sup class="c"><a href="#r32">[32]</a></sup><sup class="c"><a href="#r33">[33]</a></sup>, and the bridge that makes it meaningful is <strong>statistical mechanics</strong>: the macroscopic observables of thermodynamics are averages over the microscopic states that the system visits.</p>
+<div class="eq">⟨A⟩ = lim<sub>τ→∞</sub> (1/τ) ∫<sub>0</sub><sup>τ</sup> A(<strong>r</strong>(t), <strong>p</strong>(t)) dt &nbsp;=&nbsp; ∫ A(<strong>r</strong>, <strong>p</strong>) ρ(<strong>r</strong>, <strong>p</strong>) d<strong>r</strong> d<strong>p</strong>
+<span class="where">The <strong>ergodic hypothesis</strong>: a time average along a sufficiently long trajectory equals the ensemble average over the probability distribution ρ of the microstates. Everything that follows depends on this equality, and "sufficiently long" is the central practical problem of the field (Section 7.4).</span></div>
+<p>With that bridge, a trajectory yields quantities an experiment measures — binding free energies, diffusion coefficients, order parameters, NMR relaxation rates, heat capacities — and quantities no experiment can see: which water molecule bridges a ligand to a residue, how long a hydrogen bond survives, which conformational substate a mutation stabilises, what path an ion takes through a channel. The lecture's own examples are of the second kind: the TASK-2 potassium channel, where simulations showed how the protonation of a single lysine changes the dimensions of the membrane-facing fenestrations and the energetics of ion access.</p>
+<p>In the context of this module, molecular dynamics plays three concrete roles. It <strong>refines and validates models</strong>: a homology model (Unit 2) or a docking pose (Unit 3) that drifts apart in a few nanoseconds was probably wrong. It <strong>generates ensembles</strong> for ensemble docking and for cryptic-site detection (Units 3 and 4). And it <strong>estimates affinities</strong> with the free-energy methods of Section 9, which are the only computational approach that reaches experimental accuracy for congeneric series.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Section 2</span>The equations of motion</h2>
+<h3 id="s2-1">2.1 Newton and the integrator</h3>
+<p>Each atom <em>i</em> is a point of mass <em>m<sub>i</sub></em> and fixed partial charge <em>q<sub>i</sub></em> at position <strong>r</strong><sub><em>i</em></sub>. The potential energy of the whole system is a single function of all the coordinates, <em>U</em>(<strong>r</strong><sub>1</sub>, …, <strong>r</strong><sub><em>N</em></sub>) — the <strong>force field</strong> of Section 3 — and the force on each atom is its negative gradient:</p>
+<div class="eq"><em>m<sub>i</sub></em> d²<strong>r</strong><sub><em>i</em></sub>/d<em>t</em>² = <strong>F</strong><sub><em>i</em></sub> = −∇<sub><em>i</em></sub> <em>U</em>(<strong>r</strong><sub>1</sub>, …, <strong>r</strong><sub><em>N</em></sub>)</div>
+<p>This is a set of 3<em>N</em> coupled second-order differential equations with no analytical solution for <em>N</em> &gt; 2, so it is integrated numerically in discrete steps. Two properties of the physical system should be reproduced by the integrator: total energy (kinetic plus potential) is conserved in an isolated system, and the equations are time-reversible. Algorithms that respect the geometric structure of Hamiltonian mechanics — <em>symplectic</em> integrators — conserve energy over long times far better than higher-order general-purpose solvers such as Runge–Kutta, which is why the field uses the Verlet family and not the methods of a numerical-analysis course.</p>
+<p>The kinetic energy connects the trajectory to temperature through equipartition:</p>
+<div class="eq"><em>E</em><sub>k</sub> = Σ<sub><em>i</em></sub> ½ <em>m<sub>i</sub></em> <em>v<sub>i</sub></em>² = (3<em>N</em> − <em>N</em><sub>c</sub>)/2 · <em>k</em><sub>B</sub><em>T</em>
+<span class="where"><em>N</em><sub>c</sub> is the number of constraints (fixed bonds, rigid waters, removal of centre-of-mass motion). Temperature in a simulation is therefore a <em>derived</em>, fluctuating quantity computed from the velocities, not an input; its instantaneous value fluctuates as 1/√N, which for a few thousand atoms is a few kelvin.</span></div>
+<p>As the lecture notes, in arrangements of lower potential energy the atoms move faster, because the total is conserved; and in practice the total energy drifts slowly upward because of finite-precision arithmetic and the finite timestep, which is one of the reasons a thermostat is used (Section 4.3). Section 6.3 measures that drift.</p>
+
+<h3 id="s2-2">2.2 The Verlet algorithm and its variants</h3>
+<p>Expanding the position in Taylor series forward and backward in time,</p>
+<div class="eq">
+<strong>r</strong>(<em>t</em>+δ<em>t</em>) = <strong>r</strong>(<em>t</em>) + <strong>v</strong>(<em>t</em>)δ<em>t</em> + ½<strong>a</strong>(<em>t</em>)δ<em>t</em>² + …<br>
+<strong>r</strong>(<em>t</em>−δ<em>t</em>) = <strong>r</strong>(<em>t</em>) − <strong>v</strong>(<em>t</em>)δ<em>t</em> + ½<strong>a</strong>(<em>t</em>)δ<em>t</em>² − …
+<span class="where">Adding the two expansions cancels the odd terms, including the velocity, and gives the position Verlet algorithm with an error of order δ<em>t</em>⁴.</span></div>
+<div class="eq"><strong>r</strong>(<em>t</em>+δ<em>t</em>) = 2<strong>r</strong>(<em>t</em>) − <strong>r</strong>(<em>t</em>−δ<em>t</em>) + <strong>a</strong>(<em>t</em>)δ<em>t</em>²</div>
+<p>Each step needs the positions at the two previous times and the current acceleration — that is, one force evaluation, which is where essentially all the computer time goes. The algorithm is time-reversible and symplectic, and velocities, if needed, are obtained by central difference. Because that estimate of the velocity lags, two algebraically equivalent reformulations are preferred in practice: <strong>leapfrog</strong>, which stores velocities at half steps, and <strong>velocity Verlet</strong>, which computes positions and velocities at the same time and is the usual default. Langevin integrators (used in Section 6) add a friction and a random force to the same scheme in order to control the temperature.<sup class="c"><a href="#r1">[1]</a>,<a href="#r2">[2]</a></sup></p>
+
+<h3 id="s2-3">2.3 The timestep</h3>
+<p>The timestep must resolve the fastest motion in the system. The rule of thumb is δ<em>t</em> ≤ 1/10 of the shortest vibrational period; the fastest motion in a biomolecule is the stretching of bonds to hydrogen — a C–H stretch has a period of about 10 fs (ν̃ ≈ 3,000 cm⁻¹) — which gives δ<em>t</em> ≈ 1 fs. Since the number of steps needed for a given physical time is inversely proportional to δ<em>t</em>, extending the timestep is the cheapest possible speed-up, and three standard tricks do it:</p>
+<ul>
+<li><strong>Constrain bonds to hydrogen</strong> (SHAKE, RATTLE, LINCS, and SETTLE for rigid water) and the fastest remaining motion becomes heavy-atom bond stretching, allowing δ<em>t</em> = 2 fs.<sup class="c"><a href="#r3">[3]</a>,<a href="#r4">[4]</a></sup></li>
+<li><strong>Hydrogen-mass repartitioning</strong>: move mass from the heavy atom to the hydrogens it carries (typically to 1.5–4 u), slowing the angle and torsion motions that involve hydrogens without changing the total mass or the thermodynamics, which allows δ<em>t</em> = 4 fs.<sup class="c"><a href="#r5">[5]</a></sup></li>
+<li><strong>Multiple timestepping</strong> (RESPA): evaluate the expensive long-range electrostatics less often than the cheap bonded terms.</li>
+</ul>
+<p>Section 6.3 measures the energy drift for each of these choices on the actual system, which is the empirical justification for the protocol used everywhere in the field.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Section 3</span>The force field</h2>
+<h3 id="s3-1">3.1 Functional form</h3>
+<p>A <strong>force field</strong> is a potential energy function plus the parameters that go in it. The lecture's image is the right one: the molecule is modelled as charged spheres connected by springs. Nothing in it is quantum mechanical — there are no electrons, bonds cannot break, and the parameters are fitted to reproduce experimental and quantum-chemical data for small molecules. The classical ("Class I") form used by AMBER, CHARMM, OPLS and GROMOS is:</p>
+<div class="eq">
+<em>U</em> = Σ<sub>bonds</sub> ½<em>k</em><sub><em>b</em></sub>(<em>b</em> − <em>b</em><sub>0</sub>)² + Σ<sub>angles</sub> ½<em>k</em><sub>θ</sub>(θ − θ<sub>0</sub>)² + Σ<sub>torsions</sub> Σ<sub><em>n</em></sub> <em>k</em><sub>φ,<em>n</em></sub>[1 + cos(<em>n</em>φ − δ)] + Σ<sub>impropers</sub> <em>k</em><sub>ω</sub>(ω − ω<sub>0</sub>)²<br>
++ Σ<sub><em>i</em>&lt;<em>j</em></sub> 4ε<sub><em>ij</em></sub>[(σ<sub><em>ij</em></sub>/<em>r</em><sub><em>ij</em></sub>)<sup>12</sup> − (σ<sub><em>ij</em></sub>/<em>r</em><sub><em>ij</em></sub>)<sup>6</sup>] + Σ<sub><em>i</em>&lt;<em>j</em></sub> <em>q<sub>i</sub>q<sub>j</sub></em>/(4πε<sub>0</sub>ε<sub>r</sub><em>r</em><sub><em>ij</em></sub>)
+</div>
+<figure>
+<img src="figures/fig01_forcefield.png" alt="Six panels: bond, angle and torsion potentials; Lennard-Jones curve; log plot comparing the decay of Coulomb and Lennard-Jones; timescale ladder of protein motions">
+<figcaption><b>Figure 1. The terms of a classical force field, plotted with representative AMBER-like parameters, and the time scales they must span.</b> Bonds and angles are harmonic springs about reference values, stiff enough (note the energy scale: 400 kJ mol⁻¹ for a 0.05 nm stretch) that they merely vibrate; torsions are periodic and soft, which is why they, not the bonds, determine conformation; the Lennard-Jones term combines a steep <em>r</em>⁻¹² repulsion with an <em>r</em>⁻⁶ dispersion attraction. The fifth panel is the reason Section 3.3 exists: on a logarithmic scale, the dispersion term is negligible beyond about 1 nm while the Coulomb term, even screened by water, is not. The sixth panel places the motions of a protein on the time axis and marks what a 6 ns simulation — the one run for this document — can and cannot reach.</figcaption>
+</figure>
+<p>Four properties of this function are worth stating explicitly, because they are the origin of most of the method's limitations. The bonded terms define the <em>topology</em>: which atoms are bonded to which is fixed at the start and cannot change. The charges are fixed point charges, so the electronic response of a molecule to its environment — polarisation — is absent and is instead folded, on average, into the fitted values. Torsion terms are the fitting dustbin: they are parameterised last, to make the total reproduce quantum-chemical conformational energies after the other terms are set. And the non-bonded sums run over all pairs, which is where the cost is.</p>
+
+<h3 id="s3-2">3.2 The main force-field families</h3>
+<table class="data">
+<thead><tr><th>Family</th><th>Current protein versions</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><strong>AMBER</strong></td><td>ff14SB, ff19SB; ligands via GAFF2 or OpenFF</td><td>Parameterised against quantum-chemical conformational energies and condensed-phase properties; ff19SB adds amino-acid-specific backbone corrections<sup class="c"><a href="#r6">[6]</a>,<a href="#r7">[7]</a></sup></td></tr>
+<tr><td><strong>CHARMM</strong></td><td>CHARMM36m; CGenFF for ligands</td><td>Extensive lipid and carbohydrate coverage; CHARMM36m was refined for intrinsically disordered proteins<sup class="c"><a href="#r8">[8]</a></sup></td></tr>
+<tr><td><strong>OPLS</strong></td><td>OPLS-AA/M, OPLS4</td><td>Optimised against liquid-phase thermodynamics; strong small-molecule coverage</td></tr>
+<tr><td><strong>GROMOS</strong></td><td>54A7, 2016H66</td><td>United-atom (non-polar hydrogens absorbed into carbons), so fewer particles</td></tr>
+<tr><td><strong>Water models</strong></td><td>TIP3P, TIP4P-Ew, TIP4P/2005, SPC/E, OPC</td><td>Must be matched to the protein force field it was parameterised with; TIP3P is standard with AMBER/CHARMM but has too low viscosity, which accelerates diffusion</td></tr>
+<tr><td><strong>Polarisable</strong></td><td>AMOEBA, Drude-2019, CHARMM-Drude</td><td>Explicit induced dipoles; 5–10× more expensive; needed for highly charged sites and ion channels</td></tr>
+</tbody></table>
+<p>The practical rules are to use a protein force field with the water model it was validated with, to never mix force fields within one system, and to record exact versions — results change measurably between them, and a published trajectory without its force-field version is not reproducible.</p>
+
+<h3 id="s3-3">3.3 Non-bonded cost, cutoffs and PME</h3>
+<p>The number of bonded terms grows linearly with <em>N</em>; the number of non-bonded pairs grows as <em>N</em>(<em>N</em>−1)/2, so the non-bonded part dominates. For the modest system of Section 6 — 4,810 atoms — that is about 1.2 × 10⁷ pairs <em>per step</em>, and a 6 ns run at 4 fs needs 1.5 × 10⁶ steps.</p>
+<p>The dispersion term decays as <em>r</em>⁻⁶, so truncating it at 0.9–1.2 nm and applying an analytical long-range correction costs almost nothing in accuracy, and a <strong>neighbour list</strong> rebuilt every 10–20 steps reduces the search from <em>O</em>(<em>N</em>²) to <em>O</em>(<em>N</em>). The cutoff should be applied smoothly — shifted or switched over the last 0.1–0.2 nm — because a hard truncation leaves a discontinuity in the force that pumps energy into the system.</p>
+<p>Electrostatics cannot be truncated: the Coulomb term decays as <em>r</em>⁻¹, and truncating it produces well-documented artefacts — spurious ordering of water and ions at the cutoff radius, incorrect salt-bridge lifetimes, distorted membrane properties. The standard solution is <strong>particle-mesh Ewald</strong> (PME), which splits the Coulomb sum into a short-range part evaluated directly in real space and a smooth long-range part evaluated by fast Fourier transform on a grid in reciprocal space, giving the full periodic lattice sum at a cost of <em>O</em>(<em>N</em> log <em>N</em>).<sup class="c"><a href="#r9">[9]</a>,<a href="#r10">[10]</a></sup> Every simulation in this unit uses PME, and so should essentially every simulation of a charged biomolecular system.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Section 4</span>Solvent, boundaries and ensembles</h2>
+<h3 id="s4-1">4.1 Solvent models</h3>
+<p>As the lecture insists, ignoring the solvent produces major artefacts: without water the hydrophobic effect vanishes, charged side chains collapse onto each other, and the protein shrinks. Two representations are available.</p>
+<table class="data">
+<thead><tr><th></th><th>Explicit solvent</th><th>Implicit solvent</th></tr></thead>
+<tbody>
+<tr><td>Representation</td><td>Every water molecule and ion is a particle with coordinates</td><td>A continuum of dielectric constant ≈ 80, with a surface-area term for the non-polar part (Generalised Born or Poisson–Boltzmann)</td></tr>
+<tr><td>Cost</td><td>Dominates the atom count — in the system of Section 6, 4,506 of 4,810 atoms are solvent</td><td>Negligible in particle count, though the GB/PB evaluation itself is not free</td></tr>
+<tr><td>Captures</td><td>Hydrogen bonds to water, bridging and buried waters, specific ion binding, the hydrophobic effect, solvent viscosity</td><td>Average electrostatic screening and solvation free energy</td></tr>
+<tr><td>Misses</td><td>Nothing in principle; needs hundreds of ps of equilibration for the water to order</td><td>Water-mediated contacts (the flap water of Unit 3 would disappear), ion pairing, viscosity — so kinetics are wrong and conformational barriers are too low</td></tr>
+<tr><td>Use for</td><td>Binding sites, ion channels, membranes, anything where water structure matters</td><td>Fast conformational scans, loop refinement, MM/GBSA rescoring (Section 9.2)</td></tr>
+</tbody></table>
+<p>Membrane proteins require a third component: a lipid bilayer, built with CHARMM-GUI or equivalent, equilibrated so that the area per lipid matches experiment before the protein is allowed to move. The lecture's TASK-2 simulations are of this type, and they illustrate why: the fenestrations of the channel open toward the bilayer, lipid tails penetrate into them, and nothing of that behaviour exists in a simulation without a membrane.</p>
+
+<h3 id="s4-2">4.2 Periodic boundary conditions</h3>
+<p>A finite droplet of water has a surface, and a surface is an artefact: water at a vacuum interface is ordered differently from bulk water, and a solute will seek that interface. The solution is to make the system formally infinite by replicating the simulation cell in all directions — <strong>periodic boundary conditions</strong>. An atom that leaves through one face re-enters through the opposite one, so the number of particles is conserved and no interface exists.</p>
+<figure>
+<img src="figures/fig02_pbc.png" alt="Left: a central simulation cell surrounded by its periodic images with a molecule crossing the boundary. Right: two atoms and the periodic copy showing the minimum-image distance">
+<figcaption><b>Figure 2. Periodic boundaries and the minimum-image convention.</b> Only the central cell is stored; its images are generated by translation when a pair interaction is evaluated. Each pair of atoms interacts with the nearest periodic copy of its partner, which imposes the central practical constraint: <em>the non-bonded cutoff must not exceed half the shortest box edge</em>, or an atom would interact with two images of the same partner. The box must also be large enough that the solute does not interact with its own periodic image — the usual minimum is 1.0–1.5 nm of solvent padding on every side, and more for a highly charged or elongated solute.</figcaption>
+</figure>
+<p>Two further practicalities follow. Cubic boxes waste solvent on the corners for a roughly globular protein, so <strong>truncated octahedron</strong> or rhombic dodecahedron cells, which give the same minimum image distance with ~70 % of the volume, are preferred for production work. And the system must be <strong>neutralised</strong>: PME with a net charge introduces a uniform neutralising background whose effect on the energetics is an artefact, so counter-ions are added to bring the total charge to zero, usually together with enough salt to reach a physiological 0.10–0.15 M.</p>
+
+<h3 id="s4-3">4.3 Thermostats, barostats and ensembles</h3>
+<p>Integrating Newton's equations as written conserves energy and samples the <strong>microcanonical (NVE)</strong> ensemble — constant number of particles, volume and energy. Laboratory experiments are not done at constant energy, so the equations are modified to sample the ensemble of interest.</p>
+<table class="data">
+<thead><tr><th>Ensemble</th><th>Constant</th><th>How it is achieved</th><th>Used for</th></tr></thead>
+<tbody>
+<tr><td><strong>NVE</strong> (microcanonical)</td><td><em>N</em>, <em>V</em>, <em>E</em></td><td>Plain Verlet integration, no coupling</td><td>Testing integrator accuracy and energy conservation (Section 6.3); rarely for production</td></tr>
+<tr><td><strong>NVT</strong> (canonical)</td><td><em>N</em>, <em>V</em>, <em>T</em></td><td>Thermostat: velocity rescaling (Berendsen — fast but does not give the correct ensemble), Bussi–Donadio–Parrinello stochastic rescaling, Nosé–Hoover (deterministic, extended system), Langevin or Andersen (stochastic)<sup class="c"><a href="#r11">[11]</a>,<a href="#r12">[12]</a></sup></td><td>Heating and the first equilibration stage; systems where the volume must stay fixed</td></tr>
+<tr><td><strong>NPT</strong> (isothermal–isobaric)</td><td><em>N</em>, <em>P</em>, <em>T</em></td><td>Thermostat plus a barostat that rescales the box: Berendsen, Parrinello–Rahman, Monte Carlo barostat</td><td>The standard production ensemble, because laboratory conditions are constant temperature and pressure</td></tr>
+</tbody></table>
+<p>Two cautions about thermostats are standard knowledge in the field and standard mistakes in student work. The Berendsen thermostat and barostat relax to the target smoothly but do not reproduce the correct fluctuations, so they are acceptable for equilibration and not for production. And applying a thermostat to a system with a net momentum or with inhomogeneous heating produces the "flying ice cube" artefact, where the thermostat drains the internal degrees of freedom while the whole system translates; removing centre-of-mass motion periodically prevents it.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Section 5</span>A simulation protocol, step by step</h2>
+<p>The lecture's six steps, with the decisions each one involves.</p>
+<ol>
+<li><strong>System preparation.</strong> Choose and clean the structure (Unit 2, Section 4.4): select chains and the biological assembly, model missing loops, decide about crystallographic waters, assign protonation states of His, Asp, Glu, Lys and Cys at the simulation pH, build disulfide bonds, add hydrogens. Assign atom types, partial charges and connectivity from the force field (the <strong>topology</strong>) and the associated force constants (the <strong>parameters</strong>). For a non-standard ligand, parameters must be generated (GAFF2/antechamber, CGenFF, OpenFF) and checked — this is where most errors enter a simulation. Build the box, solvate, neutralise and add salt.</li>
+<li><strong>Minimisation.</strong> The experimental structure was refined against data with a different energy function, so under the force field it contains small clashes that would launch atoms at implausible velocities. Steepest descent for a few thousand steps removes the worst; conjugate gradient or L-BFGS converges more efficiently afterwards. Minimisation finds the nearest local minimum, not the global one — it is a repair step, not a search. Typically the protein is restrained first while only solvent relaxes, then the restraints are released.</li>
+<li><strong>Heating.</strong> Velocities are assigned from a Maxwell–Boltzmann distribution at a low temperature and the system is warmed to the target over tens to hundreds of picoseconds, usually with positional restraints on the solute so that the solvent reorganises around a fixed structure.</li>
+<li><strong>Equilibration.</strong> NVT first to settle the temperature, then NPT to settle the density and box volume, with the restraints released gradually. The system is equilibrated when the monitored quantities have stopped drifting (Section 6.2) — not when a fixed time has elapsed.</li>
+<li><strong>Production.</strong> The trajectory that will be analysed, run in the chosen ensemble with no restraints, saving coordinates every 1–100 ps. Independent <em>replicas</em> with different initial velocities are strongly preferable to one long run of the same total length, because they sample independent starting points and allow an error estimate.</li>
+<li><strong>Analysis.</strong> Section 7.</li>
+</ol>
+<div class="box warn"><h4>What to write down, every time</h4>
+<p>Force field and version for protein, ligand, lipids and ions; water model; box type and padding; ionic strength and neutralising ions; protonation states that differ from the default and how they were decided; cutoffs, electrostatics method and grid spacing; constraints and hydrogen masses; timestep; thermostat and barostat with their coupling constants; the length of each stage; number of replicas and random seeds; software version. A paper without these is not reproducible, and most of the questions a reviewer asks about a simulation are answered by this list.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Section 6</span>A simulation run for this document</h2>
+<h3 id="s6-1">6.1 System and protocol</h3>
+<p>To make the protocol concrete, a complete simulation was carried out for this document with <strong>OpenMM 8.6.1</strong>.<sup class="c"><a href="#r13">[13]</a></sup> The system is the <strong>Trp-cage</strong> miniprotein TC5b (PDB <code>1L2Y</code>, NMR), a 20-residue designed peptide<sup class="c"><a href="#r30">[30]</a></sup> that folds autonomously in microseconds and is the standard test system of the folding-simulation literature. Its small size is what makes a full protocol reproducible on a laptop; everything below runs on CPU in a few hours.</p>
+<table class="data">
+<thead><tr><th>Choice</th><th>Value</th><th>Reason</th></tr></thead>
+<tbody>
+<tr><td>Structure</td><td>PDB <code>1L2Y</code>, model 1, hydrogens added at pH 7 with PDBFixer</td><td>Small, well characterised, experimentally determined</td></tr>
+<tr><td>Force field</td><td>AMBER ff14SB protein + TIP3P-FB water</td><td>Standard, validated combination</td></tr>
+<tr><td>Box and solvent</td><td>Cubic, 1.0 nm padding → 3.7498 nm edge; 4,810 atoms total, of which 4,506 are solvent; 0.15 M NaCl, neutralised</td><td>Padding ≥ cutoff; physiological salt</td></tr>
+<tr><td>Non-bonded</td><td>PME, 1.0 nm real-space cutoff</td><td>Electrostatics cannot be truncated (Section 3.3)</td></tr>
+<tr><td>Constraints</td><td>Bonds to hydrogen constrained, rigid water, hydrogen mass 1.5 u</td><td>Permits a 4 fs timestep (Section 6.3)</td></tr>
+<tr><td>Integrator</td><td>Langevin middle, 300 K, friction 1 ps⁻¹, δ<em>t</em> = 4 fs</td><td>Thermostatted, stable, standard</td></tr>
+<tr><td>Protocol</td><td>Minimisation → 200 ps NVT → 500 ps NPT (Monte Carlo barostat, 1 bar) → <strong>6 ns</strong> NPT production, frames every 10 ps</td><td>The six steps of Section 5</td></tr>
+<tr><td>Performance</td><td>89.7 ns/day on 10 CPU threads</td><td>For reference when planning a run</td></tr>
+</tbody></table>
+<p>Minimisation alone lowered the potential energy from −15,893.0 to −91,585.8 kJ mol⁻¹ — a change of −75,692.8 kJ mol⁻¹, almost all of it from relieving clashes between the freshly added hydrogens and the freshly placed water. That number is a useful calibration: it is far larger than any energy difference the simulation will later be asked to resolve, which is why minimisation is mandatory and why one never interprets absolute potential energies.</p>
+
+<h3 id="s6-2">6.2 Equilibration: knowing when to start measuring</h3>
+<figure>
+<img src="figures/fig03_equilibration.png" alt="Three panels showing temperature during NVT, density during NPT and potential energy during NPT, each converging">
+<figcaption><b>Figure 3. Equilibration of the Trp-cage system (run for this document).</b> Left: the Langevin thermostat brings the system to 300 K within a few picoseconds and holds it, with the fluctuations expected for 4,810 atoms (mean of the last 20 ps: 302.0 K). Centre: under the barostat the box contracts and the density settles at 1.0245 g mL⁻¹, close to the value expected for TIP3P water with protein and salt. Right: the potential energy plateaus; the residual drift over the last 300 ps is −592 kJ mol⁻¹ ns⁻¹, four orders of magnitude smaller than the energy released during minimisation. These three plots — temperature, density and energy — are the minimum evidence that a system is equilibrated, and they should accompany any reported simulation.</figcaption>
+</figure>
+<p>Equilibration is a property of the observable, not of the clock. Temperature equilibrates in picoseconds, density in tens of picoseconds, the solvation shell in hundreds, and a side-chain rotamer distribution or a loop conformation may not equilibrate at all within the reach of the run. The honest practice is to plot the quantity that the study depends on and to discard the portion over which it drifts — and to say in the methods how much was discarded.</p>
+
+<h3 id="s6-3">6.3 Energy conservation, the timestep and constraints</h3>
+<p>The second experiment performed for this document measures directly what Section 2.3 asserts. Starting from the equilibrated system, six short simulations were run in the <strong>NVE</strong> ensemble — plain Verlet, no thermostat, so that any change in total energy is pure integration error — with different timesteps and constraint settings. Each system was built, minimised and thermalised for 100 ps <em>in its own constraint and mass settings</em>, then integrated with plain Verlet for 10 ps of settling plus 50 ps of measurement; the drift is the slope of a linear regression of the total energy over the measurement window, reported per atom, the standard way to compare systems of different size.</p>
+<table class="data">
+<thead><tr><th>Timestep</th><th>Constraints</th><th>Hydrogen mass</th><th>Drift<br>(kJ mol⁻¹ ns⁻¹ atom⁻¹)</th><th>Drift<br>(kJ mol⁻¹ ns⁻¹)</th><th>RMS fluctuation of <em>E</em><sub>tot</sub><br>(kJ mol⁻¹)</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td>1 fs</td><td>none (all bonds flexible)</td><td>1.008 u</td><td>−0.0357</td><td>−172</td><td>9.5</td><td>not acceptable</td></tr>
+<tr><td>2 fs</td><td>none (all bonds flexible)</td><td>1.008 u</td><td>−0.0890</td><td>−428</td><td>35.8</td><td>not acceptable</td></tr>
+<tr><td>2 fs</td><td>bonds to hydrogen + rigid water</td><td>1.008 u</td><td>−0.0022</td><td>−11</td><td>2.9</td><td>acceptable</td></tr>
+<tr><td>4 fs</td><td>bonds to hydrogen + rigid water</td><td>1.008 u</td><td>+0.1683</td><td>+809</td><td>17.2</td><td>not acceptable</td></tr>
+<tr><td>4 fs</td><td>bonds to hydrogen + rigid water</td><td>1.5 u</td><td>−0.0112</td><td>−54</td><td>10.5</td><td>acceptable</td></tr>
+<tr><td>5 fs</td><td>bonds to hydrogen + rigid water</td><td>1.5 u</td><td>+0.4987</td><td>+2399</td><td>39.0</td><td>not acceptable</td></tr>
+</tbody></table>
+<p class="note">A drift of 0.01 kJ mol⁻¹ ns⁻¹ atom⁻¹ is a commonly quoted tolerance; at that rate the 4,810-atom box gains or loses about 48 kJ mol⁻¹ per nanosecond, far below the thermal energy of the system (≈ 60,000 kJ mol⁻¹ at 300 K). The RMS fluctuation column is reported because a large fluctuation with a small slope also signals an unstable integration.</p>
+<figure>
+<img src="figures/fig04_drift.png" alt="Total energy against time for six NVE simulations with different timesteps and constraints, and a bar chart of the resulting drift rates per atom">
+<figcaption><b>Figure 4. Energy conservation in the NVE ensemble as a function of timestep and constraints (run for this document).</b> <b>(a)</b> Total energy relative to its initial value during 50 ps of pure Verlet dynamics for the six settings of the table. The two unconstrained runs (grey) show the large, noisy excursions of a system whose fastest motion — the O–H and N–H stretch, period ≈ 10 fs — is sampled by only a handful of steps per period. Constraining bonds to hydrogen at 2 fs (green) is almost perfectly flat. Pushing that same system to 4 fs (orange) produces a clear upward slope, because the next-fastest motion, angle bending involving hydrogen, is now under-sampled; repartitioning hydrogen mass to 1.5 u (blue) slows that motion and restores conservation at 4 fs. At 5 fs (purple) even the repartitioned system heats steadily. <b>(b)</b> The same information as a drift rate per atom. Note that the ranking is not simply monotone in the timestep: what matters is the ratio between the timestep and the period of the fastest motion that remains free, which is why a constrained 2 fs run conserves energy better than an unconstrained 1 fs run. Protocol: each system was built with its own constraint and mass settings, minimised, thermalised for 100 ps with a Langevin integrator <em>in that same system</em>, then switched to plain Verlet with a 10 ps settling period before 50 ps of measurement; the drift is the slope of a linear regression of <em>E</em><sub>tot</sub> over the measurement window. Thermalising each system in its own force-field setting matters: a first attempt that started every NVE run from a single constrained-equilibrated state gave non-monotone, meaningless drifts, because the newly freed hydrogen vibrations absorbed energy from the other degrees of freedom while they filled up.</figcaption>
+</figure>
+<div class="box key"><h4>What the experiment shows</h4><ul>
+<li>The timestep is limited by the <em>fastest motion that is still free to move</em>. Freezing bonds to hydrogen removes that motion and buys a factor of two; repartitioning hydrogen mass slows the next-fastest motions and buys another factor of two.</li>
+<li>Energy drift is the diagnostic. A production run with a thermostat hides it — the thermostat absorbs the error as heat — so the integration settings must be validated in NVE, which is the main reason that ensemble is still used.</li>
+<li>These are not free lunches. Constraining bonds to hydrogen removes those vibrations from the ensemble (they are quantum-mechanically frozen at 300 K anyway, so this is an improvement rather than an approximation); hydrogen-mass repartitioning changes the <em>dynamics</em> of the hydrogens, so quantities that depend on hydrogen motion — vibrational spectra, kinetic isotope effects, very fast correlation times — must not be computed from such a trajectory.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Section 7</span>Analysing a trajectory</h2>
+<p>A 6 ns trajectory saved every 10 ps is 600 frames of 4,810 atoms — about 35 MB here, and routinely hundreds of gigabytes for a production system. The analysis reduces it to a handful of time series and distributions. All quantities below were computed from the production run with MDTraj.<sup class="c"><a href="#r14">[14]</a></sup></p>
+
+<h3 id="s7-1">7.1 Root-mean-square deviation (RMSD)</h3>
+<div class="eq">RMSD(<em>t</em>) = √( (1/<em>N</em>) Σ<sub><em>i</em>=1</sub><sup><em>N</em></sup> |<strong>r</strong><sub><em>i</em></sub>(<em>t</em>) − <strong>r</strong><sub><em>i</em></sub><sup>ref</sup>|² )
+<span class="where">computed after removing overall translation and rotation by least-squares superposition on the reference (Unit 2, Section 8.1). The choice of atom set matters as much as the number itself: backbone or Cα RMSD reports the fold, all-atom RMSD includes side chains, and ligand RMSD after superposing the <em>protein</em> reports whether a docking pose survives (Unit 3).</span></div>
+<p>RMSD against the starting structure answers one question: has the structure stayed near where it began? A curve that rises and then plateaus indicates relaxation into a nearby basin — the normal and expected behaviour. A curve that keeps rising means the structure is still moving away, so either the simulation is not equilibrated or the model was wrong. A curve with a step indicates a transition between conformational states, which is usually the interesting result.</p>
+
+<h3 id="s7-2">7.2 Root-mean-square fluctuation (RMSF)</h3>
+<div class="eq">RMSF<sub><em>i</em></sub> = √( (1/<em>T</em>) Σ<sub><em>t</em>=1</sub><sup><em>T</em></sup> |<strong>r</strong><sub><em>i</em></sub>(<em>t</em>) − ⟨<strong>r</strong><sub><em>i</em></sub>⟩|² )
+<span class="where">The average is over time for each atom or residue, so RMSF is a function of residue number rather than of time — it says <em>where</em> the protein moves, as RMSD says <em>how much</em>. It is directly comparable with crystallographic B-factors through B = (8π²/3)·RMSF².</span></div>
+
+<figure>
+<img src="figures/fig05_analysis.png" alt="Four panels: RMSD over time, per-residue RMSF, radius of gyration and native-contact fraction for the Trp-cage trajectory">
+<figcaption><b>Figure 5. Standard analysis of the 6 ns Trp-cage trajectory (computed for this document).</b> <b>(a)</b> Backbone RMSD from the first frame: a rise over the first nanosecond as the NMR model relaxes into the force field, then a plateau. Mean over the second half 1.86 Å, maximum 2.68 Å, final frame 1.59 Å — the fold is kept. <b>(b)</b> Per-residue Cα RMSF after superposition: 8.5 Å at residue 1, the free N-terminus, against a mean of 1.26 Å and a minimum of 0.54 Å in the helix. The shaded band marks the α-helix, residues 2–13. This is the profile every folded protein shows: mobile termini and loops, a rigid secondary-structure core. <b>(c)</b> Radius of gyration, 7.63 ± 0.12 Å, flat throughout — the miniprotein neither unfolds nor collapses on this timescale, as expected 6 ns from a folded start. <b>(d)</b> Secondary structure assigned per residue and per frame (DSSP<sup class="c"><a href="#r34">[34]</a></sup>). The helix is present in 45 % of all residue–frame pairs and is continuous for residues 2–13, while the C-terminal half fluctuates between coil and short turns. The fraction of native contacts retained<sup class="c"><a href="#r35">[35]</a></sup> (145 contacts in the reference) averages 0.62 over the second half and never falls below 0.34, confirming that the excursions visible in (a) are breathing motions rather than partial unfolding.</figcaption>
+</figure>
+
+<h3 id="s7-3">7.3 Other standard observables</h3>
+<table class="data">
+<thead><tr><th>Observable</th><th>What it measures</th><th>Typical use</th></tr></thead>
+<tbody>
+<tr><td><strong>Radius of gyration</strong> R<sub>g</sub></td><td>Compactness: √(Σ m<sub>i</sub>|r<sub>i</sub> − r<sub>cm</sub>|²/Σ m<sub>i</sub>)</td><td>Folding/unfolding, domain opening; comparable with SAXS</td></tr>
+<tr><td><strong>Secondary structure</strong> over time</td><td>DSSP assignment per residue per frame</td><td>Local unfolding, helix fraying; the lecture's per-residue "secondary structure throughout the simulation" plots</td></tr>
+<tr><td><strong>Hydrogen bonds</strong></td><td>Count and occupancy (fraction of frames in which a given bond exists), by geometric criteria — donor–acceptor &lt; 3.5 Å and D–H···A &gt; 120–150°</td><td>Interaction persistence; stability of a predicted pose</td></tr>
+<tr><td><strong>Interaction fingerprints</strong></td><td>Fraction of frames in which each residue makes each interaction type with a ligand (hydrophobic, H-bond, ionic, water bridge)</td><td>The lecture's protein–ligand contact histograms; the standard way to report a simulated complex</td></tr>
+<tr><td><strong>Distances, angles, dihedrals</strong></td><td>Any user-defined geometric variable, e.g. the width of a channel fenestration or a side-chain χ<sub>1</sub></td><td>Mechanistic questions; reaction coordinates for enhanced sampling</td></tr>
+<tr><td><strong>Solvent-accessible surface area</strong></td><td>Area reachable by a 1.4 Å probe, split into polar and non-polar</td><td>Burial on binding; input to MM/GBSA (Section 9.2)</td></tr>
+<tr><td><strong>Principal component analysis</strong></td><td>Eigenvectors of the Cα covariance matrix: the collective motions with the largest amplitude</td><td>Describing a conformational transition in two or three coordinates; building free-energy landscapes</td></tr>
+<tr><td><strong>Clustering</strong></td><td>Grouping frames by mutual RMSD</td><td>Extracting representative structures for docking (Unit 3) or for figures</td></tr>
+</tbody></table>
+
+<h3 id="s7-4">7.4 Convergence and sampling: the question that is usually unanswered</h3>
+<p>Every number computed from a trajectory is an average over the states the trajectory visited, and the ergodic hypothesis of Section 1 is only approached if those states are representative. Three checks are standard and are routinely omitted.</p>
+<ul>
+<li><strong>Block averaging.</strong> Split the trajectory into blocks, compute the observable in each, and look at the spread. If the blocks disagree, the run is too short for that observable, whatever the RMSD plot looks like.</li>
+<li><strong>Independent replicas.</strong> Several short runs from different initial velocities explore more of phase space than one long run of the same total cost, and the spread between them is the only honest error bar. Reporting a single trajectory without replicas is reporting a result without uncertainty.</li>
+<li><strong>Reverse cumulative averages or time-lagged analyses</strong> to show that the average has stopped changing as more data are added.</li>
+</ul>
+<p>And the limitation that no amount of care removes: a 6 ns simulation cannot report on a process that takes microseconds. Figure 1 places the motions of a protein on the time axis; a run samples bond vibrations and surface side-chain rotations exhaustively, loop motions partially, and allosteric transitions or folding not at all. Claims must be scaled to the sampling, and when the process of interest is slower than the simulation, the right response is an enhanced-sampling method (Section 9.4), not a longer conclusion.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Section 8</span>Limitations of classical molecular dynamics</h2>
+<div class="box warn"><h4>The five that matter most</h4>
+<ol>
+<li><strong>Timescale.</strong> Steps of 2–4 fs and 10⁶–10⁹ steps per run put microsecond-to-millisecond processes — folding, most allosteric transitions, slow ligand unbinding — out of reach of brute force; the millisecond-scale trajectories that resolved the folding of a dozen small proteins required purpose-built hardware.<sup class="c"><a href="#r31">[31]</a></sup> This is addressed by hardware (GPUs, Anton), by distributed computing, and above all by enhanced sampling.</li>
+<li><strong>Fixed bonding.</strong> The topology is set at the start. Covalent bonds cannot break or form, so no chemical reaction, no disulfide exchange, no covalent inhibition can be simulated. Reactive processes need quantum mechanics (QM/MM) or reactive force fields.</li>
+<li><strong>Fixed protonation.</strong> Each ionisable group keeps the state assigned at setup for the whole run, which is wrong for any process coupled to proton transfer — the catalytic cycle of an enzyme, pH-dependent gating, the Asp dyad of HIV protease (Unit 3). The lecture's TASK-2 example confronts this directly by simulating both protonation states of Lys245 separately and comparing; constant-pH MD is the more sophisticated answer.</li>
+<li><strong>Force-field error.</strong> Fixed point charges without polarisation, approximate dispersion, torsion parameters fitted to small molecules, and water models with the wrong viscosity. Classical force fields are remarkably good at reproducing folded-state structure and remain weakest for disordered proteins, highly charged interfaces, metal sites and unusual ligands.</li>
+<li><strong>Sampling and interpretation.</strong> A single trajectory is one sample from a stochastic process. The commonest error in the literature is to treat one event observed once in one trajectory as a mechanism.</li>
+</ol></div>
+<p>None of these invalidates the method; they define its domain. A simulation is an experiment on a model, and its result is as good as the model and the sampling — which is exactly the framing of the in-silico laboratory introduced in Unit 2, Section 1.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Section 9</span>Free energies and binding affinity</h2>
+<h3 id="s9-1">9.1 The hierarchy of methods</h3>
+<p>Unit 3 ended with the conclusion that docking scores are classifiers, not affinities. Molecular dynamics provides the methods that do estimate binding free energy, at a cost that rises steeply with accuracy.</p>
+<table class="data">
+<thead><tr><th>Method</th><th>Cost per compound</th><th>Typical error</th><th>Scope</th></tr></thead>
+<tbody>
+<tr><td>Docking score (Unit 3)</td><td>Seconds</td><td>2–3 kcal mol⁻¹; ranking correlation r ≈ 0.4–0.6</td><td>Screening 10⁶–10⁹ molecules</td></tr>
+<tr><td><strong>MM/GBSA</strong></td><td>Minutes to hours</td><td>1.5–3 kcal mol⁻¹ absolute; useful for <em>relative</em> ranking within a series</td><td>Rescoring 10²–10³ poses</td></tr>
+<tr><td><strong>MM/PBSA</strong></td><td>Hours</td><td>Similar; more rigorous solvation, slower</td><td>As above</td></tr>
+<tr><td><strong>Relative FEP / TI</strong></td><td>Hours to days per perturbation (GPU)</td><td><strong>0.8–1.2 kcal mol⁻¹</strong> for congeneric series</td><td>Lead optimisation: which analogue to make next</td></tr>
+<tr><td><strong>Absolute binding FEP</strong></td><td>Days</td><td>1–2 kcal mol⁻¹, protocol-dependent</td><td>Chemically dissimilar ligands, fragment hits</td></tr>
+<tr><td><strong>PMF / umbrella sampling</strong></td><td>Days</td><td>Depends on the reaction coordinate</td><td>Pathways: permeation, unbinding, conformational transitions</td></tr>
+</tbody></table>
+
+<h3 id="s9-2">9.2 MM/PBSA and MM/GBSA</h3>
+<p>These are end-point methods: they estimate the binding free energy from the complex, the receptor and the ligand without simulating the path between them.<sup class="c"><a href="#r15">[15]</a>,<a href="#r16">[16]</a></sup></p>
+<div class="eq">ΔG<sub>bind</sub> = ⟨G<sub>complex</sub>⟩ − ⟨G<sub>receptor</sub>⟩ − ⟨G<sub>ligand</sub>⟩,&nbsp;&nbsp; G = E<sub>MM</sub> + G<sub>solv,polar</sub> + G<sub>solv,nonpolar</sub> − TS
+<span class="where">E<sub>MM</sub> = bonded + van der Waals + electrostatic energy from the force field; G<sub>solv,polar</sub> from the Poisson–Boltzmann equation (PBSA) or the faster Generalised Born approximation (GBSA); G<sub>solv,nonpolar</sub> ≈ γ·SASA + b; −TS is the solute entropy, estimated by normal-mode or quasi-harmonic analysis — expensive, noisy, and therefore frequently omitted, in which case the quantity reported is an <em>enthalpy-like</em> score and not a free energy.</span></div>
+<p>The averages are taken over frames from one trajectory of the complex (the "single-trajectory" protocol, which cancels the internal energy of the unbound states and reduces the noise enormously). The method's attraction is that it costs a short simulation per compound; its weaknesses are a strong dependence on the interior dielectric constant chosen, the neglect of explicit water, the entropy problem, and a well-documented tendency to overestimate the contribution of charged groups. Used to rank a congeneric series it adds value over a docking score; used to report an absolute ΔG in kcal mol⁻¹ it overstates what it can do.</p>
+
+<h3 id="s9-3">9.3 Alchemical free-energy methods</h3>
+<p>The rigorous approach computes free-energy <em>differences</em> along a non-physical ("alchemical") path in which one ligand is gradually transformed into another, or a ligand is gradually decoupled from its environment. A coupling parameter λ runs from 0 to 1 in a series of windows, each simulated, and the free energies are combined by <strong>thermodynamic integration</strong> (integrating ⟨∂U/∂λ⟩ over λ), <strong>free-energy perturbation</strong> (Zwanzig's exponential averaging), or the <strong>Bennett acceptance ratio</strong> and its multistate extension MBAR, which is the statistically optimal estimator.<sup class="c"><a href="#r17">[17]</a>,<a href="#r18">[18]</a></sup> For a <em>relative</em> calculation the thermodynamic cycle closes: ΔΔG<sub>bind</sub> = ΔG<sub>bound</sub>(A→B) − ΔG<sub>free</sub>(A→B), so only the two alchemical legs are simulated and the two physical binding events are never computed directly.</p>
+<p>These methods are, in favourable cases, accurate to about 1 kcal mol⁻¹ — a factor of five in affinity — which is enough to decide which analogue to synthesise, and they are now used routinely in industry for lead optimisation.<sup class="c"><a href="#r19">[19]</a></sup> Their requirements are correspondingly strict: a reliable binding mode (from Unit 3, ideally confirmed by a structure), ligands related closely enough to be mutated into one another, correct protonation and tautomer assignments, adequate sampling in every λ window, and careful error analysis.</p>
+
+<h3 id="s9-4">9.4 Enhanced sampling and potentials of mean force</h3>
+<p>When the process of interest is slower than the simulation, sampling must be biased. <strong>Umbrella sampling</strong> restrains a chosen reaction coordinate — a distance, an angle, a depth along a channel — in a series of overlapping windows, and the biased histograms are recombined into an unbiased <strong>potential of mean force</strong> (PMF) by WHAM or MBAR.<sup class="c"><a href="#r20">[20]</a></sup> The lecture's TASK-2 figures are exactly this: a PMF of a lysine side chain along the membrane normal for each protonation state, showing barriers of 0.6–2.3 kcal mol⁻¹ depending on charge and channel conformation. <strong>Metadynamics</strong> instead deposits a history-dependent bias that fills the wells already visited, so the system is pushed out of them and the accumulated bias converges to the negative of the free-energy surface;<sup class="c"><a href="#r21">[21]</a></sup> <strong>replica exchange</strong> (parallel tempering) runs copies at different temperatures and swaps them periodically, so that high-temperature replicas cross barriers and low-temperature ones sample the canonical ensemble;<sup class="c"><a href="#r22">[22]</a></sup> <strong>accelerated and Gaussian-accelerated MD</strong> flatten the potential without requiring a reaction coordinate. The common cost is interpretive: every method except replica exchange requires the user to choose collective variables, and a PMF along a badly chosen coordinate converges beautifully to the wrong answer.</p>
+<div class="box bridge"><h4>Closing the module's loop</h4>
+<p>The chain of this module is now complete. A sequence (Unit 1) gives a structure or a template alignment (Unit 2); the structure gives a binding site into which ligands are docked (Unit 3); docking and ligand-based models propose which molecules to make (Unit 4); and molecular dynamics tests whether the proposed complex is stable, whether the site behaves as the static picture suggested, and what the binding free energy is (Unit 5). Each step inherits the errors of the previous ones, which is why the practical emphasis throughout has been the same: state what was assumed, validate against something external, and report the uncertainty.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Section 10</span>Software and resources</h2>
+<table class="data">
+<thead><tr><th>Package</th><th>Licence</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><strong>GROMACS</strong><sup class="c"><a href="#r23">[23]</a></sup></td><td>Free, LGPL</td><td>Fastest CPU performance, excellent GPU support; the most used package in academia; extensive analysis tools</td></tr>
+<tr><td><strong>AMBER / AmberTools</strong><sup class="c"><a href="#r24">[24]</a></sup></td><td>AmberTools free; pmemd commercial</td><td>Reference implementation of the AMBER force fields; strong free-energy and MM/PBSA tooling (<code>MMPBSA.py</code>)</td></tr>
+<tr><td><strong>NAMD</strong><sup class="c"><a href="#r25">[25]</a></sup></td><td>Free for academic use</td><td>Scales to very large systems; integrated with VMD; strong enhanced-sampling (Colvars)</td></tr>
+<tr><td><strong>OpenMM</strong><sup class="c"><a href="#r13">[13]</a></sup></td><td>Free, MIT</td><td>Python API, used for the simulations in this document; ideal for teaching and for custom forces</td></tr>
+<tr><td><strong>CHARMM / Desmond / Schrödinger</strong></td><td>Commercial or mixed</td><td>Desmond is distributed free for academic use and is the engine behind the lecture's interaction-fingerprint plots</td></tr>
+<tr><td><strong>PDBFixer · CHARMM-GUI · PACKMOL</strong><sup class="c"><a href="#r26">[26]</a></sup></td><td>Free / free web service</td><td>System preparation: missing atoms, membranes, complex assemblies</td></tr>
+<tr><td><strong>MDTraj · MDAnalysis · CPPTRAJ</strong><sup class="c"><a href="#r14">[14]</a>,<a href="#r27">[27]</a>,<a href="#r28">[28]</a></sup></td><td>Free</td><td>Trajectory analysis in Python (the first two) and in the AMBER suite (the third)</td></tr>
+<tr><td><strong>VMD · PyMOL · ChimeraX</strong></td><td>Free for academic use</td><td>Visualisation and movie making; VMD is the standard for trajectories</td></tr>
+<tr><td><strong>PLUMED</strong><sup class="c"><a href="#r29">[29]</a></sup></td><td>Free</td><td>Enhanced sampling and collective variables, as a plug-in to all the engines above</td></tr>
+</tbody></table>
+<p>Hardware matters more here than anywhere else in the module. A modern consumer GPU runs a 100,000-atom system at 50–200 ns/day with GROMACS or OpenMM, two to three orders of magnitude faster than the CPU run reported in Section 6; the special-purpose Anton machines reach milliseconds. For coursework, a small system on a GPU-enabled notebook (Google Colab, or a laboratory workstation) is enough to reproduce everything in this unit.</p>
+<p>Two community documents should be read before a first independent project, because most of the errors found in published simulation work are errors of protocol rather than of physics: the <em>Living Journal of Computational Molecular Science</em> best-practice guides on the foundations of molecular simulation<sup class="c"><a href="#r37">[37]</a></sup> and on the quantification of uncertainty and sampling quality<sup class="c"><a href="#r36">[36]</a></sup>. Both are free, short and written as checklists; the reporting items they list — force field and water model with versions, protonation states and how they were chosen, box size and ion concentration, equilibration length and what was discarded, number and length of independent replicates, and the software version — are exactly what a methods section must contain.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Section 11</span>Practical work</h2>
+<h3>11.1 The complete simulation of Section 6</h3>
+<p>Install with <code>conda install -c conda-forge openmm pdbfixer mdtraj</code>. The script below is the one that produced Figures 3–5; on ten CPU threads it takes about two hours, and minutes on a GPU (replace the platform name with <code>CUDA</code> or <code>OpenCL</code>).</p>
+<pre><code>from openmm.app import *
+from openmm import *
+from openmm.unit import *
+from pdbfixer import PDBFixer
+import urllib.request
+
+# ---- 1. Preparation: structure, hydrogens, box, ions ----
+urllib.request.urlretrieve("https://files.rcsb.org/download/1L2Y.pdb", "1L2Y.pdb")
+fixer = PDBFixer(filename="1L2Y.pdb")
+fixer.findMissingResidues(); fixer.findMissingAtoms(); fixer.addMissingAtoms()
+fixer.addMissingHydrogens(7.0)                       # protonation at pH 7
+
+ff  = ForceField("amber14-all.xml", "amber14/tip3pfb.xml")
+mod = Modeller(fixer.topology, fixer.positions)
+mod.addSolvent(ff, model="tip3p", padding=1.0*nanometer,
+               ionicStrength=0.15*molar, neutralize=True)
+print(mod.topology.getNumAtoms(), "atoms")
+
+system = ff.createSystem(mod.topology, nonbondedMethod=PME,
+                         nonbondedCutoff=1.0*nanometer,
+                         constraints=HBonds, rigidWater=True,
+                         hydrogenMass=1.5*amu)       # allows a 4 fs timestep
+
+# ---- 2. Minimisation ----
+integrator = LangevinMiddleIntegrator(300*kelvin, 1/picosecond, 0.004*picoseconds)
+sim = Simulation(mod.topology, system, integrator,
+                 Platform.getPlatformByName("CPU"), {"Threads": "10"})
+sim.context.setPositions(mod.positions)
+print("E before:", sim.context.getState(getEnergy=True).getPotentialEnergy())
+sim.minimizeEnergy(maxIterations=5000)
+print("E after :", sim.context.getState(getEnergy=True).getPotentialEnergy())
+
+# ---- 3-4. Heating and equilibration: NVT then NPT ----
+sim.context.setVelocitiesToTemperature(300*kelvin, 1234)
+sim.reporters.append(StateDataReporter("nvt.csv", 250, step=True, time=True,
+                     temperature=True, potentialEnergy=True, totalEnergy=True))
+sim.step(50_000)                                     # 200 ps NVT
+
+system.addForce(MonteCarloBarostat(1*bar, 300*kelvin, 25))
+sim.context.reinitialize(preserveState=True)
+sim.reporters.clear()
+sim.reporters.append(StateDataReporter("npt.csv", 250, step=True, time=True,
+                     temperature=True, potentialEnergy=True, density=True, volume=True))
+sim.step(125_000)                                    # 500 ps NPT
+
+# ---- 5. Production ----
+sim.reporters.clear()
+sim.reporters.append(DCDReporter("prod.dcd", 2500))                 # a frame every 10 ps
+sim.reporters.append(StateDataReporter("prod.csv", 2500, step=True, time=True,
+                     temperature=True, potentialEnergy=True, density=True, speed=True))
+sim.step(1_500_000)                                  # 6 ns</code></pre>
+<h3>11.2 The energy-drift experiment of Section 6.3</h3>
+<pre><code>import numpy as np
+# Starting from the equilibrated state, run NVE (plain Verlet, no thermostat)
+for label, constraints, hmass, dt_fs in [
+        ("no constraints, 1 fs",            None,  1.0*amu, 1.0),
+        ("no constraints, 2 fs",            None,  1.0*amu, 2.0),
+        ("H-bonds constrained, 2 fs",       HBonds, 1.0*amu, 2.0),
+        ("H-bonds constrained, 4 fs",       HBonds, 1.0*amu, 4.0),
+        ("H-bonds + H mass 1.5 u, 4 fs",    HBonds, 1.5*amu, 4.0)]:
+    s = ff.createSystem(pdb.topology, nonbondedMethod=PME, nonbondedCutoff=1.0*nanometer,
+                        constraints=constraints, rigidWater=constraints is not None,
+                        hydrogenMass=hmass)
+    sm = Simulation(pdb.topology, s, VerletIntegrator(dt_fs*femtoseconds),
+                    Platform.getPlatformByName("CPU"), {"Threads": "10"})
+    sm.context.setState(equilibrated_state)
+    sm.context.setVelocitiesToTemperature(300*kelvin, 77)
+    sm.step(2500)                                    # let it settle
+    E = []
+    for _ in range(100):                             # 20 ps, 100 samples
+        sm.step(int(20/(dt_fs/1000)/100))
+        st = sm.context.getState(getEnergy=True)
+        E.append(st.getKineticEnergy().value_in_unit(kilojoule_per_mole)
+                 + st.getPotentialEnergy().value_in_unit(kilojoule_per_mole))
+    drift = np.polyfit(np.linspace(0, 20, 100), E, 1)[0] * 1000   # kJ/mol per ns
+    print(f"{label:32s} {drift/pdb.topology.getNumAtoms():+.3f} kJ/mol/ns/atom")</code></pre>
+<h3>11.3 Trajectory analysis</h3>
+<pre><code>import mdtraj as md
+
+t = md.load("prod.dcd", top="minimized.pdb")
+t = t.atom_slice(t.topology.select("protein"))       # drop the water
+t.superpose(t, 0, atom_indices=t.topology.select("backbone"))
+
+rmsd = md.rmsd(t, t, 0, atom_indices=t.topology.select("backbone")) * 10   # Å
+rmsf = md.rmsf(t, t, 0, atom_indices=t.topology.select("name CA")) * 10    # Å per residue
+rg   = md.compute_rg(t) * 10                                              # Å
+ss   = md.compute_dssp(t, simplified=True)          # per residue, per frame
+hb   = md.baker_hubbard(t, freq=0.1)                # hydrogen bonds present in >10 % of frames
+print("mean RMSD over the last half:", rmsd[len(rmsd)//2:].mean().round(2), "A")
+print("most mobile residue:", rmsf.argmax()+1, rmsf.max().round(2), "A")</code></pre>
+<h3>11.4 A checklist before you trust a simulation — your own or someone else's</h3>
+<ol>
+<li>Is the starting structure appropriate: right chains, right biological assembly, loops modelled, protonation states justified, ligand parameters validated?</li>
+<li>Is the box large enough (≥ 1 nm padding, cutoff ≤ L/2) and the system neutral at physiological salt?</li>
+<li>Was PME used for electrostatics, and are the cutoff, constraints, timestep and hydrogen masses mutually consistent?</li>
+<li>Do the equilibration plots — temperature, density, energy — plateau, and is the discarded portion stated?</li>
+<li>Are there independent replicas, and is the reported uncertainty the spread between them?</li>
+<li>Is the simulated time commensurate with the process claimed? A conformational transition reported from a single 100 ns run is a hypothesis.</li>
+<li>For a complex: does the ligand stay in its pose, and which contacts persist in what fraction of frames?</li>
+<li>Are absolute energies being interpreted? They should not be — only differences, and only within one protocol.</li>
+<li>Are the trajectory, input files and analysis scripts available? Repositories such as Zenodo and the MDDB/BioExcel databank exist for this.</li>
+</ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="s12">
+<h2><span class="num">Section 12</span>Self-assessment</h2>
+<p>Attempt each question before opening the answer.</p>
+<details><summary>1. Why is the timestep of a biomolecular simulation limited to a few femtoseconds, and what are the two standard ways to increase it?</summary><p>The integrator must resolve the fastest vibration, conventionally with at least ten steps per period. The fastest motion is bond stretching to hydrogen, with a period of about 10 fs, giving δt ≈ 1 fs. Constraining bonds to hydrogen (SHAKE/LINCS/SETTLE) removes that motion and allows 2 fs; hydrogen-mass repartitioning slows the next-fastest hydrogen-involving motions and allows 4 fs. Multiple timestepping is a third, less common option.</p></details>
+<details><summary>2. A colleague reports a 500 ns simulation in which the total energy rose by 3 % and concludes that the protein "gained thermal energy during the conformational change". What is wrong?</summary><p>In a thermostatted production run the total energy is not conserved by construction — the thermostat exchanges energy with a virtual bath — so a rise in total energy says nothing about the protein. If the run really was NVE, a 3 % rise is integration error (timestep too large, cutoff discontinuity, or constraint tolerance too loose), not physics. Energy conservation is diagnosed in short NVE runs, as in Section 6.3, and in production one monitors temperature, density and potential energy instead.</p></details>
+<details><summary>3. Explain why van der Waals interactions may be truncated at ~1 nm but electrostatics may not.</summary><p>The dispersion attraction decays as r⁻⁶, so the contribution from beyond 1 nm is tiny and can be recovered by an analytical mean-field correction. The Coulomb interaction decays as r⁻¹, so the number of pairs at distance r (growing as r²) more than compensates the decay and distant charges contribute significantly; truncating produces artefacts in water and ion structure at the cutoff radius. Particle-mesh Ewald evaluates the full periodic sum in O(N log N) by splitting it into real-space and reciprocal-space parts.</p></details>
+<details><summary>4. Your cubic box has an edge of 6.0 nm. What is the largest non-bonded cutoff you may use, and why?</summary><p>3.0 nm — half the edge. Beyond L/2 an atom would interact with more than one periodic image of the same partner, violating the minimum-image convention. In practice one uses 0.9–1.2 nm with PME, so the constraint binds the other way: the box must be large enough that the cutoff fits and that the solute does not touch its own image.</p></details>
+<details><summary>5. Distinguish NVE, NVT and NPT and say which you would use for each of: validating an integrator, equilibrating a freshly solvated system, and a production run of a protein–ligand complex.</summary><p>NVE conserves energy and is the setting in which integration error is visible, so it is used to validate the integrator. NVT fixes temperature and volume and is used for the first equilibration stage, when the thermostat must bring the system to temperature before the volume is allowed to change. NPT fixes temperature and pressure, matching laboratory conditions, and is the standard production ensemble — also the second equilibration stage, where the density settles.</p></details>
+<details><summary>6. An RMSD plot of your protein rises steadily for 100 ns with no plateau. Give three possible explanations and the check for each.</summary><p>(i) Not yet equilibrated — extend the run and check whether it plateaus. (ii) The starting model is wrong (a bad homology model or docking pose) — compare with an experimental structure if one exists, and inspect which regions contribute via per-residue RMSF or per-domain RMSD. (iii) A genuine conformational transition, or a partial unfolding — inspect secondary structure over time and the radius of gyration, and look at the trajectory. A fourth, mundane possibility: the RMSD is being computed over flexible terminal residues or loops, which can dominate it; recompute over the structured core.</p></details>
+<details><summary>7. Why is RMSF plotted against residue number while RMSD is plotted against time, and how does RMSF relate to a crystallographic B-factor?</summary><p>RMSD averages over atoms and is therefore a function of time — how far the structure has moved. RMSF averages over time and is therefore a function of atom or residue — where the structure moves. They answer complementary questions. RMSF connects to the crystallographic temperature factor through B = (8π²/3)·RMSF², so a simulated RMSF profile can be compared with the B-factors of the structure it started from, bearing in mind that crystal contacts suppress real mobility.</p></details>
+<details><summary>8. You want to know whether a mutation changes the affinity of a ligand by more than a factor of ten. Which computational method is appropriate, and what does it require?</summary><p>A factor of ten is 1.36 kcal mol⁻¹, at the edge of what relative free-energy perturbation (FEP/TI with MBAR) can resolve; that is the appropriate method. It requires a reliable binding mode, a mutation small enough to be treated alchemically, correct protonation states, a thermodynamic cycle (mutation in the complex and in the free protein), adequate sampling in every λ window, and a proper error analysis. MM/GBSA would not resolve such a difference reliably, and a docking score certainly would not.</p></details>
+<details><summary>9. What exactly is reported when a paper gives "MM/GBSA binding energy = −45.3 kcal mol⁻¹"?</summary><p>Almost certainly an enthalpy-like interaction score, with the solute entropy term omitted, averaged over frames of a single trajectory of the complex — not a binding free energy, and not comparable with an experimental ΔG (a −45 kcal mol⁻¹ affinity would correspond to a K<sub>d</sub> around 10⁻³³ M, which is physically impossible for a drug-like ligand). Such values are usable for ranking within one series and one protocol, and should not be reported as free energies.</p></details>
+<details><summary>10. The lecture's TASK-2 study simulated the channel with Lys245 protonated and neutral separately. Why was that necessary, and what does it illustrate about classical MD?</summary><p>Because classical MD fixes the protonation state of every group for the whole run: a proton cannot be transferred during the simulation. If the protonation of Lys245 is itself the question, the only recourse within standard MD is to simulate each state and compare — which is what was done, yielding different fenestration geometries and different PMF barriers for the two states. It illustrates the limitation directly, and points to constant-pH MD as the method that removes it.</p></details>
+<details><summary>11. Why are three independent 100 ns replicas generally preferable to one 300 ns run?</summary><p>They start from different points in phase space (different initial velocities) and therefore explore more of it, they reduce the chance that a single rare event is mistaken for typical behaviour, and — decisively — the spread between them provides an error estimate, which a single trajectory cannot. The exception is when the process of interest takes longer than 100 ns, in which case no replica will reach it and enhanced sampling is required instead.</p></details>
+<details><summary>12. In two or three sentences, state what a molecular dynamics simulation is and what its result means.</summary><p>It is the numerical integration of Newton's equations for every atom of a model system under a parameterised classical potential, producing a trajectory from which time averages are computed and, by the ergodic hypothesis, interpreted as ensemble averages. Its result is a property of the model — the force field, the protonation states, the box, the sampling — and is only as good as those choices; it becomes knowledge about the real system when it reproduces something measured and then predicts something that is subsequently measured.</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Appendix</span>Glossary</h2>
+<dl class="gloss">
+<dt>Barostat</dt><dd>Algorithm that maintains constant pressure by rescaling the box volume (Berendsen, Parrinello–Rahman, Monte Carlo).</dd>
+<dt>Constraint algorithm</dt><dd>SHAKE, RATTLE, LINCS, SETTLE: methods that hold selected bonds and angles rigid so that a larger timestep can be used.</dd>
+<dt>Collective variable</dt><dd>A function of the coordinates chosen to describe a slow process; the coordinate along which enhanced sampling biases the simulation.</dd>
+<dt>Ensemble (NVE, NVT, NPT)</dt><dd>The set of thermodynamic quantities held constant during the simulation.</dd>
+<dt>Ergodic hypothesis</dt><dd>The assumption that a long time average equals the ensemble average.</dd>
+<dt>FEP / TI / MBAR</dt><dd>Free-energy perturbation, thermodynamic integration and the multistate Bennett acceptance ratio: rigorous estimators of free-energy differences along an alchemical path.</dd>
+<dt>Force field</dt><dd>The classical potential energy function and its parameters.</dd>
+<dt>Hydrogen-mass repartitioning</dt><dd>Transfer of mass from heavy atoms to the hydrogens bonded to them, permitting a 4 fs timestep.</dd>
+<dt>Implicit / explicit solvent</dt><dd>Continuum dielectric representation versus individually simulated water molecules.</dd>
+<dt>Metadynamics</dt><dd>Enhanced sampling by depositing a history-dependent bias along collective variables.</dd>
+<dt>Minimum-image convention</dt><dd>Each pair interacts with the nearest periodic copy; requires cutoff ≤ L/2.</dd>
+<dt>MM/PBSA · MM/GBSA</dt><dd>End-point binding free-energy estimates combining force-field energies with continuum solvation.</dd>
+<dt>Periodic boundary conditions</dt><dd>Replication of the simulation cell in all directions to eliminate surfaces.</dd>
+<dt>PME</dt><dd>Particle-mesh Ewald: exact treatment of periodic electrostatics in O(N log N).</dd>
+<dt>PMF</dt><dd>Potential of mean force: free energy as a function of a chosen coordinate.</dd>
+<dt>Replica exchange</dt><dd>Parallel simulations at different temperatures with periodic swaps, to cross barriers.</dd>
+<dt>RMSD / RMSF</dt><dd>Root-mean-square deviation from a reference (function of time) / fluctuation about the mean position (function of residue).</dd>
+<dt>Thermostat</dt><dd>Algorithm that maintains constant temperature (Berendsen, Bussi, Nosé–Hoover, Langevin, Andersen).</dd>
+<dt>Timestep</dt><dd>Integration interval, limited by the fastest vibration in the system.</dd>
+<dt>Trajectory</dt><dd>The sequence of coordinate (and optionally velocity) frames produced by the simulation.</dd>
+<dt>Umbrella sampling</dt><dd>Enhanced sampling with harmonic restraints in overlapping windows along a coordinate, recombined by WHAM or MBAR.</dd>
+<dt>Verlet algorithm</dt><dd>The symplectic, time-reversible integrator family (position Verlet, leapfrog, velocity Verlet) used in essentially all MD.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Appendix</span>References and further reading</h2>
+<h3>Primary literature cited in the text</h3>
+<ol class="refs">
+<li id="r1">Verlet L. Computer "experiments" on classical fluids. I. Thermodynamical properties of Lennard-Jones molecules. <em>Phys Rev</em>. 1967;159(1):98–103. <a href="https://doi.org/10.1103/PhysRev.159.98">doi:10.1103/PhysRev.159.98</a></li>
+<li id="r2">Swope WC, Andersen HC, Berens PH, Wilson KR. A computer simulation method for the calculation of equilibrium constants for the formation of physical clusters of molecules. <em>J Chem Phys</em>. 1982;76(1):637–649. <a href="https://doi.org/10.1063/1.442716">doi:10.1063/1.442716</a></li>
+<li id="r3">Ryckaert JP, Ciccotti G, Berendsen HJC. Numerical integration of the cartesian equations of motion of a system with constraints: molecular dynamics of n-alkanes. <em>J Comput Phys</em>. 1977;23(3):327–341. <a href="https://doi.org/10.1016/0021-9991(77)90098-5">doi:10.1016/0021-9991(77)90098-5</a></li>
+<li id="r4">Hess B, Bekker H, Berendsen HJC, Fraaije JGEM. LINCS: a linear constraint solver for molecular simulations. <em>J Comput Chem</em>. 1997;18(12):1463–1472. <a href="https://doi.org/10.1002/(SICI)1096-987X(199709)18:12%3C1463::AID-JCC4%3E3.0.CO;2-H">doi:10.1002/(SICI)1096-987X(199709)18:12&lt;1463::AID-JCC4&gt;3.0.CO;2-H</a></li>
+<li id="r5">Hopkins CW, Le Grand S, Walker RC, Roitberg AE. Long-time-step molecular dynamics through hydrogen mass repartitioning. <em>J Chem Theory Comput</em>. 2015;11(4):1864–1874. <a href="https://doi.org/10.1021/ct5010406">doi:10.1021/ct5010406</a></li>
+<li id="r6">Maier JA, Martinez C, Kasavajhala K, Wickstrom L, Hauser KE, Simmerling C. ff14SB: improving the accuracy of protein side chain and backbone parameters from ff99SB. <em>J Chem Theory Comput</em>. 2015;11(8):3696–3713. <a href="https://doi.org/10.1021/acs.jctc.5b00255">doi:10.1021/acs.jctc.5b00255</a></li>
+<li id="r7">Tian C, Kasavajhala K, Belfon KAA, et al. ff19SB: amino-acid-specific protein backbone parameters trained against quantum mechanics energy surfaces in solution. <em>J Chem Theory Comput</em>. 2020;16(1):528–552. <a href="https://doi.org/10.1021/acs.jctc.9b00591">doi:10.1021/acs.jctc.9b00591</a></li>
+<li id="r8">Huang J, Rauscher S, Nawrocki G, et al. CHARMM36m: an improved force field for folded and intrinsically disordered proteins. <em>Nat Methods</em>. 2017;14(1):71–73. <a href="https://doi.org/10.1038/nmeth.4067">doi:10.1038/nmeth.4067</a></li>
+<li id="r9">Darden T, York D, Pedersen L. Particle mesh Ewald: an N·log(N) method for Ewald sums in large systems. <em>J Chem Phys</em>. 1993;98(12):10089–10092. <a href="https://doi.org/10.1063/1.464397">doi:10.1063/1.464397</a></li>
+<li id="r10">Essmann U, Perera L, Berkowitz ML, Darden T, Lee H, Pedersen LG. A smooth particle mesh Ewald method. <em>J Chem Phys</em>. 1995;103(19):8577–8593. <a href="https://doi.org/10.1063/1.470117">doi:10.1063/1.470117</a></li>
+<li id="r11">Bussi G, Donadio D, Parrinello M. Canonical sampling through velocity rescaling. <em>J Chem Phys</em>. 2007;126(1):014101. <a href="https://doi.org/10.1063/1.2408420">doi:10.1063/1.2408420</a></li>
+<li id="r12">Hoover WG. Canonical dynamics: equilibrium phase-space distributions. <em>Phys Rev A</em>. 1985;31(3):1695–1697. <a href="https://doi.org/10.1103/PhysRevA.31.1695">doi:10.1103/PhysRevA.31.1695</a></li>
+<li id="r13">Eastman P, Galvelis R, Peláez RP, et al. OpenMM 8: molecular dynamics simulation with machine learning potentials. <em>J Phys Chem B</em>. 2024;128(1):109–116. <a href="https://doi.org/10.1021/acs.jpcb.3c06662">doi:10.1021/acs.jpcb.3c06662</a></li>
+<li id="r14">McGibbon RT, Beauchamp KA, Harrigan MP, et al. MDTraj: a modern open library for the analysis of molecular dynamics trajectories. <em>Biophys J</em>. 2015;109(8):1528–1532. <a href="https://doi.org/10.1016/j.bpj.2015.08.015">doi:10.1016/j.bpj.2015.08.015</a></li>
+<li id="r15">Kollman PA, Massova I, Reyes C, et al. Calculating structures and free energies of complex molecules: combining molecular mechanics and continuum models. <em>Acc Chem Res</em>. 2000;33(12):889–897. <a href="https://doi.org/10.1021/ar000033j">doi:10.1021/ar000033j</a></li>
+<li id="r16">Genheden S, Ryde U. The MM/PBSA and MM/GBSA methods to estimate ligand-binding affinities. <em>Expert Opin Drug Discov</em>. 2015;10(5):449–461. <a href="https://doi.org/10.1517/17460441.2015.1032936">doi:10.1517/17460441.2015.1032936</a></li>
+<li id="r17">Zwanzig RW. High-temperature equation of state by a perturbation method. I. Nonpolar gases. <em>J Chem Phys</em>. 1954;22(8):1420–1426. <a href="https://doi.org/10.1063/1.1740409">doi:10.1063/1.1740409</a></li>
+<li id="r18">Shirts MR, Chodera JD. Statistically optimal analysis of samples from multiple equilibrium states. <em>J Chem Phys</em>. 2008;129(12):124105. <a href="https://doi.org/10.1063/1.2978177">doi:10.1063/1.2978177</a></li>
+<li id="r19">Wang L, Wu Y, Deng Y, et al. Accurate and reliable prediction of relative ligand binding potency in prospective drug discovery by way of a modern free-energy calculation protocol and force field. <em>J Am Chem Soc</em>. 2015;137(7):2695–2703. <a href="https://doi.org/10.1021/ja512751q">doi:10.1021/ja512751q</a></li>
+<li id="r20">Torrie GM, Valleau JP. Nonphysical sampling distributions in Monte Carlo free-energy estimation: umbrella sampling. <em>J Comput Phys</em>. 1977;23(2):187–199. <a href="https://doi.org/10.1016/0021-9991(77)90121-8">doi:10.1016/0021-9991(77)90121-8</a></li>
+<li id="r21">Laio A, Parrinello M. Escaping free-energy minima. <em>Proc Natl Acad Sci USA</em>. 2002;99(20):12562–12566. <a href="https://doi.org/10.1073/pnas.202427399">doi:10.1073/pnas.202427399</a></li>
+<li id="r22">Sugita Y, Okamoto Y. Replica-exchange molecular dynamics method for protein folding. <em>Chem Phys Lett</em>. 1999;314(1–2):141–151. <a href="https://doi.org/10.1016/S0009-2614(99)01123-9">doi:10.1016/S0009-2614(99)01123-9</a></li>
+<li id="r23">Abraham MJ, Murtola T, Schulz R, et al. GROMACS: high performance molecular simulations through multi-level parallelism from laptops to supercomputers. <em>SoftwareX</em>. 2015;1–2:19–25. <a href="https://doi.org/10.1016/j.softx.2015.06.001">doi:10.1016/j.softx.2015.06.001</a></li>
+<li id="r24">Case DA, Cheatham TE, Darden T, et al. The Amber biomolecular simulation programs. <em>J Comput Chem</em>. 2005;26(16):1668–1688. <a href="https://doi.org/10.1002/jcc.20290">doi:10.1002/jcc.20290</a></li>
+<li id="r25">Phillips JC, Hardy DJ, Maia JDC, et al. Scalable molecular dynamics on CPU and GPU architectures with NAMD. <em>J Chem Phys</em>. 2020;153(4):044130. <a href="https://doi.org/10.1063/5.0014475">doi:10.1063/5.0014475</a></li>
+<li id="r26">Jo S, Kim T, Iyer VG, Im W. CHARMM-GUI: a web-based graphical user interface for CHARMM. <em>J Comput Chem</em>. 2008;29(11):1859–1865. <a href="https://doi.org/10.1002/jcc.20945">doi:10.1002/jcc.20945</a></li>
+<li id="r27">Michaud-Agrawal N, Denning EJ, Woolf TB, Beckstein O. MDAnalysis: a toolkit for the analysis of molecular dynamics simulations. <em>J Comput Chem</em>. 2011;32(10):2319–2327. <a href="https://doi.org/10.1002/jcc.21787">doi:10.1002/jcc.21787</a></li>
+<li id="r28">Roe DR, Cheatham TE. PTRAJ and CPPTRAJ: software for processing and analysis of molecular dynamics trajectory data. <em>J Chem Theory Comput</em>. 2013;9(7):3084–3095. <a href="https://doi.org/10.1021/ct400341p">doi:10.1021/ct400341p</a></li>
+<li id="r29">Tribello GA, Bonomi M, Branduardi D, Camilloni C, Bussi G. PLUMED 2: new feathers for an old bird. <em>Comput Phys Commun</em>. 2014;185(2):604–613. <a href="https://doi.org/10.1016/j.cpc.2013.09.018">doi:10.1016/j.cpc.2013.09.018</a></li>
+<li id="r30">Neidigh JW, Fesinmeyer RM, Andersen NH. Designing a 20-residue protein. <em>Nat Struct Biol</em>. 2002;9(6):425–430. <a href="https://doi.org/10.1038/nsb798">doi:10.1038/nsb798</a></li>
+<li id="r31">Lindorff-Larsen K, Piana S, Dror RO, Shaw DE. How fast-folding proteins fold. <em>Science</em>. 2011;334(6055):517–520. <a href="https://doi.org/10.1126/science.1208351">doi:10.1126/science.1208351</a></li>
+<li id="r32">Dror RO, Dirks RM, Grossman JP, Xu H, Shaw DE. Biomolecular simulation: a computational microscope for molecular biology. <em>Annu Rev Biophys</em>. 2012;41:429–452. <a href="https://doi.org/10.1146/annurev-biophys-042910-155245">doi:10.1146/annurev-biophys-042910-155245</a></li>
+<li id="r33">Hollingsworth SA, Dror RO. Molecular dynamics simulation for all. <em>Neuron</em>. 2018;99(6):1129–1143. <a href="https://doi.org/10.1016/j.neuron.2018.08.011">doi:10.1016/j.neuron.2018.08.011</a></li>
+<li id="r34">Kabsch W, Sander C. Dictionary of protein secondary structure. <em>Biopolymers</em>. 1983;22(12):2577–2637. <a href="https://doi.org/10.1002/bip.360221211">doi:10.1002/bip.360221211</a></li>
+<li id="r35">Best RB, Hummer G, Eaton WA. Native contacts determine protein folding mechanisms in atomistic simulations. <em>Proc Natl Acad Sci USA</em>. 2013;110(44):17874–17879. <a href="https://doi.org/10.1073/pnas.1311599110">doi:10.1073/pnas.1311599110</a></li>
+<li id="r36">Grossfield A, Patrone PN, Roe DR, Schultz AJ, Siderius DW, Zuckerman DM. Best practices for quantification of uncertainty and sampling quality in molecular simulations. <em>Living J Comput Mol Sci</em>. 2019;1(1):5067. <a href="https://doi.org/10.33011/livecoms.1.1.5067">doi:10.33011/livecoms.1.1.5067</a></li>
+<li id="r37">Braun E, Gilmer J, Mayes HB, et al. Best practices for foundations in molecular simulations. <em>Living J Comput Mol Sci</em>. 2019;1(1):5957. <a href="https://doi.org/10.33011/livecoms.1.1.5957">doi:10.33011/livecoms.1.1.5957</a></li>
+</ol>
+<h3>Textbooks and reviews</h3>
+<ol class="refs" start="38">
+<li>Alavi S. <em>Molecular Simulations: Fundamentals and Practice</em>. Wiley-VCH; 2020. — Recommended in the lecture.</li>
+<li>Frenkel D, Smit B. <em>Understanding Molecular Simulation: From Algorithms to Applications</em>. 3rd ed. Academic Press; 2023. — The standard graduate reference for the statistical mechanics behind Sections 1 and 9.</li>
+<li>Allen MP, Tildesley DJ. <em>Computer Simulation of Liquids</em>. 2nd ed. Oxford University Press; 2017. — The classic on integrators, boundary conditions and neighbour lists.</li>
+<li>Leach AR. <em>Molecular Modelling: Principles and Applications</em>. 2nd ed. Prentice Hall; 2001. — Chapters 4–7 cover force fields, energy minimisation and molecular dynamics at exactly the level of this unit.</li>
+<li>Schlick T. <em>Molecular Modeling and Simulation: An Interdisciplinary Guide</em>. 2nd ed. Springer; 2010.</li>
+</ol>
+<h3>Online resources</h3>
+<ul>
+<li>OpenMM user guide and cookbook — <a href="https://openmm.org/documentation">https://openmm.org/documentation</a> · <a href="https://openmm.github.io/openmm-cookbook/">https://openmm.github.io/openmm-cookbook/</a> (the code of Section 11 follows these patterns)</li>
+<li>GROMACS tutorials by Justin Lemkul — <a href="http://www.mdtutorials.com/gmx/">http://www.mdtutorials.com/gmx/</a>: the lysozyme-in-water tutorial is the standard first simulation and mirrors Section 5 step by step</li>
+<li>Living Journal of Computational Molecular Science, "Best Practices" series — <a href="https://livecomsjournal.org">https://livecomsjournal.org</a>: peer-reviewed, continuously updated protocols for sampling, free energies and force-field validation</li>
+<li>CHARMM-GUI — <a href="https://charmm-gui.org">https://charmm-gui.org</a>: web system builder for membranes, glycans and complex assemblies</li>
+<li>MDAnalysis and MDTraj documentation — <a href="https://userguide.mdanalysis.org">https://userguide.mdanalysis.org</a> · <a href="https://mdtraj.org">https://mdtraj.org</a></li>
+<li>BioExcel-MDDB molecular dynamics data bank — <a href="https://mddbr.eu">https://mddbr.eu</a>: repository of published trajectories</li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Study material for BGM324 Bioinformatics, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Figures 1–5 were generated for this document; the simulations of Sections 6 and 7 were run with OpenMM 8.6.1 (AMBER ff14SB / TIP3P-FB, PDB 1L2Y) and analysed with MDTraj 1.11.1, and may be reused with attribution. Worked examples follow the lecture slides <em>05_SimulacionesDeDinamicaMolecular_EN</em>. Last revised 17 October 2026.
+</footer>
+
+</body>
+</html>

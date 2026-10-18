@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 4 · Computer-Aided Drug Design — BGM324 Bioinformatics, Universidad Católica del Maule</title>
+<meta name="description" content="Study material on computer-aided drug design: the discovery pipeline, druggability, molecular descriptors, Lipinski and Veber rules, ADMET, QSAR and its validation, molecular similarity and activity cliffs, pharmacophores, bioisosteres, scaffold hopping and virtual screening cascades. BGM324 Bioinformatics, Medical Bioengineering, Universidad Católica del Maule.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+button{font-family:system-ui,sans-serif;font-size:.84rem;padding:.3rem .7rem;border:1px solid var(--line);border-radius:4px;background:var(--panel);cursor:pointer}button:hover{background:#e6ecf3}
+</style>
+</head>
+<body>
+<!-- bgm324-backbar -->
+<nav class="bgm324-backbar" aria-label="BGM324" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformatics · Medical Bioengineering · Universidad Católica del Maule</div>
+<h1>Unit 4 — Computer-Aided Drug Design: Descriptors, QSAR, Pharmacophores and Virtual Screening</h1>
+<div class="meta">Study material accompanying lecture 04 (<em>Computer-aided drug design/discovery</em>) · Prepared by Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · Fourth unit of the module: sequence analysis → protein structure prediction → molecular docking → <strong>computer-aided drug design</strong> → molecular dynamics</div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contents</h2>
+<ol>
+<li><a href="#how">How to use this material</a></li>
+<li><a href="#s1">1. The drug discovery pipeline</a></li>
+<li><a href="#s2">2. Target identification and druggability</a></li>
+<li><a href="#s3">3. Two complementary strategies</a></li>
+<li><a href="#s4">4. Molecular descriptors</a></li>
+<li><a href="#s5">5. Drug-likeness rules and ADMET</a>
+  <ol><li><a href="#s5-1">The rules</a></li><li><a href="#s5-2">A real series against the rules</a></li><li><a href="#s5-3">ADMET</a></li></ol></li>
+<li><a href="#s6">6. QSAR</a>
+  <ol><li><a href="#s6-1">The Hansch idea</a></li><li><a href="#s6-2">A worked QSAR</a></li><li><a href="#s6-3">Validation</a></li><li><a href="#s6-4">3D-QSAR</a></li></ol></li>
+<li><a href="#s7">7. Similarity, cliffs and scaffolds</a></li>
+<li><a href="#s8">8. Pharmacophores</a></li>
+<li><a href="#s9">9. Designing new molecules</a>
+  <ol><li><a href="#s9-1">Enumeration</a></li><li><a href="#s9-2">Bioisosteres</a></li><li><a href="#s9-3">Scaffold hopping</a></li><li><a href="#s9-4">Generative design</a></li></ol></li>
+<li><a href="#s10">10. An integrated workflow</a></li>
+<li><a href="#s11">11. Databases and software</a></li>
+<li><a href="#s12">12. Practical work</a></li>
+<li><a href="#s13">13. Self-assessment</a></li>
+<li><a href="#gloss">Glossary</a></li>
+<li><a href="#refs">References and further reading</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">This document expands the fourth lecture of the module. Units 2 and 3 produced a structure and a way to place a ligand in it; this unit asks the question that motivates the whole module — <em>which molecule should we make?</em> — and shows the two families of methods that answer it: structure-based, which uses the target's geometry, and ligand-based, which uses only what is known about molecules that already work. Both rest on numerical descriptions of molecules, so the unit begins with descriptors and ends with the design of new compounds. To keep the discussion concrete, Sections 5–7 analyse a real dataset downloaded for this document: 2,335 curated HIV-1 protease inhibitors with measured K<sub>i</sub> from ChEMBL — the same target docked in Unit 3, now approached from the ligand side.</p>
+<div class="box key"><h4>Learning objectives</h4>
+<ul class="objectives">
+<li>Describe the stages of drug discovery, the attrition between them, and where each computational method intervenes.</li>
+<li>Define druggability and list the structural features that make a target tractable for small molecules.</li>
+<li>Distinguish ligand-based from structure-based design and state what each requires as input.</li>
+<li>Classify molecular descriptors by dimensionality (0D–4D) and give examples of each.</li>
+<li>Apply and criticise the Lipinski, Veber and Jorgensen rules, and interpret QED and ligand efficiency.</li>
+<li>Explain the logic of QSAR, build and validate a model, and recognise the three standard failures: no external validation, chance correlation, and an undeclared applicability domain.</li>
+<li>Compute molecular similarity, interpret a Tanimoto coefficient and explain what an activity cliff is.</li>
+<li>Define a pharmacophore and use one for virtual screening.</li>
+<li>Describe combinatorial enumeration, bioisosteric replacement and scaffold hopping as design strategies.</li>
+<li>Assemble these methods into a defensible screening cascade and state the decision made at each filter.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Section 1</span>The drug discovery pipeline</h2>
+<p>Bringing a drug to market takes on the order of 10–15 years and, by the most-cited estimates, over one billion US dollars per approved compound once the cost of failures is capitalised.<sup class="c"><a href="#r1">[1]</a></sup> The reason is attrition: of the molecules that enter clinical development, roughly nine in ten never reach approval, and the two dominant causes of failure are insufficient efficacy and unacceptable toxicity.<sup class="c"><a href="#r2">[2]</a></sup> Computational methods cannot remove that risk, but they can move decisions earlier, where they are cheap.</p>
+<figure>
+<img src="figures/fig01_pipeline.png" alt="Five-stage funnel from target identification to clinical trials with compound numbers and the computational methods used at each stage">
+<figcaption><b>Figure 1. The discovery funnel and where computation enters.</b> Compound numbers are orders of magnitude typical of a structure-based campaign. The decisive property of the funnel is that the cost per compound rises by several orders of magnitude from left to right, while the number of compounds falls: a filter applied at the virtual stage costs essentially nothing, the same filter applied after synthesis costs a chemist's month, and after a clinical trial it costs a programme.</figcaption>
+</figure>
+<p>Historically, the field developed in three waves, as the lecture's timeline shows: the 1960s–70s established the conceptual tools (Hansch's QSAR in 1964, the first crystal structures, the founding of the PDB in 1971); the 1980s–90s industrialised them (commercial modelling software, docking programs, combinatorial chemistry and high-throughput screening); and since the 2010s the limiting resource has shifted from compute to data, with ultra-large virtual libraries, public bioactivity databases and machine learning. The first drugs explicitly credited to structure-based design — dorzolamide for glaucoma, the HIV protease inhibitors of Unit 3, the neuraminidase inhibitor zanamivir — date from this second wave and remain the standard case studies.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Section 2</span>Target identification and druggability</h2>
+<p>A project begins with a hypothesis that modulating a particular macromolecule will change the course of a disease. Validating that hypothesis is biology, not computation — genetic knock-out and knock-down, patient genetics, pathway analysis, chemical probes — but computation contributes two things: it identifies candidate targets from genomic and transcriptomic comparisons (including, for pathogens, targets that are essential to the microorganism and absent or divergent in the host), and it asks whether a validated target is <strong>druggable</strong>.</p>
+<p>Druggability is the probability that a target can be modulated by a small molecule with the properties of an oral drug. The lecture lists the features that make it so, and the structural ones can be assessed computationally:</p>
+<ul>
+<li><strong>A suitable pocket.</strong> A buried, enclosed cavity of roughly 300–1,000 Å³ with a mixed hydrophobic/polar lining. Cavity-detection programs (fpocket, SiteMap, DoGSiteScorer) report volume, enclosure, hydrophobicity and a druggability score trained on known druggable sites.<sup class="c"><a href="#r3">[3]</a>,<a href="#r4">[4]</a></sup> Flat protein–protein interfaces score poorly, which is why they were long considered undruggable — a judgement that stabilised peptides, molecular glues and covalent binders have since qualified.</li>
+<li><strong>Conformational accessibility.</strong> The pocket must be reachable and able to adapt: orthosteric, allosteric and cryptic sites each raise different problems (Unit 3, Section 1). Cryptic pockets, invisible in the apo structure, are detected by molecular dynamics or mixed-solvent simulations (Unit 5).</li>
+<li><strong>Selectivity potential.</strong> The site must differ enough from the equivalent site in paralogues and host orthologues to permit a selective ligand — which is assessed by mapping the multiple sequence alignment of the family onto the structure (Units 1 and 2).</li>
+<li><strong>Expression, solubility and assayability</strong>, which determine whether any prediction can be tested.</li>
+</ul>
+<p>A useful empirical anchor: of the roughly 20,000 human protein-coding genes, only on the order of 600–900 are the targets of approved drugs, and a large majority of those belong to four families — GPCRs, ion channels, nuclear receptors and enzymes (especially kinases and proteases).<sup class="c"><a href="#r5">[5]</a></sup> Druggability is therefore the exception rather than the rule, and establishing it early is the cheapest way to avoid a long failure.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Section 3</span>Two complementary strategies</h2>
+<table class="data">
+<thead><tr><th></th><th>Structure-based design (SBDD)</th><th>Ligand-based design (LBDD)</th></tr></thead>
+<tbody>
+<tr><td>Requires</td><td>A 3D structure of the target — experimental or modelled (Unit 2)</td><td>A set of molecules with measured activity against the target; no structure needed</td></tr>
+<tr><td>Core methods</td><td>Molecular docking and scoring (Unit 3), structure-based pharmacophores, de novo design in the site, MM/GBSA and free-energy calculations (Unit 5)</td><td>QSAR, similarity searching, pharmacophore models from ligands, shape matching, machine-learning classifiers</td></tr>
+<tr><td>Gives</td><td>A binding mode hypothesis — which residue each group touches — and therefore a directed design rationale</td><td>A prediction of activity and a statement of which features matter, without saying where they bind</td></tr>
+<tr><td>Fails when</td><td>No structure, wrong conformational state, flexible or solvent-mediated site, scoring function inadequate</td><td>Too few actives, actives all of one chemotype (no diversity), activity cliffs, extrapolation outside the applicability domain</td></tr>
+<tr><td>Typical use</td><td>New chemotypes against a structurally characterised target; explaining SAR; designing selectivity</td><td>Prioritising analogues of a known series; screening when the target is a membrane protein or has no structure; ADMET prediction</td></tr>
+</tbody></table>
+<p>The two are complementary rather than competing, and most real campaigns use both: a ligand-based model to filter an enormous library down to a tractable set, docking to propose binding modes for the survivors, and the structure to explain and direct the next round of synthesis. The lecture's final slide (reproduced as the cascade in Section 10) is exactly this combination.</p>
+<p>A third mode deserves mention because the lecture names it: <strong>reverse docking</strong> (or target fishing) docks one molecule into many targets instead of many molecules into one, in order to propose a mechanism for a phenotypic hit, to anticipate off-target effects, or to repurpose an approved drug. Its reliability is lower, because scores computed in different sites are not comparable (Unit 3, Section 6.3), but it is a useful hypothesis generator.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Section 4</span>Molecular descriptors</h2>
+<p>Every ligand-based method begins by turning a molecule into numbers. A <strong>molecular descriptor</strong> is "the final result of a logical and mathematical procedure which transforms chemical information encoded within a symbolic representation of a molecule into a useful number" (Todeschini and Consonni).<sup class="c"><a href="#r6">[6]</a></sup> Thousands exist; they are conventionally organised by the dimensionality of the representation they need.</p>
+<table class="data">
+<thead><tr><th>Class</th><th>Input needed</th><th>Examples</th><th>Typical use</th></tr></thead>
+<tbody>
+<tr><td><strong>0D</strong></td><td>Molecular formula</td><td>Molecular weight, atom counts, bond counts, heavy-atom count</td><td>Filters, normalisation (ligand efficiency)</td></tr>
+<tr><td><strong>1D</strong></td><td>Substructure list</td><td>Counts of functional groups, rings, rotatable bonds, H-bond donors and acceptors; structural keys (MACCS)</td><td>Drug-likeness rules, coarse filtering</td></tr>
+<tr><td><strong>2D</strong></td><td>Molecular graph (connectivity)</td><td>Topological indices (Wiener, Randić, Kier–Hall χ), path and walk counts, topological polar surface area (TPSA), cLogP, fraction of sp³ carbon, circular fingerprints (Morgan/ECFP)</td><td>QSAR, similarity searching, machine learning — the workhorse class</td></tr>
+<tr><td><strong>3D</strong></td><td>A conformer</td><td>Molecular volume and surface, solvent-accessible surface area, radius of gyration, dipole moment, principal moments of inertia, 3D pharmacophore fingerprints, CoMFA/CoMSIA interaction fields</td><td>3D-QSAR, shape screening, pharmacophores</td></tr>
+<tr><td><strong>4D and beyond</strong></td><td>A conformational ensemble, or ligand–receptor interaction data</td><td>4D-QSAR (ensemble-averaged fields), interaction fingerprints from docking or MD (Unit 5)</td><td>Flexible ligands, induced-fit series</td></tr>
+</tbody></table>
+<p>Two practical points. First, <strong>2D descriptors are usually enough</strong>: because they require no conformer, they are fast, deterministic and reproducible, and in benchmark after benchmark a model built on circular fingerprints is as good as or better than one built on 3D fields. Second, descriptors must be <em>interpretable or validated</em>, not both: a model on cLogP and TPSA tells a chemist what to change; a model on 2,048 fingerprint bits usually predicts better but says little. The worked QSAR in Section 6 quantifies this trade-off on real data.</p>
+<p>Three descriptors recur throughout the unit and deserve a definition.</p>
+<ul>
+<li><strong>logP</strong>, the logarithm of the octanol/water partition coefficient, measures lipophilicity: logP = log([drug]<sub>octanol</sub>/[drug]<sub>water</sub>). Positive values mean the compound prefers the organic phase. It governs membrane permeability, plasma protein binding, metabolic clearance and promiscuity, and it is the single most informative physicochemical descriptor in drug design. Calculated estimates are written <strong>cLogP</strong>; at physiological pH the ionisation-corrected version, <strong>logD<sub>7.4</sub></strong>, is more relevant for an ionisable compound.</li>
+<li><strong>TPSA</strong>, topological polar surface area, is the surface contributed by nitrogen and oxygen atoms (and their hydrogens), computed from the 2D graph by summing tabulated fragment contributions. It correlates with passive permeability: compounds with TPSA above ~140 Å² are poorly absorbed orally, and above ~90 Å² they rarely cross the blood–brain barrier.</li>
+<li><strong>Morgan/ECFP fingerprints</strong> encode each atom's circular environment up to a radius <em>r</em> as a hash, and set the corresponding bit in a vector of fixed length. ECFP4 corresponds to <em>r</em> = 2. They are the standard input to similarity searching and to machine-learned QSAR.</li>
+</ul>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Section 5</span>Drug-likeness rules and ADMET</h2>
+<h3 id="s5-1">5.1 The rules</h3>
+<p>Historically, around 40 % of candidates failed for pharmacokinetic reasons; the response was a set of empirical filters applied before anything is synthesised. The lecture lists the three that are used most.</p>
+<table class="data">
+<thead><tr><th>Rule</th><th>Year</th><th>Criteria</th><th>What it predicts</th></tr></thead>
+<tbody>
+<tr><td><strong>Lipinski's Rule of Five</strong><sup class="c"><a href="#r7">[7]</a></sup></td><td>1997/2001</td><td>MW ≤ 500 · logP ≤ 5 · HBD ≤ 5 · HBA ≤ 10 (violating two or more predicts a problem)</td><td>Poor absorption or permeation after <em>oral</em> dosing. Derived from compounds that had reached phase II; explicitly excludes substrates of active transporters, antibiotics, antifungals, vitamins and cardiac glycosides</td></tr>
+<tr><td><strong>Veber's rules</strong><sup class="c"><a href="#r8">[8]</a></sup></td><td>2002</td><td>Rotatable bonds ≤ 10 · TPSA ≤ 140 Å² (or total H-bond count ≤ 12)</td><td>Oral bioavailability in rats; adds molecular flexibility, which the Rule of Five omits</td></tr>
+<tr><td><strong>Jorgensen's Rule of Three</strong><sup class="c"><a href="#r9">[9]</a></sup></td><td>2002/2011</td><td>logS &gt; −5.7 · apparent Caco-2 permeability &gt; 22 nm s⁻¹ · fewer than 7 primary metabolites</td><td>Solubility, cell permeability and metabolic load; computed by QikProp</td></tr>
+<tr><td><strong>Congreve's Rule of Three</strong></td><td>2003</td><td>MW ≤ 300 · cLogP ≤ 3 · HBD ≤ 3 · HBA ≤ 3 · rotatable bonds ≤ 3</td><td>Suitability as a <em>fragment</em> starting point, not as a drug</td></tr>
+<tr><td><strong>QED</strong><sup class="c"><a href="#r10">[10]</a></sup></td><td>2012</td><td>Weighted geometric mean of desirability functions over eight properties; 0–1</td><td>Quantitative, continuous "drug-likeness" instead of a pass/fail count; approved oral drugs centre around 0.5–0.7</td></tr>
+</tbody></table>
+<div class="box warn"><h4>How to use a rule, and how not to</h4>
+<p>These are statistical observations about <em>historical oral drugs</em>, not laws. Lipinski himself emphasised that the Rule of Five predicts absorption, not activity, and does not apply to compounds taken up by transporters or given by other routes. Used as a filter on a screening library they are sensible; used to reject an active compound they destroy projects. The modern practice is to treat them as a map of where the risk increases — "beyond rule of five" chemistry (macrocycles, peptidomimetics, PROTACs) is an active and successful field<sup class="c"><a href="#r11">[11]</a></sup> — and to complement them with property-based optimisation metrics such as ligand efficiency (Unit 3) and lipophilic ligand efficiency, LLE = pIC<sub>50</sub> − cLogP.<sup class="c"><a href="#r12">[12]</a></sup></p></div>
+
+<h3 id="s5-2">5.2 A real series against the rules</h3>
+<p>To see what the rules do to a genuine inhibitor series, 3,680 K<sub>i</sub> measurements against HIV-1 protease (ChEMBL target <code>CHEMBL243</code>, the same enzyme docked in Unit 3) were downloaded for this document, aggregated to 2,519 unique compounds by taking the median pK<sub>i</sub> per compound, and curated by removing mixtures and potencies outside the physically meaningful range pK<sub>i</sub> 3–12 — leaving <strong>2,335 compounds</strong>. Descriptors were computed with RDKit. The curation step is not cosmetic: the raw download contained reported K<sub>i</sub> values corresponding to pK<sub>i</sub> as low as −3.7 and as high as 14.2, which are data-entry or unit errors, and a model trained on them would be fitting noise.</p>
+<figure>
+<img src="figures/fig02_ro5.png" alt="Six histograms of MW, cLogP, HBD, HBA, TPSA and rotatable bonds for 2335 HIV protease inhibitors with rule thresholds marked">
+<figcaption><b>Figure 2. Rule-of-Five and Veber properties of 2,335 curated HIV-1 protease inhibitors from ChEMBL (computed for this document).</b> Orange lines are the rule thresholds, blue dashed lines the medians of the series. Molecular weight (median 602 g mol⁻¹) exceeds the 500 limit in 86 % of the set; rotatable bonds (median 12) exceed Veber's limit of 10 in 63 %; TPSA exceeds 140 Å² in 38 % and cLogP exceeds 5 in 37 %. Only the H-bond acceptor count is comfortably within range. Overall, 49 % of the series violates two or more Rule-of-Five criteria and only 32 % satisfies both Veber criteria.</figcaption>
+</figure>
+<p>Peptidomimetic protease inhibitors are, in other words, a chemical class that the Rule of Five rejects almost wholesale. And yet five of them are approved oral drugs, whose computed properties are given below.</p>
+<table class="data"><thead><tr><th>Compound</th><th>MW</th><th>cLogP</th><th>HBD</th><th>HBA</th><th>TPSA (Å²)</th><th>Rot. bonds</th><th>QED</th><th>Ro5 violations</th><th>Veber</th></tr></thead><tbody><tr style="background:#fdf2e9"><td>amprenavir</td><td>505.6</td><td>2.4</td><td>3</td><td>7</td><td>131.2</td><td>11</td><td>0.4</td><td>1</td><td>fail</td></tr><tr style="background:#fdf2e9"><td>darunavir</td><td>547.7</td><td>2.38</td><td>3</td><td>8</td><td>140.4</td><td>11</td><td>0.364</td><td>1</td><td>fail</td></tr><tr style="background:#fdf2e9"><td>indinavir</td><td>613.8</td><td>2.87</td><td>4</td><td>7</td><td>118.0</td><td>11</td><td>0.263</td><td>1</td><td>fail</td></tr><tr style="background:#fdf2e9"><td>saquinavir</td><td>670.9</td><td>3.09</td><td>5</td><td>7</td><td>166.7</td><td>12</td><td>0.198</td><td>1</td><td>fail</td></tr><tr style="background:#fdf2e9"><td>ritonavir</td><td>721.0</td><td>5.91</td><td>4</td><td>9</td><td>145.8</td><td>17</td><td>0.106</td><td>2</td><td>fail</td></tr><tr><td>aspirin</td><td>180.2</td><td>1.31</td><td>1</td><td>3</td><td>63.6</td><td>2</td><td>0.55</td><td>0</td><td>pass</td></tr><tr><td>caffeine</td><td>194.2</td><td>-1.03</td><td>0</td><td>3</td><td>61.8</td><td>0</td><td>0.538</td><td>0</td><td>pass</td></tr><tr><td>ibuprofen</td><td>206.3</td><td>3.07</td><td>1</td><td>1</td><td>37.3</td><td>4</td><td>0.822</td><td>0</td><td>pass</td></tr></tbody></table>
+<figure>
+<img src="figures/fig06_property_space.png" alt="Scatter of cLogP against molecular weight for the ChEMBL series with the Rule-of-Five region shaded and approved drugs and control drugs marked">
+<figcaption><b>Figure 3. Property space of the series.</b> Each blue point is one ChEMBL compound; the shaded rectangle is the Rule-of-Five region in these two dimensions (MW ≤ 500, cLogP ≤ 5). Ninety per cent of the series falls outside it, and so do four of the five approved protease inhibitors (amprenavir sits on the boundary). The three unrelated oral drugs shown for scale — aspirin, caffeine, ibuprofen — sit comfortably inside. The lesson is not that the rule is wrong but that it describes the <em>centre</em> of historical oral drug space: developing a compound outside it is harder, routinely requires formulation work and is sometimes the only option when the target demands a large ligand.</figcaption>
+</figure>
+<p>Note also the QED column of the table: the approved inhibitors score 0.11–0.40, well below the 0.5–0.7 typical of oral drugs, while ibuprofen scores 0.82. A drug-likeness score is a prior, not a verdict.</p>
+
+<h3 id="s5-3">5.3 ADMET</h3>
+<p><strong>ADMET</strong> — absorption, distribution, metabolism, excretion, toxicity — is what determines whether a potent compound can become a medicine. Each component has computational surrogates.</p>
+<table class="data">
+<thead><tr><th>Property</th><th>What it governs</th><th>Common in-silico surrogates</th></tr></thead>
+<tbody>
+<tr><td><strong>Absorption</strong></td><td>Fraction of an oral dose reaching the portal circulation</td><td>Caco-2 or MDCK permeability models, human intestinal absorption classifiers, logS (aqueous solubility), TPSA, P-glycoprotein substrate prediction</td></tr>
+<tr><td><strong>Distribution</strong></td><td>Where the drug goes</td><td>Plasma protein binding, volume of distribution, blood–brain barrier penetration (logBB, TPSA &lt; 90 Å² as a rough gate)</td></tr>
+<tr><td><strong>Metabolism</strong></td><td>How fast it is destroyed, and into what</td><td>Cytochrome P450 isoform substrate/inhibitor classifiers (1A2, 2C9, 2C19, 2D6, 3A4), site-of-metabolism prediction, microsomal stability models, number of primary metabolites (Jorgensen)</td></tr>
+<tr><td><strong>Excretion</strong></td><td>Clearance and half-life</td><td>Total and renal clearance regression models</td></tr>
+<tr><td><strong>Toxicity</strong></td><td>Whether it can be dosed safely</td><td>hERG blockade (cardiac QT prolongation), Ames mutagenicity, hepatotoxicity, structural alerts, and PAINS filters for assay interference<sup class="c"><a href="#r13">[13]</a></sup></td></tr>
+</tbody></table>
+<p>Free servers — SwissADME, ADMETlab, pkCSM, admetSAR — compute most of these in seconds from a SMILES string.<sup class="c"><a href="#r14">[14]</a>,<a href="#r15">[15]</a></sup> Their predictions are classification-grade, not measurement-grade, and their applicability domain is the chemistry of their training sets; they are best used to rank and to flag, never to conclude. Two specific cautions are worth internalising: an hERG alert is a reason to design it out early, because cardiotoxicity kills programmes late; and a PAINS match does not prove a compound is a false positive, but it does mean the assay result needs orthogonal confirmation.</p>
+<div class="box key"><h4>Key points — Section 5</h4><ul>
+<li>Drug-likeness rules describe the centre of historical oral drug space; they predict absorption, not activity, and have explicit exceptions.</li>
+<li>Measured on a real series, 86 % of HIV-1 protease inhibitors break the MW limit and 63 % the rotatable-bond limit, yet five are approved drugs.</li>
+<li>Use rules to prioritise, metrics (LE, LLE, QED) to optimise, and never to veto an experimentally confirmed active.</li>
+<li>ADMET models are ranking tools with a limited applicability domain; hERG and PAINS deserve attention early.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Section 6</span>Quantitative structure–activity relationships</h2>
+<h3 id="s6-1">6.1 The Hansch idea</h3>
+<p>The lecture frames the problem exactly as Hansch did: placing ten different substituents at four positions of a benzene ring would require 10⁴ syntheses. Instead, synthesise a small, informative subset, measure the activity, and fit a relationship between activity and molecular properties that predicts the rest. Corwin Hansch and Toshio Fujita's 1964 paper did this with three terms — a hydrophobic term (the substituent constant π, derived from logP), an electronic term (Hammett's σ) and a steric term (Taft's E<sub>s</sub> or Verloop's parameters) — in a linear free-energy relationship:<sup class="c"><a href="#r16">[16]</a></sup></p>
+<div class="eq">log(1/<em>C</em>) = <em>a</em>·π + <em>b</em>·π² + <em>c</em>·σ + <em>d</em>·E<sub>s</sub> + <em>e</em>
+<span class="where"><em>C</em> is the concentration producing a defined biological response, so log(1/<em>C</em>) is a potency on a logarithmic scale — the same quantity as pIC<sub>50</sub> or pK<sub>i</sub> = −log<sub>10</sub>(K<sub>i</sub> in molar). The π² term captures the common parabolic dependence on lipophilicity: activity rises with hydrophobicity until the compound becomes too insoluble or too strongly bound to membranes and plasma proteins, giving an optimum logP.</span></div>
+<p>Three features of this formulation are still the basis of the whole field. The dependent variable is <em>logarithmic</em>, because free energy is logarithmic in concentration (Unit 3, Section 3), so that a unit of pK<sub>i</sub> is 1.36 kcal mol⁻¹. The independent variables are <em>additive contributions of substituents</em>, which is what allows prediction for combinations never made. And the relationship is <em>local</em> to a congeneric series — the same substituent constants in a different scaffold give different coefficients.</p>
+
+<h3 id="s6-2">6.2 A worked QSAR on the HIV-1 protease dataset</h3>
+<p>Using the 2,335 curated compounds of Section 5.2, four models were built for this document: a Hansch-type multiple linear regression on ten interpretable physicochemical descriptors (MW, cLogP, HBD, HBA, TPSA, rotatable bonds, heavy atoms, rings, aromatic rings, fraction of sp³ carbon) and a random forest, each on those descriptors and on 2,048-bit Morgan fingerprints (<em>r</em> = 2). Each was evaluated on a held-out 20 % test set under two different splits.</p>
+<table class="data"><thead><tr><th>Model</th><th>Descriptors</th><th>Split</th><th>Test R²</th><th>Test RMSE (log units)</th></tr></thead><tbody><tr><td>Multiple linear regression</td><td>10 physicochemical</td><td>random (80/20)</td><td>0.107</td><td>1.58</td></tr><tr><td>Random forest (500 trees)</td><td>10 physicochemical</td><td>random (80/20)</td><td>0.522</td><td>1.16</td></tr><tr><td>Random forest (500 trees)</td><td>Morgan fingerprint, r = 2, 2048 bits</td><td>random (80/20)</td><td>0.688</td><td>0.93</td></tr><tr style="background:#fdf2e9"><td>Random forest (500 trees)</td><td>Morgan fingerprint</td><td>scaffold (unseen Murcko scaffolds)</td><td>0.517</td><td>1.04</td></tr><tr style="background:#fdf2e9"><td>Multiple linear regression</td><td>10 physicochemical</td><td>scaffold</td><td>-0.141</td><td>1.60</td></tr><tr style="background:#f5f7fa"><td>y-randomisation control (10 runs)</td><td>Morgan fingerprint</td><td>random, shuffled labels</td><td>mean -0.201 (max -0.102)</td><td>—</td></tr></tbody></table>
+<figure>
+<img src="figures/fig03_qsar.png" alt="Three observed-versus-predicted scatter plots: linear regression R2 0.11, random forest random split R2 0.69, random forest scaffold split R2 0.52">
+<figcaption><b>Figure 4. Observed against predicted pK<sub>i</sub> for three of the models (computed for this document).</b> The diagonal is perfect prediction and the dotted lines mark ±1 log unit. Left: a linear model on ten physicochemical descriptors explains almost nothing (R² = 0.11) — potency in this series is not a smooth function of bulk properties. Centre: a random forest on Morgan fingerprints reaches R² = 0.69 with RMSE 0.93 log units on a random split. Right: the same model and the same number of test compounds, but split by Murcko scaffold so that every test scaffold is absent from the training set, gives R² = 0.52 and RMSE 1.04. The random split measures interpolation within known chemotypes; the scaffold split measures what a prospective user actually needs, which is extrapolation to new chemistry.</figcaption>
+</figure>
+<p>The standardised coefficients of the linear model are instructive even though the model is poor, because they show what a bulk-property regression latches onto:</p>
+<table class="data"><thead><tr><th>Descriptor</th><th>MW</th><th>cLogP</th><th>HBD</th><th>HBA</th><th>TPSA</th><th>RotB</th><th>heavy</th><th>rings</th><th>arom</th><th>frac_csp3</th></tr></thead><tbody><tr><th>Standardised coefficient</th><td>-0.57</td><td>+0.01</td><td>-0.17</td><td>+0.38</td><td>-0.14</td><td>-0.30</td><td>+0.87</td><td>+0.36</td><td>-0.34</td><td>-0.34</td></tr></tbody></table>
+<p>The two largest terms are heavy-atom count (+0.87) and molecular weight (−0.57) — nearly collinear descriptors of size entering with opposite signs, a textbook symptom of multicollinearity rather than a physical insight. This is the same size dependence seen in docking scores (Unit 3, Section 7.3), and it is why descriptor sets must be checked for correlation and why coefficients from an unregularised fit on correlated descriptors should not be interpreted mechanistically.</p>
+
+<h3 id="s6-3">6.3 Validation: the three standard failures</h3>
+<p>A QSAR paper can be wrong in three ways that a reader can detect without rerunning anything, and the experiment above exercises all three.</p>
+<ol>
+<li><strong>No external validation.</strong> A model's fit to the data it was trained on (R², or leave-one-out q²) says almost nothing about prediction. Only performance on compounds held out before any model selection counts. Report R²<sub>test</sub> and RMSE<sub>test</sub>, with the number of test compounds.</li>
+<li><strong>Chance correlation.</strong> With enough descriptors, any target can be fitted. The standard control is <strong>y-randomisation</strong>: shuffle the activity labels, refit, and check that performance collapses. In the experiment above, ten y-randomised random forests on fingerprints gave a mean test R² of −0.20 (maximum −0.10) against 0.69 for the real labels, confirming that the signal is not an artefact of model capacity.</li>
+<li><strong>An undeclared applicability domain.</strong> A model interpolates; it does not extrapolate. A prediction for a molecule unlike anything in the training set is unreliable regardless of the reported R², and the honest practice is to report, for every prediction, a distance to the training set (nearest-neighbour Tanimoto, leverage, or the standard deviation across the trees of a forest) and to refuse predictions outside the domain. The scaffold-split result above is the quantitative statement of this: the <em>same model</em> that scores 0.69 inside its chemotypes scores 0.52 outside them.</li>
+</ol>
+<p>The five OECD principles for the regulatory validation of a QSAR codify the same requirements: a defined endpoint, an unambiguous algorithm, a defined applicability domain, appropriate measures of goodness-of-fit, robustness and predictivity, and — where possible — a mechanistic interpretation.<sup class="c"><a href="#r17">[17]</a></sup> Reporting standards for machine learning in chemistry add a fourth concrete demand: state exactly how the data were split, because a random split of a dataset full of analogue series will always flatter the model.<sup class="c"><a href="#r18">[18]</a></sup></p>
+
+<h3 id="s6-4">6.4 3D-QSAR</h3>
+<p>Classical QSAR correlates activity with substituent properties; <strong>3D-QSAR</strong> correlates it with fields computed around aligned molecules. In <strong>CoMFA</strong> (comparative molecular field analysis, Cramer 1988) the molecules of a series are aligned in a common frame, a probe atom is moved over a grid surrounding them, and the steric (Lennard-Jones) and electrostatic (Coulomb) interaction energies at each grid point become descriptors; partial least squares regression relates the thousands of grid values to activity.<sup class="c"><a href="#r19">[19]</a></sup> <strong>CoMSIA</strong> replaces the sharply varying potentials with Gaussian-shaped similarity fields and adds hydrophobic and hydrogen-bond fields.<sup class="c"><a href="#r20">[20]</a></sup> The output is the attraction of the method: contour maps showing, in three dimensions around the ligand, where added bulk or positive charge would increase or decrease activity — a direct instruction to a medicinal chemist.</p>
+<p>Its weaknesses are equally specific. The result depends critically on the <strong>alignment</strong> and on the <strong>conformer</strong> chosen for each molecule, neither of which is known for an inactive-until-measured compound; the method therefore works well for rigid, congeneric series and poorly for diverse sets. Where a structure of the complex exists, docking the series and aligning on the predicted poses is the usual route; where it does not, a pharmacophore alignment is used.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Section 7</span>Similarity, activity cliffs and scaffolds</h2>
+<p>The <strong>similarity principle</strong> — structurally similar molecules tend to have similar properties — underlies similarity searching, scaffold-based design and most machine learning in chemistry. Similarity is quantified with the <strong>Tanimoto coefficient</strong> between fingerprints:</p>
+<div class="eq"><em>T</em>(A, B) = <em>c</em> / (<em>a</em> + <em>b</em> − <em>c</em>)
+<span class="where"><em>a</em>, <em>b</em>: bits set in each molecule; <em>c</em>: bits set in both. <em>T</em> runs from 0 to 1. For Morgan/ECFP4 fingerprints, <em>T</em> ≥ 0.7 is conventionally "similar" and <em>T</em> ≥ 0.85 "very similar", but the thresholds are fingerprint-dependent and have no absolute meaning.</span></div>
+<p>How well does the principle hold? Figure 5 answers for the HIV-1 protease series, using 29,698 compound pairs built from a random subsample of the dataset.</p>
+<figure>
+<img src="figures/fig04_cliffs.png" alt="Hexbin plot of Tanimoto similarity against absolute pKi difference, and median difference per similarity bin, showing cliffs at high similarity">
+<figcaption><b>Figure 5. The similarity principle and its exceptions, measured on the ChEMBL series (computed for this document).</b> Left: each hexagon counts pairs at a given Tanimoto similarity and potency difference. Right: the median |ΔpK<sub>i</sub>| falls monotonically from 1.47 log units for pairs at T = 0.3–0.5 to 0.62 for pairs at T ≥ 0.8 — the principle holds on average. But the distribution has a long tail: 8.5 % of the most similar pairs (T ≥ 0.8) still differ in potency by more than two orders of magnitude. These are <strong>activity cliffs</strong>, and they are where ligand-based prediction fails and where the interesting chemistry lives.</figcaption>
+</figure>
+<p>Activity cliffs matter for three reasons.<sup class="c"><a href="#r21">[21]</a></sup> They are the places where a small, synthetically trivial change produces a large effect, so they carry the most SAR information per compound. They are the systematic failure mode of every similarity-based model, including machine learning: a model that predicts smoothly cannot reproduce a discontinuity, which is part of why the scaffold-split R² in Section 6 is what it is. And they usually have a structural explanation — a lost hydrogen bond to a buried residue, a clash with a side chain, a change of protonation — which is where docking and molecular dynamics (Units 3 and 5) earn their place in a ligand-based project.</p>
+<p>The complementary concept is the <strong>scaffold</strong>. The Bemis–Murcko framework of a molecule is what remains after side chains are removed, keeping the ring systems and the linkers between them.<sup class="c"><a href="#r22">[22]</a></sup> In the curated dataset, the 2,335 compounds reduce to <strong>1,004 distinct Murcko scaffolds</strong>, of which 696 occur only once; the most frequent single scaffold — a symmetric dibenzyl-substituted cyclic urea core — accounts for 86 compounds. That distribution (a few large analogue series and a long tail of singletons) is typical of medicinal-chemistry datasets, and it is precisely why a random train/test split leaks information: analogues of a test compound sit in the training set. Grouping by scaffold is the minimum defensible split, and the reason the right-hand panel of Figure 4 exists.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Section 8</span>Pharmacophores</h2>
+<p>A <strong>pharmacophore</strong> is, in the IUPAC definition, the ensemble of steric and electronic features necessary to ensure the optimal supramolecular interactions with a specific biological target and to trigger (or block) its biological response.<sup class="c"><a href="#r23">[23]</a></sup> It is an abstraction, not a molecule: it specifies <em>types</em> of feature and the distances between them, so that chemically unrelated molecules can satisfy the same pharmacophore. The usual feature types are hydrogen-bond donor, hydrogen-bond acceptor, hydrophobic centre, aromatic ring centroid (optionally with a plane normal), positive ionisable and negative ionisable, each represented as a sphere with a tolerance radius of about 1–1.5 Å, plus optional <strong>exclusion volumes</strong> marking space occupied by the receptor.</p>
+<figure>
+<img src="figures/fig05_pharmacophore.png" alt="Left: five pharmacophore features with inter-feature distances. Right: table of classical groups and their bioisosteric replacements">
+<figcaption><b>Figure 6. A pharmacophore and the bioisostere concept.</b> Left: a five-feature pharmacophore with its inter-feature distances; any molecule that can place the right feature types at these relative positions is a candidate, whatever its scaffold. Right: common bioisosteric replacements (Section 9.2) — the reason a pharmacophore is the useful abstraction, since these exchanges preserve features while changing the chemistry.</figcaption>
+</figure>
+<p>Pharmacophores are built in two ways. <strong>Ligand-based</strong> models are derived from a set of known actives: the molecules are conformationally expanded, aligned, and the features common to the actives (and, in the better protocols, absent from known inactives) are retained. The approach needs at least a handful of structurally diverse actives, and its hard problem is the same as 3D-QSAR's — which conformer and which alignment. <strong>Structure-based</strong> models are read off a complex: the interactions that the crystallographic or docked ligand makes with the site define the features, and the protein atoms define the exclusion volumes. A structure-based pharmacophore can be built from a single complex and is the natural bridge from Unit 3 to this unit.</p>
+<p>Their principal use is <strong>pharmacophore screening</strong>: a database of pre-generated conformers is searched for molecules that can place the required features within tolerance. It is one to two orders of magnitude faster than docking, it is insensitive to the scoring-function problems of Unit 3, and because it ignores the scaffold entirely it is the method of choice for <em>scaffold hopping</em>. Its cost is specificity: a four-feature pharmacophore with generous tolerances will match an implausible number of molecules, so models are normally validated against known actives and decoys (as in Unit 3, Section 8) and the surviving hits are docked before purchase.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Section 9</span>Designing new molecules</h2>
+<h3 id="s9-1">9.1 Combinatorial enumeration</h3>
+<p>The lecture's recipe is the practical core of lead optimisation: identify the target and a known active; identify the R-group positions of the scaffold that chemistry can reach; enumerate substituents at those positions to generate 10²–10⁶ virtual derivatives; and filter them computationally — drug-likeness, ADMET, docking, QSAR — to select the few dozen worth synthesising. Enumeration is a cheap way to be systematic, and modern "make-on-demand" catalogues (Enamine REAL, Chemspace) are enumerations of exactly this kind, built from catalogued building blocks and validated reactions so that every virtual molecule has a realistic synthetic route.</p>
+<p>Two constraints keep an enumeration useful. <strong>Synthetic accessibility</strong>: score the products (SAscore, RAscore, retrosynthesis planners) and discard what no one will make. <strong>Diversity and property control</strong>: enumerating every combination inflates molecular weight and lipophilicity, so apply the property filters of Section 5 <em>during</em> the enumeration, not after.</p>
+
+<h3 id="s9-2">9.2 Bioisosteric replacement</h3>
+<p><strong>Bioisosteres</strong> are groups with similar shape, volume and electronic distribution that can replace one another with retention of biological activity. Classical bioisosterism (Erlenmeyer, Grimm, Friedman) grouped atoms and small groups by valence-electron count; non-classical bioisosterism is defined functionally, by the ability to make the same interactions.<sup class="c"><a href="#r24">[24]</a></sup> The replacement is almost never made to improve potency — it is made to fix something else while keeping potency: metabolic stability (replacing a metabolically labile ester or a para-position susceptible to hydroxylation), permeability (tetrazole for carboxylate, which keeps the acidity and the charge but increases lipophilicity), solubility (pyridine for phenyl), patent position, or toxicity. The right-hand panel of Figure 6 lists the exchanges that appear most often. Databases of bioisosteric pairs mined from medicinal-chemistry literature (SwissBioisostere, matched molecular pair analysis) turn this into a searchable resource, with the observed frequency and the measured effect on properties for each exchange.<sup class="c"><a href="#r25">[25]</a></sup></p>
+
+<h3 id="s9-3">9.3 Scaffold hopping</h3>
+<p><strong>Scaffold hopping</strong> replaces the central framework while keeping the pharmacophoric features in place.<sup class="c"><a href="#r26">[26]</a></sup> The motivations are those the lecture lists — escaping a patent, removing a toxicophore or a metabolic liability, improving physicochemical properties, or simply finding a second chemical series as insurance — and the methods are the ones already covered<sup class="c"><a href="#r34">[34]</a></sup>: pharmacophore screening (which ignores the scaffold by construction), shape-based screening (ROCS and similar, which align molecules by volume overlap and electrostatics rather than by substructure), docking with the original binding mode as a restraint, and fragment replacement in the site. The classic textbook examples are the morphine → fentanyl → meperidine lineage of analgesics and the progression from peptidic to non-peptidic HIV protease inhibitors — the cyclic-urea scaffold that dominates the ChEMBL dataset of Section 7 is itself the product of a scaffold hop away from the peptidomimetic transition-state analogues.</p>
+
+<h3 id="s9-4">9.4 Generative and AI-assisted design</h3>
+<p>Since about 2018 a fourth strategy has been added: rather than enumerate and filter, <em>generate</em> molecules conditioned on the desired properties. Variational autoencoders, recurrent language models over SMILES, reinforcement learning and, most recently, diffusion models over 3D structures produce candidate molecules optimised for a multi-objective score (predicted potency, ADMET, synthetic accessibility).<sup class="c"><a href="#r27">[27]</a>,<a href="#r28">[28]</a></sup> The first generative-design compounds have entered clinical trials, and structure-conditioned generators that place a molecule directly in a binding pocket are an active research area. The standing caveats are those of any model: the generator optimises the score it was given, so a flawed scoring model yields confident nonsense; the molecules must still be synthesised and tested; and reported successes are, for now, concentrated in well-precedented target families. For a student, the important point is that generative design does not replace any part of this unit — it depends entirely on the descriptors, property models and validation discipline of Sections 4 to 6.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Section 10</span>An integrated workflow</h2>
+<p>The lecture's last slide assembles the methods into a cascade. Written out as decisions, with the question each filter answers:</p>
+<table class="data">
+<thead><tr><th>Stage</th><th>Method</th><th>Question answered</th><th>Typical survival</th></tr></thead>
+<tbody>
+<tr><td>0. Library</td><td>Chemical database (ZINC, Enamine REAL, ChEMBL, DrugBank, PubChem)</td><td>What can be bought or made?</td><td>10⁶–10⁹</td></tr>
+<tr><td>1. Property filters</td><td>Drug-likeness and lead-likeness rules, PAINS and reactive-group alerts, ADMET predictors</td><td>Could this ever be a drug, and will it interfere with the assay?</td><td>20–60 % removed</td></tr>
+<tr><td>2. Ligand-based prefilter</td><td>Pharmacophore screening, similarity search, QSAR/ML classifier</td><td>Does it look like the things that work?</td><td>10³–10⁵</td></tr>
+<tr><td>3. Fast docking</td><td>HTVS / standard-precision docking</td><td>Can it fit the site at all?</td><td>Top 1–10 %</td></tr>
+<tr><td>4. Careful docking</td><td>Extra-precision docking, several receptor conformations (ensemble), consensus scoring</td><td>What binding mode, and is it reproducible?</td><td>10²–10³</td></tr>
+<tr><td>5. Rescoring and dynamics</td><td>MM/GBSA, short MD of the complex, interaction-fingerprint stability (Unit 5)</td><td>Does the pose survive thermal motion, and are the key contacts persistent?</td><td>10–10²</td></tr>
+<tr><td>6. Selection</td><td>Clustering for chemical diversity, visual inspection, ligand efficiency and LLE, availability and price</td><td>Which few do we buy or make?</td><td>10–50</td></tr>
+<tr><td>7. Experiment</td><td>Biochemical or cell assay; dose–response, IC<sub>50</sub>/K<sub>i</sub></td><td>Does it actually work?</td><td>Hit rate 1–20 %</td></tr>
+</tbody></table>
+<p>Two connections to earlier units complete the loop. The measured IC<sub>50</sub> of stage 7 is converted to a K<sub>i</sub> for comparison with other assays through the <strong>Cheng–Prusoff relation</strong>, K<sub>i</sub> = IC<sub>50</sub>/(1 + [S]/K<sub>m</sub>) for competitive enzyme inhibition (or [L]/K<sub>d</sub> in a binding assay), which is why IC<sub>50</sub> values from different assay conditions are not directly comparable while K<sub>i</sub> values are.<sup class="c"><a href="#r29">[29]</a></sup> And confirmed actives re-enter the cascade as training data: a new QSAR model, a refined pharmacophore, and — if a structure of the complex can be obtained — a new starting point for structure-based design. The cycle, not any single calculation, is what produces a drug.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Section 11</span>Databases and software</h2>
+<table class="data">
+<thead><tr><th>Resource</th><th>Content</th><th>Use in this unit</th></tr></thead>
+<tbody>
+<tr><td><strong>ChEMBL</strong><sup class="c"><a href="#r30">[30]</a></sup></td><td>~2.5 M compounds with ~20 M curated bioactivities extracted from the literature</td><td>Source of the dataset analysed here; the standard starting point for a QSAR</td></tr>
+<tr><td><strong>PubChem</strong></td><td>&gt; 100 M compounds, bioassay results, computed properties</td><td>Broad chemical and assay lookup</td></tr>
+<tr><td><strong>DrugBank</strong></td><td>Approved and investigational drugs with targets, pharmacology and ADMET annotation</td><td>Reference compounds, repurposing</td></tr>
+<tr><td><strong>ZINC-22 / Enamine REAL</strong></td><td>Purchasable and make-on-demand libraries (10⁹–10¹⁰ molecules), ready-to-dock formats</td><td>Virtual screening libraries</td></tr>
+<tr><td><strong>BindingDB / PDBbind</strong></td><td>Measured affinities, the latter paired with structures of the complexes</td><td>Training and benchmarking of scoring functions and QSAR</td></tr>
+<tr><td><strong>RDKit</strong><sup class="c"><a href="#r31">[31]</a></sup></td><td>Open-source cheminformatics: descriptors, fingerprints, scaffolds, conformers, reactions</td><td>Everything computed in Sections 5–7</td></tr>
+<tr><td><strong>scikit-learn</strong><sup class="c"><a href="#r35">[35]</a></sup></td><td>Machine learning: regression, classification, cross-validation</td><td>The QSAR models of Section 6</td></tr>
+<tr><td><strong>SwissADME · ADMETlab · pkCSM</strong><sup class="c"><a href="#r14">[14]</a>,<a href="#r15">[15]</a></sup></td><td>Web ADMET prediction from SMILES</td><td>Stage 1 filters</td></tr>
+<tr><td><strong>SwissSimilarity · SwissBioisostere</strong><sup class="c"><a href="#r25">[25]</a></sup></td><td>Ligand-based screening; mined bioisosteric replacements</td><td>Sections 7 and 9</td></tr>
+<tr><td><strong>Pharmit · LigandScout · Phase</strong></td><td>Pharmacophore construction and screening</td><td>Section 8</td></tr>
+<tr><td><strong>Open3DQSAR · Schrödinger Phase/Field</strong></td><td>CoMFA/CoMSIA-type 3D-QSAR</td><td>Section 6.4</td></tr>
+<tr><td><strong>KNIME · TeachOpenCADD</strong><sup class="c"><a href="#r32">[32]</a></sup></td><td>Workflow platform; open teaching notebooks for CADD in Python</td><td>Reproducing and extending this unit</td></tr>
+</tbody></table>
+</section>
+
+<!-- ============================================================ -->
+<section id="s12">
+<h2><span class="num">Section 12</span>Practical work</h2>
+<h3>12.1 Reproducing the dataset and the descriptors</h3>
+<p>Everything in Sections 5–7 comes from the following code. ChEMBL's REST API needs no key.<sup class="c"><a href="#r33">[33]</a></sup></p>
+<pre><code>import json, urllib.request, numpy as np, pandas as pd
+from rdkit import Chem
+from rdkit.Chem import Descriptors, Crippen, rdMolDescriptors, QED
+from rdkit.Chem.Scaffolds import MurckoScaffold
+
+# ---- 1. Download all Ki measurements for HIV-1 protease (CHEMBL243) ----
+acts, url = [], ("https://www.ebi.ac.uk/chembl/api/data/activity.json"
+                 "?target_chembl_id=CHEMBL243&standard_type=Ki&limit=1000")
+while url:
+    page = json.loads(urllib.request.urlopen(url, timeout=90).read())
+    acts += page["activities"]
+    nxt = page["page_meta"]["next"]
+    url = "https://www.ebi.ac.uk" + nxt if nxt else None
+
+# ---- 2. Aggregate to one pKi per compound, then curate ----
+df = pd.DataFrame(acts)
+df = df[(df.standard_units == "nM") & (df.standard_relation == "=") & df.standard_value.notna()]
+df["pKi"] = 9 - np.log10(df.standard_value.astype(float))
+g = df.groupby("molecule_chembl_id").pKi.median().reset_index()
+#  drop mixtures and physically implausible potencies (the raw data contain both)
+g = g[(g.pKi >= 3) & (g.pKi <= 12)]
+
+# ---- 3. Fetch SMILES in batches of 40 (note the comma separator) ----
+smiles = {}
+ids = list(g.molecule_chembl_id)
+for i in range(0, len(ids), 40):
+    u = ("https://www.ebi.ac.uk/chembl/api/data/molecule.json?molecule_chembl_id__in="
+         + ",".join(ids[i:i+40]) + "&limit=40")
+    for m in json.loads(urllib.request.urlopen(u, timeout=120).read())["molecules"]:
+        s = (m.get("molecule_structures") or {}).get("canonical_smiles")
+        if s:
+            smiles[m["molecule_chembl_id"]] = s
+
+# ---- 4. Descriptors, drug-likeness and scaffolds ----
+rows = []
+for cid, pki in zip(g.molecule_chembl_id, g.pKi):
+    m = Chem.MolFromSmiles(smiles.get(cid, ""))
+    if m is None or "." in smiles[cid]:
+        continue
+    rows.append(dict(cid=cid, pKi=pki,
+        MW=Descriptors.MolWt(m), cLogP=Crippen.MolLogP(m),
+        HBD=rdMolDescriptors.CalcNumHBD(m), HBA=rdMolDescriptors.CalcNumHBA(m),
+        TPSA=rdMolDescriptors.CalcTPSA(m), RotB=rdMolDescriptors.CalcNumRotatableBonds(m),
+        QED=QED.qed(m), scaffold=MurckoScaffold.MurckoScaffoldSmiles(mol=m)))
+d = pd.DataFrame(rows)
+d["Ro5_violations"] = ((d.MW > 500).astype(int) + (d.cLogP > 5).astype(int)
+                       + (d.HBD > 5).astype(int) + (d.HBA > 10).astype(int))
+print(len(d), "compounds;", (d.Ro5_violations >= 2).mean().round(3),
+      "fraction with >= 2 Rule-of-Five violations")</code></pre>
+<h3>12.2 The QSAR models and their validation</h3>
+<pre><code>from rdkit import DataStructs
+from rdkit.Chem import AllChem
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+
+mols = [Chem.MolFromSmiles(s) for s in d.smiles]
+gen  = AllChem.GetMorganGenerator(radius=2, fpSize=2048)
+def bits(m):
+    a = np.zeros((2048,), dtype=np.int8)
+    DataStructs.ConvertToNumpyArray(gen.GetFingerprint(m), a)
+    return a
+X, y = np.array([bits(m) for m in mols]), d.pKi.values
+
+# --- random split: measures interpolation within known chemotypes ---
+rng = np.random.default_rng(0); idx = rng.permutation(len(d)); n = int(0.8*len(d))
+tr, te = idx[:n], idx[n:]
+
+# --- scaffold split: largest scaffold groups to train, the rest unseen in test ---
+groups = d.groupby("scaffold").indices
+train_s, test_s = [], []
+for k in sorted(groups, key=lambda k: -len(groups[k])):
+    (train_s if len(train_s) &lt; 0.8*len(d) else test_s).extend(groups[k])
+
+for name, (a, b) in [("random", (tr, te)), ("scaffold", (np.array(train_s), np.array(test_s)))]:
+    rf = RandomForestRegressor(500, random_state=0, n_jobs=-1).fit(X[a], y[a])
+    p  = rf.predict(X[b])
+    print(f"{name:9s} R2={r2_score(y[b], p):.3f}  RMSE={mean_squared_error(y[b], p)**0.5:.2f}")
+
+# --- y-randomisation: performance must collapse ---
+for k in range(10):
+    ysh = rng.permutation(y)
+    rf = RandomForestRegressor(300, random_state=k, n_jobs=-1).fit(X[tr], ysh[tr])
+    print("shuffled R2:", round(r2_score(ysh[te], rf.predict(X[te])), 3))</code></pre>
+<h3>12.3 Similarity and activity cliffs</h3>
+<pre><code>fps = [gen.GetFingerprint(m) for m in mols]
+pairs = []
+sub = rng.choice(len(d), 700, replace=False)      # 700 molecules -> ~245,000 pairs
+for i in range(len(sub)):
+    for j in range(i+1, len(sub)):
+        t = DataStructs.TanimotoSimilarity(fps[sub[i]], fps[sub[j]])
+        if t &gt; 0.3:
+            pairs.append((t, abs(y[sub[i]] - y[sub[j]])))
+P = np.array(pairs)
+close = P[P[:,0] &gt;= 0.8]
+print(f"{len(close)} pairs with T>=0.8; {100*(close[:,1] &gt; 2).mean():.1f} % are activity cliffs")</code></pre>
+<h3>12.4 A protocol checklist for a CADD study</h3>
+<ol>
+<li>State the question: pose prediction, affinity ranking, hit finding or property optimisation. The methods and the metrics follow from it.</li>
+<li>Record the data provenance: database and version, target identifier, activity type (K<sub>i</sub>, IC<sub>50</sub>, EC<sub>50</sub>), units, assay type, and every curation rule applied, with the number of compounds removed by each.</li>
+<li>Aggregate replicate measurements explicitly (median, and report the spread); never mix K<sub>i</sub> and IC<sub>50</sub> in one dependent variable without justification.</li>
+<li>Choose descriptors deliberately and check them for collinearity; report the exact fingerprint type, radius and length.</li>
+<li>Split before any model selection, and split by scaffold or by time, not at random. Report both if you want to show the difference.</li>
+<li>Run y-randomisation and report it.</li>
+<li>Define and report the applicability domain; refuse predictions outside it.</li>
+<li>Report R², RMSE and the number of test compounds — not R² alone, and never the training R² as if it were predictive performance.</li>
+<li>For a prospective selection, report what was bought, what was tested and what was confirmed. A model never tested prospectively has produced a hypothesis, not a result.</li>
+</ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="s13">
+<h2><span class="num">Section 13</span>Self-assessment</h2>
+<p>Attempt each question before opening the answer.</p>
+<details><summary>1. A compound has MW 612, cLogP 4.4, 3 HBD and 7 HBA. How many Rule-of-Five violations does it have, and what does that tell you?</summary><p>One violation (MW &gt; 500). Lipinski's criterion flags a problem when <em>two or more</em> are violated, so this compound passes — and in any case the rule predicts oral absorption, not activity or developability. These happen to be the median values of the HIV-1 protease series in Section 5.2, a class of compounds that includes five approved oral drugs.</p></details>
+<details><summary>2. Why is the dependent variable of a QSAR almost always logarithmic?</summary><p>Because binding free energy is logarithmic in concentration: ΔG = −RT ln K. A linear model in log(1/C) — pK<sub>i</sub>, pIC<sub>50</sub> — is therefore a model that is additive in free-energy contributions, which is what makes substituent contributions transferable. One pK<sub>i</sub> unit corresponds to 1.36 kcal mol⁻¹ at 298 K.</p></details>
+<details><summary>3. A published QSAR reports q²(leave-one-out) = 0.82 and no test set. What do you conclude?</summary><p>Very little about its predictive ability. Leave-one-out cross-validation on a dataset containing analogue series leaves near-duplicates in the training set, so q² is routinely optimistic; it is a measure of internal consistency, not prediction. Ask for an external test set selected before model building, a y-randomisation control and a stated applicability domain.</p></details>
+<details><summary>4. In Section 6.2 the random forest on fingerprints scored R² = 0.69 on a random split and 0.52 on a scaffold split. Which number should appear in the abstract of a paper, and why?</summary><p>Both, with the split explained — but the scaffold-split value is the one that describes prospective use, because a user applies the model to new chemistry, not to analogues of the training set. Reporting only the random-split number overstates what the model can do by about a third of its explained variance.</p></details>
+<details><summary>5. What is an activity cliff, why is it a problem for machine learning, and why is it valuable to a medicinal chemist?</summary><p>A pair of structurally very similar molecules (e.g. Tanimoto ≥ 0.8) with a large potency difference (&gt; 2 log units). It is a problem because similarity-based models predict smoothly and therefore cannot reproduce a discontinuity; such pairs are systematically mispredicted and inflate the apparent error. It is valuable because it localises the SAR: a single small change producing a hundredfold effect identifies an interaction worth understanding, usually explicable from the structure of the complex.</p></details>
+<details><summary>6. You must choose between a model on ten interpretable descriptors (R² = 0.52) and one on 2,048 fingerprint bits (R² = 0.69). Which do you use?</summary><p>It depends on the purpose. To <em>rank</em> a virtual library, use the fingerprint model: accuracy is what matters and interpretability is irrelevant. To <em>guide synthesis</em>, the descriptor model — or a fingerprint model accompanied by per-prediction attribution (SHAP, matched molecular pairs) — is more useful, because a chemist needs to know what to change. In practice both are built, and the agreement between them is itself informative.</p></details>
+<details><summary>7. Distinguish a pharmacophore from a scaffold, and say which one is the better basis for scaffold hopping.</summary><p>A scaffold is a concrete substructure — the ring systems and linkers of a molecule. A pharmacophore is an abstract arrangement of feature types (donor, acceptor, hydrophobe, aromatic, charged) at defined distances, with no chemistry attached. Scaffold hopping deliberately changes the scaffold while preserving the pharmacophore, so the pharmacophore is the right basis; a substructure or similarity search, which keys on the scaffold, will by construction return the same chemotype.</p></details>
+<details><summary>8. Give three reasons to make a bioisosteric replacement that have nothing to do with potency.</summary><p>Metabolic stability (blocking a site of oxidation or hydrolysis); physicochemical properties (solubility, permeability, pK<sub>a</sub>, logP); and intellectual property or toxicity (moving away from a patented or toxicophore-bearing group). A replacement that keeps potency while fixing one of these is a success even though the IC<sub>50</sub> is unchanged.</p></details>
+<details><summary>9. A virtual screen of 10⁶ compounds gives 200 molecules above your docking threshold. List the filters you would apply before buying any, and the order.</summary><p>Property and alert filters first, because they are free: drug-likeness/lead-likeness, PAINS and reactive groups, predicted ADMET liabilities (hERG, poor solubility). Then pose quality: does the pose make the interactions the site requires, is it reproducible across receptor conformations and scoring functions. Then rescoring with an orthogonal method (MM/GBSA or a short MD, Unit 5). Then clustering for chemical diversity — buying twenty analogues of one chemotype risks the whole budget on one hypothesis. Then visual inspection and availability/price. Buy a diverse set, not the top twenty by score.</p></details>
+<details><summary>10. Why can IC<sub>50</sub> values from two laboratories not be compared directly, and what does Cheng–Prusoff do about it?</summary><p>IC<sub>50</sub> depends on the assay conditions — the substrate concentration and K<sub>m</sub> in an enzyme assay, or the radioligand concentration and K<sub>d</sub> in a binding assay — so the same inhibitor gives different IC<sub>50</sub> values at different substrate concentrations. The Cheng–Prusoff relation, K<sub>i</sub> = IC<sub>50</sub>/(1 + [S]/K<sub>m</sub>), converts it to a condition-independent K<sub>i</sub> for competitive inhibition. This is why a curated QSAR dataset should use one activity type, and why ChEMBL records the assay description alongside the value.</p></details>
+<details><summary>11. Your enumeration produced 50,000 derivatives of a lead with MW 480. What do you check before docking any of them?</summary><p>That the enumeration has not simply made everything bigger: compute the property distribution of the products and compare it with the lead. Adding substituents raises MW, cLogP and rotatable bonds, so an unconstrained enumeration drifts out of drug-like space and the docking scores will then reward the largest products (Unit 3, Section 7.3). Apply property constraints during enumeration, score synthetic accessibility, remove duplicates and stereochemical redundancy, and normalise any ranking by ligand efficiency.</p></details>
+<details><summary>12. In two or three sentences, state what computer-aided drug design can and cannot deliver.</summary><p>It can prioritise: reducing 10⁹ possible molecules to a few dozen worth testing, proposing which modification to try next, flagging liabilities before synthesis, and explaining an observed structure–activity relationship in terms of specific interactions. It cannot measure affinity, prove a binding mode, or establish that a compound is safe or efficacious — every prediction is a hypothesis whose value is realised only when an experiment tests it, and whose cost, when it is wrong and untested, is a wasted synthesis.</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Appendix</span>Glossary</h2>
+<dl class="gloss">
+<dt>ADMET</dt><dd>Absorption, distribution, metabolism, excretion and toxicity — the pharmacokinetic and safety profile of a compound.</dd>
+<dt>Activity cliff</dt><dd>A pair of structurally very similar compounds with a large difference in potency.</dd>
+<dt>Applicability domain</dt><dd>The region of chemical space in which a model's predictions are supported by its training data.</dd>
+<dt>Bioisostere</dt><dd>A group that can replace another with retention of biological activity, having similar shape and electronics.</dd>
+<dt>Cheng–Prusoff equation</dt><dd>Converts an IC<sub>50</sub> into a condition-independent K<sub>i</sub>.</dd>
+<dt>CoMFA / CoMSIA</dt><dd>3D-QSAR methods correlating activity with interaction fields computed around aligned molecules.</dd>
+<dt>Descriptor</dt><dd>A number computed from a molecular representation, used as a model input.</dd>
+<dt>Druggability</dt><dd>The likelihood that a target can be modulated by a small molecule with drug-like properties.</dd>
+<dt>Enumeration</dt><dd>Systematic generation of a virtual compound library by combining substituents on a scaffold.</dd>
+<dt>Fingerprint</dt><dd>Bit or count vector encoding the substructures present in a molecule (MACCS keys, Morgan/ECFP).</dd>
+<dt>Lead compound</dt><dd>A validated hit with demonstrated structure–activity relationship, taken forward for optimisation.</dd>
+<dt>Ligand efficiency (LE) / lipophilic ligand efficiency (LLE)</dt><dd>Potency normalised by heavy-atom count / corrected for lipophilicity (pIC<sub>50</sub> − cLogP).</dd>
+<dt>logP / logD</dt><dd>Octanol–water partition coefficient of the neutral species / of the mixture at a given pH.</dd>
+<dt>PAINS</dt><dd>Pan-assay interference compounds: substructures that give false positives across many assays.</dd>
+<dt>Pharmacophore</dt><dd>The arrangement of feature types required for activity, independent of scaffold.</dd>
+<dt>QED</dt><dd>Quantitative estimate of drug-likeness, a 0–1 desirability score over eight properties.</dd>
+<dt>QSAR</dt><dd>Quantitative structure–activity relationship: a model relating descriptors to a measured activity.</dd>
+<dt>Rule of Five</dt><dd>Lipinski's filter for oral absorption: MW ≤ 500, logP ≤ 5, HBD ≤ 5, HBA ≤ 10.</dd>
+<dt>Scaffold (Bemis–Murcko)</dt><dd>The ring systems and their linkers, with side chains removed.</dd>
+<dt>Scaffold hopping</dt><dd>Replacing the scaffold while keeping the pharmacophore.</dd>
+<dt>Tanimoto coefficient</dt><dd>Fingerprint similarity measure, c/(a + b − c), between 0 and 1.</dd>
+<dt>TPSA</dt><dd>Topological polar surface area; correlates with permeability.</dd>
+<dt>y-randomisation</dt><dd>Control in which activity labels are shuffled; a valid model's performance must collapse.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Appendix</span>References and further reading</h2>
+<h3>Primary literature cited in the text</h3>
+<ol class="refs">
+<li id="r1">DiMasi JA, Grabowski HG, Hansen RW. Innovation in the pharmaceutical industry: new estimates of R&amp;D costs. <em>J Health Econ</em>. 2016;47:20–33. <a href="https://doi.org/10.1016/j.jhealeco.2016.01.012">doi:10.1016/j.jhealeco.2016.01.012</a></li>
+<li id="r2">Waring MJ, Arrowsmith J, Leach AR, et al. An analysis of the attrition of drug candidates from four major pharmaceutical companies. <em>Nat Rev Drug Discov</em>. 2015;14(7):475–486. <a href="https://doi.org/10.1038/nrd4609">doi:10.1038/nrd4609</a></li>
+<li id="r3">Le Guilloux V, Schmidtke P, Tuffery P. Fpocket: an open source platform for ligand pocket detection. <em>BMC Bioinformatics</em>. 2009;10:168. <a href="https://doi.org/10.1186/1471-2105-10-168">doi:10.1186/1471-2105-10-168</a></li>
+<li id="r4">Halgren TA. Identifying and characterizing binding sites and assessing druggability. <em>J Chem Inf Model</em>. 2009;49(2):377–389. <a href="https://doi.org/10.1021/ci800324m">doi:10.1021/ci800324m</a></li>
+<li id="r5">Santos R, Ursu O, Gaulton A, et al. A comprehensive map of molecular drug targets. <em>Nat Rev Drug Discov</em>. 2017;16(1):19–34. <a href="https://doi.org/10.1038/nrd.2016.230">doi:10.1038/nrd.2016.230</a></li>
+<li id="r6">Todeschini R, Consonni V. <em>Molecular Descriptors for Chemoinformatics</em>. 2nd ed. Wiley-VCH; 2009. <a href="https://doi.org/10.1002/9783527628766">doi:10.1002/9783527628766</a></li>
+<li id="r7">Lipinski CA, Lombardo F, Dominy BW, Feeney PJ. Experimental and computational approaches to estimate solubility and permeability in drug discovery and development settings. <em>Adv Drug Deliv Rev</em>. 2001;46(1–3):3–26. <a href="https://doi.org/10.1016/S0169-409X(00)00129-0">doi:10.1016/S0169-409X(00)00129-0</a></li>
+<li id="r8">Veber DF, Johnson SR, Cheng HY, Smith BR, Ward KW, Kopple KD. Molecular properties that influence the oral bioavailability of drug candidates. <em>J Med Chem</em>. 2002;45(12):2615–2623. <a href="https://doi.org/10.1021/jm020017n">doi:10.1021/jm020017n</a></li>
+<li id="r9">Jorgensen WL, Duffy EM. Prediction of drug solubility from structure. <em>Adv Drug Deliv Rev</em>. 2002;54(3):355–366. <a href="https://doi.org/10.1016/S0169-409X(02)00008-X">doi:10.1016/S0169-409X(02)00008-X</a></li>
+<li id="r10">Bickerton GR, Paolini GV, Besnard J, Muresan S, Hopkins AL. Quantifying the chemical beauty of drugs. <em>Nat Chem</em>. 2012;4(2):90–98. <a href="https://doi.org/10.1038/nchem.1243">doi:10.1038/nchem.1243</a></li>
+<li id="r11">Doak BC, Over B, Giordanetto F, Kihlberg J. Oral druggable space beyond the rule of 5: insights from drugs and clinical candidates. <em>Chem Biol</em>. 2014;21(9):1115–1142. <a href="https://doi.org/10.1016/j.chembiol.2014.08.013">doi:10.1016/j.chembiol.2014.08.013</a></li>
+<li id="r12">Leeson PD, Springthorpe B. The influence of drug-like concepts on decision-making in medicinal chemistry. <em>Nat Rev Drug Discov</em>. 2007;6(11):881–890. <a href="https://doi.org/10.1038/nrd2445">doi:10.1038/nrd2445</a></li>
+<li id="r13">Baell JB, Holloway GA. New substructure filters for removal of pan assay interference compounds (PAINS) from screening libraries and for their exclusion in bioassays. <em>J Med Chem</em>. 2010;53(7):2719–2740. <a href="https://doi.org/10.1021/jm901137j">doi:10.1021/jm901137j</a></li>
+<li id="r14">Daina A, Michielin O, Zoete V. SwissADME: a free web tool to evaluate pharmacokinetics, drug-likeness and medicinal chemistry friendliness of small molecules. <em>Sci Rep</em>. 2017;7:42717. <a href="https://doi.org/10.1038/srep42717">doi:10.1038/srep42717</a></li>
+<li id="r15">Pires DEV, Blundell TL, Ascher DB. pkCSM: predicting small-molecule pharmacokinetic and toxicity properties using graph-based signatures. <em>J Med Chem</em>. 2015;58(9):4066–4072. <a href="https://doi.org/10.1021/acs.jmedchem.5b00104">doi:10.1021/acs.jmedchem.5b00104</a></li>
+<li id="r16">Hansch C, Fujita T. ρ-σ-π analysis. A method for the correlation of biological activity and chemical structure. <em>J Am Chem Soc</em>. 1964;86(8):1616–1626. <a href="https://doi.org/10.1021/ja01062a035">doi:10.1021/ja01062a035</a></li>
+<li id="r17">Organisation for Economic Co-operation and Development. <em>Guidance Document on the Validation of (Quantitative) Structure–Activity Relationship [(Q)SAR] Models</em>. OECD Series on Testing and Assessment No. 69. Paris: OECD Publishing; 2014. <a href="https://doi.org/10.1787/9789264085442-en">doi:10.1787/9789264085442-en</a></li>
+<li id="r18">Walters WP, Barzilay R. Critical assessment of AI in drug discovery. <em>Expert Opin Drug Discov</em>. 2021;16(9):937–947. <a href="https://doi.org/10.1080/17460441.2021.1915982">doi:10.1080/17460441.2021.1915982</a></li>
+<li id="r19">Cramer RD, Patterson DE, Bunce JD. Comparative molecular field analysis (CoMFA). 1. Effect of shape on binding of steroids to carrier proteins. <em>J Am Chem Soc</em>. 1988;110(18):5959–5967. <a href="https://doi.org/10.1021/ja00226a005">doi:10.1021/ja00226a005</a></li>
+<li id="r20">Klebe G, Abraham U, Mietzner T. Molecular similarity indices in a comparative analysis (CoMSIA) of drug molecules to correlate and predict their biological activity. <em>J Med Chem</em>. 1994;37(24):4130–4146. <a href="https://doi.org/10.1021/jm00050a010">doi:10.1021/jm00050a010</a></li>
+<li id="r21">Stumpfe D, Hu H, Bajorath J. Advances in exploring activity cliffs. <em>J Comput Aided Mol Des</em>. 2020;34(9):929–942. <a href="https://doi.org/10.1007/s10822-020-00317-x">doi:10.1007/s10822-020-00317-x</a></li>
+<li id="r22">Bemis GW, Murcko MA. The properties of known drugs. 1. Molecular frameworks. <em>J Med Chem</em>. 1996;39(15):2887–2893. <a href="https://doi.org/10.1021/jm9602928">doi:10.1021/jm9602928</a></li>
+<li id="r23">Wermuth CG, Ganellin CR, Lindberg P, Mitscher LA. Glossary of terms used in medicinal chemistry (IUPAC Recommendations 1998). <em>Pure Appl Chem</em>. 1998;70(5):1129–1143. <a href="https://doi.org/10.1351/pac199870051129">doi:10.1351/pac199870051129</a></li>
+<li id="r24">Meanwell NA. Synopsis of some recent tactical application of bioisosteres in drug design. <em>J Med Chem</em>. 2011;54(8):2529–2591. <a href="https://doi.org/10.1021/jm1013693">doi:10.1021/jm1013693</a></li>
+<li id="r25">Wirth M, Zoete V, Michielin O, Sauer WHB. SwissBioisostere: a database of molecular replacements for ligand design. <em>Nucleic Acids Res</em>. 2013;41(D1):D1137–D1143. <a href="https://doi.org/10.1093/nar/gks1059">doi:10.1093/nar/gks1059</a></li>
+<li id="r26">Böhm HJ, Flohr A, Stahl M. Scaffold hopping. <em>Drug Discov Today Technol</em>. 2004;1(3):217–224. <a href="https://doi.org/10.1016/j.ddtec.2004.10.009">doi:10.1016/j.ddtec.2004.10.009</a></li>
+<li id="r27">Gómez-Bombarelli R, Wei JN, Duvenaud D, et al. Automatic chemical design using a data-driven continuous representation of molecules. <em>ACS Cent Sci</em>. 2018;4(2):268–276. <a href="https://doi.org/10.1021/acscentsci.7b00572">doi:10.1021/acscentsci.7b00572</a></li>
+<li id="r28">Zhavoronkov A, Ivanenkov YA, Aliper A, et al. Deep learning enables rapid identification of potent DDR1 kinase inhibitors. <em>Nat Biotechnol</em>. 2019;37(9):1038–1040. <a href="https://doi.org/10.1038/s41587-019-0224-x">doi:10.1038/s41587-019-0224-x</a></li>
+<li id="r29">Cheng Y, Prusoff WH. Relationship between the inhibition constant (K<sub>i</sub>) and the concentration of inhibitor which causes 50 per cent inhibition (I<sub>50</sub>) of an enzymatic reaction. <em>Biochem Pharmacol</em>. 1973;22(23):3099–3108. <a href="https://doi.org/10.1016/0006-2952(73)90196-2">doi:10.1016/0006-2952(73)90196-2</a></li>
+<li id="r30">Zdrazil B, Felix E, Hunter F, et al. The ChEMBL Database in 2023: a drug discovery platform spanning multiple bioactivity data types and time periods. <em>Nucleic Acids Res</em>. 2024;52(D1):D1180–D1192. <a href="https://doi.org/10.1093/nar/gkad1004">doi:10.1093/nar/gkad1004</a></li>
+<li id="r31">Landrum G, et al. RDKit: open-source cheminformatics. <a href="https://www.rdkit.org">https://www.rdkit.org</a> · <a href="https://doi.org/10.5281/zenodo.591637">doi:10.5281/zenodo.591637</a></li>
+<li id="r32">Sydow D, Morger A, Driller M, Volkamer A. TeachOpenCADD: a teaching platform for computer-aided drug design using open source packages and data. <em>J Cheminform</em>. 2019;11:29. <a href="https://doi.org/10.1186/s13321-019-0351-x">doi:10.1186/s13321-019-0351-x</a></li>
+<li id="r33">Gaulton A, Hersey A, Nowotka M, et al. The ChEMBL database in 2017. <em>Nucleic Acids Res</em>. 2017;45(D1):D945–D954. <a href="https://doi.org/10.1093/nar/gkw1074">doi:10.1093/nar/gkw1074</a></li>
+<li id="r34">Sliwoski G, Kothiwale S, Meiler J, Lowe EW. Computational methods in drug discovery. <em>Pharmacol Rev</em>. 2014;66(1):334–395. <a href="https://doi.org/10.1124/pr.112.007336">doi:10.1124/pr.112.007336</a></li>
+<li id="r35">Pedregosa F, Varoquaux G, Gramfort A, et al. Scikit-learn: machine learning in Python. <em>J Mach Learn Res</em>. 2011;12:2825–2830. <a href="https://doi.org/10.48550/arXiv.1201.0490">doi:10.48550/arXiv.1201.0490</a></li>
+</ol>
+<h3>Reviews and textbooks</h3>
+<ol class="refs" start="36">
+<li>Singh DB, ed. <em>Computer-Aided Drug Design</em>. Springer; 2020. — Recommended in the lecture.</li>
+<li>Zhang W, ed. <em>Computer-Aided Drug Discovery</em>. Methods in Pharmacology and Toxicology. Humana Press; 2016. — Recommended in the lecture.</li>
+<li>Saharan VA, ed. <em>Computer Aided Pharmaceutics and Drug Delivery</em>. Springer; 2022. — Recommended in the lecture.</li>
+<li>Grisoni F, Ballabio D, Todeschini R, Consonni V. Molecular descriptors for structure–activity applications: a hands-on approach. <em>Methods Mol Biol</em>. 2018;1800:3–53. <a href="https://doi.org/10.1007/978-1-4939-7899-1_1">doi:10.1007/978-1-4939-7899-1_1</a> — Recommended in the lecture; the practical reference for Section 4.</li>
+<li>Patrick GL. <em>An Introduction to Medicinal Chemistry</em>. 7th ed. Oxford University Press; 2023. — Chapters 13–14 on QSAR and drug design; the clearest undergraduate treatment.</li>
+<li>Kubinyi H. QSAR: Hansch analysis and related approaches. Wiley-VCH; 1993. — The classical monograph on Section 6.1.</li>
+<li>Bajorath J, ed. <em>Chemoinformatics for Drug Discovery</em>. Wiley; 2014.</li>
+</ol>
+<h3>Online resources</h3>
+<ul>
+<li>TeachOpenCADD — <a href="https://projects.volkamerlab.org/teachopencadd/">https://projects.volkamerlab.org/teachopencadd/</a>: open Python notebooks covering ChEMBL access, descriptors, Lipinski filters, fingerprints, clustering, machine learning and docking; the closest published counterpart to this unit's practical work.</li>
+<li>RDKit documentation and "Getting Started in Python" — <a href="https://www.rdkit.org/docs/">https://www.rdkit.org/docs/</a></li>
+<li>ChEMBL web services documentation — <a href="https://chembl.gitbook.io/chembl-interface-documentation/web-services">https://chembl.gitbook.io/chembl-interface-documentation/web-services</a></li>
+<li>SwissADME — <a href="http://www.swissadme.ch">http://www.swissadme.ch</a> · SwissBioisostere — <a href="https://www.swissbioisostere.ch">https://www.swissbioisostere.ch</a> · Pharmit — <a href="https://pharmit.csb.pitt.edu">https://pharmit.csb.pitt.edu</a></li>
+<li>Practical Cheminformatics (P. Walters) — <a href="https://practicalcheminformatics.blogspot.com">https://practicalcheminformatics.blogspot.com</a>: critical commentary on QSAR validation and dataset splitting.</li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Study material for BGM324 Bioinformatics, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Figures 1–6 were generated for this document; the dataset analysed in Sections 5–7 was downloaded from ChEMBL (target CHEMBL243, K<sub>i</sub> activities, retrieved 17 October 2026) and processed with RDKit 2026.03.1 and scikit-learn 1.7.2. Worked examples follow the lecture slides <em>04_DiseñoDeDrogasAsistidoPorComputadora_EN</em>. Last revised 17 October 2026.
+</footer>
+
+</body>
+</html>

@@ -468,6 +468,9 @@ a.pub-title:hover { color: var(--accent); }
 .project-years { font-size: .78rem; color: var(--text-mute); font-variant-numeric: tabular-nums; }
 .project h3 { font-size: 1.06rem; margin-bottom: 6px; line-height: 1.35; }
 .project h3 i { font-style: italic; }
+.project h3 a { color: inherit; }
+.project h3 a:hover { color: var(--accent); text-decoration: none; }
+.project .btn { font-size: .85rem; padding: 8px 14px; margin-top: 4px; }
 .project-role { font-size: .8rem; color: var(--accent); font-weight: 600; margin: 0 0 10px; }
 .project p { font-size: .88rem; color: var(--text-soft); }
 .project .tags { margin-top: 14px; }

@@ -116,6 +116,26 @@ acentos y sin puntuación** (así se normaliza antes de comparar). Truco para ob
 la tabla resalta tu nombre en azul, así que **una fila sin nombre resaltado es casi
 siempre una atribución errónea**.
 
+## Curso BGM324 (material de estudio)
+
+La sección vive en `BGM324/` y se publica en `https://danielbustosg.github.io/BGM324/`.
+
+- `BGM324/index.html` — índice del curso (ES/EN), con una tarjeta por unidad.
+- `BGM324/01_.../`, `02_.../`, … — copia de cada clase con sus figuras.
+
+**Los originales viven en** `~/Documents/Bioinformatica_BGM324/Bioinformatica_BGM324/Material_Estudio`.
+Para actualizar el sitio después de editar una clase:
+
+```bash
+cd ~/Documents/Github/Webpage
+python3 scripts/sync_bgm324.py
+```
+
+El script recopia todas las clases y agrega a cada una la barra superior
+"← BGM324 · Bioinformática". No modifica los originales. Si agregas una **clase nueva**
+(por ejemplo `06_...`), el script la copia sola; solo falta duplicar un
+`<article class="unit">` en `BGM324/index.html` para que aparezca en el índice.
+
 ## Idioma (ES / EN)
 
 El botón **ES / EN** del header cambia todo el sitio: textos, `<title>`, `<html lang>`,
@@ -204,6 +224,8 @@ index.html                — contenido en español (fuente de la verdad) + clav
 assets/css/styles.css     — estilos, tema claro/oscuro vía :root
 assets/js/i18n.js         — traducciones al inglés + textos generados por JS
 assets/js/app.js          — idioma, nav, pestañas, tema, carga de publicaciones
+BGM324/                   — curso BGM324: índice + una carpeta por clase
+scripts/sync_bgm324.py    — copia el material de estudio a BGM324/
 assets/img/anid.webp      — logo ANID para las tarjetas de proyectos
 data/pub-config.json      — filtros, blocklist y papers manuales (fuente única)
 data/publications.json    — respaldo offline (generado, lo actualiza la Action)

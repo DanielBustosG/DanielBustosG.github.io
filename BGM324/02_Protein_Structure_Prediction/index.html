@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 2 · Protein Structure Prediction — BGM324 Bioinformatics, Universidad Católica del Maule</title>
+<meta name="description" content="Study material on protein structure: amino acids, secondary and tertiary structure, the PDB, experimental methods, homology modelling, threading, ab initio prediction, model evaluation, CASP and AlphaFold. BGM324 Bioinformatics, Medical Bioengineering, Universidad Católica del Maule.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+button{font-family:system-ui,sans-serif;font-size:.84rem;padding:.3rem .7rem;border:1px solid var(--line);border-radius:4px;background:var(--panel);cursor:pointer}button:hover{background:#e6ecf3}
+</style>
+</head>
+<body>
+<!-- bgm324-backbar -->
+<nav class="bgm324-backbar" aria-label="BGM324" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformatics · Medical Bioengineering · Universidad Católica del Maule</div>
+<h1>Unit 2 — Protein Structure: Principles, Experimental Determination and Computational Prediction</h1>
+<div class="meta">Study material accompanying lecture 02 (<em>Protein structure prediction</em>) · Prepared by Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · Second unit of the module: sequence analysis → <strong>protein structure prediction</strong> → molecular docking → computer-aided drug design → molecular dynamics</div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contents</h2>
+<ol>
+<li><a href="#how">How to use this material</a></li>
+<li><a href="#s1">1. The in-silico laboratory</a></li>
+<li><a href="#s2">2. Amino acids</a></li>
+<li><a href="#s3">3. The hierarchy of protein structure</a>
+  <ol><li><a href="#s3-1">Primary structure and the peptide bond</a></li><li><a href="#s3-2">Backbone dihedrals and the Ramachandran plot</a></li><li><a href="#s3-3">Secondary structure</a></li><li><a href="#s3-4">Tertiary and quaternary structure; fold classes</a></li></ol></li>
+<li><a href="#s4">4. Experimental structures and the PDB</a>
+  <ol><li><a href="#s4-1">Methods</a></li><li><a href="#s4-2">The Protein Data Bank</a></li><li><a href="#s4-3">Anatomy of a PDB entry</a></li><li><a href="#s4-4">Judging an experimental structure</a></li></ol></li>
+<li><a href="#s5">5. The folding problem</a></li>
+<li><a href="#s6">6. Template-based prediction</a>
+  <ol><li><a href="#s6-1">Homology modelling</a></li><li><a href="#s6-2">Fold recognition / threading</a></li></ol></li>
+<li><a href="#s7">7. Template-free prediction</a></li>
+<li><a href="#s8">8. Evaluating models</a>
+  <ol><li><a href="#s8-1">Comparing two structures</a></li><li><a href="#s8-2">Validating a model without the answer</a></li><li><a href="#s8-3">CASP</a></li></ol></li>
+<li><a href="#s9">9. Machine learning and deep learning</a></li>
+<li><a href="#s10">10. AlphaFold</a></li>
+<li><a href="#s11">11. From structure to docking and dynamics</a></li>
+<li><a href="#s12">12. Practical work</a></li>
+<li><a href="#s13">13. Self-assessment</a></li>
+<li><a href="#gloss">Glossary</a></li>
+<li><a href="#refs">References and further reading</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">This document expands the second lecture of the module. Unit 1 ended with the observation that sequence similarity implies structural similarity; this unit explains what "structure" means at each level of organisation, how structures are determined experimentally and stored, why predicting them from sequence was for fifty years one of the central unsolved problems in molecular biology, and how the problem was addressed — first by borrowing structures from homologs, then by physics, and since 2020 by deep learning. Every quantitative statement is either cited to the primary literature or computed in this document from real Protein Data Bank entries (<code>2HHB</code>, human deoxyhaemoglobin; <code>6ZJA</code>, <em>Helicobacter pylori</em> urease; <code>1UBQ</code>, ubiquitin), so that you can reproduce it.</p>
+<div class="box key"><h4>Learning objectives</h4>
+<ul class="objectives">
+<li>Describe the chemistry of the twenty amino acids that matters for structure: side-chain classes, ionisable groups and their pK<sub>a</sub> values, chirality.</li>
+<li>Explain the geometry of the peptide bond and define the dihedral angles φ, ψ and ω; read a Ramachandran plot.</li>
+<li>Give the defining parameters of the α-helix, 3<sub>10</sub> and π helices and β-sheets; explain which residues favour or disrupt each, and why loops matter functionally.</li>
+<li>Describe the four levels of protein structure and the main fold classes used by SCOP and CATH.</li>
+<li>Compare X-ray crystallography, NMR and cryo-EM; interpret resolution, R-factors and B-factors; read a PDB/mmCIF file.</li>
+<li>State Anfinsen's hypothesis and Levinthal's paradox and explain how the energy-landscape view reconciles them.</li>
+<li>Describe the homology modelling pipeline and the accuracy expected at each level of sequence identity; distinguish it from threading and from ab initio methods.</li>
+<li>Compute and interpret RMSD, GDT_TS, TM-score and lDDT; validate a model with stereochemical and knowledge-based criteria.</li>
+<li>Explain the basic vocabulary of machine and deep learning, the architecture of AlphaFold2 and the meaning of pLDDT and PAE, and state what AlphaFold does not predict.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Section 1</span>The in-silico laboratory</h2>
+<p>The lecture opens with a diagram that is worth keeping in mind for the whole module. A <em>source system</em> — a protein in a cell, a drug in a binding site — is observed in the wet laboratory and, in parallel, abstracted into a <em>conceptual model</em>: a set of assumptions about which entities and interactions matter. The conceptual model is implemented as a <em>simulation model</em> (a force field, a scoring function, a neural network) whose outputs are compared with the experimental results. When the two agree, the model earns the right to be used <em>predictively</em>, for conditions that have not yet been measured; when they disagree, the discrepancy points at the assumption that was wrong. Computational structural biology is the discipline of building such models for molecules, and its two faces — <strong>descriptive</strong> (explaining a measured structure or binding mode) and <strong>predictive</strong> (proposing a structure, a ligand or a mutation before it is made) — are equally important.</p>
+<p>The in-silico laboratory has the same input–output structure as a wet-lab experiment. The inputs are initial conditions (sequence, coordinates, temperature, pressure, concentration, protonation states); the outputs are observables (free energies, kinetic constants, conformational populations, binding poses). What differs is the cost structure: a simulation is cheap to repeat and allows one to control every variable, but every approximation made in the model propagates to its predictions. The methods that this module covers form a ladder of increasing physical detail and cost — sequence comparison, structure prediction, molecular docking, quantum-mechanical calculations, molecular dynamics and free-energy simulations — and the art lies in choosing the cheapest rung that answers the question. Drug discovery uses this ladder as a funnel: millions of molecules are screened with fast, approximate methods, and only the few that survive are treated with expensive, accurate ones.</p>
+<div class="box bridge"><h4>Why structure is the hinge of the module</h4><p>Every method after this lecture requires three-dimensional coordinates. Docking places a ligand into a pocket; drug design modifies a ligand in that pocket; molecular dynamics moves every atom of the complex through time. If no experimental structure exists for the target — which is still the case for most human proteins in most conformational states — the coordinates must be predicted, and the quality of everything downstream is bounded by the quality of that prediction. This lecture is therefore about where coordinates come from, how good they are, and how to tell.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Section 2</span>Amino acids: the chemistry that determines structure</h2>
+<p>Proteins are linear polymers of twenty α-amino acids. Each has an α-carbon bonded to an amino group, a carboxyl group, a hydrogen and a side chain (R group) that distinguishes it. Except for glycine (R = H), the α-carbon is a stereocentre and all ribosomally incorporated amino acids are of the <strong>L</strong> configuration (<em>S</em> in Cahn–Ingold–Prelog nomenclature, except cysteine, which is <em>R</em> because sulfur outranks the carboxyl carbon). This single chirality is the reason that protein secondary structures have a handedness: a right-handed α-helix built from L-amino acids is energetically favourable, its mirror image is not.</p>
+<p>The lecture asks whether one needs to learn the structures of the twenty amino acids. The answer for this module is yes, in a specific sense: not the drawings for their own sake, but the <em>properties</em> that decide where a residue sits in a fold and how it interacts with a ligand. The table groups the residues by those properties.</p>
+<table class="data">
+<thead><tr><th>Class</th><th>Residues (three- and one-letter codes)</th><th>Structural role</th></tr></thead>
+<tbody>
+<tr><td>Aliphatic hydrophobic</td><td>Ala A · Val V · Leu L · Ile I · Met M</td><td>Core packing; V, I favour β-strands; A, L, M favour helices</td></tr>
+<tr><td>Aromatic</td><td>Phe F · Tyr Y · Trp W</td><td>Core and interface packing; π-stacking and cation–π interactions with ligands; W and Y often at membrane interfaces</td></tr>
+<tr><td>Small / special</td><td>Gly G · Pro P · Cys C</td><td>G: no side chain, flexible, left-handed conformations; P: cyclic side chain fixes φ ≈ −63°, no N–H, breaks helices; C: disulfide bridges, metal binding</td></tr>
+<tr><td>Polar uncharged</td><td>Ser S · Thr T · Asn N · Gln Q</td><td>Surface, hydrogen bonding; N and G frequent in turns; S/T hydroxyls cap helices</td></tr>
+<tr><td>Acidic (negative at pH 7)</td><td>Asp D · Glu E</td><td>Surface charge, salt bridges, metal coordination, catalysis</td></tr>
+<tr><td>Basic (positive at pH 7)</td><td>Lys K · Arg R · His H</td><td>Surface charge, phosphate/nucleic-acid binding; H is the only residue that titrates near pH 7 and is therefore the usual catalytic acid/base</td></tr>
+</tbody></table>
+<h3>Protonation states</h3>
+<p>The charge of a protein is not fixed: it depends on the pH and on the micro-environment of each ionisable group. The table lists the pK<sub>a</sub> values of the free amino acids. In a folded protein, these values shift — a buried aspartate may have pK<sub>a</sub> 7 or higher, a histidine next to a positive charge may have pK<sub>a</sub> 5 — and assigning protonation states correctly is one of the first decisions in preparing a structure for docking or molecular dynamics (tools such as PROPKA or H++ estimate the shifts).</p>
+<table class="data">
+<thead><tr><th>Group</th><th>pK<sub>a</sub> (free amino acid)</th><th>Predominant state at pH 7.4</th></tr></thead>
+<tbody>
+<tr><td>C-terminal α-carboxyl</td><td>≈ 2.3</td><td>–COO<sup>−</sup></td></tr>
+<tr><td>Asp side chain</td><td>3.65</td><td>–COO<sup>−</sup></td></tr>
+<tr><td>Glu side chain</td><td>4.25</td><td>–COO<sup>−</sup></td></tr>
+<tr><td>His side chain (imidazole)</td><td>6.00</td><td>Mostly neutral; ~4 % protonated — easily shifted either way</td></tr>
+<tr><td>Cys side chain (thiol)</td><td>8.18</td><td>Mostly –SH; thiolate in some active sites</td></tr>
+<tr><td>N-terminal α-amino</td><td>≈ 9.6</td><td>–NH<sub>3</sub><sup>+</sup></td></tr>
+<tr><td>Tyr side chain (phenol)</td><td>10.07</td><td>Neutral</td></tr>
+<tr><td>Lys side chain</td><td>10.53</td><td>–NH<sub>3</sub><sup>+</sup></td></tr>
+<tr><td>Arg side chain (guanidinium)</td><td>12.48</td><td>Positive, always</td></tr>
+</tbody></table>
+<p>The lecture's shorthand — acids D and E deprotonated around pH 4, bases K and R protonated up to pH 10–12, histidine the special case near pH 6–7 — is the pattern to remember. Values from Nelson &amp; Cox, <em>Lehninger Principles of Biochemistry</em>.<sup class="c"><a href="#r40">[40]</a></sup></p>
+<div class="box key"><h4>Key points — Section 2</h4><ul>
+<li>All protein amino acids except glycine are chiral and L; this fixes the handedness of helices and sheets.</li>
+<li>Side chains fall into hydrophobic, aromatic, special, polar, acidic and basic classes; the hydrophobic/polar partition drives folding.</li>
+<li>Only histidine titrates near physiological pH; protonation states of D, E, H, K and C in a binding site must be assigned explicitly before any simulation.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Section 3</span>The hierarchy of protein structure</h2>
+<p>Linderstrøm-Lang's four levels remain the vocabulary of the field. <strong>Primary</strong> structure is the covalent sequence of residues (and disulfide bonds). <strong>Secondary</strong> structure is the local, regular conformation of the backbone — helices and strands — stabilised by backbone hydrogen bonds. <strong>Tertiary</strong> structure is the three-dimensional arrangement of all atoms of one chain, including the packing of secondary-structure elements and the conformation of loops. <strong>Quaternary</strong> structure is the assembly of two or more chains into a complex. Each level constrains the next but does not determine it uniquely, which is why structure prediction is hard.</p>
+
+<h3 id="s3-1">3.1 Primary structure and the peptide bond</h3>
+<p>Two amino acids join by a <strong>condensation</strong> reaction in which the carboxyl carbon of one attacks the amino nitrogen of the next, releasing water and forming the amide (peptide) bond C′–N. The ribosome catalyses this reaction; in the laboratory it requires activation of the carboxyl group. The resulting polymer has a repeating backbone (N–Cα–C′) with a free amino group at the N-terminus and a free carboxyl at the C-terminus; sequences are written N → C.</p>
+<p>The peptide bond is not an ordinary single bond. The lone pair on nitrogen delocalises into the carbonyl, so that the C′–N bond has about 40 % double-bond character: it is shorter (1.33 Å) than a C–N single bond (1.45 Å) and longer than a C=N double bond (1.27 Å). The six atoms Cα<sub><em>i</em></sub>, C′<sub><em>i</em></sub>, O<sub><em>i</em></sub>, N<sub><em>i</em>+1</sub>, H<sub><em>i</em>+1</sub>, Cα<sub><em>i</em>+1</sub> are therefore coplanar, and rotation about C′–N is restricted to two states: <strong>trans</strong> (ω ≈ 180°), in which successive α-carbons are on opposite sides of the bond, and <strong>cis</strong> (ω ≈ 0°), which is disfavoured by steric clash between the side chains and occurs in about 0.03 % of non-proline peptide bonds and about 5 % of X–Pro bonds. The rigidity of the peptide plane is what reduces the conformational freedom of the backbone to two angles per residue — the subject of the next section — and what gives the backbone the regular hydrogen-bonding groups (C=O acceptor, N–H donor) that secondary structure depends on.</p>
+
+<h3 id="s3-2">3.2 Backbone dihedrals and the Ramachandran plot</h3>
+<p>With ω fixed, the conformation of the backbone at residue <em>i</em> is described by two dihedral (torsion) angles:</p>
+<ul>
+<li><strong>φ (phi)</strong>: rotation about the N–Cα bond, defined by the atoms C′<sub><em>i</em>−1</sub>–N<sub><em>i</em></sub>–Cα<sub><em>i</em></sub>–C′<sub><em>i</em></sub>.</li>
+<li><strong>ψ (psi)</strong>: rotation about the Cα–C′ bond, defined by N<sub><em>i</em></sub>–Cα<sub><em>i</em></sub>–C′<sub><em>i</em></sub>–N<sub><em>i</em>+1</sub>.</li>
+<li><strong>ω (omega)</strong>: rotation about the peptide bond, Cα<sub><em>i</em></sub>–C′<sub><em>i</em></sub>–N<sub><em>i</em>+1</sub>–Cα<sub><em>i</em>+1</sub>; ≈ 180° (trans).</li>
+</ul>
+<p>A dihedral angle is the angle between two planes: looking along the central bond, it is the rotation needed to bring the first atom onto the fourth; by convention it runs from −180° to +180°, positive for clockwise rotation. In 1963 Ramachandran, Ramakrishnan and Sasisekharan computed, from hard-sphere atomic radii alone, which (φ, ψ) pairs are free of steric clashes, and found that most of the plane is forbidden.<sup class="c"><a href="#r3">[3]</a></sup> Experimental structures confirm the prediction (Figure 1).</p>
+<figure>
+<img src="figures/fig01_ramachandran.png" alt="Three Ramachandran plots computed from PDB entries 2HHB, 6ZJA and 1UBQ: general residues, glycine and proline">
+<figcaption><b>Figure 1. Ramachandran plots computed in this document from three PDB entries</b> (<code>2HHB</code> haemoglobin, <code>6ZJA</code> urease, <code>1UBQ</code> ubiquitin; 10,240 residues with defined φ and ψ; Biopython). Left: all residues except glycine and proline occupy two main regions — the β region (upper left, φ ≈ −120°, ψ ≈ +130°) and the right-handed α region (lower left, φ ≈ −60°, ψ ≈ −45°) — plus a sparsely populated left-handed α region (upper right). Orange circles mark the canonical values of the secondary structures discussed in Section 3.3. Centre: glycine, having no side chain, is symmetric about the origin and populates regions forbidden to other residues. Right: proline's ring locks φ near −65°, confining it to two narrow clusters (α and polyproline/β). In 2HHB, an all-α protein, 82 % of non-Gly/Pro residues fall in the helical region; in 1UBQ, 62 % fall in the β region.</figcaption>
+</figure>
+<p>The Ramachandran plot is also the first quality check applied to any model or experimental structure: a residue in a disallowed region is either an error or a functionally strained residue that deserves attention (catalytic residues are over-represented among genuine outliers). Validation programs report the percentage of residues in favoured, allowed and outlier regions; a well-refined high-resolution structure has &gt; 98 % favoured and &lt; 0.2 % outliers.<sup class="c"><a href="#r22">[22]</a></sup></p>
+
+<h3 id="s3-3">3.3 Secondary structure</h3>
+<p>Secondary structures are the regular conformations in which consecutive residues adopt the same (φ, ψ) and the backbone N–H and C=O groups form repeating hydrogen bonds. Their existence was predicted by Pauling, Corey and Branson in 1951 from the planarity of the peptide bond and the geometry of the hydrogen bond, before any protein structure had been solved.<sup class="c"><a href="#r1">[1]</a>,<a href="#r2">[2]</a></sup> The hydrogen bond itself — a donor X–H (N–H, O–H) pointing at the lone pair of an acceptor Y (O, N) — is directional and short-ranged: heavy-atom distances of 2.7–3.1 Å and X–H···Y angles above ~150° give the strongest bonds, and the energy drops quickly as the geometry degrades. Secondary structures are the backbone's solution to satisfying these hydrogen bonds in the hydrophobic interior, where water cannot.</p>
+<table class="data">
+<thead><tr><th>Element</th><th>Residues / turn</th><th>Rise / residue</th><th>Pitch</th><th>H-bond</th><th>φ, ψ (typical)</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><strong>α-helix</strong></td><td>3.6</td><td>1.5 Å</td><td>5.4 Å</td><td>C=O(<em>i</em>) ··· H–N(<em>i</em>+4)</td><td>−57°, −47°</td><td>Right-handed; most abundant (~30 % of residues); mean length 10–12 residues (~3 turns), range 5–40</td></tr>
+<tr><td><strong>3<sub>10</sub> helix</strong></td><td>3.0</td><td>2.0 Å</td><td>6.0 Å</td><td>C=O(<em>i</em>) ··· H–N(<em>i</em>+3)</td><td>−49°, −26°</td><td>Tighter and less stable; usually 1 turn at the C-terminal end of α-helices</td></tr>
+<tr><td><strong>π helix</strong></td><td>4.4</td><td>1.15 Å</td><td>5.0 Å</td><td>C=O(<em>i</em>) ··· H–N(<em>i</em>+5)</td><td>−57°, −70°</td><td>Wider; rare as a regular element, but short π-bulges occur in ~15 % of proteins, often at functional sites</td></tr>
+<tr><td><strong>β-strand</strong> (antiparallel sheet)</td><td>2.0</td><td>3.4 Å</td><td>—</td><td>Between strands; narrow and wide pairs alternate</td><td>−139°, +135°</td><td>Side chains alternate above and below the sheet; adjacent strands connected by hairpins</td></tr>
+<tr><td><strong>β-strand</strong> (parallel sheet)</td><td>2.0</td><td>3.2 Å</td><td>—</td><td>Between strands; evenly spaced, less linear</td><td>−119°, +113°</td><td>Requires crossover connections (usually right-handed β–α–β); typical of α/β folds</td></tr>
+</tbody></table>
+<p>The name "3<sub>10</sub>" encodes 3 residues per turn and 10 atoms in the hydrogen-bonded ring; in the same notation the α-helix is 3.6<sub>13</sub> and the π helix 4.4<sub>16</sub>. The lecture's figure of 3.7 residues per turn for the α-helix is a rounding of 3.6; the pitch of 5.4 Å follows as 3.6 × 1.5 Å.</p>
+<h4>The α-helix</h4>
+<p>In the α-helix every backbone N–H and C=O (except the first four N–H and last four C=O) is hydrogen-bonded, all hydrogen bonds point along the axis, and the side chains project outward and slightly toward the N-terminus. Because the helix is usually packed against the protein core on one side and exposed to solvent on the other, the sequence shows a periodicity of about 3.6: hydrophobic residues recur at positions <em>i</em>, <em>i</em>+3, <em>i</em>+4, <em>i</em>+7 — "every third or fourth residue", as the lecture puts it — so that they fall on one face. A <strong>helical wheel</strong> (Figure 2) makes this visible by plotting the residues around a circle at 100° intervals, and the <strong>hydrophobic moment</strong> quantifies it as the vector sum of residue hydrophobicities.<sup class="c"><a href="#r41">[41]</a></sup> Amphipathic periodicity is detectable from sequence alone and is one of the signals that secondary-structure predictors use.</p>
+<figure>
+<img src="figures/fig02_helical_wheel.png" alt="Helical wheel of haemoglobin beta residues 124-141 showing hydrophobic residues clustered on one face" style="max-width:480px">
+<figcaption><b>Figure 2. Helical wheel of helix H of human haemoglobin β (residues 124–141).</b> Residues are placed every 100° (360°/3.6). Hydrophobic residues (orange; Eisenberg consensus scale &gt; 0.3) cluster on one face — the face that packs against the α subunit and the haem pocket — while polar and charged residues (blue) face the solvent. The arrow is the hydrophobic moment (μ<sub>H</sub> = 0.31). Computed in this document from the sequence used in Unit 1.</figcaption>
+</figure>
+<p>Residues differ in <strong>helix propensity</strong>. Alanine, leucine, glutamate, methionine, glutamine, lysine and arginine favour helices; glycine (too flexible — it pays a large entropic cost to be fixed) and proline (its ring forbids the α φ angle and it has no N–H to donate the hydrogen bond at position <em>i</em>+4) disfavour or terminate them. Proline is nevertheless common in the <em>first</em> turn of a helix, where its N–H is not needed, and in membrane helices, where it introduces functionally important kinks. β-branched residues (V, I, T) and aromatics (Y, F, W) favour strands, where their bulky side chains have room to alternate above and below the sheet. Pace and Scholtz measured a thermodynamic scale: alanine costs 0 kcal mol<sup>−1</sup>, glycine ~1 and proline &gt; 3 relative to alanine.<sup class="c"><a href="#r42">[42]</a></sup></p>
+<h4>β-sheets</h4>
+<p>A β-strand is an extended conformation (nearly fully stretched; rise 3.2–3.4 Å per residue) that is unstable on its own because its hydrogen-bonding groups point sideways; it is stabilised only when it pairs with neighbouring strands to form a <strong>sheet</strong>. Strands may run in the same direction (<strong>parallel</strong>), in opposite directions (<strong>antiparallel</strong>) or in a <strong>mixed</strong> arrangement. The two topologies have different hydrogen-bond patterns — antiparallel sheets have alternating closely and widely spaced pairs of bonds between the same two residues, parallel sheets have evenly spaced bonds to two different residues — and different connections: antiparallel neighbours can be joined by a tight <strong>β-hairpin</strong>, whereas parallel neighbours require a longer crossover connection, almost always a right-handed β–α–β unit. Sheets are not flat: they carry a right-handed twist (viewed along the strands), typically 0–30° between adjacent strands, which allows them to pack against helices and to roll into barrels. Side chains alternate above and below the sheet, so that a strand with the pattern polar–hydrophobic–polar–hydrophobic forms one buried and one exposed face. Because strand residues occupy a broad region of the Ramachandran plot and because their partners may be distant in sequence, β-structure is harder to predict from sequence than helices — a point the lecture makes and that remained true for predictors until the deep-learning era.</p>
+<h4>Loops, turns and coil</h4>
+<p>Helices and strands account for roughly half of the residues in a typical globular protein. The remainder form <strong>loops</strong> — segments of irregular conformation that connect secondary-structure elements and lie mainly on the surface — and <strong>turns</strong>, short loops of two to four residues that reverse the chain direction (β-turns, with a hydrogen bond between residues <em>i</em> and <em>i</em>+3, are the commonest; glycine, asparagine, aspartate and proline are over-represented in them). The term <strong>coil</strong> (or "random coil") denotes residues not assigned to any regular structure; they are not random, only irregular, and the same loop usually adopts the same conformation in every copy of the protein. Loops are enriched in polar and charged residues, are often the most variable regions between homologs — insertions and deletions in alignments almost always fall in loops — and are frequent components of active sites, precisely because their flexibility allows them to close over a substrate. The lecture's example is the <em>flap</em> of urease, a mobile loop that covers the nickel-containing active site and whose open and closed conformations determine access of substrate and inhibitors. For the modeller, loops are both the least reliably predicted part of a structure and, often, the part that matters most for ligand binding.</p>
+<p>Secondary structure in an experimental structure is assigned algorithmically from the hydrogen-bond pattern; the standard program is <strong>DSSP</strong> (Kabsch and Sander, 1983), whose eight-state code (H, G, I for α, 3<sub>10</sub> and π helices; E and B for strands and bridges; T, S for turns and bends; blank for coil) is what molecular viewers display as cartoons.<sup class="c"><a href="#r4">[4]</a></sup></p>
+
+<h3 id="s3-4">3.4 Tertiary and quaternary structure; fold classes</h3>
+<p>The <strong>tertiary structure</strong> is the arrangement in space of all atoms of a chain. It is held together primarily by the <strong>hydrophobic effect</strong> — the burial of non-polar side chains away from water, which is entropically favourable because it releases ordered water — and secondarily by hydrogen bonds, salt bridges, van der Waals packing (the interior of a protein is as densely packed as a crystal of small organic molecules) and, in extracellular proteins, disulfide bonds. Most chains longer than ~200 residues fold into two or more <strong>domains</strong>: compact, independently folding units that are the natural level at which evolution recombines proteins (Unit 1, Section 6) and at which structure is classified. The number of distinct <strong>folds</strong> (arrangements and connectivities of secondary-structure elements) is limited — on the order of 1,500 in SCOP and CATH — because physics permits only so many ways to pack helices and sheets, and because evolution reuses them.</p>
+<p>The <strong>SCOP</strong> classification (Murzin, Brenner, Hubbard, Chothia, 1995) groups domains hierarchically into class, fold, superfamily (probable common ancestry) and family (clear common ancestry); <strong>CATH</strong> (Orengo <em>et al.</em>, 1997) uses Class, Architecture, Topology and Homologous superfamily.<sup class="c"><a href="#r5">[5]</a>,<a href="#r6">[6]</a></sup> Both begin with the classes listed in the lecture:</p>
+<table class="data">
+<thead><tr><th>Class</th><th>Description</th><th>Lecture example</th></tr></thead>
+<tbody>
+<tr><td><strong>All-α</strong></td><td>Bundles or arrays of α-helices connected by loops</td><td>Haemoglobin / globin fold (8 helices A–H around a haem)</td></tr>
+<tr><td><strong>All-β</strong></td><td>Antiparallel β-sheets, usually two packed face to face (sandwich) or rolled into a barrel</td><td>CD8 (immunoglobulin fold)</td></tr>
+<tr><td><strong>α/β</strong></td><td>Mainly parallel β-sheets with helices between the strands (β–α–β units); includes the TIM barrel and Rossmann fold</td><td>Tryptophan synthase α-subunit (TIM barrel)</td></tr>
+<tr><td><strong>α+β</strong></td><td>Segregated α and antiparallel β regions</td><td>Ribonuclease A</td></tr>
+<tr><td><strong>Multidomain</strong></td><td>Several domains of different classes in one chain</td><td>Most large enzymes and signalling proteins</td></tr>
+<tr><td><strong>Membrane and cell-surface</strong></td><td>Transmembrane helical bundles or β-barrels; hydrophobic exterior</td><td>K2P potassium channel</td></tr>
+</tbody></table>
+<p><strong>Quaternary structure</strong> is the association of chains (subunits) into an oligomer. Haemoglobin is the classic example: two α and two β chains, each a globin fold, assemble into an α<sub>2</sub>β<sub>2</sub> tetramer whose interfaces transmit the cooperative transition between the T (deoxy) and R (oxy) states. Many enzymes are homo-oligomers; the urease of the lecture (<code>6ZJA</code>) is an (αβ)<sub>3</sub> trimer of trimers — 24 chains and nearly 78,000 atoms in the deposited model. Quaternary structure cannot be inferred from the sequence of one chain, and it is an area where structure prediction became reliable only with AlphaFold-Multimer and AlphaFold 3 (Section 10).</p>
+<div class="box key"><h4>Key points — Section 3</h4><ul>
+<li>The planar, trans peptide bond leaves two torsions per residue, φ and ψ; sterics restrict them to the allowed regions of the Ramachandran plot, with glycine and proline as exceptions.</li>
+<li>α-helix: 3.6 residues/turn, 5.4 Å pitch, <em>i</em>→<em>i</em>+4 hydrogen bonds, right-handed, amphipathic periodicity ~3.6. β-sheets: parallel or antiparallel, twisted, alternating side chains, hard to predict.</li>
+<li>Loops are irregular but not random; they carry most insertions/deletions and many active-site residues.</li>
+<li>Tertiary structure is driven by hydrophobic burial; folds are limited in number and classified into all-α, all-β, α/β, α+β, multidomain and membrane classes.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Section 4</span>Experimental structures and the Protein Data Bank</h2>
+<h3 id="s4-1">4.1 Methods</h3>
+<p>Three techniques produce almost all the atomic-resolution structures in the PDB. The lecture's comparative table is expanded below.</p>
+<table class="data">
+<thead><tr><th></th><th>X-ray crystallography</th><th>NMR spectroscopy</th><th>Cryo-electron microscopy</th></tr></thead>
+<tbody>
+<tr><td>Principle</td><td>Diffraction of X-rays by the electrons of a crystal; electron-density map interpreted with an atomic model</td><td>Chemical shifts, couplings and nuclear Overhauser effects (NOE distances) between <sup>1</sup>H, <sup>13</sup>C, <sup>15</sup>N nuclei in solution; structure calculated from distance and angle restraints</td><td>Images of thousands of frozen, randomly oriented particles are aligned and averaged to reconstruct a 3D Coulomb-potential map</td></tr>
+<tr><td>Sample</td><td>Well-ordered crystals (often the bottleneck); any size</td><td>Soluble, stable protein at ~0.5 mM, isotopically labelled; practical up to ~40–50 kDa</td><td>Dilute solution vitrified on a grid; works best above ~100–150 kDa; no crystals</td></tr>
+<tr><td>Output</td><td>Single model (static, average over the crystal); B-factors report disorder; crystal contacts may distort surface loops</td><td>Ensemble of 10–20 models consistent with the restraints; direct information on dynamics (relaxation) and on disordered regions</td><td>Single model or several conformational classes from the same dataset; native-like state; membrane proteins in nanodiscs</td></tr>
+<tr><td>Resolution</td><td>Typically 1.5–2.5 Å; best &lt; 1 Å</td><td>Not defined as such; precision given by ensemble RMSD (~0.5–1 Å backbone)</td><td>Typically 2.5–4 Å; routinely &lt; 3 Å since 2015, atomic (1.2 Å) demonstrated in 2020<sup class="c"><a href="#r9">[9]</a></sup></td></tr>
+<tr><td>Share of PDB (all years)</td><td>≈ 80 %</td><td>≈ 6 %</td><td>≈ 14 % and the fastest-growing (Figure 3)</td></tr>
+</tbody></table>
+<p>Two qualifications to the lecture's table are useful. First, cryo-EM is no longer "relatively low resolution": the urease structure used throughout this document (<code>6ZJA</code>) is a 2.0 Å cryo-EM map in which the inhibitor and water molecules are resolved, and the 2017 Nobel Prize in Chemistry (Dubochet, Frank, Henderson) recognised the "resolution revolution" that direct electron detectors produced. Second, the methods are complementary rather than competing: crystallography still provides most ligand-bound structures for drug design, NMR is the method of choice for small proteins, dynamics and intrinsically disordered regions, and cryo-EM has opened large complexes and membrane proteins that resisted crystallisation for decades.</p>
+
+<h3 id="s4-2">4.2 The Protein Data Bank</h3>
+<p>The <strong>Protein Data Bank</strong> was founded in 1971 at Brookhaven National Laboratory with seven structures; it is the oldest open-access digital resource in biology. Since 2003 it has been managed by the <strong>Worldwide PDB</strong> (wwPDB) consortium — RCSB PDB in the United States, PDBe at EMBL-EBI, PDBj in Japan and the BMRB for NMR data — which maintains a single archive with identical content served through several portals.<sup class="c"><a href="#r7">[7]</a>,<a href="#r8">[8]</a></sup> Deposition is mandatory for publication in essentially all journals, every entry is validated against community standards before release, and every entry is identified by a four-character code (<code>2HHB</code>; extended eight-character codes, <code>pdb_00002hhb</code>, are being introduced as the four-character space nears exhaustion).</p>
+<figure>
+<img src="figures/fig03_pdb_growth.png" alt="Left: cumulative PDB entries by year reaching 247 thousand in 2025; right: entries per year by method on a log scale, with cryo-EM rising steeply after 2010">
+<figcaption><b>Figure 3. Growth of the PDB, from the live RCSB Search API (queried on 17 October 2026).</b> Left: cumulative experimental entries by year of release (246,842 through the end of 2025; 260,896 at the date of the query). Right: entries released per year by method. X-ray crystallography still contributes the most entries (10,082 in 2025), but cryo-EM (7,198 in 2025) has grown roughly a hundredfold since 2010 and is on course to overtake it; NMR depositions have declined since their 2007 peak. Reproduce with the query in Section 12.</figcaption>
+</figure>
+<p>The PDB is the empirical foundation of everything in this unit: homology modelling borrows coordinates from it, threading libraries are built from it, knowledge-based potentials are derived from its statistics, and AlphaFold was trained on it. Its size — a quarter of a million entries — should be compared with the ~250 million sequences in UniProtKB: the <strong>sequence–structure gap</strong> is three orders of magnitude, and the number of <em>distinct</em> proteins with structures is far smaller than the number of entries, because popular proteins (lysozyme, trypsin, HIV protease, kinases) have been solved hundreds of times. The gap is the reason structure prediction exists.</p>
+<p>Alongside the PDB, several derived resources were shown in the lecture. <strong>SCOP</strong> and <strong>CATH</strong> classify PDB domains into folds and superfamilies (Section 3.4). <strong>UniProtKB/Swiss-Prot</strong> links each sequence to its structures and to the AlphaFold prediction. <strong>PIR</strong> (Protein Information Resource), descended from Dayhoff's Atlas (Unit 1), is a partner of UniProt. The <strong>PDB-REDO</strong> database re-refines every crystal structure with current methods, and <strong>PDBe-KB</strong> aggregates functional annotations onto structures.</p>
+
+<h3 id="s4-3">4.3 Anatomy of a PDB entry</h3>
+<p>Every entry contains coordinates, experimental metadata and, for crystallography and cryo-EM, the experimental data (structure factors or maps). The legacy <strong>PDB format</strong> is a fixed-column text file; the lecture's example, the <em>H. pylori</em> urease entry <code>6ZJA</code>, begins as follows (header lines selected):</p>
+<pre><code>HEADER    HYDROLASE                               28-JUN-20   6ZJA
+TITLE     HELICOBACTER PYLORI UREASE WITH INHIBITOR BOUND IN THE ACTIVE SITE
+EXPDTA    ELECTRON MICROSCOPY
+REMARK   2 RESOLUTION.    2.00 ANGSTROMS.
+ATOM      1  N   MET A   1     181.656 253.941 175.116  1.00  4.96           N
+ATOM      2  CA  MET A   1     182.478 253.982 173.914  1.00  4.96           C
+ATOM      3  C   MET A   1     182.658 252.599 173.289  1.00  4.96           C
+ATOM      4  O   MET A   1     182.713 252.482 172.066  1.00  4.96           O
+ATOM      5  CB  MET A   1     183.845 254.589 174.225  1.00  4.96           C
+...</code></pre>
+<p>The <code>ATOM</code> record is the heart of the file and its columns are worth memorising, because every tool in this module reads them:</p>
+<table class="data">
+<thead><tr><th>Columns</th><th>Field</th><th>Example (first line above)</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>1–6</td><td>Record name</td><td><code>ATOM</code></td><td><code>ATOM</code> for polymer atoms; <code>HETATM</code> for ligands, ions, water, cofactors</td></tr>
+<tr><td>7–11</td><td>Serial number</td><td>1</td><td>Sequential atom index</td></tr>
+<tr><td>13–16</td><td>Atom name</td><td><code>N</code></td><td>Backbone: N, CA, C, O; side chain: CB, CG, CD1 … following IUPAC naming</td></tr>
+<tr><td>17</td><td>Alternate location</td><td>(blank)</td><td>A, B … when an atom was modelled in two conformations</td></tr>
+<tr><td>18–20</td><td>Residue name</td><td><code>MET</code></td><td>Three-letter code; <code>HEM</code>, <code>HOH</code>, etc. for hetero groups</td></tr>
+<tr><td>22</td><td>Chain identifier</td><td><code>A</code></td><td>One letter per chain; 24 chains in 6ZJA</td></tr>
+<tr><td>23–26</td><td>Residue sequence number</td><td>1</td><td>Author numbering — may start anywhere, skip numbers or carry insertion codes (column 27); the source of most numbering mismatches in practice</td></tr>
+<tr><td>31–54</td><td>x, y, z</td><td>181.656 253.941 175.116</td><td>Orthogonal coordinates in Å</td></tr>
+<tr><td>55–60</td><td>Occupancy</td><td>1.00</td><td>Fraction of molecules in which the atom is at this position; &lt; 1 for alternate conformations or partially bound ligands</td></tr>
+<tr><td>61–66</td><td>Temperature factor (B-factor)</td><td>4.96</td><td>B = 8π²⟨u²⟩, in Å²; measures positional uncertainty/mobility. Low in the core, high in surface loops; &gt; 60–80 Å² means the atom is poorly defined</td></tr>
+<tr><td>77–78</td><td>Element</td><td><code>N</code></td><td>Element symbol</td></tr>
+</tbody></table>
+<p>Hetero groups follow the same layout; in haemoglobin <code>2HHB</code> the haem of chain A appears as <code>HETATM</code> records with residue name <code>HEM</code>:</p>
+<pre><code>HETATM 4389  CHA HEM A 142      18.719  18.625  20.410  1.00 17.24           C
+HETATM 4390  CHB HEM A 142      21.047  20.711  24.157  1.00 23.17           C</code></pre>
+<p>Other important records are <code>HEADER</code> (classification and deposition date), <code>TITLE</code>, <code>COMPND</code> and <code>SOURCE</code> (molecule and organism), <code>EXPDTA</code> (method), <code>REMARK 2</code> (resolution), <code>REMARK 3</code> (refinement statistics: R-work, R-free), <code>REMARK 465</code> (residues present in the sequence but <em>missing</em> from the model — disordered regions, which every modeller must check), <code>SEQRES</code> (the full sequence of each chain, which may differ from the residues actually observed), <code>HELIX</code>/<code>SHEET</code> (author-assigned secondary structure), <code>SSBOND</code> and <code>LINK</code> (covalent connections), and <code>CRYST1</code> (unit cell and space group).</p>
+<p>Since 2014 the master format of the archive is <strong>PDBx/mmCIF</strong>, a tag–value dictionary format with no column limits. The legacy format cannot represent more than 62 chains or 99,999 atoms, so very large entries (ribosomes, viral capsids) exist only in mmCIF, and new tools should read mmCIF by default (<code>6ZJA.cif</code>). The content is the same; the <code>atom_site</code> category carries the fields of the <code>ATOM</code> record under explicit names (<code>Cartn_x</code>, <code>B_iso_or_equiv</code>, <code>label_asym_id</code>, …), including both the author's chain and residue labels and a canonical PDB-assigned set.</p>
+
+<h3 id="s4-4">4.4 Judging an experimental structure</h3>
+<p>An experimental structure is itself a model fitted to data, and the metadata tell how well. For crystal structures the key numbers are:</p>
+<ul>
+<li><strong>Resolution</strong> (Å): the smallest spacing at which diffraction data were measured; smaller is better. Below ~1.2 Å individual atoms are resolved and hydrogens may be visible; 1.5–2.5 Å side chains are well defined and waters are modelled; 2.5–3.5 Å the backbone is reliable but side-chain rotamers and ligand orientations may be ambiguous; above 4 Å only the fold is trustworthy. For docking, prefer ≤ 2.5 Å with the ligand clearly in density.</li>
+<li><strong>R-work and R-free</strong>: the disagreement between observed and calculated structure-factor amplitudes, for the reflections used in refinement (R-work) and for ~5 % set aside as a test set (R-free).<sup class="c"><a href="#r10">[10]</a></sup> Typical good values are R-work ≈ 0.18–0.22 and R-free a few points higher; a gap of more than ~0.05–0.07 suggests over-fitting. 2HHB (1984) reports R = 0.160 with no R-free, because the cross-validation idea was introduced only in 1992.</li>
+<li><strong>B-factors</strong>, per atom (above). Compare the B-factors of the binding-site residues with the average of the structure before trusting a pocket geometry.</li>
+<li><strong>Completeness</strong>: residues listed in <code>REMARK 465</code> are missing; loops absent from the model must be rebuilt before simulation.</li>
+<li><strong>Validation report</strong>: every wwPDB entry carries a report with percentile ranks for clash score, Ramachandran outliers, side-chain outliers, RSRZ outliers (poor fit to density) and, for ligands, the fit of the ligand to its density. Read it before using a ligand complex as a docking reference.</li>
+</ul>
+<p>For cryo-EM the resolution is estimated by Fourier shell correlation (FSC = 0.143 criterion) and is often <em>local</em>: the core may be at 2.5 Å and a flexible periphery at 6 Å in the same map. For NMR, examine the number of restraints per residue and the ensemble spread. In all cases the rule is the same as in Unit 1: a number is interpretable only with its context.</p>
+<div class="box key"><h4>Key points — Section 4</h4><ul>
+<li>X-ray, NMR and cryo-EM are complementary; cryo-EM now reaches atomic resolution and is the fastest-growing source of structures.</li>
+<li>The PDB (wwPDB) holds ~250,000 experimental entries versus ~250 million known sequences — the sequence–structure gap.</li>
+<li>Learn the <code>ATOM</code> record: name, residue, chain, number, x y z, occupancy, B-factor. Prefer mmCIF for new work.</li>
+<li>Judge a structure by resolution, R-free, B-factors, missing residues and the wwPDB validation report.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Section 5</span>The folding problem</h2>
+<h3>5.1 Anfinsen's thermodynamic hypothesis</h3>
+<p>In the late 1950s and 1960s Christian Anfinsen showed that bovine ribonuclease A, fully unfolded and with its four disulfide bonds reduced, refolded spontaneously to the native, enzymatically active structure with the correct disulfides when the denaturant and reducing agent were removed. No cellular machinery, template or energy source was needed. His conclusion — the <strong>thermodynamic hypothesis</strong> — is that the native structure of a protein is the conformation of lowest Gibbs free energy under physiological conditions, and that it is therefore determined by the amino-acid sequence alone.<sup class="c"><a href="#r11">[11]</a></sup> It earned him the 1972 Nobel Prize in Chemistry and it defines the structure-prediction problem: in principle, a sufficiently accurate energy function and a sufficiently thorough search would yield the structure from the sequence. (The qualifications matter: some proteins require chaperones to fold efficiently, some are kinetically trapped in metastable states — serpins, prions — and many large proteins fold co-translationally; but the hypothesis holds for the great majority of small domains.)</p>
+<h3>5.2 Levinthal's paradox</h3>
+<p>Cyrus Levinthal pointed out in 1969 that the search cannot be a random one.<sup class="c"><a href="#r12">[12]</a></sup> If each residue could adopt only three backbone conformations, a 100-residue chain would have 3<sup>100</sup> ≈ 5 × 10<sup>47</sup> conformations; with a more realistic nine (three φ × three ψ), 9<sup>100</sup> ≈ 3 × 10<sup>95</sup>. Even sampling one conformation per 10<sup>−13</sup> s — the time of a bond vibration — the chain would need 10<sup>27</sup> years in the first case and 10<sup>75</sup> in the second, against an age of the Universe of 1.4 × 10<sup>10</sup> years. Yet real proteins fold in microseconds to seconds. The lecture's figure of 10<sup>300</sup> conformations for a "typical" protein corresponds to ~300 residues at ten states each. Figure 4 plots the arithmetic.</p>
+<figure>
+<img src="figures/fig04_levinthal.png" alt="Log-scale plot of time to enumerate all conformations versus chain length, crossing the age of the universe at about 60 residues">
+<figcaption><b>Figure 4. Levinthal's arithmetic.</b> Time to sample every backbone conformation once, at 10<sup>13</sup> conformations per second, as a function of chain length, for three or nine states per residue. The exhaustive search exceeds the age of the Universe at about 60 residues (three states) or 30 residues (nine states); typical folding times (dotted line) are twelve or more orders of magnitude below the horizontal grey line even for the smallest domains.</figcaption>
+</figure>
+<p>The paradox is resolved by recognising that folding is not a random search but a biased one. The <strong>energy landscape</strong> or <strong>folding funnel</strong> view (Dill, Wolynes, Onuchic and others, 1990s) describes the free energy as a function of conformation as a rugged funnel: the unfolded ensemble occupies the wide, high-entropy rim; every local interaction that forms lowers the energy and narrows the accessible conformational space; and the native state sits at the bottom.<sup class="c"><a href="#r13">[13]</a></sup> Because the slope is in the right direction almost everywhere — natural sequences have been selected to be "minimally frustrated" — the chain is guided downhill by many parallel routes rather than searching exhaustively. Local minima on the funnel walls are the metastable intermediates and misfolded states that chaperones rescue and that, when populated, underlie amyloid diseases. The lecture's second landscape drawing — two basins for a receptor with and without ligand — makes the same point for conformational change: a ligand does not create a new conformation but changes the relative depth of basins that already exist, a theme that returns in docking and molecular dynamics.</p>
+<p>For prediction, the landscape view has a sobering implication: finding the native state computationally requires either a search that mimics the funnel (fragment assembly, Section 7), a short-cut that skips the search altogether (templates, Section 6), or a function that has learned where the bottom is (deep learning, Section 10).</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Section 6</span>Template-based prediction</h2>
+<p>The lecture's taxonomy divides methods by what they depend on. <strong>Template-based</strong> methods rely on evolutionary theory: a related protein of known structure is used as a scaffold. Within this group, <strong>homology modelling</strong> uses templates that are detectably homologous (the alignment is found by sequence methods), whereas <strong>fold recognition</strong> or <strong>threading</strong> seeks templates whose relationship is too distant for sequence methods, or even analogous (same fold, no common ancestry). <strong>Template-free</strong> (ab initio, de novo) methods rely on physical laws or on statistical knowledge extracted from the PDB, and use no specific template. The boundaries blurred long before AlphaFold — fragment-assembly methods are "template-free" yet use PDB fragments — but the taxonomy still organises the literature.</p>
+
+<h3 id="s6-1">6.1 Homology (comparative) modelling</h3>
+<p>Homology modelling rests on the Chothia–Lesk observation introduced in Unit 1: within a family, three-dimensional structure is far more conserved than sequence, and the structural divergence of the common core grows smoothly with sequence divergence (Figure 5).<sup class="c"><a href="#r14">[14]</a></sup> If a template with sufficient identity exists, the target's backbone can be copied from it with predictable accuracy.</p>
+<figure>
+<img src="figures/fig05_chothia_lesk.png" alt="Curve of core RMSD versus sequence identity rising from 0.4 A at 100 percent to 2 A at 15 percent, with haemoglobin alpha vs beta plotted">
+<figcaption><b>Figure 5. The Chothia–Lesk relationship.</b> Core Cα RMSD between homologous structures as a function of sequence identity, from the empirical fit Δ = 0.40·e<sup>1.87<em>H</em></sup> (<em>H</em> = fraction of mutated residues) reported by Chothia and Lesk for 32 pairs of homologs.<sup class="c"><a href="#r14">[14]</a></sup> Above 50 % identity the cores superimpose to about 1 Å; near 20 % they diverge to ~2 Å and the fraction of residues belonging to the common core falls to ~40 %. The orange point is the haemoglobin α/β pair computed in this document from <code>2HHB</code> (46 % identity, 1.55 Å over all 139 aligned Cα — higher than the curve because the curve refers to the core only, excluding the divergent loops visible in Figure 6).</figcaption>
+</figure>
+<h4>The protocol</h4>
+<ol>
+<li><strong>Template identification.</strong> Search the PDB sequences with BLASTp (Unit 1); when identity is low, with PSI-BLAST or HMM–HMM comparison (HHpred<sup class="c"><a href="#r19">[19]</a></sup>), which detects templates at 15–20 % identity that BLAST misses. Prefer templates with high resolution, high coverage, the same ligand state (apo vs holo) and the same oligomeric state as the question requires; several templates may be combined.</li>
+<li><strong>Target–template alignment.</strong> The most consequential step. Errors here cannot be repaired by any later step, because a misaligned residue is built in the wrong place. Use profile-based alignment, incorporate predicted secondary structure, make sure that gaps fall in loops and not inside helices or strands, and check that conserved functional residues align with their counterparts. A structural alignment of several templates (where available) anchors the target alignment.</li>
+<li><strong>Backbone construction</strong> for structurally conserved regions: coordinates are copied from the template, or — in MODELLER's approach — the template's distances and dihedrals are converted into spatial restraints that the model must satisfy together with stereochemical terms.<sup class="c"><a href="#r15">[15]</a></sup></li>
+<li><strong>Loop modelling</strong> for regions with insertions or deletions, by searching a database of loop conformations of the right length and anchor geometry, or by ab initio sampling. Loops longer than ~8–10 residues are rarely accurate.</li>
+<li><strong>Side-chain placement</strong> from rotamer libraries, choosing combinations that avoid clashes and favour packing (SCWRL-type algorithms). Residues conserved between target and template usually keep the template rotamer.</li>
+<li><strong>Refinement</strong> by energy minimisation or short molecular dynamics, restrained so that the model does not drift from the template; unrestrained refinement usually makes models worse.</li>
+<li><strong>Evaluation</strong> (Section 8.2), and iteration: a poor evaluation most often sends one back to step 2.</li>
+</ol>
+<h4>Expected accuracy</h4>
+<p>The accuracy of the model follows the identity to the template, as summarised by Xiang and confirmed by two decades of CASP and CAMEO assessment:<sup class="c"><a href="#r16">[16]</a></sup></p>
+<table class="data">
+<thead><tr><th>Identity</th><th>Alignment</th><th>Expected model</th><th>Fit for</th></tr></thead>
+<tbody>
+<tr><td>&gt; 50 %</td><td>Straightforward, few gaps</td><td>Backbone RMSD ~1 Å, comparable to a medium-resolution crystal structure; side chains in the core mostly correct</td><td>Docking, virtual screening, mutation interpretation, MD starting point</td></tr>
+<tr><td>30–50 %</td><td>Mostly reliable; gaps in loops</td><td>Core RMSD 1–2 Å; ~80–90 % of backbone within ~3.5 Å; loops and surface side chains unreliable</td><td>Binding-site identification, design of mutants, docking with caution</td></tr>
+<tr><td>&lt; 30 % (twilight zone)</td><td>Difficult; template identification itself uncertain</td><td>Fold usually right if the template is right; RMSD 2–4 Å; frequent register shifts in strands and loops</td><td>Fold assignment, qualitative hypotheses; not for docking</td></tr>
+</tbody></table>
+<p>The lecture's threshold of ~30 % identity for homology modelling comes from this picture. Below it, the twilight zone of Unit 1 applies: the main difficulty is no longer building the model but knowing whether the template is a homolog at all, and this is where fold recognition enters.</p>
+<p>Web servers automate the pipeline: <strong>SWISS-MODEL</strong> (template search, alignment, modelling with ProMod3, QMEANDisCo quality estimate)<sup class="c"><a href="#r17">[17]</a></sup>, <strong>Phyre2</strong><sup class="c"><a href="#r18">[18]</a></sup> and <strong>I-TASSER</strong><sup class="c"><a href="#r20">[20]</a></sup> (which combines threading with fragment assembly). <strong>MODELLER</strong> remains the standard for manual, restraint-based modelling when the alignment must be controlled by hand.<sup class="c"><a href="#r15">[15]</a></sup></p>
+
+<h3 id="s6-2">6.2 Fold recognition and threading</h3>
+<p>Because the number of folds is limited, a new sequence very probably adopts a fold that is already in the PDB even when no sequence homolog can be found. Fold recognition asks the inverse question of homology modelling: not "which sequence is similar to mine?" but "which <em>structure</em> is my sequence compatible with?" In <strong>threading</strong> the query sequence is placed — threaded — residue by residue onto the backbone of each template in a fold library, with gaps allowed in loops, and the compatibility is scored with a function that evaluates how well each residue's environment (buried or exposed, secondary structure, neighbouring residue types) suits the residue placed there.<sup class="c"><a href="#r21">[21]</a>,<a href="#r23">[23]</a></sup> The best-scoring template–alignment pair is then used as in homology modelling. The scoring functions are typically knowledge-based pair potentials or 3D profiles derived from PDB statistics, and the alignment is found by dynamic programming (when the score is a sum over positions) or by more expensive optimisation (when pairwise terms are included) — the computational cost the lecture mentions. In practice, the most successful fold-recognition methods of the 2000s turned out to be profile–profile and HMM–HMM sequence comparison enriched with predicted secondary structure (HHpred, Phyre2): remote homology, rather than physics, carried most of the signal. Fold recognition established that most new sequences had old folds, and it is the conceptual ancestor of AlphaFold's template channel.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Section 7</span>Template-free (ab initio, de novo) prediction</h2>
+<p>Template-free methods take Anfinsen literally: define an energy function, search conformational space, and report the lowest-energy conformation. The lecture distinguishes two classes.</p>
+<p><strong>Physics-based</strong> methods use an all-atom force field (the same family of functions used in molecular dynamics, Unit 5) with an implicit or explicit solvent model, and sample by molecular dynamics, Monte Carlo or replica exchange. They use no information from known structures. Their difficulties are the two halves of the problem: force fields are not accurate enough to make the native state the global minimum for most sequences, and the search is astronomically expensive for the reasons of Section 5. Landmark results — the millisecond folding simulations of small fast-folding proteins on the special-purpose Anton machine — demonstrated that the approach can work for domains of 30–80 residues, at a cost of weeks of dedicated hardware per protein.</p>
+<p><strong>Knowledge-based</strong> (fragment-assembly) methods, of which <strong>Rosetta</strong> is the archetype, replace both halves with statistics from the PDB.<sup class="c"><a href="#r24">[24]</a></sup> The energy function is a mixture of physical terms and statistical potentials (how often a given residue pair is found at a given distance, how often a given φ/ψ follows a given sequence). The search is reduced by assuming that local structure is encoded locally: for every 3- or 9-residue window of the target, a library of fragments with similar sequences is extracted from the PDB, and the conformational search consists of swapping fragments into the chain by Monte Carlo and keeping low-energy combinations. This is an explicit model of the folding funnel: local preferences form first and are then assembled. Fragment assembly produced the first consistently correct de novo predictions for small proteins in CASP (CASP4–CASP11), and the same machinery, run in reverse — fix a fold, search sequences — is the basis of de novo protein design, for which David Baker shared the 2024 Nobel Prize in Chemistry.</p>
+<p>Both classes were, as the lecture says, restricted in practice to small proteins (~100–150 residues) and to proteins without co-factors, and both produced ensembles of candidate models from which the right one had to be selected — the "decoy selection" problem. Between 2011 and 2018 a third approach emerged that would prove decisive: <strong>coevolution-based contact prediction</strong>. In a deep multiple alignment (Unit 1, Section 8), two columns that mutate in a correlated way are likely to be in physical contact; statistical methods (direct coupling analysis, PSICOV, Gremlin) disentangle direct from indirect correlations and yield contact maps accurate enough to fold a protein by distance geometry.<sup class="c"><a href="#r25">[25]</a></sup> The ingredient that AlphaFold would exploit was already on the table — what was missing was a learning system able to extract it fully.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Section 8</span>Evaluating models</h2>
+<h3 id="s8-1">8.1 Comparing two structures</h3>
+<p>Whether assessing a prediction against the experimental answer, comparing two crystal forms or measuring the drift in a molecular dynamics trajectory, one needs a number for "how different are these two structures". All such numbers begin by <strong>superimposing</strong> the structures — finding the rigid rotation and translation that best overlays corresponding atoms, by the Kabsch algorithm<sup class="c"><a href="#r26">[26]</a></sup> — and then summarising the residual distances.</p>
+<p><strong>RMSD</strong> (root-mean-square deviation): √(Σ<em>d</em><sub><em>i</em></sub><sup>2</sup>/<em>N</em>) over the <em>N</em> paired atoms (usually Cα). It is intuitive and in Ångström, but it has three weaknesses: it is dominated by the largest deviations (one mobile loop of 10 residues at 10 Å contributes more than 100 residues at 1 Å), it depends on which atoms are included, and it grows with protein size for the same quality of model, so that RMSDs of proteins of different lengths are not comparable. It is the right measure for near-identical structures (ligand poses in docking, MD drift) and the wrong one for judging whether a predicted fold is correct.</p>
+<p><strong>GDT_TS</strong> (global distance test, total score), the CASP metric: the percentage of Cα atoms that can be superimposed within 1, 2, 4 and 8 Å of their experimental position, averaged over the four thresholds; the superposition is optimised separately for each threshold to maximise the count.<sup class="c"><a href="#r27">[27]</a></sup> It ranges from 0 to 100 (higher is better), is insensitive to a few badly placed residues, and rewards getting most of the protein right. Experimental structures of the same protein solved independently typically agree to GDT_TS ≈ 90–95, which is therefore the ceiling; above ~50 the fold is correct in outline; around 20–30 is what random compact structures achieve. GDT_HA uses stricter thresholds (0.5, 1, 2, 4 Å).</p>
+<p><strong>TM-score</strong> (template modelling score) weights each residue's contribution by 1/(1 + (<em>d</em><sub><em>i</em></sub>/<em>d</em><sub>0</sub>)<sup>2</sup>) with a length-dependent scale <em>d</em><sub>0</sub> = 1.24·(<em>L</em>−15)<sup>1/3</sup> − 1.8, which makes it independent of protein size; it ranges from 0 to 1, random pairs score ~0.17 and a TM-score above 0.5 indicates the same fold with high probability.<sup class="c"><a href="#r28">[28]</a>,<a href="#r29">[29]</a></sup></p>
+<p><strong>lDDT</strong> (local distance difference test) avoids superposition altogether: for each atom it asks what fraction of its inter-atomic distances to atoms within 15 Å are preserved (within 0.5, 1, 2, 4 Å) in the model.<sup class="c"><a href="#r30">[30]</a></sup> Because it is local, it is not fooled by domain movements — a model with two perfect domains in the wrong relative orientation scores high on lDDT and low on GDT — and it is defined per residue. AlphaFold's confidence measure, pLDDT, is a <em>predicted</em> lDDT (Section 10).</p>
+<figure>
+<img src="figures/fig06_gdt_profile.png" alt="Per-residue Calpha distance between superimposed haemoglobin alpha and beta chains with GDT thresholds at 1, 2, 4 and 8 A; GDT_TS 82, RMSD 1.55, TM-score 0.90">
+<figcaption><b>Figure 6. The metrics on a real pair: haemoglobin α superimposed on haemoglobin β (PDB 2HHB).</b> The two chains were aligned by sequence (BLOSUM62, 46 % identity, 139 aligned pairs) and superimposed on all aligned Cα atoms by the Kabsch algorithm (Biopython). The curve is the per-residue Cα–Cα distance; shaded bands are the GDT thresholds with the percentage of residues inside each. Deviations concentrate in the N-terminus, the CD corner (residues 44–50, where β has an insertion) and the GH corner; the eight helices (grey bars) superimpose to about 1 Å. The resulting GDT_TS of 82 (computed here with a single superposition, hence a lower bound of the CASP value) and TM-score of 0.90 say "same fold, closely similar"; the RMSD of 1.55 Å, inflated by the loops, says less on its own. These two chains are paralogs at 46 % identity: a homology model of one built on the other would have this accuracy.</figcaption>
+</figure>
+
+<h3 id="s8-2">8.2 Validating a model without the answer</h3>
+<p>In real use there is no experimental structure to compare with; the model must be judged on internal evidence. The lecture divides the criteria into <em>internal</em> (does the model satisfy the restraints it was built from — template distances, predicted contacts?) and <em>external</em> (does it look like a real protein?). The external criteria, in turn, are of two kinds.</p>
+<p><strong>Stereochemical and geometric validation</strong> checks covalent geometry and packing against the distributions observed in high-resolution structures: bond lengths and angles, peptide planarity (ω), Ramachandran statistics (Section 3.2), side-chain rotamer outliers, steric clashes (atoms closer than the sum of their van der Waals radii minus 0.4 Å), and unsatisfied buried hydrogen-bond donors/acceptors. The classical program is <strong>PROCHECK</strong>;<sup class="c"><a href="#r31">[31]</a></sup> the current standard is <strong>MolProbity</strong>, which adds hydrogens before analysing clashes and reports a combined score calibrated to resolution;<sup class="c"><a href="#r22">[22]</a></sup> <strong>WHAT_CHECK</strong> performs a comprehensive battery of similar tests. A model built by copying a good template passes these tests almost automatically, so they are necessary but far from sufficient: a <em>misaligned</em> model has perfect stereochemistry and the wrong structure.</p>
+<p><strong>Knowledge-based (pseudo-energy) validation</strong> asks whether each residue is in an environment typical of native proteins. <strong>Verify3D</strong> classifies each residue's environment (buried/exposed, polar/non-polar, secondary structure) and scores how compatible the residue type is with it, from a 3D–1D profile;<sup class="c"><a href="#r32">[32]</a></sup> a stretch of residues with negative scores flags a misfolded or misaligned segment. <strong>ProSA</strong> computes a statistical pair potential energy for the whole chain and for sliding windows, and reports a Z-score comparing the model with experimental structures of the same length — a model whose Z-score lies outside the cloud of PDB structures is suspect.<sup class="c"><a href="#r33">[33]</a></sup> <strong>DOPE</strong> (MODELLER) and <strong>QMEAN / QMEANDisCo</strong> (SWISS-MODEL) are composite statistical potentials that provide a global score and a per-residue profile, the latter calibrated to predict the expected local lDDT.<sup class="c"><a href="#r34">[34]</a>,<a href="#r35">[35]</a></sup> Per-residue profiles are the useful output: the global score tells you whether to trust the model at all, the local profile tells you <em>which parts</em> to trust — and a binding site that scores poorly disqualifies the model for docking even if the rest is fine.</p>
+<div class="box warn"><h4>Validation checklist for a model you intend to use</h4><ul>
+<li>Ramachandran: &gt; 95 % favoured, no outliers in or near the region of interest.</li>
+<li>MolProbity clash score and rotamer outliers in the range of a 2–2.5 Å crystal structure.</li>
+<li>ProSA Z-score within the range of experimental structures of similar length; Verify3D ≥ 80 % of residues with 3D–1D score ≥ 0.2.</li>
+<li>Per-residue QMEANDisCo (or pLDDT for AlphaFold models) &gt; 0.7 (&gt; 70) for every residue of the binding site.</li>
+<li>Alignment sanity: no gaps inside secondary-structure elements; catalytic and binding residues align with the template's.</li>
+<li>Compare with the template: a model identical to the template has learned nothing; a model very different from it has probably been over-refined.</li>
+</ul></div>
+
+<h3 id="s8-3">8.3 CASP: the community's blind test</h3>
+<p>Because every method's authors evaluate it favourably, the field created in 1994 a blind experiment: the <strong>Critical Assessment of techniques for protein Structure Prediction</strong>.<sup class="c"><a href="#r36">[36]</a></sup> Every two years, structural biologists who are about to solve a structure release its sequence to the organisers, who pass it to predictors; the predictions must be submitted before the experimental structure is published; independent assessors then compare predictions with the experiment using GDT_TS and other metrics, and the results are discussed at a meeting and published in a special issue of <em>Proteins</em>. Targets are classified as template-based (TBM; a usable template exists) or free-modelling (FM; no template detectable), and the FM category is the measure of genuine progress.</p>
+<p>The history, in outline: CASP1–CASP5 (1994–2002) established homology modelling as reliable above 30 % identity and fold recognition as feasible; CASP6–CASP10 (2004–2012) saw fragment assembly produce correct FM folds for small proteins, but median FM GDT_TS stagnated around 30–40 for a decade; CASP11–CASP12 (2014–2016) saw coevolution-based contacts raise FM accuracy; <strong>CASP13 (2018)</strong> saw AlphaFold's first version, with distance prediction by a deep residual network followed by gradient-descent folding, win the FM category by a clear margin (median GDT_TS ≈ 60 on FM targets);<sup class="c"><a href="#r37">[37]</a></sup> and <strong>CASP14 (2020)</strong> saw AlphaFold2 achieve a median GDT_TS of 92.4 across all targets — accuracy comparable to experiment for most of them — and the assessors declared the single-domain prediction problem essentially solved.<sup class="c"><a href="#r38">[38]</a>,<a href="#r39">[39]</a></sup> Subsequent rounds (CASP15, 2022; CASP16, 2024) have shifted the frontier to complexes, nucleic acids, ligands, conformational ensembles and the accuracy of the confidence estimates themselves.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Section 9</span>Machine learning and deep learning: the vocabulary needed for AlphaFold</h2>
+<p>The lecture introduces machine learning with the task of telling cats from dogs. The example is worth taking seriously because it contains every element of the method.</p>
+<p><strong>Traditional programming</strong> takes data and an algorithm written by a human and produces results. <strong>Machine learning</strong> inverts this: it takes data <em>and the desired results</em> (labels) and produces the algorithm — a function, with adjustable parameters, that maps inputs to outputs and that has been <em>fitted</em> to reproduce the labels. For the cat/dog classifier, the inputs are images, the labels are "cat"/"dog", and the function is a <strong>classifier</strong>.</p>
+<ol>
+<li><strong>Features.</strong> Classical machine learning begins by representing each example as a vector of hand-designed features: colour statistics, size of head relative to body, posture, velocity, behaviour. Choosing informative features ("feature engineering") was historically most of the work, and in bioinformatics the features are things like residue composition, hydrophobicity profiles, predicted secondary structure or PSSM columns (Unit 1).</li>
+<li><strong>Data partitioning.</strong> The labelled examples are split into a <strong>training set</strong> (typically 70–80 %), used to fit the parameters, and a <strong>test set</strong> (20–30 %), never seen during fitting, used to estimate how the model performs on new data. A third, <em>validation</em> set is usually carved out of the training data to choose hyperparameters (model complexity, learning rate). <strong>Cross-validation</strong> repeats the split several times and averages. For proteins, the split must be made by sequence <em>family</em>, not by sequence: if homologs of a test protein are in the training set, the test measures memory, not generalisation — a subtlety that matters enormously when reading claims about AlphaFold's accuracy.</li>
+<li><strong>Model and training.</strong> A model class is chosen (logistic regression, random forest, support-vector machine, neural network), and its parameters are adjusted to minimise a <strong>loss function</strong> that measures the disagreement between predictions and labels on the training set. <strong>Overfitting</strong> — a model so flexible that it learns the noise of the training set and fails on the test set — is the central hazard, controlled by regularisation and by watching validation performance.</li>
+<li><strong>Performance evaluation</strong> on the test set, with the confusion-matrix metrics of Unit 1 (accuracy, sensitivity, specificity, precision) and their threshold-free summaries (ROC curve, area under the curve).</li>
+<li><strong>Prediction</strong>: the trained model receives a new image and returns "cat", together, ideally, with a calibrated probability.</li>
+</ol>
+<p><strong>Deep learning</strong> is machine learning with <strong>artificial neural networks</strong> of many layers. A neural network is a composition of simple units, each computing a weighted sum of its inputs followed by a non-linear function; units are arranged in layers — an input layer, one or more <strong>hidden layers</strong>, an output layer — and the weights are the parameters (millions in AlphaFold2's case, ~93 million). Training adjusts the weights by <strong>gradient descent</strong>: the gradient of the loss with respect to every weight is computed efficiently by back-propagation, and the weights are moved a small step downhill, over many passes through the data. The decisive difference from classical machine learning, and the content of the lecture's "ML vs DL" slide, is that deep networks learn their own features: the early layers of an image network learn edges, the middle layers textures and parts, the late layers whole objects, with no human specifying any of them. <strong>Representation learning</strong> of this kind is what allowed AlphaFold to extract from a multiple sequence alignment the structural information that twenty years of hand-designed coevolution statistics had captured only partially.</p>
+<p>Two further concepts are needed to read the AlphaFold papers. <strong>Attention</strong> is a mechanism by which each element of a sequence (a residue, a word) computes a weighted summary of all other elements, with weights learned from the data; it lets a network relate residues far apart in sequence but close in space, and it is the basis of the <em>transformer</em> architecture (the same architecture behind large language models). <strong>End-to-end</strong> training means that the network is optimised directly on the final objective — in AlphaFold2, the accuracy of the 3D coordinates — rather than on an intermediate quantity such as a contact map, so that every component is tuned to the structure it ultimately produces.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Section 10</span>AlphaFold</h2>
+<h3>10.1 From AlphaFold (2018) to AlphaFold2 (2020)</h3>
+<p>The first AlphaFold, developed by DeepMind for CASP13, combined the coevolution idea of Section 7 with deep learning.<sup class="c"><a href="#r37">[37]</a></sup> From the MSA of the target it computed features that a deep residual convolutional network transformed into a predicted <em>distogram</em>: for every pair of residues, a probability distribution over their Cβ–Cβ distance (rather than a binary contact). A second network predicted backbone torsion angles. The predicted distributions were then turned into a smooth potential, and the structure was obtained by gradient descent on that potential starting from random torsions — the "gradient descent to structure" step in the lecture's diagram. The network was trained on 31,247 domains from CATH clustered at 35 % identity, as the lecture notes. It won CASP13 decisively but still produced models that were right in topology and wrong in detail (median FM GDT_TS ≈ 60).</p>
+<p><strong>AlphaFold2</strong>, presented at CASP14 in 2020 and published in July 2021, was a redesign rather than an improvement.<sup class="c"><a href="#r38">[38]</a></sup> Its architecture (Figure 7) is end-to-end: it takes the sequence, the MSA and optional templates, and outputs atomic coordinates directly, with the geometry built into the network.</p>
+<figure>
+<img src="figures/fig07_alphafold2.png" alt="Block diagram of AlphaFold2: input sequence, genetic and template search, MSA and pair representations, Evoformer, structure module, outputs with pLDDT and PAE, recycling">
+<figcaption><b>Figure 7. The AlphaFold2 pipeline.</b> A deep MSA is built from sequence databases (UniRef90, BFD, MGnify) and, optionally, templates are retrieved from the PDB. Two internal representations — one of the MSA (sequences × residues) and one of residue pairs (residues × residues) — are iteratively refined by 48 Evoformer blocks that exchange information between them, using attention and "triangle" updates that encode the geometric constraint that three residues' pairwise distances must be mutually consistent. The structure module converts the pair representation into a rigid frame (rotation and translation) per residue and side-chain torsions, using invariant point attention so that the result does not depend on the arbitrary orientation of the coordinate system. The whole process is repeated three times (recycling), feeding the output back in. Per-residue confidence (pLDDT) and pairwise confidence (PAE) are predicted alongside the coordinates. Diagram after Jumper <em>et al.</em> 2021.<sup class="c"><a href="#r38">[38]</a></sup></figcaption>
+</figure>
+<p>Three design decisions are worth understanding, because they explain both the method's power and its limits.</p>
+<ul>
+<li><strong>The MSA is the primary input.</strong> AlphaFold2 reads structure from evolution: the covariation patterns in a deep alignment (hundreds to thousands of effective sequences) tell it which residues are in contact and, implicitly, how the family folds. Accuracy drops for proteins with few homologs (orphan proteins, de novo designed proteins, fast-evolving viral proteins), and this dependence is the reason Unit 1's MSA methods remain relevant. Templates help but are not required; AlphaFold2 solved CASP14 targets without any template.</li>
+<li><strong>Geometry is built in.</strong> Representing each residue as a rigid body and enforcing triangle consistency means that the network does not have to learn Euclidean geometry from scratch; it learns only what is protein-specific.</li>
+<li><strong>Confidence is predicted, not asserted.</strong> The network outputs, for each residue, a predicted lDDT (<strong>pLDDT</strong>, 0–100) and, for each pair, the <strong>predicted aligned error</strong> (PAE, in Å: the expected error in the position of residue <em>j</em> when the model is superimposed on residue <em>i</em>). Both are well calibrated, and both must be read before a model is used.</li>
+</ul>
+<table class="data">
+<thead><tr><th>pLDDT</th><th>Interpretation</th><th>Use</th></tr></thead>
+<tbody>
+<tr><td>&gt; 90</td><td>Very high confidence; backbone and most side chains accurate</td><td>Suitable for docking and detailed analysis of residue positions</td></tr>
+<tr><td>70–90</td><td>Confident; backbone generally correct, some side chains uncertain</td><td>Fold and binding-site location reliable; check side chains in the pocket</td></tr>
+<tr><td>50–70</td><td>Low confidence</td><td>Treat as hypothesis; often flexible or partially ordered regions</td></tr>
+<tr><td>&lt; 50</td><td>Very low confidence; typically rendered as extended "ribbon"</td><td>Usually intrinsically disordered in isolation; do not interpret coordinates</td></tr>
+</tbody></table>
+<p>The PAE matrix complements pLDDT: two domains may each have pLDDT &gt; 90 while their relative orientation is unknown, which appears as high PAE in the off-diagonal blocks. For docking or for modelling a complex, the PAE between the pocket residues and the rest of the protein, not only their pLDDT, determines whether the geometry can be trusted.</p>
+<h3>10.2 The AlphaFold Protein Structure Database and later developments</h3>
+<p>In 2021 DeepMind and EMBL-EBI released predicted structures for the human proteome and twenty model organisms, and in 2022 for essentially every sequence in UniProt — about 214 million models — in the <strong>AlphaFold Protein Structure Database</strong>, linked from every UniProt entry.<sup class="c"><a href="#r43">[43]</a>,<a href="#r44">[44]</a></sup> For the first time, a structural model exists for almost every protein a student will encounter; the question has shifted from "is there a structure?" to "how good is it for my purpose, and in which state?". <strong>ColabFold</strong> made running AlphaFold2 accessible by replacing the slow database search with the MMseqs2 server, so that a prediction takes minutes on a free GPU notebook.<sup class="c"><a href="#r45">[45]</a></sup> <strong>AlphaFold-Multimer</strong> (2021) extended the method to complexes. <strong>RoseTTAFold</strong> (Baker laboratory, 2021), a three-track network developed independently, reached comparable accuracy and is open source.<sup class="c"><a href="#r46">[46]</a></sup> <strong>ESMFold</strong> (2023) replaced the MSA with a protein language model trained on sequences alone, trading some accuracy for speed and for independence from homologs.<sup class="c"><a href="#r47">[47]</a></sup> <strong>AlphaFold 3</strong> (2024) replaced the structure module with a diffusion model and generalised the inputs to nucleic acids, ligands, ions and post-translational modifications, predicting complexes of all of them jointly — directly relevant to the docking lecture, where its ligand-placement accuracy is now a baseline that physics-based docking is compared with.<sup class="c"><a href="#r48">[48]</a></sup> The 2024 Nobel Prize in Chemistry was awarded to Demis Hassabis and John Jumper for protein structure prediction and to David Baker for computational protein design.</p>
+<h3>10.3 What AlphaFold does not do</h3>
+<div class="box warn"><h4>Limits that matter for this module</h4><ul>
+<li><strong>One structure per sequence.</strong> AlphaFold2 predicts a single conformation, usually the one best represented in the PDB for that family. Proteins that function by switching states — kinases (DFG-in/out), GPCRs (active/inactive), transporters (inward/outward) — are returned in one state, which may not be the one a drug binds. Molecular dynamics (Unit 5) and MSA-subsampling tricks are used to explore the others.<sup class="c"><a href="#r49">[49]</a></sup></li>
+<li><strong>No ligands, cofactors, metals or membranes in AlphaFold2.</strong> A pocket predicted in the apo state may be collapsed or occupied by side chains; haem-binding and metal-binding sites are often shaped correctly but empty. AlphaFold 3 addresses part of this, with accuracy that depends on how many similar complexes exist in the PDB.</li>
+<li><strong>Low pLDDT is not a structure.</strong> Regions below 50 are best interpreted as disordered; their coordinates should not be docked against or simulated as if rigid.</li>
+<li><strong>Mutations.</strong> AlphaFold is largely insensitive to point mutations: the structure of a destabilising variant is predicted to look like the wild type. It is not a stability or pathogenicity predictor (separate tools, AlphaMissense among them, exist for that).</li>
+<li><strong>It is a model.</strong> Treat an AlphaFold prediction as a very good homology model with a built-in quality estimate — a hypothesis to be validated, in the sense of Section 1 — and not as an experimental structure.<sup class="c"><a href="#r50">[50]</a></sup></li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Section 11</span>From structure to docking and dynamics</h2>
+<div class="box bridge"><h4>What the following lectures will assume you can do</h4><ul>
+<li>Retrieve a structure from the PDB, read its header (method, resolution, R-free, missing residues, ligands) and decide whether it is adequate for docking.</li>
+<li>Retrieve the AlphaFold model of a target from UniProt, read its pLDDT and PAE, and identify which regions and which binding sites can be trusted.</li>
+<li>Prepare a structure for simulation: choose chains and biological assembly, remove or keep waters and ions deliberately, rebuild missing loops, assign protonation states of His/Asp/Glu/Lys/Cys in the pocket, and reconcile residue numbering between the PDB file, UniProt and the literature.</li>
+<li>Superimpose structures (apo/holo, model/experiment, frames of a trajectory), compute RMSD over a chosen atom set, and interpret it.</li>
+<li>Recognise secondary-structure elements and loops in a cartoon and anticipate which parts of a pocket are rigid (helices, strands) and which are mobile (loops, flaps) — the latter are where induced fit, and docking failures, occur.</li>
+</ul></div>
+<p>The urease example that runs through the lecture illustrates the chain of dependencies. The <code>6ZJA</code> cryo-EM structure shows the enzyme with an inhibitor in the nickel active site under a closed flap; designing a better inhibitor (Unit 4) requires docking candidates into that site (Unit 3) with the flap in the right state, assessing their stability by molecular dynamics (Unit 5), and, for a homologous urease from another pathogen without a structure, first building a model (this unit) whose active-site geometry is validated against <code>6ZJA</code>.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s12">
+<h2><span class="num">Section 12</span>Practical work</h2>
+<h3>12.1 Interactive structure</h3>
+<p>The viewer below loads human deoxyhaemoglobin (<code>2HHB</code>) directly from the RCSB (an internet connection is required). Rotate with the mouse; use the buttons to switch between colouring by chain (two α in blue, two β in red; haem groups as sticks) and by secondary structure.</p>
+<div id="viewer" style="width:100%;height:420px;position:relative;border:1px solid var(--line);border-radius:6px;background:#fff"></div>
+<p style="font-family:system-ui,sans-serif;font-size:.86rem"><button onclick="styleChain()">Colour by chain</button> <button onclick="styleSS()">Colour by secondary structure</button> <button onclick="styleB()">Colour by B-factor</button> <button onclick="styleSurf()">Surface</button></p>
+<script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+<script>
+var viewer=null;
+function styleChain(){ if(!viewer)return; viewer.removeAllSurfaces(); viewer.setStyle({},{cartoon:{colorscheme:{prop:'chain',map:{A:'#2b5d9b',C:'#2b5d9b',B:'#c0392b',D:'#c0392b'}}}}); viewer.setStyle({resn:'HEM'},{stick:{colorscheme:'greenCarbon'}}); viewer.render(); }
+function styleSS(){ if(!viewer)return; viewer.removeAllSurfaces(); viewer.setStyle({},{cartoon:{colorscheme:'ssPyMol'}}); viewer.setStyle({resn:'HEM'},{stick:{colorscheme:'greenCarbon'}}); viewer.render(); }
+function styleB(){ if(!viewer)return; viewer.removeAllSurfaces(); viewer.setStyle({},{cartoon:{colorscheme:{prop:'b',gradient:'rwb',min:60,max:10}}}); viewer.setStyle({resn:'HEM'},{stick:{colorscheme:'greenCarbon'}}); viewer.render(); }
+function styleSurf(){ if(!viewer)return; viewer.setStyle({},{cartoon:{colorscheme:{prop:'chain',map:{A:'#2b5d9b',C:'#2b5d9b',B:'#c0392b',D:'#c0392b'}}}}); viewer.addSurface($3Dmol.SurfaceType.VDW,{opacity:0.6,colorscheme:'whiteCarbon'},{chain:'A'}); viewer.render(); }
+(function(){ try{ viewer=$3Dmol.createViewer('viewer',{backgroundColor:'white'});
+  $3Dmol.download('pdb:2HHB',viewer,{},function(){ styleChain(); viewer.zoomTo(); viewer.render(); }); }
+  catch(e){ document.getElementById('viewer').innerHTML='<p style="padding:1rem;color:#777">3D viewer unavailable offline. Open https://www.rcsb.org/3d-view/2HHB instead.</p>'; } })();
+</script>
+<h3>12.2 Reading structures with Biopython</h3>
+<p>The figures of this document were produced with the following operations; reproducing them is the best way to learn the PDB data model (structure → model → chain → residue → atom).<sup class="c"><a href="#r51">[51]</a></sup></p>
+<pre><code>from Bio.PDB import PDBList, PDBParser, PPBuilder, Superimposer
+import numpy as np
+
+# 1. Download and parse (mmCIF is preferred for new work: use MMCIFParser and file_format="mmCif")
+PDBList().retrieve_pdb_file("2HHB", pdir=".", file_format="pdb")   # writes pdb2hhb.ent
+s = PDBParser(QUIET=True).get_structure("hb", "pdb2hhb.ent")
+model = s[0]
+for chain in model:
+    print(chain.id, len([r for r in chain if r.id[0] == " "]), "residues")
+
+# 2. Backbone dihedrals for a Ramachandran plot (Figure 1)
+phipsi = []
+for pp in PPBuilder().build_peptides(model):
+    for res, (phi, psi) in zip(pp, pp.get_phi_psi_list()):
+        if phi and psi:
+            phipsi.append((res.get_resname(), np.degrees(phi), np.degrees(psi)))
+
+# 3. Superimpose chain B on chain A over aligned CA atoms (Figure 6)
+#    'pairs' = list of (index_in_A, index_in_B) from a sequence alignment (Unit 1)
+resA = [r for r in model["A"] if "CA" in r]; resB = [r for r in model["B"] if "CA" in r]
+fixed  = [resA[i]["CA"] for i, j in pairs]
+moving = [resB[j]["CA"] for i, j in pairs]
+sup = Superimposer(); sup.set_atoms(fixed, moving)
+print("RMSD over", len(pairs), "CA:", round(sup.rms, 2), "A")
+rot, tran = sup.rotran
+d = np.linalg.norm(np.array([a.coord for a in moving]) @ rot + tran
+                   - np.array([a.coord for a in fixed]), axis=1)
+gdt_ts = 100 * np.mean([np.mean(d &lt;= c) for c in (1, 2, 4, 8)])
+L = len(resA); d0 = 1.24 * (L - 15) ** (1/3) - 1.8
+tm = np.sum(1 / (1 + (d / d0) ** 2)) / L
+print("GDT_TS", round(gdt_ts, 1), "TM-score", round(tm, 3))</code></pre>
+<p>For the PDB growth statistics (Figure 3), the RCSB Search API accepts a JSON query with a date-histogram facet on <code>rcsb_accession_info.initial_release_date</code>, sub-faceted by <code>exptl.method</code>, posted to <code>https://search.rcsb.org/rcsbsearch/v2/query</code>. The complete query is short and is a good first exercise in programmatic access to the archive.</p>
+<h3>12.3 A minimal modelling and validation protocol</h3>
+<ol>
+<li>Obtain the target sequence from UniProt; note domain boundaries, signal peptides, transmembrane segments and known PTMs.</li>
+<li>Check the AlphaFold DB entry linked from UniProt: inspect pLDDT along the sequence and the PAE plot. If the region of interest is &gt; 90 and its PAE to the rest of the domain is low, the AlphaFold model is probably the best available starting point.</li>
+<li>Search the PDB (BLASTp against <code>pdbaa</code>, or the sequence search on rcsb.org). If an experimental structure of the target exists in the relevant state and with a relevant ligand, prefer it to any model.</li>
+<li>If only homologs exist, build a homology model (SWISS-MODEL for a first pass; MODELLER when the alignment needs manual control), choosing templates by identity, coverage, resolution and ligand state. Build with several templates and alignments if identity is &lt; 40 %.</li>
+<li>Validate every model with the checklist of Section 8.2 (MolProbity, ProSA, Verify3D, QMEANDisCo or pLDDT). Compare the AlphaFold and homology models with each other: agreement in the binding site is reassuring, disagreement locates the uncertainty.</li>
+<li>Prepare the chosen structure for the next units: add hydrogens, assign protonation states (PROPKA/H++), decide on waters and ions, and record every decision.</li>
+<li>Document the provenance: PDB ID and version, AlphaFold DB version, template IDs, alignment, software versions. A model without provenance cannot be trusted or reproduced.</li>
+</ol>
+<table class="data"><thead><tr><th>Task</th><th>Tool</th><th>Location</th></tr></thead><tbody>
+<tr><td>Structures</td><td>RCSB PDB · PDBe · PDBj · PDB-REDO</td><td>https://www.rcsb.org · https://www.ebi.ac.uk/pdbe · https://pdbj.org · https://pdb-redo.eu</td></tr>
+<tr><td>Predicted structures</td><td>AlphaFold Protein Structure Database · ESM Metagenomic Atlas</td><td>https://alphafold.ebi.ac.uk · https://esmatlas.com</td></tr>
+<tr><td>Run AlphaFold2 / 3</td><td>ColabFold · AlphaFold Server</td><td>https://github.com/sokrypton/ColabFold · https://alphafoldserver.com</td></tr>
+<tr><td>Homology modelling</td><td>SWISS-MODEL · MODELLER · Phyre2 · I-TASSER · HHpred</td><td>https://swissmodel.expasy.org · https://salilab.org/modeller · http://www.sbg.bio.ic.ac.uk/phyre2 · https://zhanggroup.org/I-TASSER · https://toolkit.tuebingen.mpg.de</td></tr>
+<tr><td>Validation</td><td>MolProbity · ProSA-web · SAVES (PROCHECK, Verify3D, ERRAT) · QMEAN</td><td>http://molprobity.biochem.duke.edu · https://prosa.services.came.sbg.ac.at · https://saves.mbi.ucla.edu · https://swissmodel.expasy.org/qmean</td></tr>
+<tr><td>Classification</td><td>SCOP2 · CATH · ECOD</td><td>https://scop.mrc-lmb.cam.ac.uk · https://www.cathdb.info · http://prodata.swmed.edu/ecod</td></tr>
+<tr><td>Visualisation</td><td>PyMOL · UCSF ChimeraX · Mol* (web)</td><td>https://pymol.org · https://www.cgl.ucsf.edu/chimerax · https://molstar.org</td></tr>
+<tr><td>Protonation</td><td>PROPKA / PDB2PQR · H++</td><td>https://server.poissonboltzmann.org · http://newbiophysics.cs.vt.edu/H++</td></tr>
+</tbody></table>
+</section>
+
+<!-- ============================================================ -->
+<section id="s13">
+<h2><span class="num">Section 13</span>Self-assessment</h2>
+<p>Attempt each question before opening the answer.</p>
+<details><summary>1. Why does the peptide bond not rotate freely, and what consequence does this have for the number of degrees of freedom of the backbone?</summary><p>Resonance delocalises the nitrogen lone pair into the carbonyl, giving the C′–N bond ~40 % double-bond character and making the six atoms of the peptide group coplanar. Rotation about C′–N is restricted to trans (ω ≈ 180°) or, rarely, cis. The backbone conformation of each residue is therefore described by only two free torsions, φ and ψ.</p></details>
+<details><summary>2. A residue in a model has φ = +60°, ψ = +40°. Under what circumstances is this acceptable?</summary><p>This is the left-handed helical region, sterically unfavourable for L-amino acids with a side chain. It is common and acceptable for glycine (no side chain), and occasionally observed for asparagine and aspartate in turns. For any other residue it is an outlier that should be examined: either a modelling error or a genuinely strained, possibly functional, residue.</p></details>
+<details><summary>3. An α-helix of 18 residues: how long is it, how many turns does it make, and which residues would you expect on the same face as residue 1?</summary><p>Length ≈ 18 × 1.5 Å = 27 Å; turns = 18 / 3.6 = 5. Residues on the same face recur every 3.6 positions: approximately residues 1, 4/5, 8, 11/12, 15, 18 (the <em>i</em>, <em>i</em>+3, <em>i</em>+4, <em>i</em>+7 pattern).</p></details>
+<details><summary>4. Why is β-sheet harder to predict from sequence than α-helix?</summary><p>Helices are stabilised by local hydrogen bonds (<em>i</em> → <em>i</em>+4), so the information needed is within a short window of sequence and the (φ, ψ) values are tightly clustered. Strands are stabilised by hydrogen bonds to <em>other</em> strands, which may be far away in sequence, and strand (φ, ψ) values are spread over a broad region of the Ramachandran plot. Predicting a strand therefore requires knowing its partner — non-local information that only coevolution or deep learning captures well.</p></details>
+<details><summary>5. A PDB entry has resolution 3.4 Å, R-work 0.24, R-free 0.31, and the ligand's B-factors are twice the protein average. Is it a good reference for docking?</summary><p>No. At 3.4 Å side-chain rotamers and ligand orientation are ambiguous; the R-free gap of 0.07 suggests over-fitting; and high ligand B-factors indicate that the ligand is poorly defined in the density (check the validation report's ligand fit). Look for a higher-resolution entry of the same protein, or treat the ligand pose as uncertain.</p></details>
+<details><summary>6. Explain in one paragraph why Anfinsen's hypothesis and Levinthal's paradox are both true.</summary><p>Anfinsen's experiments show that the native state is the thermodynamic minimum encoded by the sequence, so folding is determined by energetics. Levinthal's arithmetic shows that an unbiased search of conformational space would take longer than the age of the Universe, so folding cannot be a random search. The energy-landscape view reconciles them: the landscape of a natural protein is funnel-shaped, so that nearly every local step that forms native-like interactions lowers the free energy and reduces the remaining search space; the chain is guided downhill by many parallel paths and reaches the minimum in microseconds to seconds without sampling exhaustively.</p></details>
+<details><summary>7. You have templates at 65 % identity (2.8 Å resolution, apo) and 38 % identity (1.6 Å resolution, with a ligand bound in the site you care about). Which do you use for a docking study?</summary><p>Neither alone. The 65 % template gives the more accurate global backbone, but its pocket is in the apo state and the resolution is modest; the 38 % holo template has the pocket in the relevant ligand-bound conformation at high resolution, but alignment errors are likely elsewhere. The standard solution is a multi-template model: use the 65 % template for the overall fold and the 38 % template to restrain the binding-site region, then validate the pocket geometry by comparing with both. Alternatively, compare with the AlphaFold model and with a docking test that re-docks the ligand into the 38 % template.</p></details>
+<details><summary>8. Two models of a 300-residue two-domain protein have GDT_TS 55 and lDDT 0.85 (model A) and GDT_TS 85 and lDDT 0.84 (model B). What is the difference between them?</summary><p>Both have equally good <em>local</em> structure (lDDT, superposition-free, is nearly identical). Model A's much lower GDT_TS, which depends on a global superposition, indicates that its two domains are individually correct but placed in the wrong relative orientation; model B has the domains correctly arranged. If the binding site is within one domain, model A may still be usable; if it lies at the domain interface, only model B is.</p></details>
+<details><summary>9. From Figure 6, what would be the approximate RMSD if the ten most deviant residues of the haemoglobin α/β superposition were excluded, and why does this matter for interpreting RMSD values in the literature?</summary><p>The ten largest distances (the CD and GH corners and the termini, 3–6 Å) contribute disproportionately to the mean of squared distances; without them the RMSD would fall from 1.55 Å to roughly 1.1–1.2 Å, close to the Chothia–Lesk core value for 46 % identity. The lesson is that an RMSD is uninterpretable without the number and selection of atoms it was computed over; "core RMSD" and "all-atom RMSD" of the same pair can differ by a factor of two or more.</p></details>
+<details><summary>10. Why must the training and test sets of a protein structure predictor be split by family rather than by sequence?</summary><p>Homologous proteins share structure. If a test protein's homologs are in the training set, the predictor can achieve high test accuracy by recalling the homolog's structure (in effect, homology modelling), and the test overestimates its ability to predict genuinely new folds. Splitting at a sequence-identity threshold (e.g. 30 %) or by SCOP/CATH family ensures that the test measures generalisation. The CASP free-modelling category enforces this blind.</p></details>
+<details><summary>11. An AlphaFold model shows the kinase domain of your target with pLDDT &gt; 90 throughout and a 60-residue N-terminal segment with pLDDT &lt; 40. The PAE between the N-terminal segment and the kinase domain is &gt; 25 Å. Interpret.</summary><p>The kinase domain is predicted with high confidence and can be used for structural analysis. The N-terminal segment is predicted to be intrinsically disordered (very low pLDDT) and its placement relative to the domain is arbitrary (high PAE); its coordinates carry no information and should be removed or treated as a flexible tail in any docking or simulation. Low pLDDT is a prediction of disorder, not a failed prediction of structure.</p></details>
+<details><summary>12. Name three situations in which a homology model or an experimental structure is preferable to the AlphaFold DB model of the same protein.</summary><p>(i) When a specific conformational state is needed (e.g. the active or inhibitor-bound state of a kinase or GPCR) and an experimental structure or a template in that state exists; AlphaFold2 gives one state. (ii) When ligands, cofactors, metals or oligomeric partners shape the site; the AlphaFold2 model is apo and monomeric. (iii) When the protein has few homologs (shallow MSA) and the AlphaFold confidence is low, but a template with moderate identity exists. In all cases, an experimental structure of adequate resolution in the right state is preferred to any model.</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Appendix</span>Glossary</h2>
+<dl class="gloss">
+<dt>Ab initio / de novo prediction</dt><dd>Structure prediction without a specific template, from physics or from statistical knowledge of the PDB.</dd>
+<dt>B-factor (temperature factor)</dt><dd>Per-atom measure of positional uncertainty or mobility in a crystal structure, in Å²; B = 8π²⟨u²⟩.</dd>
+<dt>CASP</dt><dd>Critical Assessment of techniques for protein Structure Prediction; biennial blind test since 1994.</dd>
+<dt>Chirality</dt><dd>Handedness of a molecule; all ribosomal amino acids except glycine are L.</dd>
+<dt>Cryo-EM</dt><dd>Cryogenic electron microscopy; single-particle reconstruction of vitrified molecules.</dd>
+<dt>Dihedral (torsion) angle</dt><dd>Angle between two planes defined by four consecutive atoms; φ, ψ, ω for the backbone, χ<sub>1</sub>, χ<sub>2</sub>… for side chains.</dd>
+<dt>Domain</dt><dd>Compact, independently folding unit of a protein chain; the unit of structural classification.</dd>
+<dt>DSSP</dt><dd>Algorithm assigning secondary structure from hydrogen-bond patterns in coordinates.</dd>
+<dt>Energy landscape / folding funnel</dt><dd>Free energy as a function of conformation; funnel shape explains fast folding.</dd>
+<dt>Fold</dt><dd>Arrangement and connectivity of secondary-structure elements in a domain.</dd>
+<dt>GDT_TS</dt><dd>Global distance test, total score: mean percentage of Cα within 1, 2, 4, 8 Å after optimal superposition; 0–100.</dd>
+<dt>Homology modelling</dt><dd>Building a model from the structure of a homolog, guided by a target–template alignment.</dd>
+<dt>lDDT / pLDDT</dt><dd>Local distance difference test, a superposition-free per-residue accuracy; pLDDT is AlphaFold's prediction of it (0–100).</dd>
+<dt>mmCIF (PDBx)</dt><dd>Master file format of the PDB archive since 2014; tag–value dictionary without column limits.</dd>
+<dt>MSA</dt><dd>Multiple sequence alignment; AlphaFold2's primary input.</dd>
+<dt>Occupancy</dt><dd>Fraction of molecules in the crystal in which an atom is at the modelled position.</dd>
+<dt>PAE</dt><dd>Predicted aligned error: AlphaFold's expected positional error of residue <em>j</em> when superimposed on residue <em>i</em>, in Å.</dd>
+<dt>PDB</dt><dd>Protein Data Bank; worldwide archive of experimental macromolecular structures (wwPDB).</dd>
+<dt>Peptide bond</dt><dd>Amide bond between the carboxyl of one residue and the amino group of the next; planar, usually trans.</dd>
+<dt>Ramachandran plot</dt><dd>Plot of ψ against φ showing sterically allowed backbone conformations.</dd>
+<dt>Resolution</dt><dd>Smallest spacing resolved in a diffraction experiment or map, in Å; smaller is better.</dd>
+<dt>R-free</dt><dd>R-factor computed on reflections excluded from refinement; cross-validation of a crystal structure.</dd>
+<dt>RMSD</dt><dd>Root-mean-square deviation of paired atom positions after superposition, in Å.</dd>
+<dt>Rotamer</dt><dd>Low-energy side-chain conformation defined by χ angles; libraries of rotamers are used to place side chains.</dd>
+<dt>SCOP / CATH</dt><dd>Hierarchical classifications of protein domains by class, fold and homology.</dd>
+<dt>Threading (fold recognition)</dt><dd>Fitting a sequence onto each structure of a fold library and scoring the compatibility.</dd>
+<dt>TM-score</dt><dd>Template modelling score; size-independent structural similarity, 0–1; &gt; 0.5 indicates the same fold.</dd>
+<dt>Twilight zone</dt><dd>20–35 % sequence identity, where homology and alignments become unreliable.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Appendix</span>References and further reading</h2>
+<h3>Primary literature cited in the text</h3>
+<ol class="refs">
+<li id="r1">Pauling L, Corey RB, Branson HR. The structure of proteins: two hydrogen-bonded helical configurations of the polypeptide chain. <em>Proc Natl Acad Sci USA</em>. 1951;37(4):205–211. <a href="https://doi.org/10.1073/pnas.37.4.205">doi:10.1073/pnas.37.4.205</a></li>
+<li id="r2">Pauling L, Corey RB. The pleated sheet, a new layer configuration of polypeptide chains. <em>Proc Natl Acad Sci USA</em>. 1951;37(5):251–256. <a href="https://doi.org/10.1073/pnas.37.5.251">doi:10.1073/pnas.37.5.251</a></li>
+<li id="r3">Ramachandran GN, Ramakrishnan C, Sasisekharan V. Stereochemistry of polypeptide chain configurations. <em>J Mol Biol</em>. 1963;7(1):95–99. <a href="https://doi.org/10.1016/S0022-2836(63)80023-6">doi:10.1016/S0022-2836(63)80023-6</a></li>
+<li id="r4">Kabsch W, Sander C. Dictionary of protein secondary structure: pattern recognition of hydrogen-bonded and geometrical features. <em>Biopolymers</em>. 1983;22(12):2577–2637. <a href="https://doi.org/10.1002/bip.360221211">doi:10.1002/bip.360221211</a></li>
+<li id="r5">Murzin AG, Brenner SE, Hubbard T, Chothia C. SCOP: a structural classification of proteins database for the investigation of sequences and structures. <em>J Mol Biol</em>. 1995;247(4):536–540. <a href="https://doi.org/10.1006/jmbi.1995.0159">doi:10.1006/jmbi.1995.0159</a></li>
+<li id="r6">Orengo CA, Michie AD, Jones S, Jones DT, Swindells MB, Thornton JM. CATH — a hierarchic classification of protein domain structures. <em>Structure</em>. 1997;5(8):1093–1108. <a href="https://doi.org/10.1016/S0969-2126(97)00260-8">doi:10.1016/S0969-2126(97)00260-8</a></li>
+<li id="r7">Berman HM, Westbrook J, Feng Z, et al. The Protein Data Bank. <em>Nucleic Acids Res</em>. 2000;28(1):235–242. <a href="https://doi.org/10.1093/nar/28.1.235">doi:10.1093/nar/28.1.235</a></li>
+<li id="r8">Berman H, Henrick K, Nakamura H. Announcing the worldwide Protein Data Bank. <em>Nat Struct Biol</em>. 2003;10(12):980. <a href="https://doi.org/10.1038/nsb1203-980">doi:10.1038/nsb1203-980</a></li>
+<li id="r9">Nakane T, Kotecha A, Sente A, et al. Single-particle cryo-EM at atomic resolution. <em>Nature</em>. 2020;587(7832):152–156. <a href="https://doi.org/10.1038/s41586-020-2829-0">doi:10.1038/s41586-020-2829-0</a></li>
+<li id="r10">Brünger AT. Free R value: a novel statistical quantity for assessing the accuracy of crystal structures. <em>Nature</em>. 1992;355(6359):472–475. <a href="https://doi.org/10.1038/355472a0">doi:10.1038/355472a0</a></li>
+<li id="r11">Anfinsen CB. Principles that govern the folding of protein chains. <em>Science</em>. 1973;181(4096):223–230. <a href="https://doi.org/10.1126/science.181.4096.223">doi:10.1126/science.181.4096.223</a></li>
+<li id="r12">Levinthal C. How to fold graciously. In: DeBrunner P, Tsibris J, Münck E, eds. <em>Mössbauer Spectroscopy in Biological Systems</em>. University of Illinois Press; 1969. p. 22–24.</li>
+<li id="r13">Dill KA, Chan HS. From Levinthal to pathways to funnels. <em>Nat Struct Biol</em>. 1997;4(1):10–19. <a href="https://doi.org/10.1038/nsb0197-10">doi:10.1038/nsb0197-10</a></li>
+<li id="r14">Chothia C, Lesk AM. The relation between the divergence of sequence and structure in proteins. <em>EMBO J</em>. 1986;5(4):823–826. <a href="https://doi.org/10.1002/j.1460-2075.1986.tb04288.x">doi:10.1002/j.1460-2075.1986.tb04288.x</a></li>
+<li id="r15">Šali A, Blundell TL. Comparative protein modelling by satisfaction of spatial restraints. <em>J Mol Biol</em>. 1993;234(3):779–815. <a href="https://doi.org/10.1006/jmbi.1993.1626">doi:10.1006/jmbi.1993.1626</a></li>
+<li id="r16">Xiang Z. Advances in homology protein structure modeling. <em>Curr Protein Pept Sci</em>. 2006;7(3):217–227. <a href="https://doi.org/10.2174/138920306777452312">doi:10.2174/138920306777452312</a></li>
+<li id="r17">Waterhouse A, Bertoni M, Bienert S, et al. SWISS-MODEL: homology modelling of protein structures and complexes. <em>Nucleic Acids Res</em>. 2018;46(W1):W296–W303. <a href="https://doi.org/10.1093/nar/gky427">doi:10.1093/nar/gky427</a></li>
+<li id="r18">Kelley LA, Mezulis S, Yates CM, Wass MN, Sternberg MJE. The Phyre2 web portal for protein modeling, prediction and analysis. <em>Nat Protoc</em>. 2015;10(6):845–858. <a href="https://doi.org/10.1038/nprot.2015.053">doi:10.1038/nprot.2015.053</a></li>
+<li id="r19">Söding J. Protein homology detection by HMM–HMM comparison. <em>Bioinformatics</em>. 2005;21(7):951–960. <a href="https://doi.org/10.1093/bioinformatics/bti125">doi:10.1093/bioinformatics/bti125</a></li>
+<li id="r20">Yang J, Yan R, Roy A, Xu D, Poisson J, Zhang Y. The I-TASSER Suite: protein structure and function prediction. <em>Nat Methods</em>. 2015;12(1):7–8. <a href="https://doi.org/10.1038/nmeth.3213">doi:10.1038/nmeth.3213</a></li>
+<li id="r21">Bowie JU, Lüthy R, Eisenberg D. A method to identify protein sequences that fold into a known three-dimensional structure. <em>Science</em>. 1991;253(5016):164–170. <a href="https://doi.org/10.1126/science.1853201">doi:10.1126/science.1853201</a></li>
+<li id="r22">Williams CJ, Headd JJ, Moriarty NW, et al. MolProbity: more and better reference data for improved all-atom structure validation. <em>Protein Sci</em>. 2018;27(1):293–315. <a href="https://doi.org/10.1002/pro.3330">doi:10.1002/pro.3330</a></li>
+<li id="r23">Jones DT, Taylor WR, Thornton JM. A new approach to protein fold recognition. <em>Nature</em>. 1992;358(6381):86–89. <a href="https://doi.org/10.1038/358086a0">doi:10.1038/358086a0</a></li>
+<li id="r24">Simons KT, Kooperberg C, Huang E, Baker D. Assembly of protein tertiary structures from fragments with similar local sequences using simulated annealing and Bayesian scoring functions. <em>J Mol Biol</em>. 1997;268(1):209–225. <a href="https://doi.org/10.1006/jmbi.1997.0959">doi:10.1006/jmbi.1997.0959</a></li>
+<li id="r25">Marks DS, Colwell LJ, Sheridan R, et al. Protein 3D structure computed from evolutionary sequence variation. <em>PLoS ONE</em>. 2011;6(12):e28766. <a href="https://doi.org/10.1371/journal.pone.0028766">doi:10.1371/journal.pone.0028766</a></li>
+<li id="r26">Kabsch W. A solution for the best rotation to relate two sets of vectors. <em>Acta Crystallogr A</em>. 1976;32(5):922–923. <a href="https://doi.org/10.1107/S0567739476001873">doi:10.1107/S0567739476001873</a></li>
+<li id="r27">Zemla A. LGA: a method for finding 3D similarities in protein structures. <em>Nucleic Acids Res</em>. 2003;31(13):3370–3374. <a href="https://doi.org/10.1093/nar/gkg571">doi:10.1093/nar/gkg571</a></li>
+<li id="r28">Zhang Y, Skolnick J. Scoring function for automated assessment of protein structure template quality. <em>Proteins</em>. 2004;57(4):702–710. <a href="https://doi.org/10.1002/prot.20264">doi:10.1002/prot.20264</a></li>
+<li id="r29">Xu J, Zhang Y. How significant is a protein structure similarity with TM-score = 0.5? <em>Bioinformatics</em>. 2010;26(7):889–895. <a href="https://doi.org/10.1093/bioinformatics/btq066">doi:10.1093/bioinformatics/btq066</a></li>
+<li id="r30">Mariani V, Biasini M, Barbato A, Schwede T. lDDT: a local superposition-free score for comparing protein structures and models using distance difference tests. <em>Bioinformatics</em>. 2013;29(21):2722–2728. <a href="https://doi.org/10.1093/bioinformatics/btt473">doi:10.1093/bioinformatics/btt473</a></li>
+<li id="r31">Laskowski RA, MacArthur MW, Moss DS, Thornton JM. PROCHECK: a program to check the stereochemical quality of protein structures. <em>J Appl Crystallogr</em>. 1993;26(2):283–291. <a href="https://doi.org/10.1107/S0021889892009944">doi:10.1107/S0021889892009944</a></li>
+<li id="r32">Lüthy R, Bowie JU, Eisenberg D. Assessment of protein models with three-dimensional profiles. <em>Nature</em>. 1992;356(6364):83–85. <a href="https://doi.org/10.1038/356083a0">doi:10.1038/356083a0</a></li>
+<li id="r33">Wiederstein M, Sippl MJ. ProSA-web: interactive web service for the recognition of errors in three-dimensional structures of proteins. <em>Nucleic Acids Res</em>. 2007;35(suppl 2):W407–W410. <a href="https://doi.org/10.1093/nar/gkm290">doi:10.1093/nar/gkm290</a></li>
+<li id="r34">Shen MY, Sali A. Statistical potential for assessment and prediction of protein structures. <em>Protein Sci</em>. 2006;15(11):2507–2524. <a href="https://doi.org/10.1110/ps.062416606">doi:10.1110/ps.062416606</a></li>
+<li id="r35">Studer G, Rempfer C, Waterhouse AM, Gumienny R, Haas J, Schwede T. QMEANDisCo — distance constraints applied on model quality estimation. <em>Bioinformatics</em>. 2020;36(6):1765–1771. <a href="https://doi.org/10.1093/bioinformatics/btz828">doi:10.1093/bioinformatics/btz828</a></li>
+<li id="r36">Moult J, Pedersen JT, Judson R, Fidelis K. A large-scale experiment to assess protein structure prediction methods. <em>Proteins</em>. 1995;23(3):ii–iv. <a href="https://doi.org/10.1002/prot.340230303">doi:10.1002/prot.340230303</a></li>
+<li id="r37">Senior AW, Evans R, Jumper J, et al. Improved protein structure prediction using potentials from deep learning. <em>Nature</em>. 2020;577(7792):706–710. <a href="https://doi.org/10.1038/s41586-019-1923-7">doi:10.1038/s41586-019-1923-7</a></li>
+<li id="r38">Jumper J, Evans R, Pritzel A, et al. Highly accurate protein structure prediction with AlphaFold. <em>Nature</em>. 2021;596(7873):583–589. <a href="https://doi.org/10.1038/s41586-021-03819-2">doi:10.1038/s41586-021-03819-2</a></li>
+<li id="r39">Kryshtafovych A, Schwede T, Topf M, Fidelis K, Moult J. Critical assessment of methods of protein structure prediction (CASP) — Round XIV. <em>Proteins</em>. 2021;89(12):1607–1617. <a href="https://doi.org/10.1002/prot.26237">doi:10.1002/prot.26237</a></li>
+<li id="r40">Nelson DL, Cox MM. <em>Lehninger Principles of Biochemistry</em>. 8th ed. W. H. Freeman / Macmillan Learning; 2021. Chapters 3–4 (amino acids, peptides; the three-dimensional structure of proteins).</li>
+<li id="r41">Eisenberg D, Weiss RM, Terwilliger TC. The helical hydrophobic moment: a measure of the amphiphilicity of a helix. <em>Nature</em>. 1982;299(5881):371–374. <a href="https://doi.org/10.1038/299371a0">doi:10.1038/299371a0</a></li>
+<li id="r42">Pace CN, Scholtz JM. A helix propensity scale based on experimental studies of peptides and proteins. <em>Biophys J</em>. 1998;75(1):422–427. <a href="https://doi.org/10.1016/S0006-3495(98)77529-0">doi:10.1016/S0006-3495(98)77529-0</a></li>
+<li id="r43">Varadi M, Anyango S, Deshpande M, et al. AlphaFold Protein Structure Database: massively expanding the structural coverage of protein-sequence space with high-accuracy models. <em>Nucleic Acids Res</em>. 2022;50(D1):D439–D444. <a href="https://doi.org/10.1093/nar/gkab1061">doi:10.1093/nar/gkab1061</a></li>
+<li id="r44">Varadi M, Bertoni D, Magana P, et al. AlphaFold Protein Structure Database in 2024: providing structure coverage for over 214 million protein sequences. <em>Nucleic Acids Res</em>. 2024;52(D1):D368–D375. <a href="https://doi.org/10.1093/nar/gkad1011">doi:10.1093/nar/gkad1011</a></li>
+<li id="r45">Mirdita M, Schütze K, Moriwaki Y, Heo L, Ovchinnikov S, Steinegger M. ColabFold: making protein folding accessible to all. <em>Nat Methods</em>. 2022;19(6):679–682. <a href="https://doi.org/10.1038/s41592-022-01488-1">doi:10.1038/s41592-022-01488-1</a></li>
+<li id="r46">Baek M, DiMaio F, Anishchenko I, et al. Accurate prediction of protein structures and interactions using a three-track neural network. <em>Science</em>. 2021;373(6557):871–876. <a href="https://doi.org/10.1126/science.abj8754">doi:10.1126/science.abj8754</a></li>
+<li id="r47">Lin Z, Akin H, Rao R, et al. Evolutionary-scale prediction of atomic-level protein structure with a language model. <em>Science</em>. 2023;379(6637):1123–1130. <a href="https://doi.org/10.1126/science.ade2574">doi:10.1126/science.ade2574</a></li>
+<li id="r48">Abramson J, Adler J, Dunger J, et al. Accurate structure prediction of biomolecular interactions with AlphaFold 3. <em>Nature</em>. 2024;630(8016):493–500. <a href="https://doi.org/10.1038/s41586-024-07487-w">doi:10.1038/s41586-024-07487-w</a></li>
+<li id="r49">Lane TJ. Protein structure prediction has reached the single-structure frontier. <em>Nat Methods</em>. 2023;20(2):170–173. <a href="https://doi.org/10.1038/s41592-022-01760-4">doi:10.1038/s41592-022-01760-4</a></li>
+<li id="r50">Terwilliger TC, Liebschner D, Croll TI, et al. AlphaFold predictions are valuable hypotheses and accelerate but do not replace experimental structure determination. <em>Nat Methods</em>. 2024;21(1):110–116. <a href="https://doi.org/10.1038/s41592-023-02087-4">doi:10.1038/s41592-023-02087-4</a></li>
+<li id="r51">Hamelryck T, Manderick B. PDB file parser and structure class implemented in Python. <em>Bioinformatics</em>. 2003;19(17):2308–2310. <a href="https://doi.org/10.1093/bioinformatics/btg299">doi:10.1093/bioinformatics/btg299</a></li>
+</ol>
+<h3>Textbooks</h3>
+<ol class="refs" start="52">
+<li>Branden C, Tooze J. <em>Introduction to Protein Structure</em>. 2nd ed. Garland Science; 1999. — Still the clearest account of secondary structure, motifs and folds; chapters 1–5 cover Sections 2–3 of this document.</li>
+<li>Xu Y, Xu D, Liang J, eds. <em>Computational Methods for Protein Structure Prediction and Modeling. Volume 1: Basic Characterization</em>. Springer; 2007. — Recommended in the lecture; chapters on secondary structure, fold recognition and model assessment.</li>
+<li>Tsigelny IF, ed. <em>Protein Structure Prediction: Bioinformatic Approach</em>. International University Line; 2002. — Recommended in the lecture; pre-deep-learning methods in depth.</li>
+<li>Petsko GA, Ringe D. <em>Protein Structure and Function</em>. New Science Press / Oxford University Press; 2004. — Concise, structure–function oriented.</li>
+<li>Lesk AM. <em>Introduction to Protein Science: Architecture, Function, and Genomics</em>. 3rd ed. Oxford University Press; 2016.</li>
+<li>Nelson DL, Cox MM. <em>Lehninger Principles of Biochemistry</em>. 8th ed. 2021. — Chapters 3 and 4 for amino-acid chemistry and the structural hierarchy.</li>
+</ol>
+<h3>Online resources</h3>
+<ul>
+<li>PDB-101 (RCSB educational portal) — <a href="https://pdb101.rcsb.org">https://pdb101.rcsb.org</a>: "Molecule of the Month", guides to reading PDB entries and to structure validation.</li>
+<li>wwPDB validation documentation — <a href="https://www.wwpdb.org/validation/validation-reports">https://www.wwpdb.org/validation/validation-reports</a></li>
+<li>EMBL-EBI Training: "AlphaFold: a practical guide" — <a href="https://www.ebi.ac.uk/training/online/courses/alphafold/">https://www.ebi.ac.uk/training/online/courses/alphafold/</a></li>
+<li>CASP (Protein Structure Prediction Center) — <a href="https://predictioncenter.org">https://predictioncenter.org</a></li>
+<li>Proteopedia — <a href="https://proteopedia.org">https://proteopedia.org</a>: interactive 3D pages on secondary structure, the Ramachandran plot and individual proteins.</li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Study material for BGM324 Bioinformatics, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Figures 1–7 were generated for this document (Python/matplotlib; structure parsing, dihedrals and superposition with Biopython 1.88; PDB statistics from the RCSB Search API) and may be reused with attribution. Worked examples follow the lecture slides <em>02_PrediccionDeEstructurasProteicas_EN</em>. Last revised 17 October 2026.
+</footer>
+
+</body>
+</html>
