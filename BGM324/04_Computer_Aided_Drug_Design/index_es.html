@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unidad 4 · Diseño de fármacos asistido por computador — BGM324 Bioinformática, Universidad Católica del Maule</title>
+<meta name="description" content="Material de estudio sobre diseño de fármacos asistido por computador: el proceso de descubrimiento, la druggability, los descriptores moleculares, las reglas de Lipinski y Veber, ADMET, QSAR y su validación, la similitud molecular y los acantilados de actividad, los farmacóforos, los bioisósteros, el salto de andamiaje (scaffold hopping) y las cascadas de cribado virtual. BGM324 Bioinformática, Bioingeniería Médica, Universidad Católica del Maule.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+button{font-family:system-ui,sans-serif;font-size:.84rem;padding:.3rem .7rem;border:1px solid var(--line);border-radius:4px;background:var(--panel);cursor:pointer}button:hover{background:#e6ecf3}
+</style>
+</head>
+<body>
+<!-- course-backbar -->
+<nav class="course-backbar" aria-label="Curso" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <span><a href="./" style="color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:6px;padding:2px 10px;margin-right:14px">English</a><a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformática · Bioingeniería Médica · Universidad Católica del Maule</div>
+<h1>Unidad 4 — Diseño de fármacos asistido por computador: descriptores, QSAR, farmacóforos y cribado virtual</h1>
+<div class="meta">Material de estudio que acompaña la clase 04 (<em>Diseño/descubrimiento de fármacos asistido por computador</em>) · Preparado por Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · Cuarta unidad del módulo: análisis de secuencias → predicción de estructura de proteínas → docking molecular → <strong>diseño de fármacos asistido por computador</strong> → dinámica molecular</div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contenido</h2>
+<ol>
+<li><a href="#how">Cómo usar este material</a></li>
+<li><a href="#s1">1. El proceso (pipeline) de descubrimiento de fármacos</a></li>
+<li><a href="#s2">2. Identificación del blanco y druggability</a></li>
+<li><a href="#s3">3. Dos estrategias complementarias</a></li>
+<li><a href="#s4">4. Descriptores moleculares</a></li>
+<li><a href="#s5">5. Reglas de semejanza a fármaco y ADMET</a>
+  <ol><li><a href="#s5-1">Las reglas</a></li><li><a href="#s5-2">Una serie real frente a las reglas</a></li><li><a href="#s5-3">ADMET</a></li></ol></li>
+<li><a href="#s6">6. QSAR</a>
+  <ol><li><a href="#s6-1">La idea de Hansch</a></li><li><a href="#s6-2">Un QSAR desarrollado</a></li><li><a href="#s6-3">Validación</a></li><li><a href="#s6-4">QSAR 3D</a></li></ol></li>
+<li><a href="#s7">7. Similitud, acantilados y andamiajes</a></li>
+<li><a href="#s8">8. Farmacóforos</a></li>
+<li><a href="#s9">9. Diseño de nuevas moléculas</a>
+  <ol><li><a href="#s9-1">Enumeración</a></li><li><a href="#s9-2">Bioisósteros</a></li><li><a href="#s9-3">Salto de andamiaje</a></li><li><a href="#s9-4">Diseño generativo</a></li></ol></li>
+<li><a href="#s10">10. Un flujo de trabajo integrado</a></li>
+<li><a href="#s11">11. Bases de datos y software</a></li>
+<li><a href="#s12">12. Trabajo práctico</a></li>
+<li><a href="#s13">13. Autoevaluación</a></li>
+<li><a href="#gloss">Glosario</a></li>
+<li><a href="#refs">Referencias y lecturas complementarias</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">Este documento amplía la cuarta clase del módulo. Las Unidades 2 y 3 produjeron una estructura y una forma de ubicar un ligando en ella; esta unidad plantea la pregunta que motiva todo el módulo —<em>¿qué molécula deberíamos sintetizar?</em>— y presenta las dos familias de métodos que la responden: el diseño basado en estructura, que usa la geometría del blanco, y el diseño basado en ligandos, que usa solo lo que se sabe de moléculas que ya funcionan. Ambos se apoyan en descripciones numéricas de las moléculas, por lo que la unidad comienza con los descriptores y termina con el diseño de nuevos compuestos. Para mantener la discusión concreta, las Secciones 5–7 analizan un conjunto de datos real descargado para este documento: 2,335 inhibidores curados de la proteasa del VIH-1 con K<sub>i</sub> medida, obtenidos de ChEMBL —el mismo blanco sometido a docking en la Unidad 3, ahora abordado desde el lado del ligando.</p>
+<div class="box key"><h4>Objetivos de aprendizaje</h4>
+<ul class="objectives">
+<li>Describir las etapas del descubrimiento de fármacos, la tasa de abandono (attrition) entre ellas y el punto en que interviene cada método computacional.</li>
+<li>Definir la druggability (la posibilidad de que un blanco sea modulado por un fármaco) y enumerar las características estructurales que hacen que un blanco sea abordable con moléculas pequeñas.</li>
+<li>Distinguir el diseño basado en ligandos del diseño basado en estructura e indicar qué requiere cada uno como entrada.</li>
+<li>Clasificar los descriptores moleculares según su dimensionalidad (0D–4D) y dar ejemplos de cada clase.</li>
+<li>Aplicar y criticar las reglas de Lipinski, Veber y Jorgensen, e interpretar el QED y la eficiencia de ligando.</li>
+<li>Explicar la lógica del QSAR, construir y validar un modelo, y reconocer las tres fallas habituales: ausencia de validación externa, correlación por azar y un dominio de aplicabilidad no declarado.</li>
+<li>Calcular la similitud molecular, interpretar un coeficiente de Tanimoto y explicar qué es un acantilado de actividad (activity cliff).</li>
+<li>Definir un farmacóforo y utilizarlo para cribado virtual.</li>
+<li>Describir la enumeración combinatoria, el reemplazo bioisostérico y el salto de andamiaje (scaffold hopping) como estrategias de diseño.</li>
+<li>Integrar estos métodos en una cascada de cribado defendible e indicar la decisión que se toma en cada filtro.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Sección 1</span>El proceso (pipeline) de descubrimiento de fármacos</h2>
+<p>Llevar un fármaco al mercado toma del orden de 10–15 años y, según las estimaciones más citadas, más de mil millones de dólares estadounidenses por compuesto aprobado una vez que se capitaliza el costo de los fracasos.<sup class="c"><a href="#r1">[1]</a></sup> La razón es la tasa de abandono: de las moléculas que ingresan al desarrollo clínico, aproximadamente nueve de cada diez nunca llegan a ser aprobadas, y las dos causas dominantes de fracaso son la eficacia insuficiente y la toxicidad inaceptable.<sup class="c"><a href="#r2">[2]</a></sup> Los métodos computacionales no pueden eliminar ese riesgo, pero sí pueden adelantar las decisiones a etapas en que son baratas.</p>
+<figure>
+<img src="figures/fig01_pipeline.png" alt="Embudo de cinco etapas desde la identificación del blanco hasta los ensayos clínicos, con el número de compuestos y los métodos computacionales usados en cada etapa">
+<figcaption><b>Figura 1. El embudo de descubrimiento y el punto en que interviene la computación.</b> El número de compuestos corresponde a órdenes de magnitud típicos de una campaña basada en estructura. La propiedad decisiva del embudo es que el costo por compuesto aumenta en varios órdenes de magnitud de izquierda a derecha, mientras el número de compuestos disminuye: un filtro aplicado en la etapa virtual no cuesta prácticamente nada; el mismo filtro aplicado después de la síntesis cuesta un mes de trabajo de un químico, y después de un ensayo clínico cuesta un programa completo.</figcaption>
+</figure>
+<p>Históricamente, el campo se desarrolló en tres oleadas, como muestra la línea de tiempo de la clase: las décadas de 1960–70 establecieron las herramientas conceptuales (el QSAR de Hansch en 1964, las primeras estructuras cristalinas, la fundación del PDB en 1971); las décadas de 1980–90 las industrializaron (software comercial de modelado, programas de docking, química combinatoria y cribado de alto rendimiento); y desde la década de 2010 el recurso limitante se ha desplazado del cómputo a los datos, con bibliotecas virtuales ultragrandes, bases de datos públicas de bioactividad y aprendizaje automático. Los primeros fármacos atribuidos explícitamente al diseño basado en estructura —la dorzolamida para el glaucoma, los inhibidores de la proteasa del VIH de la Unidad 3, el inhibidor de neuraminidasa zanamivir— datan de esta segunda oleada y siguen siendo los casos de estudio de referencia.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Sección 2</span>Identificación del blanco y druggability</h2>
+<p>Un proyecto comienza con la hipótesis de que modular una macromolécula determinada cambiará el curso de una enfermedad. Validar esa hipótesis es tarea de la biología, no de la computación —inactivación (knock-out) y silenciamiento (knock-down) génicos, genética de pacientes, análisis de vías, sondas químicas—, pero la computación aporta dos cosas: identifica blancos candidatos a partir de comparaciones genómicas y transcriptómicas (incluidos, en el caso de patógenos, blancos que son esenciales para el microorganismo y que están ausentes o son divergentes en el hospedero), y evalúa si un blanco validado es <strong>druggable</strong>, es decir, susceptible de ser modulado por un fármaco.</p>
+<p>La druggability es la probabilidad de que un blanco pueda ser modulado por una molécula pequeña con las propiedades de un fármaco oral. La clase enumera las características que la determinan, y las estructurales pueden evaluarse computacionalmente:</p>
+<ul>
+<li><strong>Un bolsillo adecuado.</strong> Una cavidad enterrada y cerrada de aproximadamente 300–1,000 Å³, con un revestimiento mixto hidrofóbico/polar. Los programas de detección de cavidades (fpocket, SiteMap, DoGSiteScorer) informan el volumen, el grado de cierre, la hidrofobicidad y un puntaje de druggability entrenado con sitios druggables conocidos.<sup class="c"><a href="#r3">[3]</a>,<a href="#r4">[4]</a></sup> Las interfaces proteína–proteína planas obtienen puntajes bajos, razón por la cual durante mucho tiempo se consideraron no druggables, un juicio que los péptidos estabilizados, los pegamentos moleculares (molecular glues) y los ligandos covalentes han matizado desde entonces.</li>
+<li><strong>Accesibilidad conformacional.</strong> El bolsillo debe ser alcanzable y capaz de adaptarse: los sitios ortostéricos, alostéricos y crípticos plantean problemas distintos (Unidad 3, Sección 1). Los bolsillos crípticos, invisibles en la estructura apo, se detectan mediante dinámica molecular o simulaciones con solventes mixtos (Unidad 5).</li>
+<li><strong>Potencial de selectividad.</strong> El sitio debe diferir lo suficiente del sitio equivalente en los parálogos y en los ortólogos del hospedero como para permitir un ligando selectivo, lo que se evalúa proyectando el alineamiento múltiple de secuencias de la familia sobre la estructura (Unidades 1 y 2).</li>
+<li><strong>Expresión, solubilidad y posibilidad de ensayo</strong>, que determinan si alguna predicción puede ponerse a prueba.</li>
+</ul>
+<p>Un referente empírico útil: de los aproximadamente 20,000 genes humanos codificantes de proteínas, solo del orden de 600–900 son blancos de fármacos aprobados, y una gran mayoría de ellos pertenece a cuatro familias: GPCR, canales iónicos, receptores nucleares y enzimas (especialmente quinasas y proteasas).<sup class="c"><a href="#r5">[5]</a></sup> La druggability es, por lo tanto, la excepción más que la regla, y establecerla tempranamente es la forma más barata de evitar un fracaso prolongado.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Sección 3</span>Dos estrategias complementarias</h2>
+<table class="data">
+<thead><tr><th></th><th>Diseño basado en estructura (SBDD)</th><th>Diseño basado en ligandos (LBDD)</th></tr></thead>
+<tbody>
+<tr><td>Requiere</td><td>Una estructura 3D del blanco, experimental o modelada (Unidad 2)</td><td>Un conjunto de moléculas con actividad medida contra el blanco; no se necesita estructura</td></tr>
+<tr><td>Métodos centrales</td><td>Docking molecular y puntuación (Unidad 3), farmacóforos basados en estructura, diseño de novo en el sitio, MM/GBSA y cálculos de energía libre (Unidad 5)</td><td>QSAR, búsqueda por similitud, modelos farmacofóricos derivados de ligandos, comparación de forma, clasificadores de aprendizaje automático</td></tr>
+<tr><td>Entrega</td><td>Una hipótesis de modo de unión —qué residuo toca cada grupo— y, por lo tanto, una justificación dirigida para el diseño</td><td>Una predicción de actividad y una indicación de qué características importan, sin decir dónde se unen</td></tr>
+<tr><td>Falla cuando</td><td>No hay estructura, el estado conformacional es incorrecto, el sitio es flexible o mediado por solvente, la función de puntuación es inadecuada</td><td>Hay muy pocos activos, todos los activos son de un mismo quimiotipo (sin diversidad), hay acantilados de actividad, se extrapola fuera del dominio de aplicabilidad</td></tr>
+<tr><td>Uso típico</td><td>Nuevos quimiotipos contra un blanco caracterizado estructuralmente; explicar la SAR; diseñar selectividad</td><td>Priorizar análogos de una serie conocida; cribado cuando el blanco es una proteína de membrana o no tiene estructura; predicción ADMET</td></tr>
+</tbody></table>
+<p>Ambos enfoques son complementarios más que competidores, y la mayoría de las campañas reales usa los dos: un modelo basado en ligandos para filtrar una biblioteca enorme hasta un conjunto manejable, docking para proponer modos de unión para los compuestos sobrevivientes, y la estructura para explicar y dirigir la siguiente ronda de síntesis. La última diapositiva de la clase (reproducida como la cascada de la Sección 10) es exactamente esta combinación.</p>
+<p>Un tercer modo merece mención porque la clase lo nombra: el <strong>docking inverso</strong> (reverse docking, o pesca de blancos, target fishing) acopla una molécula en muchos blancos en lugar de muchas moléculas en uno, con el fin de proponer un mecanismo para un hit fenotípico, anticipar efectos fuera de blanco (off-target) o reposicionar un fármaco aprobado. Su confiabilidad es menor, porque los puntajes calculados en sitios distintos no son comparables (Unidad 3, Sección 6.3), pero es un generador de hipótesis útil.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Sección 4</span>Descriptores moleculares</h2>
+<p>Todo método basado en ligandos comienza por convertir una molécula en números. Un <strong>descriptor molecular</strong> es "el resultado final de un procedimiento lógico y matemático que transforma la información química codificada en una representación simbólica de una molécula en un número útil" (Todeschini y Consonni).<sup class="c"><a href="#r6">[6]</a></sup> Existen miles; convencionalmente se organizan según la dimensionalidad de la representación que requieren.</p>
+<table class="data">
+<thead><tr><th>Clase</th><th>Entrada necesaria</th><th>Ejemplos</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td><strong>0D</strong></td><td>Fórmula molecular</td><td>Peso molecular, número de átomos, número de enlaces, número de átomos pesados</td><td>Filtros, normalización (eficiencia de ligando)</td></tr>
+<tr><td><strong>1D</strong></td><td>Lista de subestructuras</td><td>Conteos de grupos funcionales, anillos, enlaces rotables, donores y aceptores de enlaces de hidrógeno; claves estructurales (MACCS)</td><td>Reglas de semejanza a fármaco, filtrado grueso</td></tr>
+<tr><td><strong>2D</strong></td><td>Grafo molecular (conectividad)</td><td>Índices topológicos (Wiener, Randić, χ de Kier–Hall), conteos de caminos y recorridos, área superficial polar topológica (TPSA), cLogP, fracción de carbonos sp³, huellas moleculares circulares (Morgan/ECFP)</td><td>QSAR, búsqueda por similitud, aprendizaje automático: la clase de uso más intensivo</td></tr>
+<tr><td><strong>3D</strong></td><td>Un confórmero</td><td>Volumen y superficie moleculares, área superficial accesible al solvente, radio de giro, momento dipolar, momentos principales de inercia, huellas farmacofóricas 3D, campos de interacción CoMFA/CoMSIA</td><td>QSAR 3D, cribado por forma, farmacóforos</td></tr>
+<tr><td><strong>4D y superiores</strong></td><td>Un conjunto (ensamble) conformacional, o datos de interacción ligando–receptor</td><td>QSAR 4D (campos promediados sobre el ensamble), huellas de interacción obtenidas de docking o MD (Unidad 5)</td><td>Ligandos flexibles, series con ajuste inducido</td></tr>
+</tbody></table>
+<p>Dos aspectos prácticos. Primero, <strong>los descriptores 2D suelen ser suficientes</strong>: como no requieren un confórmero, son rápidos, deterministas y reproducibles, y en una evaluación comparativa tras otra un modelo construido con huellas circulares es tan bueno o mejor que uno construido con campos 3D. Segundo, los descriptores deben ser <em>interpretables o validados</em>, no ambas cosas: un modelo basado en cLogP y TPSA le dice a un químico qué cambiar; un modelo basado en 2,048 bits de huella molecular normalmente predice mejor, pero dice poco. El QSAR desarrollado en la Sección 6 cuantifica este compromiso con datos reales.</p>
+<p>Tres descriptores reaparecen a lo largo de la unidad y merecen una definición.</p>
+<ul>
+<li><strong>logP</strong>, el logaritmo del coeficiente de partición octanol/agua, mide la lipofilicidad: logP = log([fármaco]<sub>octanol</sub>/[fármaco]<sub>agua</sub>). Los valores positivos indican que el compuesto prefiere la fase orgánica. Gobierna la permeabilidad de membrana, la unión a proteínas plasmáticas, el aclaramiento metabólico y la promiscuidad, y es el descriptor fisicoquímico individual más informativo en el diseño de fármacos. Las estimaciones calculadas se escriben <strong>cLogP</strong>; a pH fisiológico, la versión corregida por ionización, <strong>logD<sub>7.4</sub></strong>, es más pertinente para un compuesto ionizable.</li>
+<li><strong>TPSA</strong>, el área superficial polar topológica, es la superficie aportada por los átomos de nitrógeno y oxígeno (y sus hidrógenos), calculada a partir del grafo 2D sumando contribuciones tabuladas de fragmentos. Se correlaciona con la permeabilidad pasiva: los compuestos con TPSA superior a ~140 Å² se absorben mal por vía oral, y por encima de ~90 Å² rara vez atraviesan la barrera hematoencefálica.</li>
+<li><strong>Las huellas Morgan/ECFP</strong> codifican el entorno circular de cada átomo hasta un radio <em>r</em> mediante una función hash, y activan el bit correspondiente en un vector de longitud fija. ECFP4 corresponde a <em>r</em> = 2. Son la entrada estándar para la búsqueda por similitud y para el QSAR basado en aprendizaje automático.</li>
+</ul>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Sección 5</span>Reglas de semejanza a fármaco y ADMET</h2>
+<h3 id="s5-1">5.1 Las reglas</h3>
+<p>Históricamente, alrededor del 40 % de los candidatos fracasaba por razones farmacocinéticas; la respuesta fue un conjunto de filtros empíricos que se aplican antes de sintetizar cualquier compuesto. La clase enumera los tres más utilizados.</p>
+<table class="data">
+<thead><tr><th>Regla</th><th>Año</th><th>Criterios</th><th>Qué predice</th></tr></thead>
+<tbody>
+<tr><td><strong>Regla de los Cinco de Lipinski</strong><sup class="c"><a href="#r7">[7]</a></sup></td><td>1997/2001</td><td>MW ≤ 500 · logP ≤ 5 · HBD ≤ 5 · HBA ≤ 10 (violar dos o más predice un problema)</td><td>Absorción o permeación deficiente tras la administración <em>oral</em>. Derivada de compuestos que habían llegado a fase II; excluye explícitamente a sustratos de transportadores activos, antibióticos, antifúngicos, vitaminas y glucósidos cardíacos</td></tr>
+<tr><td><strong>Reglas de Veber</strong><sup class="c"><a href="#r8">[8]</a></sup></td><td>2002</td><td>Enlaces rotables ≤ 10 · TPSA ≤ 140 Å² (o número total de enlaces de hidrógeno ≤ 12)</td><td>Biodisponibilidad oral en ratas; incorpora la flexibilidad molecular, que la Regla de los Cinco omite</td></tr>
+<tr><td><strong>Regla de los Tres de Jorgensen</strong><sup class="c"><a href="#r9">[9]</a></sup></td><td>2002/2011</td><td>logS &gt; −5.7 · permeabilidad aparente en Caco-2 &gt; 22 nm s⁻¹ · menos de 7 metabolitos primarios</td><td>Solubilidad, permeabilidad celular y carga metabólica; calculadas con QikProp</td></tr>
+<tr><td><strong>Regla de los Tres de Congreve</strong></td><td>2003</td><td>MW ≤ 300 · cLogP ≤ 3 · HBD ≤ 3 · HBA ≤ 3 · enlaces rotables ≤ 3</td><td>Idoneidad como punto de partida de tipo <em>fragmento</em>, no como fármaco</td></tr>
+<tr><td><strong>QED</strong><sup class="c"><a href="#r10">[10]</a></sup></td><td>2012</td><td>Media geométrica ponderada de funciones de deseabilidad sobre ocho propiedades; 0–1</td><td>"Semejanza a fármaco" cuantitativa y continua en lugar de un conteo de aprobado/reprobado; los fármacos orales aprobados se centran alrededor de 0.5–0.7</td></tr>
+</tbody></table>
+<div class="box warn"><h4>Cómo usar una regla, y cómo no usarla</h4>
+<p>Se trata de observaciones estadísticas sobre <em>fármacos orales históricos</em>, no de leyes. El propio Lipinski enfatizó que la Regla de los Cinco predice absorción, no actividad, y que no se aplica a compuestos captados por transportadores ni administrados por otras vías. Usadas como filtro sobre una biblioteca de cribado, son sensatas; usadas para descartar un compuesto activo, destruyen proyectos. La práctica moderna consiste en tratarlas como un mapa de dónde aumenta el riesgo —la química "más allá de la regla de los cinco" (macrociclos, peptidomiméticos, PROTAC) es un campo activo y exitoso<sup class="c"><a href="#r11">[11]</a></sup>— y en complementarlas con métricas de optimización basadas en propiedades, como la eficiencia de ligando (Unidad 3) y la eficiencia lipofílica de ligando, LLE = pIC<sub>50</sub> − cLogP.<sup class="c"><a href="#r12">[12]</a></sup></p></div>
+
+<h3 id="s5-2">5.2 Una serie real frente a las reglas</h3>
+<p>Para ver qué hacen las reglas con una serie genuina de inhibidores, se descargaron para este documento 3,680 mediciones de K<sub>i</sub> contra la proteasa del VIH-1 (blanco de ChEMBL <code>CHEMBL243</code>, la misma enzima sometida a docking en la Unidad 3), que se agregaron en 2,519 compuestos únicos tomando la mediana de pK<sub>i</sub> por compuesto, y se curaron eliminando mezclas y potencias fuera del intervalo físicamente significativo de pK<sub>i</sub> 3–12, con lo que quedaron <strong>2,335 compuestos</strong>. Los descriptores se calcularon con RDKit. La etapa de curación no es cosmética: la descarga original contenía valores de K<sub>i</sub> informados que correspondían a pK<sub>i</sub> tan bajos como −3.7 y tan altos como 14.2, lo que constituye errores de digitación o de unidades, y un modelo entrenado con ellos estaría ajustando ruido.</p>
+<figure>
+<img src="figures/fig02_ro5.png" alt="Seis histogramas de MW, cLogP, HBD, HBA, TPSA y enlaces rotables para 2335 inhibidores de la proteasa del VIH, con los umbrales de las reglas marcados">
+<figcaption><b>Figura 2. Propiedades de la Regla de los Cinco y de Veber de 2,335 inhibidores curados de la proteasa del VIH-1 obtenidos de ChEMBL (calculadas para este documento).</b> Las líneas naranjas son los umbrales de las reglas, y las líneas azules discontinuas, las medianas de la serie. El peso molecular (mediana 602 g mol⁻¹) supera el límite de 500 en el 86 % del conjunto; los enlaces rotables (mediana 12) superan el límite de 10 de Veber en el 63 %; la TPSA supera 140 Å² en el 38 % y el cLogP supera 5 en el 37 %. Solo el número de aceptores de enlaces de hidrógeno está holgadamente dentro del intervalo. En total, el 49 % de la serie viola dos o más criterios de la Regla de los Cinco y solo el 32 % cumple ambos criterios de Veber.</figcaption>
+</figure>
+<p>En otras palabras, los inhibidores peptidomiméticos de proteasa son una clase química que la Regla de los Cinco rechaza casi en bloque. Y, sin embargo, cinco de ellos son fármacos orales aprobados, cuyas propiedades calculadas se presentan a continuación.</p>
+<table class="data"><thead><tr><th>Compuesto</th><th>MW</th><th>cLogP</th><th>HBD</th><th>HBA</th><th>TPSA (Å²)</th><th>Enl. rot.</th><th>QED</th><th>Violaciones Ro5</th><th>Veber</th></tr></thead><tbody><tr style="background:#fdf2e9"><td>amprenavir</td><td>505.6</td><td>2.4</td><td>3</td><td>7</td><td>131.2</td><td>11</td><td>0.4</td><td>1</td><td>no cumple</td></tr><tr style="background:#fdf2e9"><td>darunavir</td><td>547.7</td><td>2.38</td><td>3</td><td>8</td><td>140.4</td><td>11</td><td>0.364</td><td>1</td><td>no cumple</td></tr><tr style="background:#fdf2e9"><td>indinavir</td><td>613.8</td><td>2.87</td><td>4</td><td>7</td><td>118.0</td><td>11</td><td>0.263</td><td>1</td><td>no cumple</td></tr><tr style="background:#fdf2e9"><td>saquinavir</td><td>670.9</td><td>3.09</td><td>5</td><td>7</td><td>166.7</td><td>12</td><td>0.198</td><td>1</td><td>no cumple</td></tr><tr style="background:#fdf2e9"><td>ritonavir</td><td>721.0</td><td>5.91</td><td>4</td><td>9</td><td>145.8</td><td>17</td><td>0.106</td><td>2</td><td>no cumple</td></tr><tr><td>aspirina</td><td>180.2</td><td>1.31</td><td>1</td><td>3</td><td>63.6</td><td>2</td><td>0.55</td><td>0</td><td>cumple</td></tr><tr><td>cafeína</td><td>194.2</td><td>-1.03</td><td>0</td><td>3</td><td>61.8</td><td>0</td><td>0.538</td><td>0</td><td>cumple</td></tr><tr><td>ibuprofeno</td><td>206.3</td><td>3.07</td><td>1</td><td>1</td><td>37.3</td><td>4</td><td>0.822</td><td>0</td><td>cumple</td></tr></tbody></table>
+<figure>
+<img src="figures/fig06_property_space.png" alt="Gráfico de dispersión de cLogP frente al peso molecular para la serie de ChEMBL, con la región de la Regla de los Cinco sombreada y los fármacos aprobados y los fármacos de control marcados">
+<figcaption><b>Figura 3. Espacio de propiedades de la serie.</b> Cada punto azul es un compuesto de ChEMBL; el rectángulo sombreado es la región de la Regla de los Cinco en estas dos dimensiones (MW ≤ 500, cLogP ≤ 5). El noventa por ciento de la serie queda fuera de ella, al igual que cuatro de los cinco inhibidores de proteasa aprobados (el amprenavir se ubica en el límite). Los tres fármacos orales no relacionados que se muestran como escala —aspirina, cafeína, ibuprofeno— quedan holgadamente dentro. La lección no es que la regla esté equivocada, sino que describe el <em>centro</em> del espacio histórico de los fármacos orales: desarrollar un compuesto fuera de él es más difícil, requiere habitualmente trabajo de formulación y a veces es la única opción cuando el blanco exige un ligando grande.</figcaption>
+</figure>
+<p>Observen también la columna QED de la tabla: los inhibidores aprobados obtienen 0.11–0.40, muy por debajo del intervalo 0.5–0.7 típico de los fármacos orales, mientras que el ibuprofeno obtiene 0.82. Un puntaje de semejanza a fármaco es una probabilidad a priori, no un veredicto.</p>
+
+<h3 id="s5-3">5.3 ADMET</h3>
+<p><strong>ADMET</strong> —absorción, distribución, metabolismo, excreción y toxicidad— es lo que determina si un compuesto potente puede convertirse en un medicamento. Cada componente tiene sustitutos computacionales.</p>
+<table class="data">
+<thead><tr><th>Propiedad</th><th>Qué gobierna</th><th>Sustitutos in silico habituales</th></tr></thead>
+<tbody>
+<tr><td><strong>Absorción</strong></td><td>Fracción de una dosis oral que llega a la circulación portal</td><td>Modelos de permeabilidad en Caco-2 o MDCK, clasificadores de absorción intestinal humana, logS (solubilidad acuosa), TPSA, predicción de sustratos de glicoproteína P</td></tr>
+<tr><td><strong>Distribución</strong></td><td>Hacia dónde va el fármaco</td><td>Unión a proteínas plasmáticas, volumen de distribución, penetración de la barrera hematoencefálica (logBB, TPSA &lt; 90 Å² como criterio aproximado)</td></tr>
+<tr><td><strong>Metabolismo</strong></td><td>Con qué rapidez se destruye, y en qué se convierte</td><td>Clasificadores de sustratos/inhibidores de isoformas del citocromo P450 (1A2, 2C9, 2C19, 2D6, 3A4), predicción del sitio de metabolismo, modelos de estabilidad microsomal, número de metabolitos primarios (Jorgensen)</td></tr>
+<tr><td><strong>Excreción</strong></td><td>Aclaramiento y vida media</td><td>Modelos de regresión del aclaramiento total y renal</td></tr>
+<tr><td><strong>Toxicidad</strong></td><td>Si puede administrarse de forma segura</td><td>Bloqueo de hERG (prolongación cardíaca del QT), mutagenicidad de Ames, hepatotoxicidad, alertas estructurales y filtros PAINS para interferencia en el ensayo<sup class="c"><a href="#r13">[13]</a></sup></td></tr>
+</tbody></table>
+<p>Servidores gratuitos —SwissADME, ADMETlab, pkCSM, admetSAR— calculan la mayoría de estas propiedades en segundos a partir de una cadena SMILES.<sup class="c"><a href="#r14">[14]</a>,<a href="#r15">[15]</a></sup> Sus predicciones tienen calidad de clasificación, no de medición, y su dominio de aplicabilidad es la química de sus conjuntos de entrenamiento; conviene usarlas para ordenar y para alertar, nunca para concluir. Vale la pena interiorizar dos advertencias específicas: una alerta de hERG es razón para eliminar ese rasgo tempranamente mediante el diseño, porque la cardiotoxicidad hace fracasar los programas en etapas tardías; y una coincidencia con PAINS no demuestra que un compuesto sea un falso positivo, pero sí implica que el resultado del ensayo necesita confirmación ortogonal.</p>
+<div class="box key"><h4>Puntos clave — Sección 5</h4><ul>
+<li>Las reglas de semejanza a fármaco describen el centro del espacio histórico de los fármacos orales; predicen absorción, no actividad, y tienen excepciones explícitas.</li>
+<li>Medido en una serie real, el 86 % de los inhibidores de la proteasa del VIH-1 incumple el límite de MW y el 63 % el límite de enlaces rotables, y sin embargo cinco son fármacos aprobados.</li>
+<li>Usen las reglas para priorizar, las métricas (LE, LLE, QED) para optimizar, y nunca para vetar un compuesto activo confirmado experimentalmente.</li>
+<li>Los modelos ADMET son herramientas de ordenamiento con un dominio de aplicabilidad limitado; hERG y PAINS merecen atención temprana.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Sección 6</span>Relaciones cuantitativas estructura–actividad</h2>
+<h3 id="s6-1">6.1 La idea de Hansch</h3>
+<p>La clase plantea el problema exactamente como lo hizo Hansch: colocar diez sustituyentes distintos en cuatro posiciones de un anillo de benceno requeriría 10⁴ síntesis. En lugar de eso, se sintetiza un subconjunto pequeño e informativo, se mide la actividad y se ajusta una relación entre la actividad y propiedades moleculares que permita predecir el resto. El artículo de 1964 de Corwin Hansch y Toshio Fujita hizo esto con tres términos —un término hidrofóbico (la constante de sustituyente π, derivada del logP), un término electrónico (la σ de Hammett) y un término estérico (la E<sub>s</sub> de Taft o los parámetros de Verloop)— en una relación lineal de energía libre:<sup class="c"><a href="#r16">[16]</a></sup></p>
+<div class="eq">log(1/<em>C</em>) = <em>a</em>·π + <em>b</em>·π² + <em>c</em>·σ + <em>d</em>·E<sub>s</sub> + <em>e</em>
+<span class="where"><em>C</em> es la concentración que produce una respuesta biológica definida, de modo que log(1/<em>C</em>) es una potencia en escala logarítmica: la misma magnitud que pIC<sub>50</sub> o pK<sub>i</sub> = −log<sub>10</sub>(K<sub>i</sub> en molar). El término π² captura la frecuente dependencia parabólica de la lipofilicidad: la actividad aumenta con la hidrofobicidad hasta que el compuesto se vuelve demasiado insoluble o queda demasiado fuertemente unido a las membranas y a las proteínas plasmáticas, lo que da un logP óptimo.</span></div>
+<p>Tres rasgos de esta formulación siguen siendo la base de todo el campo. La variable dependiente es <em>logarítmica</em>, porque la energía libre es logarítmica en la concentración (Unidad 3, Sección 3), de modo que una unidad de pK<sub>i</sub> equivale a 1.36 kcal mol⁻¹. Las variables independientes son <em>contribuciones aditivas de los sustituyentes</em>, lo que permite predecir combinaciones que nunca se sintetizaron. Y la relación es <em>local</em> a una serie congenérica: las mismas constantes de sustituyente en un andamiaje distinto dan coeficientes distintos.</p>
+
+<h3 id="s6-2">6.2 Un QSAR desarrollado sobre el conjunto de datos de la proteasa del VIH-1</h3>
+<p>Usando los 2,335 compuestos curados de la Sección 5.2, se construyeron cuatro modelos para este documento: una regresión lineal múltiple de tipo Hansch sobre diez descriptores fisicoquímicos interpretables (MW, cLogP, HBD, HBA, TPSA, enlaces rotables, átomos pesados, anillos, anillos aromáticos y fracción de carbonos sp³) y un bosque aleatorio (random forest), cada uno sobre esos descriptores y sobre huellas de Morgan de 2,048 bits (<em>r</em> = 2). Cada modelo se evaluó en un conjunto de prueba reservado del 20 % bajo dos particiones distintas.</p>
+<table class="data"><thead><tr><th>Modelo</th><th>Descriptores</th><th>Partición</th><th>R² de prueba</th><th>RMSE de prueba (unidades log)</th></tr></thead><tbody><tr><td>Regresión lineal múltiple</td><td>10 fisicoquímicos</td><td>aleatoria (80/20)</td><td>0.107</td><td>1.58</td></tr><tr><td>Bosque aleatorio (500 árboles)</td><td>10 fisicoquímicos</td><td>aleatoria (80/20)</td><td>0.522</td><td>1.16</td></tr><tr><td>Bosque aleatorio (500 árboles)</td><td>Huella de Morgan, r = 2, 2048 bits</td><td>aleatoria (80/20)</td><td>0.688</td><td>0.93</td></tr><tr style="background:#fdf2e9"><td>Bosque aleatorio (500 árboles)</td><td>Huella de Morgan</td><td>por andamiaje (andamiajes de Murcko no vistos)</td><td>0.517</td><td>1.04</td></tr><tr style="background:#fdf2e9"><td>Regresión lineal múltiple</td><td>10 fisicoquímicos</td><td>por andamiaje</td><td>-0.141</td><td>1.60</td></tr><tr style="background:#f5f7fa"><td>Control de aleatorización de y (10 corridas)</td><td>Huella de Morgan</td><td>aleatoria, etiquetas permutadas</td><td>media -0.201 (máx -0.102)</td><td>—</td></tr></tbody></table>
+<figure>
+<img src="figures/fig03_qsar.png" alt="Tres gráficos de dispersión de valores observados frente a predichos: regresión lineal R2 0.11, bosque aleatorio con partición aleatoria R2 0.69, bosque aleatorio con partición por andamiaje R2 0.52">
+<figcaption><b>Figura 4. pK<sub>i</sub> observada frente a la predicha para tres de los modelos (calculada para este documento).</b> La diagonal corresponde a la predicción perfecta y las líneas punteadas marcan ±1 unidad logarítmica. Izquierda: un modelo lineal sobre diez descriptores fisicoquímicos explica casi nada (R² = 0.11): en esta serie, la potencia no es una función suave de las propiedades globales. Centro: un bosque aleatorio sobre huellas de Morgan alcanza R² = 0.69 con un RMSE de 0.93 unidades logarítmicas en una partición aleatoria. Derecha: el mismo modelo y el mismo número de compuestos de prueba, pero con la partición hecha por andamiaje de Murcko, de modo que todo andamiaje de prueba está ausente del conjunto de entrenamiento, da R² = 0.52 y RMSE 1.04. La partición aleatoria mide la interpolación dentro de quimiotipos conocidos; la partición por andamiaje mide lo que realmente necesita un usuario prospectivo, que es la extrapolación a química nueva.</figcaption>
+</figure>
+<p>Los coeficientes estandarizados del modelo lineal son instructivos aun siendo pobre el modelo, porque muestran a qué se adhiere una regresión sobre propiedades globales:</p>
+<table class="data"><thead><tr><th>Descriptor</th><th>MW</th><th>cLogP</th><th>HBD</th><th>HBA</th><th>TPSA</th><th>RotB</th><th>pesados</th><th>anillos</th><th>arom</th><th>frac_csp3</th></tr></thead><tbody><tr><th>Coeficiente estandarizado</th><td>-0.57</td><td>+0.01</td><td>-0.17</td><td>+0.38</td><td>-0.14</td><td>-0.30</td><td>+0.87</td><td>+0.36</td><td>-0.34</td><td>-0.34</td></tr></tbody></table>
+<p>Los dos términos mayores son el número de átomos pesados (+0.87) y el peso molecular (−0.57), descriptores de tamaño casi colineales que entran con signos opuestos: un síntoma de manual de multicolinealidad más que una comprensión física. Es la misma dependencia del tamaño que se observa en los puntajes de docking (Unidad 3, Sección 7.3), y es la razón por la cual los conjuntos de descriptores deben revisarse en busca de correlaciones y por la cual los coeficientes de un ajuste sin regularización sobre descriptores correlacionados no deben interpretarse mecanísticamente.</p>
+
+<h3 id="s6-3">6.3 Validación: las tres fallas habituales</h3>
+<p>Un artículo de QSAR puede estar equivocado de tres maneras que un lector puede detectar sin volver a ejecutar nada, y el experimento anterior ilustra las tres.</p>
+<ol>
+<li><strong>Ausencia de validación externa.</strong> El ajuste de un modelo a los datos con los que fue entrenado (R², o q² por validación cruzada dejando uno fuera) dice casi nada sobre la predicción. Solo cuenta el desempeño sobre compuestos reservados antes de cualquier selección de modelo. Informen R²<sub>prueba</sub> y RMSE<sub>prueba</sub>, junto con el número de compuestos de prueba.</li>
+<li><strong>Correlación por azar.</strong> Con suficientes descriptores, puede ajustarse cualquier variable objetivo. El control estándar es la <strong>aleatorización de y</strong> (y-randomisation): se permutan las etiquetas de actividad, se reajusta el modelo y se verifica que el desempeño se desplome. En el experimento anterior, diez bosques aleatorios con y aleatorizada sobre huellas moleculares dieron un R² medio de prueba de −0.20 (máximo −0.10) frente a 0.69 con las etiquetas reales, lo que confirma que la señal no es un artefacto de la capacidad del modelo.</li>
+<li><strong>Un dominio de aplicabilidad no declarado.</strong> Un modelo interpola; no extrapola. Una predicción para una molécula distinta de todo lo presente en el conjunto de entrenamiento es poco confiable, cualquiera sea el R² informado, y la práctica honesta consiste en informar, para cada predicción, una distancia al conjunto de entrenamiento (Tanimoto del vecino más cercano, apalancamiento o la desviación estándar entre los árboles de un bosque) y en rechazar las predicciones fuera del dominio. El resultado de la partición por andamiaje es la expresión cuantitativa de esto: el <em>mismo modelo</em> que obtiene 0.69 dentro de sus quimiotipos obtiene 0.52 fuera de ellos.</li>
+</ol>
+<p>Los cinco principios de la OCDE para la validación regulatoria de un QSAR codifican los mismos requisitos: un criterio de valoración (endpoint) definido, un algoritmo sin ambigüedades, un dominio de aplicabilidad definido, medidas apropiadas de bondad de ajuste, robustez y capacidad predictiva, y —cuando sea posible— una interpretación mecanística.<sup class="c"><a href="#r17">[17]</a></sup> Los estándares de reporte para el aprendizaje automático en química añaden una cuarta exigencia concreta: indicar exactamente cómo se dividieron los datos, porque una partición aleatoria de un conjunto de datos lleno de series de análogos siempre favorecerá al modelo.<sup class="c"><a href="#r18">[18]</a></sup></p>
+
+<h3 id="s6-4">6.4 QSAR 3D</h3>
+<p>El QSAR clásico correlaciona la actividad con propiedades de los sustituyentes; el <strong>QSAR 3D</strong> la correlaciona con campos calculados alrededor de moléculas alineadas. En <strong>CoMFA</strong> (análisis comparativo de campos moleculares, Cramer 1988) las moléculas de una serie se alinean en un marco común, se desplaza un átomo sonda sobre una rejilla que las rodea, y las energías de interacción estérica (Lennard-Jones) y electrostática (Coulomb) en cada punto de la rejilla se convierten en descriptores; una regresión por mínimos cuadrados parciales relaciona los miles de valores de la rejilla con la actividad.<sup class="c"><a href="#r19">[19]</a></sup> <strong>CoMSIA</strong> reemplaza los potenciales de variación abrupta por campos de similitud de forma gaussiana y añade campos hidrofóbicos y de enlace de hidrógeno.<sup class="c"><a href="#r20">[20]</a></sup> El atractivo del método está en su salida: mapas de contorno que muestran, en tres dimensiones alrededor del ligando, dónde el agregado de volumen o de carga positiva aumentaría o disminuiría la actividad; una instrucción directa para un químico medicinal.</p>
+<p>Sus debilidades son igualmente específicas. El resultado depende críticamente del <strong>alineamiento</strong> y del <strong>confórmero</strong> elegido para cada molécula, ninguno de los cuales se conoce para un compuesto cuya actividad aún no ha sido medida; por lo tanto, el método funciona bien para series rígidas y congenéricas, y mal para conjuntos diversos. Cuando existe una estructura del complejo, la vía habitual es someter la serie a docking y alinear según las poses predichas; cuando no existe, se usa un alineamiento farmacofórico.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Sección 7</span>Similitud, acantilados de actividad y andamiajes</h2>
+<p>El <strong>principio de similitud</strong> —las moléculas estructuralmente similares tienden a tener propiedades similares— sustenta la búsqueda por similitud, el diseño basado en andamiajes y la mayor parte del aprendizaje automático en química. La similitud se cuantifica con el <strong>coeficiente de Tanimoto</strong> entre huellas moleculares:</p>
+<div class="eq"><em>T</em>(A, B) = <em>c</em> / (<em>a</em> + <em>b</em> − <em>c</em>)
+<span class="where"><em>a</em>, <em>b</em>: bits activados en cada molécula; <em>c</em>: bits activados en ambas. <em>T</em> varía de 0 a 1. Para huellas Morgan/ECFP4, <em>T</em> ≥ 0.7 se considera convencionalmente "similar" y <em>T</em> ≥ 0.85 "muy similar", pero los umbrales dependen de la huella utilizada y no tienen un significado absoluto.</span></div>
+<p>¿Qué tan bien se cumple el principio? La Figura 5 responde para la serie de la proteasa del VIH-1, usando 29,698 pares de compuestos construidos a partir de una submuestra aleatoria del conjunto de datos.</p>
+<figure>
+<img src="figures/fig04_cliffs.png" alt="Gráfico hexbin de la similitud de Tanimoto frente a la diferencia absoluta de pKi, y diferencia mediana por intervalo de similitud, que muestra acantilados a alta similitud">
+<figcaption><b>Figura 5. El principio de similitud y sus excepciones, medidos en la serie de ChEMBL (calculados para este documento).</b> Izquierda: cada hexágono cuenta los pares con una similitud de Tanimoto y una diferencia de potencia dadas. Derecha: la mediana de |ΔpK<sub>i</sub>| desciende monótonamente desde 1.47 unidades logarítmicas para los pares con T = 0.3–0.5 hasta 0.62 para los pares con T ≥ 0.8: el principio se cumple en promedio. Pero la distribución tiene una cola larga: el 8.5 % de los pares más similares (T ≥ 0.8) difieren aún en potencia en más de dos órdenes de magnitud. Estos son los <strong>acantilados de actividad</strong>, y es allí donde falla la predicción basada en ligandos y donde está la química interesante.</figcaption>
+</figure>
+<p>Los acantilados de actividad importan por tres razones.<sup class="c"><a href="#r21">[21]</a></sup> Son los puntos donde un cambio pequeño y sintéticamente trivial produce un efecto grande, por lo que aportan la mayor cantidad de información de SAR por compuesto. Son el modo de falla sistemático de todo modelo basado en similitud, incluido el aprendizaje automático: un modelo que predice de forma suave no puede reproducir una discontinuidad, lo que explica en parte por qué el R² de la partición por andamiaje de la Sección 6 es el que es. Y suelen tener una explicación estructural —un enlace de hidrógeno perdido con un residuo enterrado, un choque estérico con una cadena lateral, un cambio de protonación—, y es ahí donde el docking y la dinámica molecular (Unidades 3 y 5) ganan su lugar en un proyecto basado en ligandos.</p>
+<p>El concepto complementario es el <strong>andamiaje</strong>. El marco de Bemis–Murcko de una molécula es lo que queda tras eliminar las cadenas laterales, conservando los sistemas de anillos y los enlazadores entre ellos.<sup class="c"><a href="#r22">[22]</a></sup> En el conjunto de datos curado, los 2,335 compuestos se reducen a <strong>1,004 andamiajes de Murcko distintos</strong>, de los cuales 696 aparecen una sola vez; el andamiaje individual más frecuente —un núcleo de urea cíclica simétrico con sustitución dibencílica— agrupa 86 compuestos. Esa distribución (unas pocas series grandes de análogos y una cola larga de casos únicos) es típica de los conjuntos de datos de química medicinal, y es precisamente la razón por la cual una partición aleatoria de entrenamiento/prueba filtra información: los análogos de un compuesto de prueba están en el conjunto de entrenamiento. Agrupar por andamiaje es la partición mínima defendible, y es la razón por la cual existe el panel derecho de la Figura 4.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Sección 8</span>Farmacóforos</h2>
+<p>Un <strong>farmacóforo</strong> es, según la definición de la IUPAC, el conjunto de características estéricas y electrónicas necesarias para asegurar las interacciones supramoleculares óptimas con un blanco biológico específico y para desencadenar (o bloquear) su respuesta biológica.<sup class="c"><a href="#r23">[23]</a></sup> Es una abstracción, no una molécula: especifica <em>tipos</em> de característica y las distancias entre ellas, de modo que moléculas químicamente no relacionadas pueden satisfacer el mismo farmacóforo. Los tipos de característica habituales son donor de enlace de hidrógeno, aceptor de enlace de hidrógeno, centro hidrofóbico, centroide de anillo aromático (opcionalmente con una normal al plano), ionizable positivo e ionizable negativo, cada uno representado como una esfera con un radio de tolerancia de alrededor de 1–1.5 Å, además de <strong>volúmenes de exclusión</strong> opcionales que marcan el espacio ocupado por el receptor.</p>
+<figure>
+<img src="figures/fig05_pharmacophore.png" alt="Izquierda: cinco características farmacofóricas con las distancias entre ellas. Derecha: tabla de grupos clásicos y sus reemplazos bioisostéricos">
+<figcaption><b>Figura 6. Un farmacóforo y el concepto de bioisóstero.</b> Izquierda: un farmacóforo de cinco características con las distancias entre ellas; cualquier molécula capaz de ubicar los tipos de característica correctos en estas posiciones relativas es candidata, cualquiera sea su andamiaje. Derecha: reemplazos bioisostéricos comunes (Sección 9.2); la razón por la que el farmacóforo es la abstracción útil, ya que estos intercambios conservan las características mientras cambian la química.</figcaption>
+</figure>
+<p>Los farmacóforos se construyen de dos maneras. Los modelos <strong>basados en ligandos</strong> se derivan de un conjunto de activos conocidos: las moléculas se expanden conformacionalmente, se alinean y se conservan las características comunes a los activos (y, en los mejores protocolos, ausentes en los inactivos conocidos). El enfoque necesita al menos un puñado de activos estructuralmente diversos, y su problema difícil es el mismo del QSAR 3D: qué confórmero y qué alineamiento. Los modelos <strong>basados en estructura</strong> se leen directamente de un complejo: las interacciones que el ligando cristalográfico o acoplado establece con el sitio definen las características, y los átomos de la proteína definen los volúmenes de exclusión. Un farmacóforo basado en estructura puede construirse a partir de un único complejo y es el puente natural entre la Unidad 3 y esta unidad.</p>
+<p>Su uso principal es el <strong>cribado farmacofórico</strong>: se busca en una base de datos de confórmeros pregenerados las moléculas capaces de ubicar las características requeridas dentro de la tolerancia. Es de uno a dos órdenes de magnitud más rápido que el docking, es insensible a los problemas de las funciones de puntuación de la Unidad 3 y, como ignora por completo el andamiaje, es el método de elección para el <em>salto de andamiaje</em>. Su costo es la especificidad: un farmacóforo de cuatro características con tolerancias generosas coincidirá con un número inverosímil de moléculas, por lo que los modelos normalmente se validan contra activos y señuelos conocidos (como en la Unidad 3, Sección 8) y los hits sobrevivientes se someten a docking antes de comprarlos.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Sección 9</span>Diseño de nuevas moléculas</h2>
+<h3 id="s9-1">9.1 Enumeración combinatoria</h3>
+<p>La receta de la clase es el núcleo práctico de la optimización de líderes: identificar el blanco y un activo conocido; identificar las posiciones de grupo R del andamiaje que la química puede alcanzar; enumerar sustituyentes en esas posiciones para generar 10²–10⁶ derivados virtuales; y filtrarlos computacionalmente —semejanza a fármaco, ADMET, docking, QSAR— para seleccionar las pocas decenas que vale la pena sintetizar. La enumeración es una manera barata de ser sistemático, y los catálogos modernos de "síntesis bajo demanda" (Enamine REAL, Chemspace) son enumeraciones exactamente de este tipo, construidas a partir de bloques de construcción catalogados y de reacciones validadas, de modo que cada molécula virtual tiene una ruta sintética realista.</p>
+<p>Dos restricciones mantienen útil una enumeración. La <strong>accesibilidad sintética</strong>: puntuar los productos (SAscore, RAscore, planificadores de retrosíntesis) y descartar lo que nadie sintetizará. El <strong>control de diversidad y de propiedades</strong>: enumerar todas las combinaciones infla el peso molecular y la lipofilicidad, por lo que conviene aplicar los filtros de propiedades de la Sección 5 <em>durante</em> la enumeración, no después.</p>
+
+<h3 id="s9-2">9.2 Reemplazo bioisostérico</h3>
+<p>Los <strong>bioisósteros</strong> son grupos con forma, volumen y distribución electrónica similares que pueden reemplazarse entre sí conservando la actividad biológica. El bioisosterismo clásico (Erlenmeyer, Grimm, Friedman) agrupaba átomos y grupos pequeños según el número de electrones de valencia; el bioisosterismo no clásico se define funcionalmente, por la capacidad de establecer las mismas interacciones.<sup class="c"><a href="#r24">[24]</a></sup> El reemplazo casi nunca se hace para mejorar la potencia: se hace para corregir algo más manteniendo la potencia, sea estabilidad metabólica (reemplazar un éster metabólicamente lábil o una posición para susceptible de hidroxilación), permeabilidad (tetrazol por carboxilato, que conserva la acidez y la carga pero aumenta la lipofilicidad), solubilidad (piridina por fenilo), posición de patente o toxicidad. El panel derecho de la Figura 6 enumera los intercambios que aparecen con mayor frecuencia. Las bases de datos de pares bioisostéricos extraídos de la literatura de química medicinal (SwissBioisostere, análisis de pares moleculares emparejados) convierten esto en un recurso consultable, con la frecuencia observada y el efecto medido sobre las propiedades para cada intercambio.<sup class="c"><a href="#r25">[25]</a></sup></p>
+
+<h3 id="s9-3">9.3 Salto de andamiaje</h3>
+<p>El <strong>salto de andamiaje</strong> (scaffold hopping) reemplaza el marco central manteniendo en su lugar las características farmacofóricas.<sup class="c"><a href="#r26">[26]</a></sup> Las motivaciones son las que enumera la clase —eludir una patente, eliminar un toxicóforo o un pasivo metabólico, mejorar las propiedades fisicoquímicas, o simplemente encontrar una segunda serie química como resguardo— y los métodos son los ya tratados<sup class="c"><a href="#r34">[34]</a></sup>: el cribado farmacofórico (que por construcción ignora el andamiaje), el cribado basado en forma (ROCS y similares, que alinean las moléculas por solapamiento de volumen y electrostática en lugar de por subestructura), el docking con el modo de unión original como restricción y el reemplazo de fragmentos en el sitio. Los ejemplos clásicos de los libros de texto son el linaje de analgésicos morfina → fentanilo → meperidina y la progresión desde inhibidores peptídicos a inhibidores no peptídicos de la proteasa del VIH: el andamiaje de urea cíclica que domina el conjunto de datos de ChEMBL de la Sección 7 es él mismo producto de un salto de andamiaje a partir de los análogos peptidomiméticos del estado de transición.</p>
+
+<h3 id="s9-4">9.4 Diseño generativo y asistido por IA</h3>
+<p>Desde alrededor de 2018 se ha añadido una cuarta estrategia: en lugar de enumerar y filtrar, <em>generar</em> moléculas condicionadas a las propiedades deseadas. Los autocodificadores variacionales, los modelos de lenguaje recurrentes sobre SMILES, el aprendizaje por refuerzo y, más recientemente, los modelos de difusión sobre estructuras 3D producen moléculas candidatas optimizadas para un puntaje multiobjetivo (potencia predicha, ADMET, accesibilidad sintética).<sup class="c"><a href="#r27">[27]</a>,<a href="#r28">[28]</a></sup> Los primeros compuestos de diseño generativo han ingresado a ensayos clínicos, y los generadores condicionados por la estructura, que ubican una molécula directamente en un bolsillo de unión, constituyen un área de investigación activa. Las advertencias vigentes son las de cualquier modelo: el generador optimiza el puntaje que se le entregó, de modo que un modelo de puntuación defectuoso produce sinsentidos expresados con confianza; las moléculas todavía deben sintetizarse y ensayarse; y los éxitos reportados están, por ahora, concentrados en familias de blancos con abundantes precedentes. Para un estudiante, el punto importante es que el diseño generativo no reemplaza ninguna parte de esta unidad: depende por completo de los descriptores, los modelos de propiedades y la disciplina de validación de las Secciones 4 a 6.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Sección 10</span>Un flujo de trabajo integrado</h2>
+<p>La última diapositiva de la clase integra los métodos en una cascada. Expresada como decisiones, con la pregunta que responde cada filtro:</p>
+<table class="data">
+<thead><tr><th>Etapa</th><th>Método</th><th>Pregunta que responde</th><th>Supervivencia típica</th></tr></thead>
+<tbody>
+<tr><td>0. Biblioteca</td><td>Base de datos química (ZINC, Enamine REAL, ChEMBL, DrugBank, PubChem)</td><td>¿Qué se puede comprar o sintetizar?</td><td>10⁶–10⁹</td></tr>
+<tr><td>1. Filtros de propiedades</td><td>Reglas de semejanza a fármaco y a compuesto líder, alertas PAINS y de grupos reactivos, predictores ADMET</td><td>¿Podría esto llegar a ser un fármaco, e interferirá con el ensayo?</td><td>Se elimina 20–60 %</td></tr>
+<tr><td>2. Prefiltro basado en ligandos</td><td>Cribado farmacofórico, búsqueda por similitud, clasificador QSAR/ML</td><td>¿Se parece a lo que funciona?</td><td>10³–10⁵</td></tr>
+<tr><td>3. Docking rápido</td><td>Docking HTVS / de precisión estándar</td><td>¿Cabe en el sitio, en primer lugar?</td><td>Mejor 1–10 %</td></tr>
+<tr><td>4. Docking cuidadoso</td><td>Docking de precisión extra, varias conformaciones del receptor (ensamble), puntuación por consenso</td><td>¿Qué modo de unión, y es reproducible?</td><td>10²–10³</td></tr>
+<tr><td>5. Repuntuación y dinámica</td><td>MM/GBSA, MD corta del complejo, estabilidad de la huella de interacción (Unidad 5)</td><td>¿Sobrevive la pose al movimiento térmico, y son persistentes los contactos clave?</td><td>10–10²</td></tr>
+<tr><td>6. Selección</td><td>Agrupamiento por diversidad química, inspección visual, eficiencia de ligando y LLE, disponibilidad y precio</td><td>¿Cuáles pocos compramos o sintetizamos?</td><td>10–50</td></tr>
+<tr><td>7. Experimento</td><td>Ensayo bioquímico o celular; dosis–respuesta, IC<sub>50</sub>/K<sub>i</sub></td><td>¿Funciona realmente?</td><td>Tasa de hits 1–20 %</td></tr>
+</tbody></table>
+<p>Dos conexiones con unidades anteriores cierran el ciclo. La IC<sub>50</sub> medida en la etapa 7 se convierte a K<sub>i</sub> para compararla con otros ensayos mediante la <strong>relación de Cheng–Prusoff</strong>, K<sub>i</sub> = IC<sub>50</sub>/(1 + [S]/K<sub>m</sub>) para la inhibición enzimática competitiva (o [L]/K<sub>d</sub> en un ensayo de unión), razón por la cual los valores de IC<sub>50</sub> obtenidos en distintas condiciones de ensayo no son directamente comparables mientras los valores de K<sub>i</sub> sí lo son.<sup class="c"><a href="#r29">[29]</a></sup> Y los activos confirmados reingresan a la cascada como datos de entrenamiento: un nuevo modelo QSAR, un farmacóforo refinado y —si puede obtenerse una estructura del complejo— un nuevo punto de partida para el diseño basado en estructura. Es el ciclo, y no un cálculo aislado, lo que produce un fármaco.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Sección 11</span>Bases de datos y software</h2>
+<table class="data">
+<thead><tr><th>Recurso</th><th>Contenido</th><th>Uso en esta unidad</th></tr></thead>
+<tbody>
+<tr><td><strong>ChEMBL</strong><sup class="c"><a href="#r30">[30]</a></sup></td><td>~2.5 M de compuestos con ~20 M de bioactividades curadas extraídas de la literatura</td><td>Fuente del conjunto de datos analizado aquí; el punto de partida estándar para un QSAR</td></tr>
+<tr><td><strong>PubChem</strong></td><td>&gt; 100 M de compuestos, resultados de bioensayos, propiedades calculadas</td><td>Consulta amplia de compuestos y ensayos</td></tr>
+<tr><td><strong>DrugBank</strong></td><td>Fármacos aprobados y en investigación, con sus blancos, farmacología y anotación ADMET</td><td>Compuestos de referencia, reposicionamiento</td></tr>
+<tr><td><strong>ZINC-22 / Enamine REAL</strong></td><td>Bibliotecas comprables y de síntesis bajo demanda (10⁹–10¹⁰ moléculas), en formatos listos para docking</td><td>Bibliotecas para cribado virtual</td></tr>
+<tr><td><strong>BindingDB / PDBbind</strong></td><td>Afinidades medidas; en el segundo caso, apareadas con las estructuras de los complejos</td><td>Entrenamiento y evaluación comparativa de funciones de puntuación y de QSAR</td></tr>
+<tr><td><strong>RDKit</strong><sup class="c"><a href="#r31">[31]</a></sup></td><td>Quimioinformática de código abierto: descriptores, huellas moleculares, andamiajes, confórmeros, reacciones</td><td>Todo lo calculado en las Secciones 5–7</td></tr>
+<tr><td><strong>scikit-learn</strong><sup class="c"><a href="#r35">[35]</a></sup></td><td>Aprendizaje automático: regresión, clasificación, validación cruzada</td><td>Los modelos QSAR de la Sección 6</td></tr>
+<tr><td><strong>SwissADME · ADMETlab · pkCSM</strong><sup class="c"><a href="#r14">[14]</a>,<a href="#r15">[15]</a></sup></td><td>Predicción ADMET en línea a partir de SMILES</td><td>Filtros de la etapa 1</td></tr>
+<tr><td><strong>SwissSimilarity · SwissBioisostere</strong><sup class="c"><a href="#r25">[25]</a></sup></td><td>Cribado basado en ligandos; reemplazos bioisostéricos extraídos de la literatura</td><td>Secciones 7 y 9</td></tr>
+<tr><td><strong>Pharmit · LigandScout · Phase</strong></td><td>Construcción y cribado de farmacóforos</td><td>Sección 8</td></tr>
+<tr><td><strong>Open3DQSAR · Schrödinger Phase/Field</strong></td><td>QSAR 3D de tipo CoMFA/CoMSIA</td><td>Sección 6.4</td></tr>
+<tr><td><strong>KNIME · TeachOpenCADD</strong><sup class="c"><a href="#r32">[32]</a></sup></td><td>Plataforma de flujos de trabajo; cuadernos abiertos de enseñanza de CADD en Python</td><td>Reproducir y extender esta unidad</td></tr>
+</tbody></table>
+</section>
+<!-- ============================================================ -->
+<section id="s12">
+<h2><span class="num">Sección 12</span>Trabajo práctico</h2>
+<h3>12.1 Reproducción del conjunto de datos y de los descriptores</h3>
+<p>Todo lo presentado en las Secciones 5–7 proviene del código siguiente. La API REST de ChEMBL no requiere clave.<sup class="c"><a href="#r33">[33]</a></sup></p>
+<pre><code>import json, urllib.request, numpy as np, pandas as pd
+from rdkit import Chem
+from rdkit.Chem import Descriptors, Crippen, rdMolDescriptors, QED
+from rdkit.Chem.Scaffolds import MurckoScaffold
+
+# ---- 1. Download all Ki measurements for HIV-1 protease (CHEMBL243) ----
+acts, url = [], ("https://www.ebi.ac.uk/chembl/api/data/activity.json"
+                 "?target_chembl_id=CHEMBL243&standard_type=Ki&limit=1000")
+while url:
+    page = json.loads(urllib.request.urlopen(url, timeout=90).read())
+    acts += page["activities"]
+    nxt = page["page_meta"]["next"]
+    url = "https://www.ebi.ac.uk" + nxt if nxt else None
+
+# ---- 2. Aggregate to one pKi per compound, then curate ----
+df = pd.DataFrame(acts)
+df = df[(df.standard_units == "nM") & (df.standard_relation == "=") & df.standard_value.notna()]
+df["pKi"] = 9 - np.log10(df.standard_value.astype(float))
+g = df.groupby("molecule_chembl_id").pKi.median().reset_index()
+#  drop mixtures and physically implausible potencies (the raw data contain both)
+g = g[(g.pKi >= 3) & (g.pKi <= 12)]
+
+# ---- 3. Fetch SMILES in batches of 40 (note the comma separator) ----
+smiles = {}
+ids = list(g.molecule_chembl_id)
+for i in range(0, len(ids), 40):
+    u = ("https://www.ebi.ac.uk/chembl/api/data/molecule.json?molecule_chembl_id__in="
+         + ",".join(ids[i:i+40]) + "&limit=40")
+    for m in json.loads(urllib.request.urlopen(u, timeout=120).read())["molecules"]:
+        s = (m.get("molecule_structures") or {}).get("canonical_smiles")
+        if s:
+            smiles[m["molecule_chembl_id"]] = s
+
+# ---- 4. Descriptors, drug-likeness and scaffolds ----
+rows = []
+for cid, pki in zip(g.molecule_chembl_id, g.pKi):
+    m = Chem.MolFromSmiles(smiles.get(cid, ""))
+    if m is None or "." in smiles[cid]:
+        continue
+    rows.append(dict(cid=cid, pKi=pki,
+        MW=Descriptors.MolWt(m), cLogP=Crippen.MolLogP(m),
+        HBD=rdMolDescriptors.CalcNumHBD(m), HBA=rdMolDescriptors.CalcNumHBA(m),
+        TPSA=rdMolDescriptors.CalcTPSA(m), RotB=rdMolDescriptors.CalcNumRotatableBonds(m),
+        QED=QED.qed(m), scaffold=MurckoScaffold.MurckoScaffoldSmiles(mol=m)))
+d = pd.DataFrame(rows)
+d["Ro5_violations"] = ((d.MW > 500).astype(int) + (d.cLogP > 5).astype(int)
+                       + (d.HBD > 5).astype(int) + (d.HBA > 10).astype(int))
+print(len(d), "compounds;", (d.Ro5_violations >= 2).mean().round(3),
+      "fraction with >= 2 Rule-of-Five violations")</code></pre>
+<h3>12.2 Los modelos QSAR y su validación</h3>
+<pre><code>from rdkit import DataStructs
+from rdkit.Chem import AllChem
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+
+mols = [Chem.MolFromSmiles(s) for s in d.smiles]
+gen  = AllChem.GetMorganGenerator(radius=2, fpSize=2048)
+def bits(m):
+    a = np.zeros((2048,), dtype=np.int8)
+    DataStructs.ConvertToNumpyArray(gen.GetFingerprint(m), a)
+    return a
+X, y = np.array([bits(m) for m in mols]), d.pKi.values
+
+# --- random split: measures interpolation within known chemotypes ---
+rng = np.random.default_rng(0); idx = rng.permutation(len(d)); n = int(0.8*len(d))
+tr, te = idx[:n], idx[n:]
+
+# --- scaffold split: largest scaffold groups to train, the rest unseen in test ---
+groups = d.groupby("scaffold").indices
+train_s, test_s = [], []
+for k in sorted(groups, key=lambda k: -len(groups[k])):
+    (train_s if len(train_s) &lt; 0.8*len(d) else test_s).extend(groups[k])
+
+for name, (a, b) in [("random", (tr, te)), ("scaffold", (np.array(train_s), np.array(test_s)))]:
+    rf = RandomForestRegressor(500, random_state=0, n_jobs=-1).fit(X[a], y[a])
+    p  = rf.predict(X[b])
+    print(f"{name:9s} R2={r2_score(y[b], p):.3f}  RMSE={mean_squared_error(y[b], p)**0.5:.2f}")
+
+# --- y-randomisation: performance must collapse ---
+for k in range(10):
+    ysh = rng.permutation(y)
+    rf = RandomForestRegressor(300, random_state=k, n_jobs=-1).fit(X[tr], ysh[tr])
+    print("shuffled R2:", round(r2_score(ysh[te], rf.predict(X[te])), 3))</code></pre>
+<h3>12.3 Similitud y acantilados de actividad</h3>
+<pre><code>fps = [gen.GetFingerprint(m) for m in mols]
+pairs = []
+sub = rng.choice(len(d), 700, replace=False)      # 700 molecules -> ~245,000 pairs
+for i in range(len(sub)):
+    for j in range(i+1, len(sub)):
+        t = DataStructs.TanimotoSimilarity(fps[sub[i]], fps[sub[j]])
+        if t &gt; 0.3:
+            pairs.append((t, abs(y[sub[i]] - y[sub[j]])))
+P = np.array(pairs)
+close = P[P[:,0] &gt;= 0.8]
+print(f"{len(close)} pairs with T>=0.8; {100*(close[:,1] &gt; 2).mean():.1f} % are activity cliffs")</code></pre>
+<h3>12.4 Lista de verificación del protocolo de un estudio de CADD</h3>
+<ol>
+<li>Planteen la pregunta: predicción de pose, ordenamiento por afinidad, búsqueda de hits u optimización de propiedades. De ella se derivan los métodos y las métricas.</li>
+<li>Registren la procedencia de los datos: base de datos y versión, identificador del blanco, tipo de actividad (K<sub>i</sub>, IC<sub>50</sub>, EC<sub>50</sub>), unidades, tipo de ensayo y cada regla de curación aplicada, con el número de compuestos eliminados por cada una.</li>
+<li>Agreguen las mediciones replicadas de forma explícita (mediana, e informen la dispersión); nunca mezclen K<sub>i</sub> e IC<sub>50</sub> en una misma variable dependiente sin justificación.</li>
+<li>Elijan los descriptores de manera deliberada y revisen su colinealidad; informen el tipo exacto de huella molecular, su radio y su longitud.</li>
+<li>Dividan los datos antes de cualquier selección de modelo, y háganlo por andamiaje o por tiempo, no al azar. Informen ambas particiones si desean mostrar la diferencia.</li>
+<li>Ejecuten la aleatorización de y e infórmenla.</li>
+<li>Definan e informen el dominio de aplicabilidad; rechacen las predicciones fuera de él.</li>
+<li>Informen R², RMSE y el número de compuestos de prueba; no solo el R², y nunca el R² de entrenamiento como si fuera desempeño predictivo.</li>
+<li>Para una selección prospectiva, informen qué se compró, qué se ensayó y qué se confirmó. Un modelo que nunca se ha puesto a prueba de forma prospectiva ha producido una hipótesis, no un resultado.</li>
+</ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="s13">
+<h2><span class="num">Sección 13</span>Autoevaluación</h2>
+<p>Intenten responder cada pregunta antes de abrir la respuesta.</p>
+<details><summary>1. Un compuesto tiene MW 612, cLogP 4.4, 3 HBD y 7 HBA. ¿Cuántas violaciones de la Regla de los Cinco presenta, y qué les indica eso?</summary><p>Una violación (MW &gt; 500). El criterio de Lipinski señala un problema cuando se violan <em>dos o más</em>, de modo que este compuesto cumple; y, en todo caso, la regla predice absorción oral, no actividad ni desarrollabilidad. Estos son precisamente los valores medianos de la serie de la proteasa del VIH-1 de la Sección 5.2, una clase de compuestos que incluye cinco fármacos orales aprobados.</p></details>
+<details><summary>2. ¿Por qué la variable dependiente de un QSAR es casi siempre logarítmica?</summary><p>Porque la energía libre de unión es logarítmica en la concentración: ΔG = −RT ln K. Un modelo lineal en log(1/C) —pK<sub>i</sub>, pIC<sub>50</sub>— es, por lo tanto, un modelo aditivo en contribuciones de energía libre, que es lo que hace transferibles las contribuciones de los sustituyentes. Una unidad de pK<sub>i</sub> corresponde a 1.36 kcal mol⁻¹ a 298 K.</p></details>
+<details><summary>3. Un QSAR publicado informa q²(dejando uno fuera) = 0.82 y no presenta conjunto de prueba. ¿Qué concluyen?</summary><p>Muy poco sobre su capacidad predictiva. La validación cruzada dejando uno fuera en un conjunto de datos que contiene series de análogos deja casi duplicados en el conjunto de entrenamiento, de modo que el q² resulta habitualmente optimista; es una medida de consistencia interna, no de predicción. Exijan un conjunto de prueba externo seleccionado antes de construir el modelo, un control de aleatorización de y y un dominio de aplicabilidad declarado.</p></details>
+<details><summary>4. En la Sección 6.2, el bosque aleatorio sobre huellas moleculares obtuvo R² = 0.69 con partición aleatoria y 0.52 con partición por andamiaje. ¿Qué valor debería aparecer en el resumen de un artículo, y por qué?</summary><p>Ambos, con la partición explicada; pero el valor de la partición por andamiaje es el que describe el uso prospectivo, porque un usuario aplica el modelo a química nueva, no a análogos del conjunto de entrenamiento. Informar solo el valor de la partición aleatoria exagera lo que el modelo puede hacer en aproximadamente un tercio de su varianza explicada.</p></details>
+<details><summary>5. ¿Qué es un acantilado de actividad, por qué constituye un problema para el aprendizaje automático y por qué es valioso para un químico medicinal?</summary><p>Un par de moléculas estructuralmente muy similares (por ejemplo, Tanimoto ≥ 0.8) con una gran diferencia de potencia (&gt; 2 unidades logarítmicas). Es un problema porque los modelos basados en similitud predicen de forma suave y, por lo tanto, no pueden reproducir una discontinuidad; esos pares se predicen mal de manera sistemática e inflan el error aparente. Es valioso porque localiza la SAR: un único cambio pequeño que produce un efecto de cien veces identifica una interacción que vale la pena comprender, normalmente explicable a partir de la estructura del complejo.</p></details>
+<details><summary>6. Deben elegir entre un modelo sobre diez descriptores interpretables (R² = 0.52) y otro sobre 2,048 bits de huella molecular (R² = 0.69). ¿Cuál usan?</summary><p>Depende del propósito. Para <em>ordenar</em> una biblioteca virtual, usen el modelo de huellas: lo que importa es la exactitud y la interpretabilidad es irrelevante. Para <em>guiar la síntesis</em>, el modelo de descriptores —o un modelo de huellas acompañado de atribución por predicción (SHAP, pares moleculares emparejados)— es más útil, porque un químico necesita saber qué cambiar. En la práctica se construyen ambos, y la concordancia entre ellos es en sí misma informativa.</p></details>
+<details><summary>7. Distingan un farmacóforo de un andamiaje e indiquen cuál es la mejor base para el salto de andamiaje.</summary><p>Un andamiaje es una subestructura concreta: los sistemas de anillos y los enlazadores de una molécula. Un farmacóforo es una disposición abstracta de tipos de característica (donor, aceptor, hidrófobo, aromático, cargado) a distancias definidas, sin química asociada. El salto de andamiaje cambia deliberadamente el andamiaje conservando el farmacóforo, de modo que el farmacóforo es la base correcta; una búsqueda por subestructura o por similitud, que se apoya en el andamiaje, devolverá por construcción el mismo quimiotipo.</p></details>
+<details><summary>8. Den tres razones para realizar un reemplazo bioisostérico que no tengan nada que ver con la potencia.</summary><p>La estabilidad metabólica (bloquear un sitio de oxidación o de hidrólisis); las propiedades fisicoquímicas (solubilidad, permeabilidad, pK<sub>a</sub>, logP); y la propiedad intelectual o la toxicidad (alejarse de un grupo patentado o portador de un toxicóforo). Un reemplazo que conserva la potencia mientras corrige alguno de estos aspectos es un éxito aunque la IC<sub>50</sub> no cambie.</p></details>
+<details><summary>9. Un cribado virtual de 10⁶ compuestos entrega 200 moléculas por encima de su umbral de docking. Enumeren los filtros que aplicarían antes de comprar alguna, y en qué orden.</summary><p>Primero los filtros de propiedades y de alertas, porque son gratuitos: semejanza a fármaco/a compuesto líder, PAINS y grupos reactivos, pasivos ADMET predichos (hERG, baja solubilidad). Luego la calidad de la pose: ¿establece la pose las interacciones que el sitio requiere?, ¿es reproducible entre conformaciones del receptor y entre funciones de puntuación? Después, la repuntuación con un método ortogonal (MM/GBSA o una MD corta, Unidad 5). Luego el agrupamiento por diversidad química: comprar veinte análogos de un mismo quimiotipo arriesga todo el presupuesto en una sola hipótesis. Finalmente, la inspección visual y la disponibilidad/precio. Compren un conjunto diverso, no los veinte mejores por puntaje.</p></details>
+<details><summary>10. ¿Por qué no pueden compararse directamente los valores de IC<sub>50</sub> de dos laboratorios, y qué resuelve Cheng–Prusoff al respecto?</summary><p>La IC<sub>50</sub> depende de las condiciones del ensayo —la concentración de sustrato y la K<sub>m</sub> en un ensayo enzimático, o la concentración de radioligando y la K<sub>d</sub> en un ensayo de unión—, de modo que el mismo inhibidor da distintos valores de IC<sub>50</sub> a distintas concentraciones de sustrato. La relación de Cheng–Prusoff, K<sub>i</sub> = IC<sub>50</sub>/(1 + [S]/K<sub>m</sub>), la convierte en una K<sub>i</sub> independiente de las condiciones para la inhibición competitiva. Por eso un conjunto de datos curado para QSAR debe usar un solo tipo de actividad, y por eso ChEMBL registra la descripción del ensayo junto con el valor.</p></details>
+<details><summary>11. Su enumeración produjo 50,000 derivados de un compuesto líder con MW 480. ¿Qué verifican antes de someter alguno a docking?</summary><p>Que la enumeración no haya simplemente agrandado todo: calculen la distribución de propiedades de los productos y compárenla con la del compuesto líder. Añadir sustituyentes aumenta el MW, el cLogP y los enlaces rotables, de modo que una enumeración sin restricciones se desplaza fuera del espacio de semejanza a fármaco y los puntajes de docking premiarán entonces a los productos más grandes (Unidad 3, Sección 7.3). Apliquen restricciones de propiedades durante la enumeración, puntúen la accesibilidad sintética, eliminen duplicados y redundancia estereoquímica, y normalicen cualquier ordenamiento por eficiencia de ligando.</p></details>
+<details><summary>12. En dos o tres oraciones, indiquen qué puede y qué no puede entregar el diseño de fármacos asistido por computador.</summary><p>Puede priorizar: reducir 10⁹ moléculas posibles a unas pocas decenas que vale la pena ensayar, proponer qué modificación intentar a continuación, alertar sobre pasivos antes de la síntesis y explicar una relación estructura–actividad observada en términos de interacciones específicas. No puede medir la afinidad, demostrar un modo de unión ni establecer que un compuesto sea seguro o eficaz: toda predicción es una hipótesis cuyo valor se concreta solo cuando un experimento la pone a prueba, y cuyo costo, cuando es errónea y no se ensaya, es una síntesis desperdiciada.</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Apéndice</span>Glosario</h2>
+<dl class="gloss">
+<dt>ADMET</dt><dd>Absorción, distribución, metabolismo, excreción y toxicidad: el perfil farmacocinético y de seguridad de un compuesto.</dd>
+<dt>Acantilado de actividad (activity cliff)</dt><dd>Un par de compuestos estructuralmente muy similares con una gran diferencia de potencia.</dd>
+<dt>Dominio de aplicabilidad</dt><dd>La región del espacio químico en la que las predicciones de un modelo están respaldadas por sus datos de entrenamiento.</dd>
+<dt>Bioisóstero</dt><dd>Grupo que puede reemplazar a otro conservando la actividad biológica, con forma y propiedades electrónicas similares.</dd>
+<dt>Ecuación de Cheng–Prusoff</dt><dd>Convierte una IC<sub>50</sub> en una K<sub>i</sub> independiente de las condiciones.</dd>
+<dt>CoMFA / CoMSIA</dt><dd>Métodos de QSAR 3D que correlacionan la actividad con campos de interacción calculados alrededor de moléculas alineadas.</dd>
+<dt>Descriptor</dt><dd>Número calculado a partir de una representación molecular, usado como entrada de un modelo.</dd>
+<dt>Farmacodianabilidad (druggability)</dt><dd>La probabilidad de que un blanco pueda ser modulado por una molécula pequeña con propiedades de fármaco.</dd>
+<dt>Enumeración</dt><dd>Generación sistemática de una biblioteca virtual de compuestos combinando sustituyentes sobre un andamiaje.</dd>
+<dt>Huella molecular (fingerprint)</dt><dd>Vector de bits o de conteos que codifica las subestructuras presentes en una molécula (claves MACCS, Morgan/ECFP).</dd>
+<dt>Compuesto líder (lead)</dt><dd>Un hit validado con relación estructura–actividad demostrada, que se lleva adelante para su optimización.</dd>
+<dt>Eficiencia de ligando (LE) / eficiencia lipofílica de ligando (LLE)</dt><dd>Potencia normalizada por el número de átomos pesados / corregida por la lipofilicidad (pIC<sub>50</sub> − cLogP).</dd>
+<dt>logP / logD</dt><dd>Coeficiente de partición octanol–agua de la especie neutra / de la mezcla a un pH dado.</dd>
+<dt>PAINS</dt><dd>Compuestos que interfieren en múltiples ensayos (pan-assay interference compounds): subestructuras que dan falsos positivos en muchos ensayos.</dd>
+<dt>Farmacóforo</dt><dd>La disposición de tipos de característica requerida para la actividad, independiente del andamiaje.</dd>
+<dt>QED</dt><dd>Estimación cuantitativa de la semejanza a fármaco, un puntaje de deseabilidad de 0–1 sobre ocho propiedades.</dd>
+<dt>QSAR</dt><dd>Relación cuantitativa estructura–actividad: un modelo que vincula descriptores con una actividad medida.</dd>
+<dt>Regla de los Cinco</dt><dd>Filtro de Lipinski para la absorción oral: MW ≤ 500, logP ≤ 5, HBD ≤ 5, HBA ≤ 10.</dd>
+<dt>Andamiaje (Bemis–Murcko)</dt><dd>Los sistemas de anillos y sus enlazadores, tras eliminar las cadenas laterales.</dd>
+<dt>Salto de andamiaje (scaffold hopping)</dt><dd>Reemplazar el andamiaje conservando el farmacóforo.</dd>
+<dt>Coeficiente de Tanimoto</dt><dd>Medida de similitud entre huellas moleculares, c/(a + b − c), entre 0 y 1.</dd>
+<dt>TPSA</dt><dd>Área superficial polar topológica; se correlaciona con la permeabilidad.</dd>
+<dt>Aleatorización de y (y-randomisation)</dt><dd>Control en el que se permutan las etiquetas de actividad; el desempeño de un modelo válido debe desplomarse.</dd>
+</dl>
+</section>
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Apéndice</span>Referencias y lecturas complementarias</h2>
+<h3>Literatura primaria citada en el texto</h3>
+<ol class="refs">
+<li id="r1">DiMasi JA, Grabowski HG, Hansen RW. Innovation in the pharmaceutical industry: new estimates of R&amp;D costs. <em>J Health Econ</em>. 2016;47:20–33. <a href="https://doi.org/10.1016/j.jhealeco.2016.01.012">doi:10.1016/j.jhealeco.2016.01.012</a></li>
+<li id="r2">Waring MJ, Arrowsmith J, Leach AR, et al. An analysis of the attrition of drug candidates from four major pharmaceutical companies. <em>Nat Rev Drug Discov</em>. 2015;14(7):475–486. <a href="https://doi.org/10.1038/nrd4609">doi:10.1038/nrd4609</a></li>
+<li id="r3">Le Guilloux V, Schmidtke P, Tuffery P. Fpocket: an open source platform for ligand pocket detection. <em>BMC Bioinformatics</em>. 2009;10:168. <a href="https://doi.org/10.1186/1471-2105-10-168">doi:10.1186/1471-2105-10-168</a></li>
+<li id="r4">Halgren TA. Identifying and characterizing binding sites and assessing druggability. <em>J Chem Inf Model</em>. 2009;49(2):377–389. <a href="https://doi.org/10.1021/ci800324m">doi:10.1021/ci800324m</a></li>
+<li id="r5">Santos R, Ursu O, Gaulton A, et al. A comprehensive map of molecular drug targets. <em>Nat Rev Drug Discov</em>. 2017;16(1):19–34. <a href="https://doi.org/10.1038/nrd.2016.230">doi:10.1038/nrd.2016.230</a></li>
+<li id="r6">Todeschini R, Consonni V. <em>Molecular Descriptors for Chemoinformatics</em>. 2nd ed. Wiley-VCH; 2009. <a href="https://doi.org/10.1002/9783527628766">doi:10.1002/9783527628766</a></li>
+<li id="r7">Lipinski CA, Lombardo F, Dominy BW, Feeney PJ. Experimental and computational approaches to estimate solubility and permeability in drug discovery and development settings. <em>Adv Drug Deliv Rev</em>. 2001;46(1–3):3–26. <a href="https://doi.org/10.1016/S0169-409X(00)00129-0">doi:10.1016/S0169-409X(00)00129-0</a></li>
+<li id="r8">Veber DF, Johnson SR, Cheng HY, Smith BR, Ward KW, Kopple KD. Molecular properties that influence the oral bioavailability of drug candidates. <em>J Med Chem</em>. 2002;45(12):2615–2623. <a href="https://doi.org/10.1021/jm020017n">doi:10.1021/jm020017n</a></li>
+<li id="r9">Jorgensen WL, Duffy EM. Prediction of drug solubility from structure. <em>Adv Drug Deliv Rev</em>. 2002;54(3):355–366. <a href="https://doi.org/10.1016/S0169-409X(02)00008-X">doi:10.1016/S0169-409X(02)00008-X</a></li>
+<li id="r10">Bickerton GR, Paolini GV, Besnard J, Muresan S, Hopkins AL. Quantifying the chemical beauty of drugs. <em>Nat Chem</em>. 2012;4(2):90–98. <a href="https://doi.org/10.1038/nchem.1243">doi:10.1038/nchem.1243</a></li>
+<li id="r11">Doak BC, Over B, Giordanetto F, Kihlberg J. Oral druggable space beyond the rule of 5: insights from drugs and clinical candidates. <em>Chem Biol</em>. 2014;21(9):1115–1142. <a href="https://doi.org/10.1016/j.chembiol.2014.08.013">doi:10.1016/j.chembiol.2014.08.013</a></li>
+<li id="r12">Leeson PD, Springthorpe B. The influence of drug-like concepts on decision-making in medicinal chemistry. <em>Nat Rev Drug Discov</em>. 2007;6(11):881–890. <a href="https://doi.org/10.1038/nrd2445">doi:10.1038/nrd2445</a></li>
+<li id="r13">Baell JB, Holloway GA. New substructure filters for removal of pan assay interference compounds (PAINS) from screening libraries and for their exclusion in bioassays. <em>J Med Chem</em>. 2010;53(7):2719–2740. <a href="https://doi.org/10.1021/jm901137j">doi:10.1021/jm901137j</a></li>
+<li id="r14">Daina A, Michielin O, Zoete V. SwissADME: a free web tool to evaluate pharmacokinetics, drug-likeness and medicinal chemistry friendliness of small molecules. <em>Sci Rep</em>. 2017;7:42717. <a href="https://doi.org/10.1038/srep42717">doi:10.1038/srep42717</a></li>
+<li id="r15">Pires DEV, Blundell TL, Ascher DB. pkCSM: predicting small-molecule pharmacokinetic and toxicity properties using graph-based signatures. <em>J Med Chem</em>. 2015;58(9):4066–4072. <a href="https://doi.org/10.1021/acs.jmedchem.5b00104">doi:10.1021/acs.jmedchem.5b00104</a></li>
+<li id="r16">Hansch C, Fujita T. ρ-σ-π analysis. A method for the correlation of biological activity and chemical structure. <em>J Am Chem Soc</em>. 1964;86(8):1616–1626. <a href="https://doi.org/10.1021/ja01062a035">doi:10.1021/ja01062a035</a></li>
+<li id="r17">Organisation for Economic Co-operation and Development. <em>Guidance Document on the Validation of (Quantitative) Structure–Activity Relationship [(Q)SAR] Models</em>. OECD Series on Testing and Assessment No. 69. Paris: OECD Publishing; 2014. <a href="https://doi.org/10.1787/9789264085442-en">doi:10.1787/9789264085442-en</a></li>
+<li id="r18">Walters WP, Barzilay R. Critical assessment of AI in drug discovery. <em>Expert Opin Drug Discov</em>. 2021;16(9):937–947. <a href="https://doi.org/10.1080/17460441.2021.1915982">doi:10.1080/17460441.2021.1915982</a></li>
+<li id="r19">Cramer RD, Patterson DE, Bunce JD. Comparative molecular field analysis (CoMFA). 1. Effect of shape on binding of steroids to carrier proteins. <em>J Am Chem Soc</em>. 1988;110(18):5959–5967. <a href="https://doi.org/10.1021/ja00226a005">doi:10.1021/ja00226a005</a></li>
+<li id="r20">Klebe G, Abraham U, Mietzner T. Molecular similarity indices in a comparative analysis (CoMSIA) of drug molecules to correlate and predict their biological activity. <em>J Med Chem</em>. 1994;37(24):4130–4146. <a href="https://doi.org/10.1021/jm00050a010">doi:10.1021/jm00050a010</a></li>
+<li id="r21">Stumpfe D, Hu H, Bajorath J. Advances in exploring activity cliffs. <em>J Comput Aided Mol Des</em>. 2020;34(9):929–942. <a href="https://doi.org/10.1007/s10822-020-00317-x">doi:10.1007/s10822-020-00317-x</a></li>
+<li id="r22">Bemis GW, Murcko MA. The properties of known drugs. 1. Molecular frameworks. <em>J Med Chem</em>. 1996;39(15):2887–2893. <a href="https://doi.org/10.1021/jm9602928">doi:10.1021/jm9602928</a></li>
+<li id="r23">Wermuth CG, Ganellin CR, Lindberg P, Mitscher LA. Glossary of terms used in medicinal chemistry (IUPAC Recommendations 1998). <em>Pure Appl Chem</em>. 1998;70(5):1129–1143. <a href="https://doi.org/10.1351/pac199870051129">doi:10.1351/pac199870051129</a></li>
+<li id="r24">Meanwell NA. Synopsis of some recent tactical application of bioisosteres in drug design. <em>J Med Chem</em>. 2011;54(8):2529–2591. <a href="https://doi.org/10.1021/jm1013693">doi:10.1021/jm1013693</a></li>
+<li id="r25">Wirth M, Zoete V, Michielin O, Sauer WHB. SwissBioisostere: a database of molecular replacements for ligand design. <em>Nucleic Acids Res</em>. 2013;41(D1):D1137–D1143. <a href="https://doi.org/10.1093/nar/gks1059">doi:10.1093/nar/gks1059</a></li>
+<li id="r26">Böhm HJ, Flohr A, Stahl M. Scaffold hopping. <em>Drug Discov Today Technol</em>. 2004;1(3):217–224. <a href="https://doi.org/10.1016/j.ddtec.2004.10.009">doi:10.1016/j.ddtec.2004.10.009</a></li>
+<li id="r27">Gómez-Bombarelli R, Wei JN, Duvenaud D, et al. Automatic chemical design using a data-driven continuous representation of molecules. <em>ACS Cent Sci</em>. 2018;4(2):268–276. <a href="https://doi.org/10.1021/acscentsci.7b00572">doi:10.1021/acscentsci.7b00572</a></li>
+<li id="r28">Zhavoronkov A, Ivanenkov YA, Aliper A, et al. Deep learning enables rapid identification of potent DDR1 kinase inhibitors. <em>Nat Biotechnol</em>. 2019;37(9):1038–1040. <a href="https://doi.org/10.1038/s41587-019-0224-x">doi:10.1038/s41587-019-0224-x</a></li>
+<li id="r29">Cheng Y, Prusoff WH. Relationship between the inhibition constant (K<sub>i</sub>) and the concentration of inhibitor which causes 50 per cent inhibition (I<sub>50</sub>) of an enzymatic reaction. <em>Biochem Pharmacol</em>. 1973;22(23):3099–3108. <a href="https://doi.org/10.1016/0006-2952(73)90196-2">doi:10.1016/0006-2952(73)90196-2</a></li>
+<li id="r30">Zdrazil B, Felix E, Hunter F, et al. The ChEMBL Database in 2023: a drug discovery platform spanning multiple bioactivity data types and time periods. <em>Nucleic Acids Res</em>. 2024;52(D1):D1180–D1192. <a href="https://doi.org/10.1093/nar/gkad1004">doi:10.1093/nar/gkad1004</a></li>
+<li id="r31">Landrum G, et al. RDKit: open-source cheminformatics. <a href="https://www.rdkit.org">https://www.rdkit.org</a> · <a href="https://doi.org/10.5281/zenodo.591637">doi:10.5281/zenodo.591637</a></li>
+<li id="r32">Sydow D, Morger A, Driller M, Volkamer A. TeachOpenCADD: a teaching platform for computer-aided drug design using open source packages and data. <em>J Cheminform</em>. 2019;11:29. <a href="https://doi.org/10.1186/s13321-019-0351-x">doi:10.1186/s13321-019-0351-x</a></li>
+<li id="r33">Gaulton A, Hersey A, Nowotka M, et al. The ChEMBL database in 2017. <em>Nucleic Acids Res</em>. 2017;45(D1):D945–D954. <a href="https://doi.org/10.1093/nar/gkw1074">doi:10.1093/nar/gkw1074</a></li>
+<li id="r34">Sliwoski G, Kothiwale S, Meiler J, Lowe EW. Computational methods in drug discovery. <em>Pharmacol Rev</em>. 2014;66(1):334–395. <a href="https://doi.org/10.1124/pr.112.007336">doi:10.1124/pr.112.007336</a></li>
+<li id="r35">Pedregosa F, Varoquaux G, Gramfort A, et al. Scikit-learn: machine learning in Python. <em>J Mach Learn Res</em>. 2011;12:2825–2830. <a href="https://doi.org/10.48550/arXiv.1201.0490">doi:10.48550/arXiv.1201.0490</a></li>
+</ol>
+<h3>Revisiones y libros de texto</h3>
+<ol class="refs" start="36">
+<li>Singh DB, ed. <em>Computer-Aided Drug Design</em>. Springer; 2020. — Recomendado en la clase.</li>
+<li>Zhang W, ed. <em>Computer-Aided Drug Discovery</em>. Methods in Pharmacology and Toxicology. Humana Press; 2016. — Recomendado en la clase.</li>
+<li>Saharan VA, ed. <em>Computer Aided Pharmaceutics and Drug Delivery</em>. Springer; 2022. — Recomendado en la clase.</li>
+<li>Grisoni F, Ballabio D, Todeschini R, Consonni V. Molecular descriptors for structure–activity applications: a hands-on approach. <em>Methods Mol Biol</em>. 2018;1800:3–53. <a href="https://doi.org/10.1007/978-1-4939-7899-1_1">doi:10.1007/978-1-4939-7899-1_1</a> — Recomendado en la clase; la referencia práctica para la Sección 4.</li>
+<li>Patrick GL. <em>An Introduction to Medicinal Chemistry</em>. 7th ed. Oxford University Press; 2023. — Capítulos 13–14 sobre QSAR y diseño de fármacos; el tratamiento más claro a nivel de pregrado.</li>
+<li>Kubinyi H. QSAR: Hansch analysis and related approaches. Wiley-VCH; 1993. — La monografía clásica sobre la Sección 6.1.</li>
+<li>Bajorath J, ed. <em>Chemoinformatics for Drug Discovery</em>. Wiley; 2014.</li>
+</ol>
+<h3>Recursos en línea</h3>
+<ul>
+<li>TeachOpenCADD — <a href="https://projects.volkamerlab.org/teachopencadd/">https://projects.volkamerlab.org/teachopencadd/</a>: cuadernos abiertos de Python que cubren el acceso a ChEMBL, los descriptores, los filtros de Lipinski, las huellas moleculares, el agrupamiento, el aprendizaje automático y el docking; la contraparte publicada más cercana al trabajo práctico de esta unidad.</li>
+<li>Documentación de RDKit y "Getting Started in Python" — <a href="https://www.rdkit.org/docs/">https://www.rdkit.org/docs/</a></li>
+<li>Documentación de los servicios web de ChEMBL — <a href="https://chembl.gitbook.io/chembl-interface-documentation/web-services">https://chembl.gitbook.io/chembl-interface-documentation/web-services</a></li>
+<li>SwissADME — <a href="http://www.swissadme.ch">http://www.swissadme.ch</a> · SwissBioisostere — <a href="https://www.swissbioisostere.ch">https://www.swissbioisostere.ch</a> · Pharmit — <a href="https://pharmit.csb.pitt.edu">https://pharmit.csb.pitt.edu</a></li>
+<li>Practical Cheminformatics (P. Walters) — <a href="https://practicalcheminformatics.blogspot.com">https://practicalcheminformatics.blogspot.com</a>: comentario crítico sobre la validación de QSAR y la partición de conjuntos de datos.</li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Material de estudio para BGM324 Bioinformática, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Las Figuras 1–6 fueron generadas para este documento; el conjunto de datos analizado en las Secciones 5–7 se descargó de ChEMBL (blanco CHEMBL243, actividades de K<sub>i</sub>, recuperadas el 17 de octubre de 2026) y se procesó con RDKit 2026.03.1 y scikit-learn 1.7.2. Los ejemplos desarrollados siguen las diapositivas de la clase <em>04_DiseñoDeDrogasAsistidoPorComputadora_EN</em>. Última revisión: 17 de octubre de 2026.
+</footer>
+
+</body>
+</html>

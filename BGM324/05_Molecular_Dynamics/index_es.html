@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unidad 5 · Simulaciones de dinámica molecular — BGM324 Bioinformática</title>
+<meta name="description" content="Guía de estudio sobre simulaciones de dinámica molecular: campos de fuerza, integración, termostatos y barostatos, condiciones periódicas de contorno, PME, ligaduras, equilibración y análisis de trayectorias, con una simulación completa en OpenMM de la miniproteína Trp-cage ejecutada y analizada para este documento.">
+<style>
+:root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+header.banner{background:linear-gradient(135deg,#1f3f66,#2b5d9b);color:#fff;padding:2.6rem 1.5rem 2rem}
+header.banner .inner{max-width:1100px;margin:0 auto}
+header.banner h1{font-size:2.1rem;margin:.2rem 0 .4rem;font-weight:normal;letter-spacing:.3px}
+header.banner .kicker{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;opacity:.85;font-family:system-ui,sans-serif}
+header.banner .meta{font-family:system-ui,sans-serif;font-size:.9rem;opacity:.92;margin-top:.8rem}
+.layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:2.5rem;padding:1.5rem}
+nav.toc{position:sticky;top:1rem;align-self:start;font-family:system-ui,sans-serif;font-size:.86rem;border-right:1px solid var(--line);padding-right:1rem;max-height:calc(100vh - 2rem);overflow:auto}
+nav.toc h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:.2rem 0 .6rem}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:.28rem 0}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+nav.toc ol ol{padding-left:.9rem;margin-top:.15rem}
+nav.toc ol ol a{color:var(--muted)}
+main{min-width:0}
+h2{font-size:1.65rem;font-weight:normal;color:var(--accent);margin:2.8rem 0 .8rem;padding-top:.5rem;border-top:3px solid var(--accent)}
+h2 .num{color:var(--muted);font-size:1rem;font-family:system-ui,sans-serif;display:block;letter-spacing:1px}
+h3{font-size:1.2rem;margin:1.9rem 0 .5rem;font-weight:normal;color:#17365c}
+h4{font-size:1rem;margin:1.3rem 0 .3rem;font-family:system-ui,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+p{margin:.7rem 0}
+a{color:var(--accent)}
+.lead{font-size:1.08rem;color:#2e3744}
+.box{background:var(--panel);border-left:4px solid var(--accent);padding:.9rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0}
+.box.key{border-color:var(--good)}
+.box.warn{border-color:var(--accent2)}
+.box.bridge{border-color:#6a4c93;background:#f7f4fb}
+.box h4{margin-top:0;color:inherit}
+.box ul{margin:.3rem 0 .2rem 1.1rem}
+figure{margin:1.6rem 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+figcaption{font-family:system-ui,sans-serif;font-size:.86rem;color:var(--muted);text-align:left;margin-top:.5rem;line-height:1.45}
+figcaption b{color:var(--ink)}
+pre,code,.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+pre{background:var(--code);padding:.9rem 1.1rem;border-radius:6px;overflow:auto;font-size:.86rem;line-height:1.45;border:1px solid var(--line)}
+code{background:var(--code);padding:.05rem .3rem;border-radius:3px;font-size:.9em}
+pre code{background:none;padding:0}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem;text-align:center;margin:1rem 0;padding:.6rem;background:#fbfcfd;border:1px dashed var(--line);border-radius:4px}
+.eq .where{display:block;font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted);margin-top:.4rem}
+table{border-collapse:collapse;margin:1rem 0;font-family:system-ui,sans-serif;font-size:.88rem}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .65rem;text-align:left;vertical-align:top}
+table.data th{background:var(--panel)}
+table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+table.dp{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.85rem;margin:1rem auto}
+table.dp th,table.dp td{border:1px solid var(--line);width:2.4rem;height:2.1rem;text-align:center}
+table.dp th{background:var(--panel);font-weight:bold}
+table.dp td.tb{background:#fde6d2;font-weight:bold;color:#8a3d00}
+table.score{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:.9rem;margin:1rem auto}
+table.score th,table.score td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center;min-width:2rem}
+table.score th{background:var(--panel)}
+.aln{font-family:"SFMono-Regular",Menlo,Consolas,monospace;white-space:pre;background:var(--code);padding:.8rem 1rem;border-radius:6px;font-size:.88rem;line-height:1.35;overflow:auto;border:1px solid var(--line)}
+.aln.small{font-size:.72rem}
+details{margin:.7rem 0;border:1px solid var(--line);border-radius:6px;padding:.5rem .9rem;background:#fff}
+details summary{cursor:pointer;font-family:system-ui,sans-serif;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.4rem}
+.objectives li{margin:.3rem 0}
+dl.gloss dt{font-weight:bold;margin-top:.7rem}
+dl.gloss dd{margin:0 0 .2rem 1.2rem;color:#2e3744}
+ol.refs{padding-left:1.6rem;font-size:.93rem}
+ol.refs li{margin:.45rem 0}
+sup.c a{text-decoration:none;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--accent)}
+footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.84rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;border-right:none;border-bottom:1px solid var(--line);max-height:none;padding-bottom:1rem}.two{grid-template-columns:1fr}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}header.banner{background:#fff;color:#000;border-bottom:2px solid #000}details{page-break-inside:avoid}details summary{color:#000}h2{color:#000}}
+button{font-family:system-ui,sans-serif;font-size:.84rem;padding:.3rem .7rem;border:1px solid var(--line);border-radius:4px;background:var(--panel);cursor:pointer}button:hover{background:#e6ecf3}
+</style>
+</head>
+<body>
+<!-- course-backbar -->
+<nav class="course-backbar" aria-label="Curso" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
+  <a href="../" style="color:#fff;text-decoration:none">&larr; BGM324 &middot; Bioinform&aacute;tica</a>
+  <span><a href="./" style="color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:6px;padding:2px 10px;margin-right:14px">English</a><a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a></span>
+</nav>
+
+<header class="banner"><div class="inner">
+<div class="kicker">BGM324 · Bioinformática · Bioingeniería Médica · Universidad Católica del Maule</div>
+<h1>Unidad 5 — Simulaciones de dinámica molecular: campos de fuerza, protocolos, análisis y energías libres</h1>
+<div class="meta">Material de estudio que acompaña la clase 05 (<em>Introducción a las simulaciones de dinámica molecular</em>) · Elaborado por Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · Quinta y última unidad del módulo: análisis de secuencias → predicción de estructura de proteínas → docking molecular → diseño de fármacos asistido por computador → <strong>dinámica molecular</strong></div>
+</div></header>
+
+<div class="layout">
+<nav class="toc">
+<h2>Contenido</h2>
+<ol>
+<li><a href="#how">Cómo usar este material</a></li>
+<li><a href="#s1">1. Por qué simular</a></li>
+<li><a href="#s2">2. Las ecuaciones de movimiento</a>
+  <ol><li><a href="#s2-1">Newton y el integrador</a></li><li><a href="#s2-2">Verlet y sus variantes</a></li><li><a href="#s2-3">El paso de integración</a></li></ol></li>
+<li><a href="#s3">3. El campo de fuerza</a>
+  <ol><li><a href="#s3-1">Forma funcional</a></li><li><a href="#s3-2">Las familias</a></li><li><a href="#s3-3">Costo no enlazante, radios de corte y PME</a></li></ol></li>
+<li><a href="#s4">4. Solvente, condiciones de contorno y colectivos</a>
+  <ol><li><a href="#s4-1">Modelos de solvente</a></li><li><a href="#s4-2">Condiciones periódicas de contorno</a></li><li><a href="#s4-3">Termostatos, barostatos, colectivos</a></li></ol></li>
+<li><a href="#s5">5. Un protocolo de simulación, paso a paso</a></li>
+<li><a href="#s6">6. Una simulación ejecutada para este documento</a>
+  <ol><li><a href="#s6-1">Sistema y protocolo</a></li><li><a href="#s6-2">Equilibración</a></li><li><a href="#s6-3">Conservación de la energía y paso de integración</a></li></ol></li>
+<li><a href="#s7">7. Análisis de una trayectoria</a>
+  <ol><li><a href="#s7-1">RMSD</a></li><li><a href="#s7-2">RMSF</a></li><li><a href="#s7-3">Otros observables</a></li><li><a href="#s7-4">Convergencia y muestreo</a></li></ol></li>
+<li><a href="#s8">8. Limitaciones</a></li>
+<li><a href="#s9">9. Energías libres y afinidad</a>
+  <ol><li><a href="#s9-1">La jerarquía</a></li><li><a href="#s9-2">MM/PBSA y MM/GBSA</a></li><li><a href="#s9-3">Métodos alquímicos</a></li><li><a href="#s9-4">Muestreo mejorado y PMF</a></li></ol></li>
+<li><a href="#s10">10. Software y recursos</a></li>
+<li><a href="#s11">11. Trabajo práctico</a></li>
+<li><a href="#s12">12. Autoevaluación</a></li>
+<li><a href="#gloss">Glosario</a></li>
+<li><a href="#refs">Referencias y lecturas complementarias</a></li>
+</ol>
+</nav>
+
+<main>
+
+<section id="how">
+<p class="lead">Este documento amplía la quinta y última clase del módulo, y cierra la cadena que comenzó con una secuencia. Las unidades 2–4 produjeron imágenes estáticas: una estructura, una pose, una afinidad predicha. La dinámica molecular elimina lo "estático": integra las ecuaciones de Newton para cada átomo y produce una trayectoria —una película del sistema con resolución de femtosegundos— a partir de la cual se pueden calcular propiedades termodinámicas y cinéticas. Las secciones 6 y 7 presentan una simulación completa realizada para este documento: la miniproteína Trp-cage, de 20 residuos, en agua explícita, minimizada, equilibrada y simulada durante 6 ns con OpenMM, además de un experimento controlado sobre el paso de integración y las ligaduras cuyos números explican por qué todos los protocolos del área tienen la forma que tienen.</p>
+<div class="box key"><h4>Objetivos de aprendizaje</h4>
+<ul class="objectives">
+<li>Explicar lo que la mecánica estadística permite: cómo una trayectoria de un sistema microscópico entrega observables macroscópicos.</li>
+<li>Escribir la ecuación de Newton para un átomo en un campo de fuerza y describir cómo la familia de integradores de Verlet la hace avanzar.</li>
+<li>Justificar la elección del paso de integración a partir de la vibración más rápida, y explicar cómo las ligaduras (constraints) y la redistribución de la masa de los hidrógenos (hydrogen-mass repartitioning) permiten uno mayor.</li>
+<li>Escribir los términos de un campo de fuerza clásico e identificar qué controla cada parámetro.</li>
+<li>Explicar por qué las interacciones no enlazantes dominan el costo, cuáles de ellas pueden truncarse y qué hace PME.</li>
+<li>Comparar solvente explícito e implícito, y describir las condiciones periódicas de contorno y la convención de imagen mínima.</li>
+<li>Distinguir los colectivos NVE, NVT y NPT, y nombrar los termostatos y barostatos usados en cada uno.</li>
+<li>Ejecutar y justificar los seis pasos de un protocolo estándar, y juzgar a partir de los resultados si un sistema está equilibrado.</li>
+<li>Calcular e interpretar RMSD, RMSF, radio de giro, evolución de la estructura secundaria y huellas de interacción (interaction fingerprints).</li>
+<li>Enunciar las principales limitaciones de la MD clásica —escala de tiempo, enlaces y protonación fijos, error del campo de fuerza, muestreo— y reconocerlas en trabajos publicados.</li>
+<li>Ubicar MM/GBSA, los métodos alquímicos de energía libre y los cálculos de PMF en una escala de costo y precisión, y elegir entre ellos.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s1">
+<h2><span class="num">Sección 1</span>Por qué simular</h2>
+<p>La clase comienza con la razón de ser de todo el campo: el experimento a veces es imposible, a veces demasiado lento, a veces demasiado costoso, y casi siempre ciego al detalle atómico de un proceso en movimiento. Una estructura cristalográfica es un promedio temporal y espacial sobre 10<sup>15</sup> moléculas; un conjunto de RMN es un grupo de modelos compatibles con restricciones promediadas; una medición cinética informa una velocidad sin decir qué se mueve. La simulación aporta la trayectoria que falta<sup class="c"><a href="#r32">[32]</a></sup><sup class="c"><a href="#r33">[33]</a></sup>, y el puente que le da sentido es la <strong>mecánica estadística</strong>: los observables macroscópicos de la termodinámica son promedios sobre los estados microscópicos que el sistema visita.</p>
+<div class="eq">⟨A⟩ = lim<sub>τ→∞</sub> (1/τ) ∫<sub>0</sub><sup>τ</sup> A(<strong>r</strong>(t), <strong>p</strong>(t)) dt &nbsp;=&nbsp; ∫ A(<strong>r</strong>, <strong>p</strong>) ρ(<strong>r</strong>, <strong>p</strong>) d<strong>r</strong> d<strong>p</strong>
+<span class="where">La <strong>hipótesis ergódica</strong>: un promedio temporal a lo largo de una trayectoria suficientemente larga es igual al promedio de colectivo sobre la distribución de probabilidad ρ de los microestados. Todo lo que sigue depende de esta igualdad, y "suficientemente larga" es el problema práctico central del campo (Sección 7.4).</span></div>
+<p>Con ese puente, una trayectoria entrega magnitudes que un experimento mide —energías libres de unión, coeficientes de difusión, parámetros de orden, velocidades de relajación de RMN, capacidades caloríficas— y magnitudes que ningún experimento puede ver: qué molécula de agua hace de puente entre un ligando y un residuo, cuánto sobrevive un puente de hidrógeno, qué subestado conformacional estabiliza una mutación, qué camino sigue un ion a través de un canal. Los ejemplos de la propia clase son del segundo tipo: el canal de potasio TASK-2, donde las simulaciones mostraron cómo la protonación de una sola lisina cambia las dimensiones de las fenestraciones orientadas hacia la membrana y la energética del acceso de iones.</p>
+<p>En el contexto de este módulo, la dinámica molecular cumple tres funciones concretas. <strong>Refina y valida modelos</strong>: un modelo por homología (Unidad 2) o una pose de docking (Unidad 3) que se desarma en pocos nanosegundos probablemente era incorrecto. <strong>Genera conjuntos de conformaciones</strong> para el docking por conjuntos (ensemble docking) y para la detección de sitios crípticos (unidades 3 y 4). Y <strong>estima afinidades</strong> con los métodos de energía libre de la Sección 9, que son el único enfoque computacional que alcanza precisión experimental para series congenéricas.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s2">
+<h2><span class="num">Sección 2</span>Las ecuaciones de movimiento</h2>
+<h3 id="s2-1">2.1 Newton y el integrador</h3>
+<p>Cada átomo <em>i</em> es un punto de masa <em>m<sub>i</sub></em> y carga parcial fija <em>q<sub>i</sub></em> en la posición <strong>r</strong><sub><em>i</em></sub>. La energía potencial de todo el sistema es una única función de todas las coordenadas, <em>U</em>(<strong>r</strong><sub>1</sub>, …, <strong>r</strong><sub><em>N</em></sub>) —el <strong>campo de fuerza</strong> de la Sección 3—, y la fuerza sobre cada átomo es su gradiente negativo:</p>
+<div class="eq"><em>m<sub>i</sub></em> d²<strong>r</strong><sub><em>i</em></sub>/d<em>t</em>² = <strong>F</strong><sub><em>i</em></sub> = −∇<sub><em>i</em></sub> <em>U</em>(<strong>r</strong><sub>1</sub>, …, <strong>r</strong><sub><em>N</em></sub>)</div>
+<p>Se trata de un conjunto de 3<em>N</em> ecuaciones diferenciales de segundo orden acopladas, sin solución analítica para <em>N</em> &gt; 2, por lo que se integra numéricamente en pasos discretos. El integrador debe reproducir dos propiedades del sistema físico: la energía total (cinética más potencial) se conserva en un sistema aislado, y las ecuaciones son reversibles en el tiempo. Los algoritmos que respetan la estructura geométrica de la mecánica hamiltoniana —los integradores <em>simplécticos</em>— conservan la energía en tiempos largos mucho mejor que los resolvedores de propósito general de orden superior, como Runge–Kutta; por eso el área usa la familia de Verlet y no los métodos de un curso de análisis numérico.</p>
+<p>La energía cinética conecta la trayectoria con la temperatura a través de la equipartición:</p>
+<div class="eq"><em>E</em><sub>k</sub> = Σ<sub><em>i</em></sub> ½ <em>m<sub>i</sub></em> <em>v<sub>i</sub></em>² = (3<em>N</em> − <em>N</em><sub>c</sub>)/2 · <em>k</em><sub>B</sub><em>T</em>
+<span class="where"><em>N</em><sub>c</sub> es el número de ligaduras (enlaces fijos, aguas rígidas, eliminación del movimiento del centro de masa). Por lo tanto, la temperatura en una simulación es una magnitud <em>derivada</em> y fluctuante que se calcula a partir de las velocidades, no un dato de entrada; su valor instantáneo fluctúa como 1/√N, lo que para unos pocos miles de átomos equivale a unos pocos kelvin.</span></div>
+<p>Como señala la clase, en las disposiciones de menor energía potencial los átomos se mueven más rápido, porque el total se conserva; y en la práctica la energía total deriva lentamente hacia arriba debido a la aritmética de precisión finita y al paso de integración finito, lo que es una de las razones por las que se usa un termostato (Sección 4.3). La Sección 6.3 mide esa deriva.</p>
+
+<h3 id="s2-2">2.2 El algoritmo de Verlet y sus variantes</h3>
+<p>Desarrollando la posición en serie de Taylor hacia adelante y hacia atrás en el tiempo,</p>
+<div class="eq">
+<strong>r</strong>(<em>t</em>+δ<em>t</em>) = <strong>r</strong>(<em>t</em>) + <strong>v</strong>(<em>t</em>)δ<em>t</em> + ½<strong>a</strong>(<em>t</em>)δ<em>t</em>² + …<br>
+<strong>r</strong>(<em>t</em>−δ<em>t</em>) = <strong>r</strong>(<em>t</em>) − <strong>v</strong>(<em>t</em>)δ<em>t</em> + ½<strong>a</strong>(<em>t</em>)δ<em>t</em>² − …
+<span class="where">Al sumar ambos desarrollos se cancelan los términos impares, incluida la velocidad, y se obtiene el algoritmo de Verlet de posiciones, con un error de orden δ<em>t</em>⁴.</span></div>
+<div class="eq"><strong>r</strong>(<em>t</em>+δ<em>t</em>) = 2<strong>r</strong>(<em>t</em>) − <strong>r</strong>(<em>t</em>−δ<em>t</em>) + <strong>a</strong>(<em>t</em>)δ<em>t</em>²</div>
+<p>Cada paso necesita las posiciones en los dos tiempos anteriores y la aceleración actual, es decir, una evaluación de fuerzas, que es donde se va prácticamente todo el tiempo de cómputo. El algoritmo es reversible en el tiempo y simpléctico, y las velocidades, si se necesitan, se obtienen por diferencia central. Como esa estimación de la velocidad va retrasada, en la práctica se prefieren dos reformulaciones algebraicamente equivalentes: <strong>leapfrog</strong> (salto de rana), que almacena las velocidades en medios pasos, y <strong>velocity Verlet</strong> (Verlet de velocidades), que calcula posiciones y velocidades en el mismo instante y es la opción habitual por defecto. Los integradores de Langevin (usados en la Sección 6) agregan una fricción y una fuerza aleatoria al mismo esquema para controlar la temperatura.<sup class="c"><a href="#r1">[1]</a>,<a href="#r2">[2]</a></sup></p>
+
+<h3 id="s2-3">2.3 El paso de integración</h3>
+<p>El paso de integración (time step) debe resolver el movimiento más rápido del sistema. La regla práctica es δ<em>t</em> ≤ 1/10 del período vibracional más corto; el movimiento más rápido en una biomolécula es el estiramiento de los enlaces con hidrógeno —un estiramiento C–H tiene un período de unos 10 fs (ν̃ ≈ 3,000 cm⁻¹)—, lo que da δ<em>t</em> ≈ 1 fs. Como el número de pasos necesario para un tiempo físico dado es inversamente proporcional a δ<em>t</em>, alargar el paso de integración es la aceleración más barata posible, y tres recursos estándar lo logran:</p>
+<ul>
+<li><strong>Restringir con ligaduras los enlaces con hidrógeno</strong> (SHAKE, RATTLE, LINCS, y SETTLE para el agua rígida): el movimiento más rápido restante pasa a ser el estiramiento de enlaces entre átomos pesados, lo que permite δ<em>t</em> = 2 fs.<sup class="c"><a href="#r3">[3]</a>,<a href="#r4">[4]</a></sup></li>
+<li><strong>Redistribución de la masa de los hidrógenos</strong> (hydrogen-mass repartitioning): se traslada masa desde el átomo pesado a los hidrógenos que porta (típicamente hasta 1.5–4 u), lo que hace más lentos los movimientos angulares y de torsión que involucran hidrógenos sin cambiar la masa total ni la termodinámica, y permite δ<em>t</em> = 4 fs.<sup class="c"><a href="#r5">[5]</a></sup></li>
+<li><strong>Pasos de integración múltiples</strong> (multiple timestepping, RESPA): evaluar la costosa electrostática de largo alcance con menor frecuencia que los términos enlazantes, que son baratos.</li>
+</ul>
+<p>La Sección 6.3 mide la deriva de energía para cada una de estas opciones en el sistema real, lo que constituye la justificación empírica del protocolo usado en todo el campo.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s3">
+<h2><span class="num">Sección 3</span>El campo de fuerza</h2>
+<h3 id="s3-1">3.1 Forma funcional</h3>
+<p>Un <strong>campo de fuerza</strong> es una función de energía potencial más los parámetros que van en ella. La imagen de la clase es la correcta: la molécula se modela como esferas cargadas unidas por resortes. Nada en él es mecánico-cuántico: no hay electrones, los enlaces no pueden romperse, y los parámetros se ajustan para reproducir datos experimentales y químico-cuánticos de moléculas pequeñas. La forma clásica ("Clase I") usada por AMBER, CHARMM, OPLS y GROMOS es:</p>
+<div class="eq">
+<em>U</em> = Σ<sub>bonds</sub> ½<em>k</em><sub><em>b</em></sub>(<em>b</em> − <em>b</em><sub>0</sub>)² + Σ<sub>angles</sub> ½<em>k</em><sub>θ</sub>(θ − θ<sub>0</sub>)² + Σ<sub>torsions</sub> Σ<sub><em>n</em></sub> <em>k</em><sub>φ,<em>n</em></sub>[1 + cos(<em>n</em>φ − δ)] + Σ<sub>impropers</sub> <em>k</em><sub>ω</sub>(ω − ω<sub>0</sub>)²<br>
++ Σ<sub><em>i</em>&lt;<em>j</em></sub> 4ε<sub><em>ij</em></sub>[(σ<sub><em>ij</em></sub>/<em>r</em><sub><em>ij</em></sub>)<sup>12</sup> − (σ<sub><em>ij</em></sub>/<em>r</em><sub><em>ij</em></sub>)<sup>6</sup>] + Σ<sub><em>i</em>&lt;<em>j</em></sub> <em>q<sub>i</sub>q<sub>j</sub></em>/(4πε<sub>0</sub>ε<sub>r</sub><em>r</em><sub><em>ij</em></sub>)
+</div>
+<figure>
+<img src="figures/fig01_forcefield.png" alt="Seis paneles: potenciales de enlace, de ángulo y de torsión; curva de Lennard-Jones; gráfico logarítmico que compara el decaimiento de Coulomb y de Lennard-Jones; escala de tiempos de los movimientos de proteínas">
+<figcaption><b>Figura 1. Los términos de un campo de fuerza clásico, graficados con parámetros representativos de tipo AMBER, y las escalas de tiempo que deben abarcar.</b> Los enlaces y los ángulos son resortes armónicos en torno a valores de referencia, tan rígidos (nótese la escala de energía: 400 kJ mol⁻¹ para un estiramiento de 0.05 nm) que solo vibran; las torsiones son periódicas y blandas, por lo que son ellas, y no los enlaces, las que determinan la conformación; el término de Lennard-Jones combina una repulsión abrupta en <em>r</em>⁻¹² con una atracción de dispersión en <em>r</em>⁻⁶. El quinto panel es la razón de ser de la Sección 3.3: en escala logarítmica, el término de dispersión es despreciable más allá de aproximadamente 1 nm, mientras que el término de Coulomb, incluso apantallado por el agua, no lo es. El sexto panel ubica los movimientos de una proteína en el eje temporal y marca lo que una simulación de 6 ns —la ejecutada para este documento— puede y no puede alcanzar.</figcaption>
+</figure>
+<p>Conviene enunciar explícitamente cuatro propiedades de esta función, porque son el origen de la mayoría de las limitaciones del método. Los términos enlazantes definen la <em>topología</em>: qué átomos están enlazados con cuáles se fija al inicio y no puede cambiar. Las cargas son cargas puntuales fijas, de modo que la respuesta electrónica de una molécula a su entorno —la polarización— está ausente y, en cambio, queda incorporada en promedio en los valores ajustados. Los términos de torsión son el cajón de sastre del ajuste: se parametrizan al final, para que el total reproduzca las energías conformacionales químico-cuánticas una vez fijados los demás términos. Y las sumas no enlazantes recorren todos los pares, que es donde está el costo.</p>
+
+<h3 id="s3-2">3.2 Las principales familias de campos de fuerza</h3>
+<table class="data">
+<thead><tr><th>Familia</th><th>Versiones actuales para proteínas</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td><strong>AMBER</strong></td><td>ff14SB, ff19SB; ligandos mediante GAFF2 u OpenFF</td><td>Parametrizado frente a energías conformacionales químico-cuánticas y propiedades en fase condensada; ff19SB agrega correcciones del esqueleto peptídico específicas para cada aminoácido<sup class="c"><a href="#r6">[6]</a>,<a href="#r7">[7]</a></sup></td></tr>
+<tr><td><strong>CHARMM</strong></td><td>CHARMM36m; CGenFF para ligandos</td><td>Amplia cobertura de lípidos y carbohidratos; CHARMM36m fue refinado para proteínas intrínsecamente desordenadas<sup class="c"><a href="#r8">[8]</a></sup></td></tr>
+<tr><td><strong>OPLS</strong></td><td>OPLS-AA/M, OPLS4</td><td>Optimizado frente a la termodinámica en fase líquida; amplia cobertura de moléculas pequeñas</td></tr>
+<tr><td><strong>GROMOS</strong></td><td>54A7, 2016H66</td><td>Átomo unido (united-atom: los hidrógenos no polares se incorporan a los carbonos), por lo que tiene menos partículas</td></tr>
+<tr><td><strong>Modelos de agua</strong></td><td>TIP3P, TIP4P-Ew, TIP4P/2005, SPC/E, OPC</td><td>Deben combinarse con el campo de fuerza de proteínas con el que fueron parametrizados; TIP3P es el estándar con AMBER/CHARMM, pero tiene una viscosidad demasiado baja, lo que acelera la difusión</td></tr>
+<tr><td><strong>Polarizables</strong></td><td>AMOEBA, Drude-2019, CHARMM-Drude</td><td>Dipolos inducidos explícitos; 5–10× más costosos; necesarios para sitios con alta carga y canales iónicos</td></tr>
+</tbody></table>
+<p>Las reglas prácticas son usar un campo de fuerza de proteínas con el modelo de agua con el que fue validado, no mezclar nunca campos de fuerza dentro de un mismo sistema y registrar las versiones exactas: los resultados cambian de forma medible entre ellas, y una trayectoria publicada sin la versión de su campo de fuerza no es reproducible.</p>
+
+<h3 id="s3-3">3.3 Costo no enlazante, radios de corte y PME</h3>
+<p>El número de términos enlazantes crece linealmente con <em>N</em>; el número de pares no enlazantes crece como <em>N</em>(<em>N</em>−1)/2, de modo que la parte no enlazante domina. Para el modesto sistema de la Sección 6 —4,810 átomos— eso equivale a unos 1.2 × 10⁷ pares <em>por paso</em>, y una simulación de 6 ns a 4 fs requiere 1.5 × 10⁶ pasos.</p>
+<p>El término de dispersión decae como <em>r</em>⁻⁶, por lo que truncarlo a 0.9–1.2 nm y aplicar una corrección analítica de largo alcance casi no cuesta precisión, y una <strong>lista de vecinos</strong> (neighbour list) reconstruida cada 10–20 pasos reduce la búsqueda de <em>O</em>(<em>N</em>²) a <em>O</em>(<em>N</em>). El radio de corte (cutoff) debe aplicarse de manera suave —desplazado (shifted) o conmutado (switched) en los últimos 0.1–0.2 nm—, porque un truncamiento abrupto deja una discontinuidad en la fuerza que bombea energía al sistema.</p>
+<p>La electrostática no puede truncarse: el término de Coulomb decae como <em>r</em>⁻¹, y truncarlo produce artefactos bien documentados: ordenamiento espurio del agua y los iones en el radio de corte, tiempos de vida incorrectos de los puentes salinos, propiedades de membrana distorsionadas. La solución estándar es <strong>particle-mesh Ewald</strong> (PME), que divide la suma de Coulomb en una parte de corto alcance evaluada directamente en el espacio real y una parte suave de largo alcance evaluada mediante la transformada rápida de Fourier sobre una grilla en el espacio recíproco, lo que entrega la suma completa sobre la red periódica con un costo de <em>O</em>(<em>N</em> log <em>N</em>).<sup class="c"><a href="#r9">[9]</a>,<a href="#r10">[10]</a></sup> Todas las simulaciones de esta unidad usan PME, y lo mismo debería hacer prácticamente toda simulación de un sistema biomolecular cargado.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s4">
+<h2><span class="num">Sección 4</span>Solvente, condiciones de contorno y colectivos</h2>
+<h3 id="s4-1">4.1 Modelos de solvente</h3>
+<p>Como insiste la clase, ignorar el solvente produce artefactos importantes: sin agua desaparece el efecto hidrofóbico, las cadenas laterales cargadas colapsan unas sobre otras y la proteína se encoge. Hay dos representaciones disponibles.</p>
+<table class="data">
+<thead><tr><th></th><th>Solvente explícito</th><th>Solvente implícito</th></tr></thead>
+<tbody>
+<tr><td>Representación</td><td>Cada molécula de agua y cada ion es una partícula con coordenadas</td><td>Un continuo de constante dieléctrica ≈ 80, con un término de área superficial para la parte no polar (Born generalizado o Poisson–Boltzmann)</td></tr>
+<tr><td>Costo</td><td>Domina el número de átomos: en el sistema de la Sección 6, 4,506 de los 4,810 átomos son solvente</td><td>Despreciable en número de partículas, aunque la evaluación GB/PB en sí no es gratuita</td></tr>
+<tr><td>Captura</td><td>Puentes de hidrógeno con el agua, aguas puente y enterradas, unión específica de iones, el efecto hidrofóbico, la viscosidad del solvente</td><td>El apantallamiento electrostático promedio y la energía libre de solvatación</td></tr>
+<tr><td>No captura</td><td>Nada en principio; requiere cientos de ps de equilibración para que el agua se ordene</td><td>Los contactos mediados por agua (el agua del flap de la Unidad 3 desaparecería), el apareamiento iónico, la viscosidad; por eso la cinética es incorrecta y las barreras conformacionales son demasiado bajas</td></tr>
+<tr><td>Se usa para</td><td>Sitios de unión, canales iónicos, membranas, todo aquello en que importe la estructura del agua</td><td>Barridos conformacionales rápidos, refinamiento de loops, re-puntuación MM/GBSA (Sección 9.2)</td></tr>
+</tbody></table>
+<p>Las proteínas de membrana requieren un tercer componente: una bicapa lipídica, construida con CHARMM-GUI o un equivalente, equilibrada de modo que el área por lípido coincida con la experimental antes de permitir que la proteína se mueva. Las simulaciones de TASK-2 de la clase son de este tipo, e ilustran por qué: las fenestraciones del canal se abren hacia la bicapa, las colas lipídicas penetran en ellas, y nada de ese comportamiento existe en una simulación sin membrana.</p>
+
+<h3 id="s4-2">4.2 Condiciones periódicas de contorno</h3>
+<p>Una gota finita de agua tiene una superficie, y una superficie es un artefacto: el agua en una interfaz con el vacío se ordena de manera distinta al agua en el seno del líquido, y un soluto tenderá a buscar esa interfaz. La solución es hacer el sistema formalmente infinito replicando la celda de simulación en todas las direcciones: las <strong>condiciones periódicas de contorno</strong> (PBC). Un átomo que sale por una cara vuelve a entrar por la opuesta, de modo que el número de partículas se conserva y no existe interfaz.</p>
+<figure>
+<img src="figures/fig02_pbc.png" alt="Izquierda: una celda de simulación central rodeada por sus imágenes periódicas, con una molécula que cruza el borde. Derecha: dos átomos y la copia periódica que muestra la distancia de imagen mínima">
+<figcaption><b>Figura 2. Condiciones periódicas de contorno y convención de imagen mínima.</b> Solo se almacena la celda central; sus imágenes se generan por traslación cuando se evalúa una interacción de pares. Cada par de átomos interactúa con la copia periódica más cercana de su compañero, lo que impone la restricción práctica central: <em>el radio de corte no enlazante no debe superar la mitad de la arista más corta de la caja</em>, o un átomo interactuaría con dos imágenes del mismo compañero. La caja también debe ser lo bastante grande para que el soluto no interactúe con su propia imagen periódica: el mínimo habitual es de 1.0–1.5 nm de solvente de relleno por cada lado, y más para un soluto muy cargado o alargado.</figcaption>
+</figure>
+<p>De esto se desprenden otras dos cuestiones prácticas. Las cajas cúbicas desperdician solvente en las esquinas en el caso de una proteína aproximadamente globular, por lo que para el trabajo de producción se prefieren celdas de <strong>octaedro truncado</strong> o de dodecaedro rómbico, que dan la misma distancia de imagen mínima con ~70 % del volumen. Y el sistema debe <strong>neutralizarse</strong>: PME con una carga neta introduce un fondo neutralizante uniforme cuyo efecto sobre la energética es un artefacto, por lo que se agregan contraiones para llevar la carga total a cero, habitualmente junto con sal suficiente para alcanzar una concentración fisiológica de 0.10–0.15 M.</p>
+
+<h3 id="s4-3">4.3 Termostatos, barostatos y colectivos</h3>
+<p>Integrar las ecuaciones de Newton tal como están escritas conserva la energía y muestrea el colectivo <strong>microcanónico (NVE)</strong>: número de partículas, volumen y energía constantes. Los experimentos de laboratorio no se realizan a energía constante, por lo que las ecuaciones se modifican para muestrear el colectivo de interés.</p>
+<table class="data">
+<thead><tr><th>Colectivo</th><th>Constantes</th><th>Cómo se logra</th><th>Se usa para</th></tr></thead>
+<tbody>
+<tr><td><strong>NVE</strong> (microcanónico)</td><td><em>N</em>, <em>V</em>, <em>E</em></td><td>Integración de Verlet simple, sin acoplamiento</td><td>Evaluar la precisión del integrador y la conservación de la energía (Sección 6.3); rara vez en producción</td></tr>
+<tr><td><strong>NVT</strong> (canónico)</td><td><em>N</em>, <em>V</em>, <em>T</em></td><td>Termostato: reescalamiento de velocidades (Berendsen: rápido, pero no genera el colectivo correcto), reescalamiento estocástico de Bussi–Donadio–Parrinello, Nosé–Hoover (determinista, sistema extendido), Langevin o Andersen (estocásticos)<sup class="c"><a href="#r11">[11]</a>,<a href="#r12">[12]</a></sup></td><td>Calentamiento y primera etapa de equilibración; sistemas en que el volumen debe permanecer fijo</td></tr>
+<tr><td><strong>NPT</strong> (isotérmico–isobárico)</td><td><em>N</em>, <em>P</em>, <em>T</em></td><td>Termostato más un barostato que reescala la caja: Berendsen, Parrinello–Rahman, barostato de Monte Carlo</td><td>El colectivo estándar de producción, porque las condiciones de laboratorio son de temperatura y presión constantes</td></tr>
+</tbody></table>
+<p>Dos advertencias sobre los termostatos son conocimiento estándar en el campo y errores estándar en los trabajos de estudiantes. El termostato y el barostato de Berendsen relajan suavemente hacia el valor objetivo, pero no reproducen las fluctuaciones correctas, por lo que son aceptables para la equilibración y no para la producción. Y aplicar un termostato a un sistema con momento neto o con calentamiento no homogéneo produce el artefacto del "cubo de hielo volador" (flying ice cube), en el que el termostato drena los grados de libertad internos mientras todo el sistema se traslada; eliminar periódicamente el movimiento del centro de masa lo evita.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s5">
+<h2><span class="num">Sección 5</span>Un protocolo de simulación, paso a paso</h2>
+<p>Los seis pasos de la clase, con las decisiones que implica cada uno.</p>
+<ol>
+<li><strong>Preparación del sistema.</strong> Elegir y limpiar la estructura (Unidad 2, Sección 4.4): seleccionar las cadenas y el ensamblaje biológico, modelar los loops faltantes, decidir qué hacer con las aguas cristalográficas, asignar los estados de protonación de His, Asp, Glu, Lys y Cys al pH de la simulación, construir los puentes disulfuro, agregar hidrógenos. Asignar los tipos de átomo, las cargas parciales y la conectividad a partir del campo de fuerza (la <strong>topología</strong>) y las constantes de fuerza asociadas (los <strong>parámetros</strong>). Para un ligando no estándar, los parámetros deben generarse (GAFF2/antechamber, CGenFF, OpenFF) y verificarse: aquí es donde entra la mayoría de los errores de una simulación. Construir la caja, solvatar, neutralizar y agregar sal.</li>
+<li><strong>Minimización.</strong> La estructura experimental se refinó frente a los datos con una función de energía distinta, por lo que bajo el campo de fuerza contiene pequeños choques estéricos que lanzarían a los átomos a velocidades inverosímiles. El método de máxima pendiente (steepest descent) durante unos pocos miles de pasos elimina los peores; después, el gradiente conjugado o L-BFGS convergen de manera más eficiente. La minimización encuentra el mínimo local más cercano, no el global: es un paso de reparación, no de búsqueda. Típicamente, primero se restringe la proteína mientras solo se relaja el solvente, y luego se liberan las restricciones.</li>
+<li><strong>Calentamiento.</strong> Se asignan velocidades a partir de una distribución de Maxwell–Boltzmann a baja temperatura y el sistema se calienta hasta el valor objetivo a lo largo de decenas a cientos de picosegundos, habitualmente con restricciones posicionales sobre el soluto para que el solvente se reorganice alrededor de una estructura fija.</li>
+<li><strong>Equilibración.</strong> Primero NVT para estabilizar la temperatura, luego NPT para estabilizar la densidad y el volumen de la caja, liberando gradualmente las restricciones. El sistema está equilibrado cuando las magnitudes monitoreadas han dejado de derivar (Sección 6.2), no cuando ha transcurrido un tiempo fijo.</li>
+<li><strong>Producción.</strong> La trayectoria que se analizará, ejecutada en el colectivo elegido sin restricciones, guardando coordenadas cada 1–100 ps. Las <em>réplicas</em> independientes con distintas velocidades iniciales son muy preferibles a una sola simulación larga de la misma duración total, porque muestrean puntos de partida independientes y permiten estimar el error.</li>
+<li><strong>Análisis.</strong> Sección 7.</li>
+</ol>
+<div class="box warn"><h4>Qué registrar, siempre</h4>
+<p>Campo de fuerza y versión para la proteína, el ligando, los lípidos y los iones; modelo de agua; tipo de caja y relleno; fuerza iónica e iones neutralizantes; estados de protonación distintos de los predeterminados y cómo se decidieron; radios de corte, método electrostático y espaciado de la grilla; ligaduras y masas de los hidrógenos; paso de integración; termostato y barostato con sus constantes de acoplamiento; la duración de cada etapa; número de réplicas y semillas aleatorias; versión del software. Un artículo sin esta información no es reproducible, y la mayoría de las preguntas que un revisor hace sobre una simulación se responden con esta lista.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s6">
+<h2><span class="num">Sección 6</span>Una simulación ejecutada para este documento</h2>
+<h3 id="s6-1">6.1 Sistema y protocolo</h3>
+<p>Para hacer concreto el protocolo, se realizó una simulación completa para este documento con <strong>OpenMM 8.6.1</strong>.<sup class="c"><a href="#r13">[13]</a></sup> El sistema es la miniproteína <strong>Trp-cage</strong> TC5b (PDB <code>1L2Y</code>, RMN), un péptido diseñado de 20 residuos<sup class="c"><a href="#r30">[30]</a></sup> que se pliega de forma autónoma en microsegundos y es el sistema de prueba estándar de la literatura de simulación del plegamiento. Su pequeño tamaño es lo que permite reproducir un protocolo completo en un computador portátil; todo lo que sigue se ejecuta en CPU en unas pocas horas.</p>
+<table class="data">
+<thead><tr><th>Elección</th><th>Valor</th><th>Razón</th></tr></thead>
+<tbody>
+<tr><td>Estructura</td><td>PDB <code>1L2Y</code>, modelo 1, hidrógenos agregados a pH 7 con PDBFixer</td><td>Pequeña, bien caracterizada, determinada experimentalmente</td></tr>
+<tr><td>Campo de fuerza</td><td>AMBER ff14SB para la proteína + agua TIP3P-FB</td><td>Combinación estándar y validada</td></tr>
+<tr><td>Caja y solvente</td><td>Cúbica, relleno de 1.0 nm → arista de 3.7498 nm; 4,810 átomos en total, de los cuales 4,506 son solvente; NaCl 0.15 M, neutralizada</td><td>Relleno ≥ radio de corte; sal fisiológica</td></tr>
+<tr><td>No enlazantes</td><td>PME, radio de corte en el espacio real de 1.0 nm</td><td>La electrostática no puede truncarse (Sección 3.3)</td></tr>
+<tr><td>Ligaduras</td><td>Enlaces con hidrógeno restringidos, agua rígida, masa del hidrógeno 1.5 u</td><td>Permite un paso de integración de 4 fs (Sección 6.3)</td></tr>
+<tr><td>Integrador</td><td>Langevin middle, 300 K, fricción 1 ps⁻¹, δ<em>t</em> = 4 fs</td><td>Termostatado, estable, estándar</td></tr>
+<tr><td>Protocolo</td><td>Minimización → 200 ps NVT → 500 ps NPT (barostato de Monte Carlo, 1 bar) → <strong>6 ns</strong> de producción NPT, frames cada 10 ps</td><td>Los seis pasos de la Sección 5</td></tr>
+<tr><td>Rendimiento</td><td>89.7 ns/día en 10 hilos de CPU</td><td>Como referencia al planificar una simulación</td></tr>
+</tbody></table>
+<p>La minimización por sí sola redujo la energía potencial de −15,893.0 a −91,585.8 kJ mol⁻¹, un cambio de −75,692.8 kJ mol⁻¹, casi todo debido a la eliminación de choques entre los hidrógenos recién agregados y el agua recién ubicada. Ese número es una calibración útil: es mucho mayor que cualquier diferencia de energía que más adelante se le pedirá resolver a la simulación, y por eso la minimización es obligatoria y nunca se interpretan las energías potenciales absolutas.</p>
+
+<h3 id="s6-2">6.2 Equilibración: saber cuándo empezar a medir</h3>
+<figure>
+<img src="figures/fig03_equilibration.png" alt="Tres paneles que muestran la temperatura durante NVT, la densidad durante NPT y la energía potencial durante NPT, cada una convergiendo">
+<figcaption><b>Figura 3. Equilibración del sistema Trp-cage (ejecutada para este documento).</b> Izquierda: el termostato de Langevin lleva el sistema a 300 K en pocos picosegundos y lo mantiene allí, con las fluctuaciones esperables para 4,810 átomos (promedio de los últimos 20 ps: 302.0 K). Centro: bajo el barostato, la caja se contrae y la densidad se estabiliza en 1.0245 g mL⁻¹, cerca del valor esperado para agua TIP3P con proteína y sal. Derecha: la energía potencial alcanza una meseta; la deriva residual en los últimos 300 ps es de −592 kJ mol⁻¹ ns⁻¹, cuatro órdenes de magnitud menor que la energía liberada durante la minimización. Estos tres gráficos —temperatura, densidad y energía— son la evidencia mínima de que un sistema está equilibrado, y deberían acompañar a toda simulación que se informe.</figcaption>
+</figure>
+<p>La equilibración es una propiedad del observable, no del reloj. La temperatura se equilibra en picosegundos, la densidad en decenas de picosegundos, la capa de solvatación en cientos, y una distribución de rotámeros de cadenas laterales o la conformación de un loop pueden no equilibrarse en absoluto dentro del alcance de la simulación. La práctica honesta es graficar la magnitud de la que depende el estudio y descartar el tramo en que deriva, e indicar en los métodos cuánto se descartó.</p>
+
+<h3 id="s6-3">6.3 Conservación de la energía, paso de integración y ligaduras</h3>
+<p>El segundo experimento realizado para este documento mide directamente lo que afirma la Sección 2.3. A partir del sistema equilibrado, se ejecutaron seis simulaciones cortas en el colectivo <strong>NVE</strong> —Verlet simple, sin termostato, de modo que cualquier cambio en la energía total sea puro error de integración— con distintos pasos de integración y configuraciones de ligaduras. Cada sistema se construyó, minimizó y termalizó durante 100 ps <em>con su propia configuración de ligaduras y masas</em>, y luego se integró con Verlet simple durante 10 ps de estabilización más 50 ps de medición; la deriva es la pendiente de una regresión lineal de la energía total en la ventana de medición, expresada por átomo, que es la forma estándar de comparar sistemas de distinto tamaño.</p>
+<table class="data">
+<thead><tr><th>Paso de integración</th><th>Ligaduras</th><th>Masa del hidrógeno</th><th>Deriva<br>(kJ mol⁻¹ ns⁻¹ átomo⁻¹)</th><th>Deriva<br>(kJ mol⁻¹ ns⁻¹)</th><th>Fluctuación RMS de <em>E</em><sub>tot</sub><br>(kJ mol⁻¹)</th><th>Veredicto</th></tr></thead>
+<tbody>
+<tr><td>1 fs</td><td>ninguna (todos los enlaces flexibles)</td><td>1.008 u</td><td>−0.0357</td><td>−172</td><td>9.5</td><td>no aceptable</td></tr>
+<tr><td>2 fs</td><td>ninguna (todos los enlaces flexibles)</td><td>1.008 u</td><td>−0.0890</td><td>−428</td><td>35.8</td><td>no aceptable</td></tr>
+<tr><td>2 fs</td><td>enlaces con hidrógeno + agua rígida</td><td>1.008 u</td><td>−0.0022</td><td>−11</td><td>2.9</td><td>aceptable</td></tr>
+<tr><td>4 fs</td><td>enlaces con hidrógeno + agua rígida</td><td>1.008 u</td><td>+0.1683</td><td>+809</td><td>17.2</td><td>no aceptable</td></tr>
+<tr><td>4 fs</td><td>enlaces con hidrógeno + agua rígida</td><td>1.5 u</td><td>−0.0112</td><td>−54</td><td>10.5</td><td>aceptable</td></tr>
+<tr><td>5 fs</td><td>enlaces con hidrógeno + agua rígida</td><td>1.5 u</td><td>+0.4987</td><td>+2399</td><td>39.0</td><td>no aceptable</td></tr>
+</tbody></table>
+<p class="note">Una deriva de 0.01 kJ mol⁻¹ ns⁻¹ átomo⁻¹ es una tolerancia citada con frecuencia; a esa tasa, la caja de 4,810 átomos gana o pierde unos 48 kJ mol⁻¹ por nanosegundo, muy por debajo de la energía térmica del sistema (≈ 60,000 kJ mol⁻¹ a 300 K). Se informa la columna de fluctuación RMS porque una fluctuación grande con una pendiente pequeña también indica una integración inestable.</p>
+<figure>
+<img src="figures/fig04_drift.png" alt="Energía total en función del tiempo para seis simulaciones NVE con distintos pasos de integración y ligaduras, y un gráfico de barras de las tasas de deriva por átomo resultantes">
+<figcaption><b>Figura 4. Conservación de la energía en el colectivo NVE en función del paso de integración y de las ligaduras (ejecutado para este documento).</b> <b>(a)</b> Energía total relativa a su valor inicial durante 50 ps de dinámica de Verlet pura para las seis configuraciones de la tabla. Las dos simulaciones sin ligaduras (gris) muestran las excursiones grandes y ruidosas de un sistema cuyo movimiento más rápido —el estiramiento O–H y N–H, de período ≈ 10 fs— se muestrea con apenas un puñado de pasos por período. Restringir los enlaces con hidrógeno a 2 fs (verde) da una curva casi perfectamente plana. Llevar ese mismo sistema a 4 fs (naranjo) produce una pendiente ascendente clara, porque el siguiente movimiento más rápido, la flexión angular que involucra hidrógeno, queda ahora submuestreado; redistribuir la masa de los hidrógenos a 1.5 u (azul) hace más lento ese movimiento y restablece la conservación a 4 fs. A 5 fs (morado), incluso el sistema con masas redistribuidas se calienta de forma sostenida. <b>(b)</b> La misma información expresada como tasa de deriva por átomo. Nótese que el orden no es simplemente monótono con el paso de integración: lo que importa es la razón entre el paso de integración y el período del movimiento más rápido que sigue libre, y por eso una simulación con ligaduras a 2 fs conserva mejor la energía que una sin ligaduras a 1 fs. Protocolo: cada sistema se construyó con su propia configuración de ligaduras y masas, se minimizó, se termalizó durante 100 ps con un integrador de Langevin <em>en ese mismo sistema</em> y luego se cambió a Verlet simple con un período de estabilización de 10 ps antes de 50 ps de medición; la deriva es la pendiente de una regresión lineal de <em>E</em><sub>tot</sub> en la ventana de medición. Termalizar cada sistema en su propia configuración del campo de fuerza es importante: un primer intento que iniciaba todas las simulaciones NVE desde un único estado equilibrado con ligaduras dio derivas no monótonas y sin sentido, porque las vibraciones de hidrógeno recién liberadas absorbían energía de los demás grados de libertad mientras se iban poblando.</figcaption>
+</figure>
+<div class="box key"><h4>Lo que muestra el experimento</h4><ul>
+<li>El paso de integración está limitado por el <em>movimiento más rápido que sigue libre</em>. Congelar los enlaces con hidrógeno elimina ese movimiento y permite duplicar el paso; redistribuir la masa de los hidrógenos hace más lentos los siguientes movimientos más rápidos y permite duplicarlo otra vez.</li>
+<li>La deriva de energía es el diagnóstico. Una simulación de producción con termostato la oculta —el termostato absorbe el error como calor—, por lo que la configuración de integración debe validarse en NVE, que es la principal razón por la que ese colectivo todavía se usa.</li>
+<li>Estas ventajas no son gratuitas. Restringir los enlaces con hidrógeno elimina esas vibraciones del colectivo (de todos modos están congeladas mecánico-cuánticamente a 300 K, así que esto es una mejora más que una aproximación); la redistribución de la masa de los hidrógenos cambia la <em>dinámica</em> de los hidrógenos, por lo que las magnitudes que dependen del movimiento de los hidrógenos —espectros vibracionales, efectos isotópicos cinéticos, tiempos de correlación muy rápidos— no deben calcularse a partir de una trayectoria de ese tipo.</li>
+</ul></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s7">
+<h2><span class="num">Sección 7</span>Análisis de una trayectoria</h2>
+<p>Una trayectoria de 6 ns guardada cada 10 ps tiene 600 frames de 4,810 átomos: unos 35 MB en este caso, y habitualmente cientos de gigabytes para un sistema de producción. El análisis la reduce a un puñado de series de tiempo y distribuciones. Todas las magnitudes que siguen se calcularon a partir de la simulación de producción con MDTraj.<sup class="c"><a href="#r14">[14]</a></sup></p>
+
+<h3 id="s7-1">7.1 Desviación cuadrática media (RMSD)</h3>
+<div class="eq">RMSD(<em>t</em>) = √( (1/<em>N</em>) Σ<sub><em>i</em>=1</sub><sup><em>N</em></sup> |<strong>r</strong><sub><em>i</em></sub>(<em>t</em>) − <strong>r</strong><sub><em>i</em></sub><sup>ref</sup>|² )
+<span class="where">calculada tras eliminar la traslación y la rotación globales mediante superposición por mínimos cuadrados sobre la referencia (Unidad 2, Sección 8.1). La elección del conjunto de átomos importa tanto como el número en sí: el RMSD del esqueleto o de los Cα informa sobre el plegamiento, el RMSD de todos los átomos incluye las cadenas laterales, y el RMSD del ligando tras superponer la <em>proteína</em> indica si una pose de docking se mantiene (Unidad 3).</span></div>
+<p>El RMSD respecto de la estructura inicial responde una sola pregunta: ¿se ha mantenido la estructura cerca de donde comenzó? Una curva que sube y luego alcanza una meseta indica relajación hacia una cuenca cercana, que es el comportamiento normal y esperado. Una curva que sigue subiendo significa que la estructura todavía se está alejando, de modo que o la simulación no está equilibrada o el modelo era incorrecto. Una curva con un escalón indica una transición entre estados conformacionales, que suele ser el resultado interesante.</p>
+
+<h3 id="s7-2">7.2 Fluctuación cuadrática media (RMSF)</h3>
+<div class="eq">RMSF<sub><em>i</em></sub> = √( (1/<em>T</em>) Σ<sub><em>t</em>=1</sub><sup><em>T</em></sup> |<strong>r</strong><sub><em>i</em></sub>(<em>t</em>) − ⟨<strong>r</strong><sub><em>i</em></sub>⟩|² )
+<span class="where">El promedio es temporal para cada átomo o residuo, de modo que el RMSF es una función del número de residuo y no del tiempo: indica <em>dónde</em> se mueve la proteína, así como el RMSD indica <em>cuánto</em>. Es directamente comparable con los factores B cristalográficos mediante B = (8π²/3)·RMSF².</span></div>
+
+<figure>
+<img src="figures/fig05_analysis.png" alt="Cuatro paneles: RMSD en el tiempo, RMSF por residuo, radio de giro y fracción de contactos nativos para la trayectoria de Trp-cage">
+<figcaption><b>Figura 5. Análisis estándar de la trayectoria de 6 ns de Trp-cage (calculado para este documento).</b> <b>(a)</b> RMSD del esqueleto respecto del primer frame: un aumento durante el primer nanosegundo mientras el modelo de RMN se relaja en el campo de fuerza, y luego una meseta. Promedio en la segunda mitad 1.86 Å, máximo 2.68 Å, frame final 1.59 Å: el plegamiento se conserva. <b>(b)</b> RMSF de los Cα por residuo tras la superposición: 8.5 Å en el residuo 1, el extremo N-terminal libre, frente a un promedio de 1.26 Å y un mínimo de 0.54 Å en la hélice. La banda sombreada marca la hélice α, residuos 2–13. Este es el perfil que muestra toda proteína plegada: extremos y loops móviles, un núcleo rígido de estructura secundaria. <b>(c)</b> Radio de giro, 7.63 ± 0.12 Å, plano durante toda la simulación: la miniproteína ni se despliega ni colapsa en esta escala de tiempo, como se espera a 6 ns de un inicio plegado. <b>(d)</b> Estructura secundaria asignada por residuo y por frame (DSSP<sup class="c"><a href="#r34">[34]</a></sup>). La hélice está presente en el 45 % de todos los pares residuo–frame y es continua en los residuos 2–13, mientras que la mitad C-terminal fluctúa entre ovillo y giros cortos. La fracción de contactos nativos conservados<sup class="c"><a href="#r35">[35]</a></sup> (145 contactos en la referencia) promedia 0.62 en la segunda mitad y nunca cae por debajo de 0.34, lo que confirma que las excursiones visibles en (a) son movimientos de "respiración" y no un desplegamiento parcial.</figcaption>
+</figure>
+
+<h3 id="s7-3">7.3 Otros observables estándar</h3>
+<table class="data">
+<thead><tr><th>Observable</th><th>Qué mide</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td><strong>Radio de giro</strong> R<sub>g</sub></td><td>Compacidad: √(Σ m<sub>i</sub>|r<sub>i</sub> − r<sub>cm</sub>|²/Σ m<sub>i</sub>)</td><td>Plegamiento/desplegamiento, apertura de dominios; comparable con SAXS</td></tr>
+<tr><td><strong>Estructura secundaria</strong> en el tiempo</td><td>Asignación DSSP por residuo y por frame</td><td>Desplegamiento local, deshilachado de hélices; los gráficos por residuo de la clase de "estructura secundaria a lo largo de la simulación"</td></tr>
+<tr><td><strong>Puentes de hidrógeno</strong></td><td>Número y ocupación (fracción de frames en que existe un puente dado), según criterios geométricos: donador–aceptor &lt; 3.5 Å y D–H···A &gt; 120–150°</td><td>Persistencia de interacciones; estabilidad de una pose predicha</td></tr>
+<tr><td><strong>Huellas de interacción</strong></td><td>Fracción de frames en que cada residuo establece cada tipo de interacción con un ligando (hidrofóbica, puente de hidrógeno, iónica, puente de agua)</td><td>Los histogramas de contactos proteína–ligando de la clase; la forma estándar de informar un complejo simulado</td></tr>
+<tr><td><strong>Distancias, ángulos, diedros</strong></td><td>Cualquier variable geométrica definida por el usuario, p. ej. el ancho de una fenestración de un canal o el χ<sub>1</sub> de una cadena lateral</td><td>Preguntas mecanísticas; coordenadas de reacción para muestreo mejorado</td></tr>
+<tr><td><strong>Área superficial accesible al solvente</strong></td><td>Área alcanzable por una sonda de 1.4 Å, dividida en polar y no polar</td><td>Ocultamiento por la unión; dato de entrada para MM/GBSA (Sección 9.2)</td></tr>
+<tr><td><strong>Análisis de componentes principales</strong></td><td>Vectores propios de la matriz de covarianza de los Cα: los movimientos colectivos de mayor amplitud</td><td>Describir una transición conformacional en dos o tres coordenadas; construir paisajes de energía libre</td></tr>
+<tr><td><strong>Agrupamiento (clustering)</strong></td><td>Agrupar frames según su RMSD mutuo</td><td>Extraer estructuras representativas para docking (Unidad 3) o para figuras</td></tr>
+</tbody></table>
+
+<h3 id="s7-4">7.4 Convergencia y muestreo: la pregunta que suele quedar sin respuesta</h3>
+<p>Cada número calculado a partir de una trayectoria es un promedio sobre los estados que la trayectoria visitó, y la hipótesis ergódica de la Sección 1 solo se aproxima si esos estados son representativos. Hay tres verificaciones estándar que se omiten de forma rutinaria.</p>
+<ul>
+<li><strong>Promedio por bloques (block averaging).</strong> Dividir la trayectoria en bloques, calcular el observable en cada uno y observar la dispersión. Si los bloques no concuerdan, la simulación es demasiado corta para ese observable, sea cual sea el aspecto del gráfico de RMSD.</li>
+<li><strong>Réplicas independientes.</strong> Varias simulaciones cortas a partir de distintas velocidades iniciales exploran más del espacio de fases que una simulación larga del mismo costo total, y la dispersión entre ellas es la única barra de error honesta. Informar una sola trayectoria sin réplicas es informar un resultado sin incertidumbre.</li>
+<li><strong>Promedios acumulados inversos o análisis con desfase temporal</strong>, para mostrar que el promedio ha dejado de cambiar a medida que se agregan más datos.</li>
+</ul>
+<p>Y la limitación que ningún grado de cuidado elimina: una simulación de 6 ns no puede informar sobre un proceso que tarda microsegundos. La Figura 1 ubica los movimientos de una proteína en el eje temporal; una simulación muestrea exhaustivamente las vibraciones de enlace y las rotaciones de las cadenas laterales superficiales, parcialmente los movimientos de loops, y en absoluto las transiciones alostéricas o el plegamiento. Las afirmaciones deben ajustarse al muestreo, y cuando el proceso de interés es más lento que la simulación, la respuesta correcta es un método de muestreo mejorado (Sección 9.4), no una conclusión más extensa.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s8">
+<h2><span class="num">Sección 8</span>Limitaciones de la dinámica molecular clásica</h2>
+<div class="box warn"><h4>Las cinco que más importan</h4>
+<ol>
+<li><strong>Escala de tiempo.</strong> Pasos de 2–4 fs y 10⁶–10⁹ pasos por simulación dejan los procesos de microsegundos a milisegundos —el plegamiento, la mayoría de las transiciones alostéricas, la disociación lenta de ligandos— fuera del alcance de la fuerza bruta; las trayectorias en la escala de milisegundos que resolvieron el plegamiento de una docena de proteínas pequeñas requirieron hardware construido para ese fin.<sup class="c"><a href="#r31">[31]</a></sup> Esto se aborda mediante hardware (GPU, Anton), computación distribuida y, sobre todo, muestreo mejorado.</li>
+<li><strong>Enlaces fijos.</strong> La topología se establece al inicio. Los enlaces covalentes no pueden romperse ni formarse, por lo que no se puede simular ninguna reacción química, ningún intercambio de disulfuros ni ninguna inhibición covalente. Los procesos reactivos requieren mecánica cuántica (QM/MM) o campos de fuerza reactivos.</li>
+<li><strong>Protonación fija.</strong> Cada grupo ionizable mantiene durante toda la simulación el estado asignado en la preparación, lo que es incorrecto para cualquier proceso acoplado a transferencia de protones: el ciclo catalítico de una enzima, la apertura dependiente del pH, la díada de Asp de la proteasa del VIH (Unidad 3). El ejemplo de TASK-2 de la clase aborda esto directamente simulando por separado ambos estados de protonación de Lys245 y comparándolos; la MD a pH constante es la respuesta más sofisticada.</li>
+<li><strong>Error del campo de fuerza.</strong> Cargas puntuales fijas sin polarización, dispersión aproximada, parámetros de torsión ajustados a moléculas pequeñas y modelos de agua con una viscosidad incorrecta. Los campos de fuerza clásicos son notablemente buenos para reproducir la estructura del estado plegado y siguen siendo más débiles para proteínas desordenadas, interfaces con alta carga, sitios metálicos y ligandos inusuales.</li>
+<li><strong>Muestreo e interpretación.</strong> Una sola trayectoria es una muestra de un proceso estocástico. El error más común en la literatura es tratar un evento observado una vez en una trayectoria como un mecanismo.</li>
+</ol></div>
+<p>Ninguna de estas limitaciones invalida el método; definen su dominio. Una simulación es un experimento sobre un modelo, y su resultado es tan bueno como el modelo y el muestreo, que es exactamente el planteamiento del laboratorio in silico introducido en la Unidad 2, Sección 1.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s9">
+<h2><span class="num">Sección 9</span>Energías libres y afinidad de unión</h2>
+<h3 id="s9-1">9.1 La jerarquía de métodos</h3>
+<p>La Unidad 3 terminó con la conclusión de que los puntajes de docking son clasificadores, no afinidades. La dinámica molecular proporciona los métodos que sí estiman la energía libre de unión, con un costo que aumenta abruptamente con la precisión.</p>
+<table class="data">
+<thead><tr><th>Método</th><th>Costo por compuesto</th><th>Error típico</th><th>Alcance</th></tr></thead>
+<tbody>
+<tr><td>Puntaje de docking (Unidad 3)</td><td>Segundos</td><td>2–3 kcal mol⁻¹; correlación de ordenamiento r ≈ 0.4–0.6</td><td>Cribado de 10⁶–10⁹ moléculas</td></tr>
+<tr><td><strong>MM/GBSA</strong></td><td>Minutos a horas</td><td>1.5–3 kcal mol⁻¹ en términos absolutos; útil para el ordenamiento <em>relativo</em> dentro de una serie</td><td>Re-puntuación de 10²–10³ poses</td></tr>
+<tr><td><strong>MM/PBSA</strong></td><td>Horas</td><td>Similar; solvatación más rigurosa, más lento</td><td>Igual que el anterior</td></tr>
+<tr><td><strong>FEP / TI relativos</strong></td><td>Horas a días por perturbación (GPU)</td><td><strong>0.8–1.2 kcal mol⁻¹</strong> para series congenéricas</td><td>Optimización de compuestos líder (lead optimisation): qué análogo sintetizar a continuación</td></tr>
+<tr><td><strong>FEP de unión absoluta</strong></td><td>Días</td><td>1–2 kcal mol⁻¹, según el protocolo</td><td>Ligandos químicamente disímiles, hits de fragmentos</td></tr>
+<tr><td><strong>PMF / umbrella sampling</strong></td><td>Días</td><td>Depende de la coordenada de reacción</td><td>Rutas: permeación, disociación, transiciones conformacionales</td></tr>
+</tbody></table>
+
+<h3 id="s9-2">9.2 MM/PBSA y MM/GBSA</h3>
+<p>Son métodos de punto final (end-point): estiman la energía libre de unión a partir del complejo, el receptor y el ligando sin simular el camino entre ellos.<sup class="c"><a href="#r15">[15]</a>,<a href="#r16">[16]</a></sup></p>
+<div class="eq">ΔG<sub>bind</sub> = ⟨G<sub>complex</sub>⟩ − ⟨G<sub>receptor</sub>⟩ − ⟨G<sub>ligand</sub>⟩,&nbsp;&nbsp; G = E<sub>MM</sub> + G<sub>solv,polar</sub> + G<sub>solv,nonpolar</sub> − TS
+<span class="where">E<sub>MM</sub> = energía enlazante + de van der Waals + electrostática del campo de fuerza; G<sub>solv,polar</sub> a partir de la ecuación de Poisson–Boltzmann (PBSA) o de la aproximación de Born generalizado, más rápida (GBSA); G<sub>solv,nonpolar</sub> ≈ γ·SASA + b; −TS es la entropía del soluto, estimada mediante análisis de modos normales o cuasi-armónico —costoso, ruidoso y, por lo tanto, omitido con frecuencia—, en cuyo caso la magnitud informada es un puntaje <em>de tipo entálpico</em> y no una energía libre.</span></div>
+<p>Los promedios se toman sobre frames de una única trayectoria del complejo (el protocolo de "trayectoria única", que cancela la energía interna de los estados no unidos y reduce enormemente el ruido). El atractivo del método es que cuesta una simulación corta por compuesto; sus debilidades son una fuerte dependencia de la constante dieléctrica interior elegida, el descuido del agua explícita, el problema de la entropía y una tendencia bien documentada a sobrestimar la contribución de los grupos cargados. Usado para ordenar una serie congenérica, aporta valor por sobre un puntaje de docking; usado para informar un ΔG absoluto en kcal mol⁻¹, exagera lo que puede hacer.</p>
+
+<h3 id="s9-3">9.3 Métodos alquímicos de energía libre</h3>
+<p>El enfoque riguroso calcula <em>diferencias</em> de energía libre a lo largo de un camino no físico ("alquímico") en el que un ligando se transforma gradualmente en otro, o un ligando se desacopla gradualmente de su entorno. Un parámetro de acoplamiento λ recorre de 0 a 1 una serie de ventanas, cada una simulada, y las energías libres se combinan mediante <strong>integración termodinámica</strong> (integrando ⟨∂U/∂λ⟩ sobre λ), <strong>perturbación de energía libre</strong> (el promedio exponencial de Zwanzig), o la <strong>razón de aceptación de Bennett</strong> (Bennett acceptance ratio) y su extensión multiestado MBAR, que es el estimador estadísticamente óptimo.<sup class="c"><a href="#r17">[17]</a>,<a href="#r18">[18]</a></sup> Para un cálculo <em>relativo</em>, el ciclo termodinámico se cierra: ΔΔG<sub>bind</sub> = ΔG<sub>bound</sub>(A→B) − ΔG<sub>free</sub>(A→B), de modo que solo se simulan los dos tramos alquímicos y los dos eventos físicos de unión nunca se calculan directamente.</p>
+<p>En casos favorables, estos métodos tienen una precisión de alrededor de 1 kcal mol⁻¹ —un factor de cinco en afinidad—, lo que basta para decidir qué análogo sintetizar, y hoy se usan de forma rutinaria en la industria para la optimización de compuestos líder.<sup class="c"><a href="#r19">[19]</a></sup> Sus requisitos son, en consecuencia, estrictos: un modo de unión confiable (de la Unidad 3, idealmente confirmado por una estructura), ligandos lo bastante relacionados como para mutarse unos en otros, asignaciones correctas de protonación y tautómeros, muestreo adecuado en cada ventana λ y un análisis cuidadoso del error.</p>
+
+<h3 id="s9-4">9.4 Muestreo mejorado y potenciales de fuerza media</h3>
+<p>Cuando el proceso de interés es más lento que la simulación, el muestreo debe sesgarse. El <strong>muestreo de paraguas</strong> (umbrella sampling) restringe una coordenada de reacción elegida —una distancia, un ángulo, una profundidad a lo largo de un canal— en una serie de ventanas superpuestas, y los histogramas sesgados se recombinan en un <strong>potencial de fuerza media</strong> (PMF) no sesgado mediante WHAM o MBAR.<sup class="c"><a href="#r20">[20]</a></sup> Las figuras de TASK-2 de la clase son exactamente esto: un PMF de la cadena lateral de una lisina a lo largo de la normal a la membrana para cada estado de protonación, que muestra barreras de 0.6–2.3 kcal mol⁻¹ según la carga y la conformación del canal. La <strong>metadinámica</strong>, en cambio, deposita un sesgo dependiente de la historia que llena los pozos ya visitados, de modo que el sistema es empujado fuera de ellos y el sesgo acumulado converge al negativo de la superficie de energía libre;<sup class="c"><a href="#r21">[21]</a></sup> el <strong>intercambio de réplicas</strong> (replica exchange, parallel tempering) ejecuta copias a distintas temperaturas y las intercambia periódicamente, de modo que las réplicas de alta temperatura cruzan barreras y las de baja temperatura muestrean el colectivo canónico;<sup class="c"><a href="#r22">[22]</a></sup> la <strong>MD acelerada y la MD acelerada gaussiana</strong> aplanan el potencial sin requerir una coordenada de reacción. El costo común es interpretativo: todos los métodos, excepto el intercambio de réplicas, requieren que el usuario elija variables colectivas, y un PMF a lo largo de una coordenada mal elegida converge de manera impecable a la respuesta equivocada.</p>
+<div class="box bridge"><h4>Cerrando el ciclo del módulo</h4>
+<p>La cadena de este módulo está ahora completa. Una secuencia (Unidad 1) entrega una estructura o un alineamiento con un templado (Unidad 2); la estructura entrega un sitio de unión en el que se acoplan ligandos mediante docking (Unidad 3); el docking y los modelos basados en ligandos proponen qué moléculas sintetizar (Unidad 4); y la dinámica molecular pone a prueba si el complejo propuesto es estable, si el sitio se comporta como sugería la imagen estática y cuál es la energía libre de unión (Unidad 5). Cada paso hereda los errores de los anteriores, y por eso el énfasis práctico ha sido siempre el mismo: explicitar lo que se supuso, validar frente a algo externo e informar la incertidumbre.</p></div>
+</section>
+
+<!-- ============================================================ -->
+<section id="s10">
+<h2><span class="num">Sección 10</span>Software y recursos</h2>
+<table class="data">
+<thead><tr><th>Paquete</th><th>Licencia</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td><strong>GROMACS</strong><sup class="c"><a href="#r23">[23]</a></sup></td><td>Libre, LGPL</td><td>El mejor rendimiento en CPU, excelente soporte de GPU; el paquete más usado en la academia; amplias herramientas de análisis</td></tr>
+<tr><td><strong>AMBER / AmberTools</strong><sup class="c"><a href="#r24">[24]</a></sup></td><td>AmberTools libre; pmemd comercial</td><td>Implementación de referencia de los campos de fuerza AMBER; sólidas herramientas de energía libre y MM/PBSA (<code>MMPBSA.py</code>)</td></tr>
+<tr><td><strong>NAMD</strong><sup class="c"><a href="#r25">[25]</a></sup></td><td>Gratuito para uso académico</td><td>Escala a sistemas muy grandes; integrado con VMD; sólido en muestreo mejorado (Colvars)</td></tr>
+<tr><td><strong>OpenMM</strong><sup class="c"><a href="#r13">[13]</a></sup></td><td>Libre, MIT</td><td>API de Python, usado para las simulaciones de este documento; ideal para la docencia y para fuerzas personalizadas</td></tr>
+<tr><td><strong>CHARMM / Desmond / Schrödinger</strong></td><td>Comercial o mixto</td><td>Desmond se distribuye gratuitamente para uso académico y es el motor detrás de los gráficos de huellas de interacción de la clase</td></tr>
+<tr><td><strong>PDBFixer · CHARMM-GUI · PACKMOL</strong><sup class="c"><a href="#r26">[26]</a></sup></td><td>Libre / servicio web gratuito</td><td>Preparación del sistema: átomos faltantes, membranas, ensamblajes complejos</td></tr>
+<tr><td><strong>MDTraj · MDAnalysis · CPPTRAJ</strong><sup class="c"><a href="#r14">[14]</a>,<a href="#r27">[27]</a>,<a href="#r28">[28]</a></sup></td><td>Libre</td><td>Análisis de trayectorias en Python (los dos primeros) y en la suite AMBER (el tercero)</td></tr>
+<tr><td><strong>VMD · PyMOL · ChimeraX</strong></td><td>Gratuito para uso académico</td><td>Visualización y creación de películas; VMD es el estándar para trayectorias</td></tr>
+<tr><td><strong>PLUMED</strong><sup class="c"><a href="#r29">[29]</a></sup></td><td>Libre</td><td>Muestreo mejorado y variables colectivas, como complemento (plug-in) para todos los motores anteriores</td></tr>
+</tbody></table>
+<p>El hardware importa aquí más que en cualquier otra parte del módulo. Una GPU moderna de consumo ejecuta un sistema de 100,000 átomos a 50–200 ns/día con GROMACS u OpenMM, dos a tres órdenes de magnitud más rápido que la simulación en CPU informada en la Sección 6; las máquinas de propósito específico Anton alcanzan los milisegundos. Para los trabajos del curso, un sistema pequeño en un notebook con GPU (Google Colab, o una estación de trabajo del laboratorio) basta para reproducir todo lo de esta unidad.</p>
+<p>Conviene leer dos documentos de la comunidad antes de un primer proyecto independiente, porque la mayoría de los errores encontrados en trabajos de simulación publicados son errores de protocolo y no de física: las guías de buenas prácticas del <em>Living Journal of Computational Molecular Science</em> sobre los fundamentos de la simulación molecular<sup class="c"><a href="#r37">[37]</a></sup> y sobre la cuantificación de la incertidumbre y de la calidad del muestreo<sup class="c"><a href="#r36">[36]</a></sup>. Ambas son gratuitas, breves y están escritas como listas de verificación; los elementos de reporte que enumeran —campo de fuerza y modelo de agua con sus versiones, estados de protonación y cómo se eligieron, tamaño de la caja y concentración de iones, duración de la equilibración y qué se descartó, número y duración de las réplicas independientes, y la versión del software— son exactamente lo que debe contener una sección de métodos.</p>
+</section>
+
+<!-- ============================================================ -->
+<section id="s11">
+<h2><span class="num">Sección 11</span>Trabajo práctico</h2>
+<h3>11.1 La simulación completa de la Sección 6</h3>
+<p>Instalar con <code>conda install -c conda-forge openmm pdbfixer mdtraj</code>. El script siguiente es el que produjo las figuras 3–5; con diez hilos de CPU tarda unas dos horas, y minutos en una GPU (reemplace el nombre de la plataforma por <code>CUDA</code> u <code>OpenCL</code>).</p>
+<pre><code>from openmm.app import *
+from openmm import *
+from openmm.unit import *
+from pdbfixer import PDBFixer
+import urllib.request
+
+# ---- 1. Preparation: structure, hydrogens, box, ions ----
+urllib.request.urlretrieve("https://files.rcsb.org/download/1L2Y.pdb", "1L2Y.pdb")
+fixer = PDBFixer(filename="1L2Y.pdb")
+fixer.findMissingResidues(); fixer.findMissingAtoms(); fixer.addMissingAtoms()
+fixer.addMissingHydrogens(7.0)                       # protonation at pH 7
+
+ff  = ForceField("amber14-all.xml", "amber14/tip3pfb.xml")
+mod = Modeller(fixer.topology, fixer.positions)
+mod.addSolvent(ff, model="tip3p", padding=1.0*nanometer,
+               ionicStrength=0.15*molar, neutralize=True)
+print(mod.topology.getNumAtoms(), "atoms")
+
+system = ff.createSystem(mod.topology, nonbondedMethod=PME,
+                         nonbondedCutoff=1.0*nanometer,
+                         constraints=HBonds, rigidWater=True,
+                         hydrogenMass=1.5*amu)       # allows a 4 fs timestep
+
+# ---- 2. Minimisation ----
+integrator = LangevinMiddleIntegrator(300*kelvin, 1/picosecond, 0.004*picoseconds)
+sim = Simulation(mod.topology, system, integrator,
+                 Platform.getPlatformByName("CPU"), {"Threads": "10"})
+sim.context.setPositions(mod.positions)
+print("E before:", sim.context.getState(getEnergy=True).getPotentialEnergy())
+sim.minimizeEnergy(maxIterations=5000)
+print("E after :", sim.context.getState(getEnergy=True).getPotentialEnergy())
+
+# ---- 3-4. Heating and equilibration: NVT then NPT ----
+sim.context.setVelocitiesToTemperature(300*kelvin, 1234)
+sim.reporters.append(StateDataReporter("nvt.csv", 250, step=True, time=True,
+                     temperature=True, potentialEnergy=True, totalEnergy=True))
+sim.step(50_000)                                     # 200 ps NVT
+
+system.addForce(MonteCarloBarostat(1*bar, 300*kelvin, 25))
+sim.context.reinitialize(preserveState=True)
+sim.reporters.clear()
+sim.reporters.append(StateDataReporter("npt.csv", 250, step=True, time=True,
+                     temperature=True, potentialEnergy=True, density=True, volume=True))
+sim.step(125_000)                                    # 500 ps NPT
+
+# ---- 5. Production ----
+sim.reporters.clear()
+sim.reporters.append(DCDReporter("prod.dcd", 2500))                 # a frame every 10 ps
+sim.reporters.append(StateDataReporter("prod.csv", 2500, step=True, time=True,
+                     temperature=True, potentialEnergy=True, density=True, speed=True))
+sim.step(1_500_000)                                  # 6 ns</code></pre>
+<h3>11.2 El experimento de deriva de energía de la Sección 6.3</h3>
+<pre><code>import numpy as np
+# Starting from the equilibrated state, run NVE (plain Verlet, no thermostat)
+for label, constraints, hmass, dt_fs in [
+        ("no constraints, 1 fs",            None,  1.0*amu, 1.0),
+        ("no constraints, 2 fs",            None,  1.0*amu, 2.0),
+        ("H-bonds constrained, 2 fs",       HBonds, 1.0*amu, 2.0),
+        ("H-bonds constrained, 4 fs",       HBonds, 1.0*amu, 4.0),
+        ("H-bonds + H mass 1.5 u, 4 fs",    HBonds, 1.5*amu, 4.0)]:
+    s = ff.createSystem(pdb.topology, nonbondedMethod=PME, nonbondedCutoff=1.0*nanometer,
+                        constraints=constraints, rigidWater=constraints is not None,
+                        hydrogenMass=hmass)
+    sm = Simulation(pdb.topology, s, VerletIntegrator(dt_fs*femtoseconds),
+                    Platform.getPlatformByName("CPU"), {"Threads": "10"})
+    sm.context.setState(equilibrated_state)
+    sm.context.setVelocitiesToTemperature(300*kelvin, 77)
+    sm.step(2500)                                    # let it settle
+    E = []
+    for _ in range(100):                             # 20 ps, 100 samples
+        sm.step(int(20/(dt_fs/1000)/100))
+        st = sm.context.getState(getEnergy=True)
+        E.append(st.getKineticEnergy().value_in_unit(kilojoule_per_mole)
+                 + st.getPotentialEnergy().value_in_unit(kilojoule_per_mole))
+    drift = np.polyfit(np.linspace(0, 20, 100), E, 1)[0] * 1000   # kJ/mol per ns
+    print(f"{label:32s} {drift/pdb.topology.getNumAtoms():+.3f} kJ/mol/ns/atom")</code></pre>
+<h3>11.3 Análisis de la trayectoria</h3>
+<pre><code>import mdtraj as md
+
+t = md.load("prod.dcd", top="minimized.pdb")
+t = t.atom_slice(t.topology.select("protein"))       # drop the water
+t.superpose(t, 0, atom_indices=t.topology.select("backbone"))
+
+rmsd = md.rmsd(t, t, 0, atom_indices=t.topology.select("backbone")) * 10   # Å
+rmsf = md.rmsf(t, t, 0, atom_indices=t.topology.select("name CA")) * 10    # Å per residue
+rg   = md.compute_rg(t) * 10                                              # Å
+ss   = md.compute_dssp(t, simplified=True)          # per residue, per frame
+hb   = md.baker_hubbard(t, freq=0.1)                # hydrogen bonds present in >10 % of frames
+print("mean RMSD over the last half:", rmsd[len(rmsd)//2:].mean().round(2), "A")
+print("most mobile residue:", rmsf.argmax()+1, rmsf.max().round(2), "A")</code></pre>
+<h3>11.4 Lista de verificación antes de confiar en una simulación, propia o ajena</h3>
+<ol>
+<li>¿Es adecuada la estructura de partida: cadenas correctas, ensamblaje biológico correcto, loops modelados, estados de protonación justificados, parámetros del ligando validados?</li>
+<li>¿Es la caja lo bastante grande (relleno ≥ 1 nm, radio de corte ≤ L/2) y el sistema es neutro con sal a concentración fisiológica?</li>
+<li>¿Se usó PME para la electrostática, y son mutuamente coherentes el radio de corte, las ligaduras, el paso de integración y las masas de los hidrógenos?</li>
+<li>¿Alcanzan una meseta los gráficos de equilibración —temperatura, densidad, energía—, y se indica el tramo descartado?</li>
+<li>¿Hay réplicas independientes, y la incertidumbre informada corresponde a la dispersión entre ellas?</li>
+<li>¿Es el tiempo simulado proporcional al proceso que se afirma? Una transición conformacional informada a partir de una sola simulación de 100 ns es una hipótesis.</li>
+<li>Para un complejo: ¿permanece el ligando en su pose, y qué contactos persisten y en qué fracción de los frames?</li>
+<li>¿Se están interpretando energías absolutas? No debería hacerse: solo diferencias, y solo dentro de un mismo protocolo.</li>
+<li>¿Están disponibles la trayectoria, los archivos de entrada y los scripts de análisis? Para esto existen repositorios como Zenodo y el banco de datos MDDB/BioExcel.</li>
+</ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="s12">
+<h2><span class="num">Sección 12</span>Autoevaluación</h2>
+<p>Intente responder cada pregunta antes de abrir la respuesta.</p>
+<details><summary>1. ¿Por qué el paso de integración de una simulación biomolecular está limitado a unos pocos femtosegundos, y cuáles son las dos formas estándar de aumentarlo?</summary><p>El integrador debe resolver la vibración más rápida, convencionalmente con al menos diez pasos por período. El movimiento más rápido es el estiramiento de los enlaces con hidrógeno, con un período de unos 10 fs, lo que da δt ≈ 1 fs. Restringir los enlaces con hidrógeno (SHAKE/LINCS/SETTLE) elimina ese movimiento y permite 2 fs; la redistribución de la masa de los hidrógenos hace más lentos los siguientes movimientos más rápidos que involucran hidrógenos y permite 4 fs. Los pasos de integración múltiples son una tercera opción, menos común.</p></details>
+<details><summary>2. Un colega informa una simulación de 500 ns en la que la energía total aumentó un 3 % y concluye que la proteína "ganó energía térmica durante el cambio conformacional". ¿Qué está mal?</summary><p>En una simulación de producción termostatada, la energía total no se conserva por construcción —el termostato intercambia energía con un baño virtual—, de modo que un aumento de la energía total no dice nada sobre la proteína. Si la simulación realmente fue NVE, un aumento del 3 % es error de integración (paso de integración demasiado grande, discontinuidad en el radio de corte o tolerancia de las ligaduras demasiado laxa), no física. La conservación de la energía se diagnostica en simulaciones NVE cortas, como en la Sección 6.3, y en producción se monitorean, en cambio, la temperatura, la densidad y la energía potencial.</p></details>
+<details><summary>3. Explique por qué las interacciones de van der Waals pueden truncarse a ~1 nm, pero la electrostática no.</summary><p>La atracción de dispersión decae como r⁻⁶, por lo que la contribución más allá de 1 nm es mínima y puede recuperarse con una corrección analítica de campo medio. La interacción de Coulomb decae como r⁻¹, de modo que el número de pares a una distancia r (que crece como r²) compensa con creces el decaimiento y las cargas distantes contribuyen de forma significativa; truncarla produce artefactos en la estructura del agua y de los iones en el radio de corte. Particle-mesh Ewald evalúa la suma periódica completa en O(N log N) dividiéndola en una parte en el espacio real y otra en el espacio recíproco.</p></details>
+<details><summary>4. Su caja cúbica tiene una arista de 6.0 nm. ¿Cuál es el mayor radio de corte no enlazante que puede usar, y por qué?</summary><p>3.0 nm, la mitad de la arista. Más allá de L/2, un átomo interactuaría con más de una imagen periódica del mismo compañero, lo que viola la convención de imagen mínima. En la práctica se usan 0.9–1.2 nm con PME, de modo que la restricción opera en sentido inverso: la caja debe ser lo bastante grande para que el radio de corte quepa y para que el soluto no toque su propia imagen.</p></details>
+<details><summary>5. Distinga NVE, NVT y NPT, e indique cuál usaría para cada uno de los siguientes casos: validar un integrador, equilibrar un sistema recién solvatado y una simulación de producción de un complejo proteína–ligando.</summary><p>NVE conserva la energía y es la condición en la que el error de integración es visible, por lo que se usa para validar el integrador. NVT fija la temperatura y el volumen y se usa en la primera etapa de equilibración, cuando el termostato debe llevar el sistema a la temperatura antes de permitir que el volumen cambie. NPT fija la temperatura y la presión, igual que las condiciones de laboratorio, y es el colectivo estándar de producción; también es la segunda etapa de equilibración, en la que se estabiliza la densidad.</p></details>
+<details><summary>6. Un gráfico de RMSD de su proteína aumenta de forma sostenida durante 100 ns sin alcanzar una meseta. Dé tres explicaciones posibles y la verificación correspondiente a cada una.</summary><p>(i) Aún no está equilibrada: extienda la simulación y verifique si alcanza una meseta. (ii) El modelo de partida es incorrecto (un mal modelo por homología o una mala pose de docking): compare con una estructura experimental si existe, e inspeccione qué regiones contribuyen mediante el RMSF por residuo o el RMSD por dominio. (iii) Una transición conformacional genuina, o un desplegamiento parcial: inspeccione la estructura secundaria en el tiempo y el radio de giro, y observe la trayectoria. Una cuarta posibilidad, más trivial: el RMSD se está calculando sobre residuos terminales o loops flexibles, que pueden dominarlo; vuelva a calcularlo sobre el núcleo estructurado.</p></details>
+<details><summary>7. ¿Por qué el RMSF se grafica en función del número de residuo mientras que el RMSD se grafica en función del tiempo, y cómo se relaciona el RMSF con un factor B cristalográfico?</summary><p>El RMSD promedia sobre los átomos y, por lo tanto, es una función del tiempo: cuánto se ha movido la estructura. El RMSF promedia sobre el tiempo y, por lo tanto, es una función del átomo o del residuo: dónde se mueve la estructura. Responden preguntas complementarias. El RMSF se conecta con el factor de temperatura cristalográfico mediante B = (8π²/3)·RMSF², de modo que un perfil de RMSF simulado puede compararse con los factores B de la estructura de partida, teniendo en cuenta que los contactos cristalinos suprimen la movilidad real.</p></details>
+<details><summary>8. Usted quiere saber si una mutación cambia la afinidad de un ligando en más de un factor de diez. ¿Qué método computacional es adecuado y qué requiere?</summary><p>Un factor de diez equivale a 1.36 kcal mol⁻¹, en el límite de lo que puede resolver la perturbación de energía libre relativa (FEP/TI con MBAR); ese es el método adecuado. Requiere un modo de unión confiable, una mutación lo bastante pequeña para tratarse alquímicamente, estados de protonación correctos, un ciclo termodinámico (mutación en el complejo y en la proteína libre), muestreo adecuado en cada ventana λ y un análisis apropiado del error. MM/GBSA no resolvería de manera confiable una diferencia así, y un puntaje de docking ciertamente tampoco.</p></details>
+<details><summary>9. ¿Qué se está informando exactamente cuando un artículo indica "energía de unión MM/GBSA = −45.3 kcal mol⁻¹"?</summary><p>Casi con certeza, un puntaje de interacción de tipo entálpico, con el término de entropía del soluto omitido, promediado sobre los frames de una única trayectoria del complejo: no una energía libre de unión, y no comparable con un ΔG experimental (una afinidad de −45 kcal mol⁻¹ correspondería a una K<sub>d</sub> de alrededor de 10⁻³³ M, lo que es físicamente imposible para un ligando de tipo fármaco). Esos valores son utilizables para ordenar compuestos dentro de una misma serie y un mismo protocolo, y no deberían informarse como energías libres.</p></details>
+<details><summary>10. El estudio de TASK-2 de la clase simuló por separado el canal con Lys245 protonada y neutra. ¿Por qué fue necesario, y qué ilustra esto sobre la MD clásica?</summary><p>Porque la MD clásica fija el estado de protonación de cada grupo durante toda la simulación: un protón no puede transferirse durante la simulación. Si la protonación de Lys245 es en sí misma la pregunta, el único recurso dentro de la MD estándar es simular cada estado y compararlos, que es lo que se hizo, obteniendo geometrías de fenestración distintas y barreras de PMF distintas para los dos estados. Ilustra la limitación directamente, y apunta a la MD a pH constante como el método que la elimina.</p></details>
+<details><summary>11. ¿Por qué tres réplicas independientes de 100 ns son, en general, preferibles a una sola simulación de 300 ns?</summary><p>Parten de puntos distintos del espacio de fases (velocidades iniciales distintas) y, por lo tanto, exploran una mayor parte de él, reducen la probabilidad de que un único evento raro se confunda con el comportamiento típico y —de forma decisiva— la dispersión entre ellas proporciona una estimación del error, cosa que una sola trayectoria no puede hacer. La excepción es cuando el proceso de interés tarda más de 100 ns, en cuyo caso ninguna réplica lo alcanzará y se requiere, en cambio, muestreo mejorado.</p></details>
+<details><summary>12. En dos o tres oraciones, indique qué es una simulación de dinámica molecular y qué significa su resultado.</summary><p>Es la integración numérica de las ecuaciones de Newton para cada átomo de un sistema modelo bajo un potencial clásico parametrizado, que produce una trayectoria a partir de la cual se calculan promedios temporales que, por la hipótesis ergódica, se interpretan como promedios de colectivo. Su resultado es una propiedad del modelo —el campo de fuerza, los estados de protonación, la caja, el muestreo— y solo es tan bueno como esas elecciones; se convierte en conocimiento sobre el sistema real cuando reproduce algo medido y luego predice algo que se mide posteriormente.</p></details>
+</section>
+
+<!-- ============================================================ -->
+<section id="gloss">
+<h2><span class="num">Apéndice</span>Glosario</h2>
+<dl class="gloss">
+<dt>Barostato</dt><dd>Algoritmo que mantiene la presión constante reescalando el volumen de la caja (Berendsen, Parrinello–Rahman, Monte Carlo).</dd>
+<dt>Algoritmo de ligaduras (constraint algorithm)</dt><dd>SHAKE, RATTLE, LINCS, SETTLE: métodos que mantienen rígidos determinados enlaces y ángulos para poder usar un paso de integración mayor.</dd>
+<dt>Variable colectiva</dt><dd>Función de las coordenadas elegida para describir un proceso lento; la coordenada a lo largo de la cual el muestreo mejorado sesga la simulación.</dd>
+<dt>Colectivo o ensamble (NVE, NVT, NPT)</dt><dd>El conjunto de magnitudes termodinámicas que se mantienen constantes durante la simulación.</dd>
+<dt>Hipótesis ergódica</dt><dd>El supuesto de que un promedio temporal largo es igual al promedio de colectivo.</dd>
+<dt>FEP / TI / MBAR</dt><dd>Perturbación de energía libre, integración termodinámica y razón de aceptación de Bennett multiestado: estimadores rigurosos de diferencias de energía libre a lo largo de un camino alquímico.</dd>
+<dt>Campo de fuerza</dt><dd>La función clásica de energía potencial y sus parámetros.</dd>
+<dt>Redistribución de la masa de los hidrógenos</dt><dd>Transferencia de masa desde los átomos pesados a los hidrógenos enlazados a ellos, lo que permite un paso de integración de 4 fs.</dd>
+<dt>Solvente implícito / explícito</dt><dd>Representación como dieléctrico continuo frente a moléculas de agua simuladas individualmente.</dd>
+<dt>Metadinámica</dt><dd>Muestreo mejorado mediante el depósito de un sesgo dependiente de la historia a lo largo de variables colectivas.</dd>
+<dt>Convención de imagen mínima</dt><dd>Cada par interactúa con la copia periódica más cercana; requiere radio de corte ≤ L/2.</dd>
+<dt>MM/PBSA · MM/GBSA</dt><dd>Estimaciones de punto final de la energía libre de unión que combinan energías del campo de fuerza con solvatación de continuo.</dd>
+<dt>Condiciones periódicas de contorno</dt><dd>Replicación de la celda de simulación en todas las direcciones para eliminar las superficies.</dd>
+<dt>PME</dt><dd>Particle-mesh Ewald: tratamiento exacto de la electrostática periódica en O(N log N).</dd>
+<dt>PMF</dt><dd>Potencial de fuerza media: energía libre en función de una coordenada elegida.</dd>
+<dt>Intercambio de réplicas</dt><dd>Simulaciones paralelas a distintas temperaturas con intercambios periódicos, para cruzar barreras.</dd>
+<dt>RMSD / RMSF</dt><dd>Desviación cuadrática media respecto de una referencia (función del tiempo) / fluctuación en torno a la posición media (función del residuo).</dd>
+<dt>Termostato</dt><dd>Algoritmo que mantiene la temperatura constante (Berendsen, Bussi, Nosé–Hoover, Langevin, Andersen).</dd>
+<dt>Paso de integración</dt><dd>Intervalo de integración, limitado por la vibración más rápida del sistema.</dd>
+<dt>Trayectoria</dt><dd>La secuencia de frames de coordenadas (y, opcionalmente, de velocidades) producida por la simulación.</dd>
+<dt>Muestreo de paraguas (umbrella sampling)</dt><dd>Muestreo mejorado con restricciones armónicas en ventanas superpuestas a lo largo de una coordenada, recombinadas mediante WHAM o MBAR.</dd>
+<dt>Algoritmo de Verlet</dt><dd>La familia de integradores simplécticos y reversibles en el tiempo (Verlet de posiciones, leapfrog, velocity Verlet) usada en prácticamente toda la MD.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ -->
+<section id="refs">
+<h2><span class="num">Apéndice</span>Referencias y lecturas complementarias</h2>
+<h3>Literatura primaria citada en el texto</h3>
+<ol class="refs">
+<li id="r1">Verlet L. Computer "experiments" on classical fluids. I. Thermodynamical properties of Lennard-Jones molecules. <em>Phys Rev</em>. 1967;159(1):98–103. <a href="https://doi.org/10.1103/PhysRev.159.98">doi:10.1103/PhysRev.159.98</a></li>
+<li id="r2">Swope WC, Andersen HC, Berens PH, Wilson KR. A computer simulation method for the calculation of equilibrium constants for the formation of physical clusters of molecules. <em>J Chem Phys</em>. 1982;76(1):637–649. <a href="https://doi.org/10.1063/1.442716">doi:10.1063/1.442716</a></li>
+<li id="r3">Ryckaert JP, Ciccotti G, Berendsen HJC. Numerical integration of the cartesian equations of motion of a system with constraints: molecular dynamics of n-alkanes. <em>J Comput Phys</em>. 1977;23(3):327–341. <a href="https://doi.org/10.1016/0021-9991(77)90098-5">doi:10.1016/0021-9991(77)90098-5</a></li>
+<li id="r4">Hess B, Bekker H, Berendsen HJC, Fraaije JGEM. LINCS: a linear constraint solver for molecular simulations. <em>J Comput Chem</em>. 1997;18(12):1463–1472. <a href="https://doi.org/10.1002/(SICI)1096-987X(199709)18:12%3C1463::AID-JCC4%3E3.0.CO;2-H">doi:10.1002/(SICI)1096-987X(199709)18:12&lt;1463::AID-JCC4&gt;3.0.CO;2-H</a></li>
+<li id="r5">Hopkins CW, Le Grand S, Walker RC, Roitberg AE. Long-time-step molecular dynamics through hydrogen mass repartitioning. <em>J Chem Theory Comput</em>. 2015;11(4):1864–1874. <a href="https://doi.org/10.1021/ct5010406">doi:10.1021/ct5010406</a></li>
+<li id="r6">Maier JA, Martinez C, Kasavajhala K, Wickstrom L, Hauser KE, Simmerling C. ff14SB: improving the accuracy of protein side chain and backbone parameters from ff99SB. <em>J Chem Theory Comput</em>. 2015;11(8):3696–3713. <a href="https://doi.org/10.1021/acs.jctc.5b00255">doi:10.1021/acs.jctc.5b00255</a></li>
+<li id="r7">Tian C, Kasavajhala K, Belfon KAA, et al. ff19SB: amino-acid-specific protein backbone parameters trained against quantum mechanics energy surfaces in solution. <em>J Chem Theory Comput</em>. 2020;16(1):528–552. <a href="https://doi.org/10.1021/acs.jctc.9b00591">doi:10.1021/acs.jctc.9b00591</a></li>
+<li id="r8">Huang J, Rauscher S, Nawrocki G, et al. CHARMM36m: an improved force field for folded and intrinsically disordered proteins. <em>Nat Methods</em>. 2017;14(1):71–73. <a href="https://doi.org/10.1038/nmeth.4067">doi:10.1038/nmeth.4067</a></li>
+<li id="r9">Darden T, York D, Pedersen L. Particle mesh Ewald: an N·log(N) method for Ewald sums in large systems. <em>J Chem Phys</em>. 1993;98(12):10089–10092. <a href="https://doi.org/10.1063/1.464397">doi:10.1063/1.464397</a></li>
+<li id="r10">Essmann U, Perera L, Berkowitz ML, Darden T, Lee H, Pedersen LG. A smooth particle mesh Ewald method. <em>J Chem Phys</em>. 1995;103(19):8577–8593. <a href="https://doi.org/10.1063/1.470117">doi:10.1063/1.470117</a></li>
+<li id="r11">Bussi G, Donadio D, Parrinello M. Canonical sampling through velocity rescaling. <em>J Chem Phys</em>. 2007;126(1):014101. <a href="https://doi.org/10.1063/1.2408420">doi:10.1063/1.2408420</a></li>
+<li id="r12">Hoover WG. Canonical dynamics: equilibrium phase-space distributions. <em>Phys Rev A</em>. 1985;31(3):1695–1697. <a href="https://doi.org/10.1103/PhysRevA.31.1695">doi:10.1103/PhysRevA.31.1695</a></li>
+<li id="r13">Eastman P, Galvelis R, Peláez RP, et al. OpenMM 8: molecular dynamics simulation with machine learning potentials. <em>J Phys Chem B</em>. 2024;128(1):109–116. <a href="https://doi.org/10.1021/acs.jpcb.3c06662">doi:10.1021/acs.jpcb.3c06662</a></li>
+<li id="r14">McGibbon RT, Beauchamp KA, Harrigan MP, et al. MDTraj: a modern open library for the analysis of molecular dynamics trajectories. <em>Biophys J</em>. 2015;109(8):1528–1532. <a href="https://doi.org/10.1016/j.bpj.2015.08.015">doi:10.1016/j.bpj.2015.08.015</a></li>
+<li id="r15">Kollman PA, Massova I, Reyes C, et al. Calculating structures and free energies of complex molecules: combining molecular mechanics and continuum models. <em>Acc Chem Res</em>. 2000;33(12):889–897. <a href="https://doi.org/10.1021/ar000033j">doi:10.1021/ar000033j</a></li>
+<li id="r16">Genheden S, Ryde U. The MM/PBSA and MM/GBSA methods to estimate ligand-binding affinities. <em>Expert Opin Drug Discov</em>. 2015;10(5):449–461. <a href="https://doi.org/10.1517/17460441.2015.1032936">doi:10.1517/17460441.2015.1032936</a></li>
+<li id="r17">Zwanzig RW. High-temperature equation of state by a perturbation method. I. Nonpolar gases. <em>J Chem Phys</em>. 1954;22(8):1420–1426. <a href="https://doi.org/10.1063/1.1740409">doi:10.1063/1.1740409</a></li>
+<li id="r18">Shirts MR, Chodera JD. Statistically optimal analysis of samples from multiple equilibrium states. <em>J Chem Phys</em>. 2008;129(12):124105. <a href="https://doi.org/10.1063/1.2978177">doi:10.1063/1.2978177</a></li>
+<li id="r19">Wang L, Wu Y, Deng Y, et al. Accurate and reliable prediction of relative ligand binding potency in prospective drug discovery by way of a modern free-energy calculation protocol and force field. <em>J Am Chem Soc</em>. 2015;137(7):2695–2703. <a href="https://doi.org/10.1021/ja512751q">doi:10.1021/ja512751q</a></li>
+<li id="r20">Torrie GM, Valleau JP. Nonphysical sampling distributions in Monte Carlo free-energy estimation: umbrella sampling. <em>J Comput Phys</em>. 1977;23(2):187–199. <a href="https://doi.org/10.1016/0021-9991(77)90121-8">doi:10.1016/0021-9991(77)90121-8</a></li>
+<li id="r21">Laio A, Parrinello M. Escaping free-energy minima. <em>Proc Natl Acad Sci USA</em>. 2002;99(20):12562–12566. <a href="https://doi.org/10.1073/pnas.202427399">doi:10.1073/pnas.202427399</a></li>
+<li id="r22">Sugita Y, Okamoto Y. Replica-exchange molecular dynamics method for protein folding. <em>Chem Phys Lett</em>. 1999;314(1–2):141–151. <a href="https://doi.org/10.1016/S0009-2614(99)01123-9">doi:10.1016/S0009-2614(99)01123-9</a></li>
+<li id="r23">Abraham MJ, Murtola T, Schulz R, et al. GROMACS: high performance molecular simulations through multi-level parallelism from laptops to supercomputers. <em>SoftwareX</em>. 2015;1–2:19–25. <a href="https://doi.org/10.1016/j.softx.2015.06.001">doi:10.1016/j.softx.2015.06.001</a></li>
+<li id="r24">Case DA, Cheatham TE, Darden T, et al. The Amber biomolecular simulation programs. <em>J Comput Chem</em>. 2005;26(16):1668–1688. <a href="https://doi.org/10.1002/jcc.20290">doi:10.1002/jcc.20290</a></li>
+<li id="r25">Phillips JC, Hardy DJ, Maia JDC, et al. Scalable molecular dynamics on CPU and GPU architectures with NAMD. <em>J Chem Phys</em>. 2020;153(4):044130. <a href="https://doi.org/10.1063/5.0014475">doi:10.1063/5.0014475</a></li>
+<li id="r26">Jo S, Kim T, Iyer VG, Im W. CHARMM-GUI: a web-based graphical user interface for CHARMM. <em>J Comput Chem</em>. 2008;29(11):1859–1865. <a href="https://doi.org/10.1002/jcc.20945">doi:10.1002/jcc.20945</a></li>
+<li id="r27">Michaud-Agrawal N, Denning EJ, Woolf TB, Beckstein O. MDAnalysis: a toolkit for the analysis of molecular dynamics simulations. <em>J Comput Chem</em>. 2011;32(10):2319–2327. <a href="https://doi.org/10.1002/jcc.21787">doi:10.1002/jcc.21787</a></li>
+<li id="r28">Roe DR, Cheatham TE. PTRAJ and CPPTRAJ: software for processing and analysis of molecular dynamics trajectory data. <em>J Chem Theory Comput</em>. 2013;9(7):3084–3095. <a href="https://doi.org/10.1021/ct400341p">doi:10.1021/ct400341p</a></li>
+<li id="r29">Tribello GA, Bonomi M, Branduardi D, Camilloni C, Bussi G. PLUMED 2: new feathers for an old bird. <em>Comput Phys Commun</em>. 2014;185(2):604–613. <a href="https://doi.org/10.1016/j.cpc.2013.09.018">doi:10.1016/j.cpc.2013.09.018</a></li>
+<li id="r30">Neidigh JW, Fesinmeyer RM, Andersen NH. Designing a 20-residue protein. <em>Nat Struct Biol</em>. 2002;9(6):425–430. <a href="https://doi.org/10.1038/nsb798">doi:10.1038/nsb798</a></li>
+<li id="r31">Lindorff-Larsen K, Piana S, Dror RO, Shaw DE. How fast-folding proteins fold. <em>Science</em>. 2011;334(6055):517–520. <a href="https://doi.org/10.1126/science.1208351">doi:10.1126/science.1208351</a></li>
+<li id="r32">Dror RO, Dirks RM, Grossman JP, Xu H, Shaw DE. Biomolecular simulation: a computational microscope for molecular biology. <em>Annu Rev Biophys</em>. 2012;41:429–452. <a href="https://doi.org/10.1146/annurev-biophys-042910-155245">doi:10.1146/annurev-biophys-042910-155245</a></li>
+<li id="r33">Hollingsworth SA, Dror RO. Molecular dynamics simulation for all. <em>Neuron</em>. 2018;99(6):1129–1143. <a href="https://doi.org/10.1016/j.neuron.2018.08.011">doi:10.1016/j.neuron.2018.08.011</a></li>
+<li id="r34">Kabsch W, Sander C. Dictionary of protein secondary structure. <em>Biopolymers</em>. 1983;22(12):2577–2637. <a href="https://doi.org/10.1002/bip.360221211">doi:10.1002/bip.360221211</a></li>
+<li id="r35">Best RB, Hummer G, Eaton WA. Native contacts determine protein folding mechanisms in atomistic simulations. <em>Proc Natl Acad Sci USA</em>. 2013;110(44):17874–17879. <a href="https://doi.org/10.1073/pnas.1311599110">doi:10.1073/pnas.1311599110</a></li>
+<li id="r36">Grossfield A, Patrone PN, Roe DR, Schultz AJ, Siderius DW, Zuckerman DM. Best practices for quantification of uncertainty and sampling quality in molecular simulations. <em>Living J Comput Mol Sci</em>. 2019;1(1):5067. <a href="https://doi.org/10.33011/livecoms.1.1.5067">doi:10.33011/livecoms.1.1.5067</a></li>
+<li id="r37">Braun E, Gilmer J, Mayes HB, et al. Best practices for foundations in molecular simulations. <em>Living J Comput Mol Sci</em>. 2019;1(1):5957. <a href="https://doi.org/10.33011/livecoms.1.1.5957">doi:10.33011/livecoms.1.1.5957</a></li>
+</ol>
+<h3>Libros de texto y revisiones</h3>
+<ol class="refs" start="38">
+<li>Alavi S. <em>Molecular Simulations: Fundamentals and Practice</em>. Wiley-VCH; 2020. — Recomendado en la clase.</li>
+<li>Frenkel D, Smit B. <em>Understanding Molecular Simulation: From Algorithms to Applications</em>. 3rd ed. Academic Press; 2023. — La referencia estándar de posgrado para la mecánica estadística en que se basan las secciones 1 y 9.</li>
+<li>Allen MP, Tildesley DJ. <em>Computer Simulation of Liquids</em>. 2nd ed. Oxford University Press; 2017. — El clásico sobre integradores, condiciones de contorno y listas de vecinos.</li>
+<li>Leach AR. <em>Molecular Modelling: Principles and Applications</em>. 2nd ed. Prentice Hall; 2001. — Los capítulos 4–7 tratan los campos de fuerza, la minimización de energía y la dinámica molecular exactamente al nivel de esta unidad.</li>
+<li>Schlick T. <em>Molecular Modeling and Simulation: An Interdisciplinary Guide</em>. 2nd ed. Springer; 2010.</li>
+</ol>
+<h3>Recursos en línea</h3>
+<ul>
+<li>Guía de usuario y recetario (cookbook) de OpenMM — <a href="https://openmm.org/documentation">https://openmm.org/documentation</a> · <a href="https://openmm.github.io/openmm-cookbook/">https://openmm.github.io/openmm-cookbook/</a> (el código de la Sección 11 sigue estos patrones)</li>
+<li>Tutoriales de GROMACS de Justin Lemkul — <a href="http://www.mdtutorials.com/gmx/">http://www.mdtutorials.com/gmx/</a>: el tutorial de lisozima en agua es la primera simulación estándar y reproduce la Sección 5 paso a paso</li>
+<li>Living Journal of Computational Molecular Science, serie "Best Practices" — <a href="https://livecomsjournal.org">https://livecomsjournal.org</a>: protocolos revisados por pares y actualizados continuamente para muestreo, energías libres y validación de campos de fuerza</li>
+<li>CHARMM-GUI — <a href="https://charmm-gui.org">https://charmm-gui.org</a>: constructor web de sistemas para membranas, glicanos y ensamblajes complejos</li>
+<li>Documentación de MDAnalysis y MDTraj — <a href="https://userguide.mdanalysis.org">https://userguide.mdanalysis.org</a> · <a href="https://mdtraj.org">https://mdtraj.org</a></li>
+<li>Banco de datos de dinámica molecular BioExcel-MDDB — <a href="https://mddbr.eu">https://mddbr.eu</a>: repositorio de trayectorias publicadas</li>
+</ul>
+</section>
+
+</main>
+</div>
+<footer>
+Material de estudio para BGM324 Bioinformática, Escuela de Bioingeniería Médica, Universidad Católica del Maule. Las figuras 1–5 se generaron para este documento; las simulaciones de las secciones 6 y 7 se ejecutaron con OpenMM 8.6.1 (AMBER ff14SB / TIP3P-FB, PDB 1L2Y) y se analizaron con MDTraj 1.11.1, y pueden reutilizarse con atribución. Los ejemplos desarrollados siguen las diapositivas de la clase <em>05_SimulacionesDeDinamicaMolecular_EN</em>. Última revisión: 17 de octubre de 2026.
+</footer>
+
+</body>
+</html>

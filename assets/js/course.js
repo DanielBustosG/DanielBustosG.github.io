@@ -12,6 +12,11 @@
       var v = el.getAttribute('data-' + lang);
       if (v != null) el.innerHTML = v;
     });
+    // Enlaces que apuntan a la versión del documento en el idioma activo.
+    document.querySelectorAll('[data-href-es]').forEach(function (el) {
+      var h = el.getAttribute('data-href-' + lang);
+      if (h) el.setAttribute('href', h);
+    });
     document.querySelectorAll('.yr').forEach(function (el) { el.textContent = new Date().getFullYear(); });
     document.documentElement.lang = lang;
     document.title = TITLES[lang];
