@@ -243,7 +243,7 @@ window.MathJax = {tex: {inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['
 </ol></li>
 <li><a href="#s2">2. Lo esencial de Python que debes dominar</a>
 <ol>
-<li><a href="#s2-1">2.1 Listas, tuplas, diccionarios y rebanado</a></li>
+<li><a href="#s2-1">2.1 Listas, tuplas, diccionarios y slicing</a></li>
 <li><a href="#s2-2">2.2 Comprensiones, funciones y números de punto flotante</a></li>
 </ol></li>
 <li><a href="#s3">3. NumPy: el arreglo</a>
@@ -297,7 +297,7 @@ window.MathJax = {tex: {inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['
 <div class="box key"><h4>Objetivos de aprendizaje</h4>
 <ul class="objectives">
 <li>Explicar qué es el kernel de un notebook, por qué el estado de un notebook depende del <em>orden</em> en que se ejecutaron las celdas y cómo recuperar un estado limpio.</li>
-<li>Usar listas, tuplas, diccionarios, rebanado (slicing), comprensiones y funciones al nivel necesario para leer el código del curso.</li>
+<li>Usar listas, tuplas, diccionarios, slicing, comprensiones y funciones al nivel necesario para leer el código del curso.</li>
 <li>Indexar arreglos de NumPy, usar máscaras booleanas y broadcasting, explicar por qué el código vectorizado supera a los bucles y enunciar qué significan <code>axis=0</code> y <code>axis=1</code>.</li>
 <li>Manipular un <code>DataFrame</code> de pandas: seleccionar por etiqueta y por posición, filtrar, agrupar, manejar valores faltantes y variables categóricas, leer y escribir CSV, y convertir desde y hacia NumPy.</li>
 <li>Dibujar una figura legible con matplotlib; describir el contrato de los estimadores de scikit-learn y usar <code>train_test_split</code>, <code>StandardScaler</code> y <code>Pipeline</code> correctamente; aplicar los hábitos de reproducibilidad del curso.</li>
@@ -440,7 +440,7 @@ Variables currently alive in the kernel: ['run_count']
 <div class="box warn"><h4>La regla que lo evita</h4><p>Antes de confiar en cualquier notebook, usa <em>Runtime → Restart and run all</em> (Colab) o <em>Kernel → Restart &amp; Run All</em> (Jupyter). Si el resultado cambia, el notebook dependía de un estado oculto. Todos los notebooks de este curso están construidos así; escribe tus informes de modo que superen la misma prueba.<sup class="c"><a href="#r14">[14]</a></sup></p></div>
 <div class="exercise"><h4>Ejercicio 1</h4><p>Vuelve a ejecutar la celda A sin volver a ejecutar la celda B y compara el conteo. Luego borra <code>threshold = 20.0</code> de la celda B y usa <em>Restart and run all</em>: un notebook limpio define cada variable una sola vez, antes de cada uso.</p></div>
 <h2 id="s2">2. Lo esencial de Python que debes dominar</h2><p>Solo se cubren las construcciones que usan las Unidades 1–9; los tutoriales listados al final llenan cualquier vacío.</p>
-<h3 id="s2-1">2.1 Listas, tuplas, diccionarios y rebanado</h3><p>Una <strong>lista</strong> es una secuencia ordenada y modificable entre corchetes; una <strong>tupla</strong>, una secuencia ordenada e inmodificable entre paréntesis (NumPy informa las formas como tuplas); un <strong>diccionario</strong> asocia claves a valores entre llaves (scikit-learn devuelve los parámetros como diccionarios). El <strong>rebanado</strong> (slicing) con <code>start:stop:step</code> selecciona parte de cualquier secuencia: las posiciones se cuentan desde 0, <code>stop</code> <em>no</em> se incluye y las posiciones negativas se cuentan desde el final.</p>
+<h3 id="s2-1">2.1 Listas, tuplas, diccionarios y slicing</h3><p>Una <strong>lista</strong> es una secuencia ordenada y modificable entre corchetes; una <strong>tupla</strong>, una secuencia ordenada e inmodificable entre paréntesis (NumPy informa las formas como tuplas); un <strong>diccionario</strong> asocia claves a valores entre llaves (scikit-learn devuelve los parámetros como diccionarios). El <strong>slicing</strong> con <code>start:stop:step</code> selecciona parte de cualquier secuencia: las posiciones se cuentan desde 0, <code>stop</code> <em>no</em> se incluye y las posiciones negativas se cuentan desde el final.</p>
 </div>
 </div>
 </div>
@@ -477,7 +477,7 @@ Variables currently alive in the kernel: ['run_count']
 <div class="input">
 <div class="inner_cell">
 <div class="input_area">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Listas, tuplas, diccionarios y rebanado, sobre los nombres de las 30 características de cáncer de mama.</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Listas, tuplas, diccionarios y slicing, sobre los nombres de las 30 características de cáncer de mama.</span>
 <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cancer</span><span class="o">.</span><span class="n">feature_names</span><span class="p">]</span>   <span class="c1"># una lista: ordenada, mutable, corchetes</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">features</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="s2">"of"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="s2">"names"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"features[:3]   -&gt;"</span><span class="p">,</span> <span class="n">features</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>             <span class="c1"># posiciones 0, 1, 2 (stop se excluye)</span>
@@ -520,7 +520,7 @@ first patient: malignant | missing key with default: unknown
 <p>Diez de los treinta nombres comienzan con "mean". La función devolvió dos números en una tupla, desempaquetados en <code>m</code> y <code>s</code>. Y <code>0.1 + 0.2</code> no es <code>0.3</code> en punto flotante binario —la discrepancia está en el decimoséptimo dígito—, mientras que <code>np.isclose</code> informa igualdad dentro de una tolerancia.</p>
 <div class="exercise"><h4>Ejercicio 2</h4><p>Escribe una comprensión que liste las características cuyo nombre contiene "concave". Luego haz que <code>summarise</code> devuelva también el mínimo y el máximo, y desempaqueta los cuatro valores.</p></div>
 <h2 id="s3">3. NumPy: el arreglo</h2><h3 id="s3-1">3.1 El ndarray: forma, dtype e indexación</h3><p>El <code>ndarray</code> de NumPy es un bloque de memoria que contiene números de un único tipo, más una <strong>forma</strong> (shape) que indica cómo leer el bloque como una cuadrícula.<sup class="c"><a href="#r4">[4]</a></sup><sup class="c"><a href="#r16">[16]</a></sup> Tres atributos lo describen: <code>shape</code> (una tupla de dimensiones), <code>ndim</code> (1 para un vector, 2 para una matriz) y <code>dtype</code> (<code>float64</code> para mediciones, <code>int64</code> para conteos y etiquetas, <code>bool</code> para máscaras). El tipo uniforme es lo que hace rápido a NumPy.</p>
-<p>Los datos de cáncer de mama de Street, Wolberg y Mangasarian —569 aspirados con aguja fina, cada uno descrito por 30 características calculadas a partir de una imagen de los núcleos celulares y etiquetado como benigno o maligno mediante biopsia<sup class="c"><a href="#r17">[17]</a></sup><sup class="c"><a href="#r18">[18]</a></sup>— llegan como un arreglo de este tipo. Una matriz se indexa como <code>X[row, column]</code>, donde cada parte es una posición, un rango (slice) o (Sección 3.2) una máscara booleana; dos puntos solos significan "todos".</p>
+<p>Los datos de cáncer de mama de Street, Wolberg y Mangasarian —569 aspirados con aguja fina, cada uno descrito por 30 características calculadas a partir de una imagen de los núcleos celulares y etiquetado como benigno o maligno mediante biopsia<sup class="c"><a href="#r17">[17]</a></sup><sup class="c"><a href="#r18">[18]</a></sup>— llegan como un arreglo de este tipo. Una matriz se indexa como <code>X[row, column]</code>, donde cada parte es una posición, un slice o (Sección 3.2) una máscara booleana; dos puntos solos significan "todos".</p>
 </div>
 </div>
 </div>
@@ -644,7 +644,7 @@ mean radius — malignant: 17.46 µm, benign: 12.15 µm
 <div class="text_cell_render border-box-sizing rendered_html">
 <p class="caption"><b>Figura 2.</b> Tiempo para calcular la distancia de cada fila a la media por columna en función del número de filas, con un doble bucle de Python (naranja) y una expresión vectorizada (azul), en ejes logarítmicos. Ambos crecen de forma aproximadamente lineal, pero la versión vectorizada es más rápida por un factor de decenas a cientos (última columna de la tabla). Los tiempos exactos dependen de la máquina; la razón entre ellos, mucho menos.</p>
 <p>Las dos funciones devuelven arreglos idénticos (el <code>assert</code> lo comprueba), así que la diferencia es puramente de velocidad: uno a dos órdenes de magnitud. Siempre que escribas <code>for i in range(X.shape[0])</code>, casi siempre existe una expresión de arreglos equivalente, construida con los dos ingredientes que siguen.</p>
-<h3 id="s3-4">3.4 Broadcasting</h3><p>En <code>A - mu</code>, <code>A</code> tiene forma <code>(n, 30)</code> y <code>mu</code> forma <code>(30,)</code>: NumPy resta el vector de <em>cada fila</em>. Esto es el <strong>broadcasting</strong> (difusión): las dimensiones se comparan desde la derecha, dos dimensiones son compatibles cuando son iguales o cuando una de ellas es 1 (o falta), y el arreglo más pequeño se repite virtualmente a lo largo de ella.<sup class="c"><a href="#r4">[4]</a></sup> Estandarizar una matriz (Sección 6) es una sola expresión con broadcasting.</p>
+<h3 id="s3-4">3.4 Broadcasting</h3><p>En <code>A - mu</code>, <code>A</code> tiene forma <code>(n, 30)</code> y <code>mu</code> forma <code>(30,)</code>: NumPy resta el vector de <em>cada fila</em>. Esto es el <strong>broadcasting</strong>: las dimensiones se comparan desde la derecha, dos dimensiones son compatibles cuando son iguales o cuando una de ellas es 1 (o falta), y el arreglo más pequeño se repite virtualmente a lo largo de ella.<sup class="c"><a href="#r4">[4]</a></sup> Estandarizar una matriz (Sección 6) es una sola expresión con broadcasting.</p>
 <h3 id="s3-5">3.5 La semántica de axis: el error más común del curso</h3><p>Toda reducción (<code>sum</code>, <code>mean</code>, <code>std</code>, <code>argmax</code>…) acepta un argumento <code>axis</code> que nombra la dimensión <em>que se colapsa</em>. Para la forma <code>(n_rows, n_cols)</code>, <code>X.mean(axis=0)</code> colapsa las filas y deja un valor <em>por columna</em>, de forma <code>(n_cols,)</code>; <code>X.mean(axis=1)</code> colapsa las columnas y deja un valor <em>por fila</em>. Los estudiantes leen "axis=0" como "operar sobre las filas"; la lectura correcta es "operar <em>a lo largo de</em> las filas, bajando por cada columna". Síguelo en papel:</p>
 <p>$$\mathbf{M} = \begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 4 &amp; 5 &amp; 6 \end{pmatrix}, \qquad
 \texttt{M.mean(axis=0)} = \left(\tfrac{1+4}{2},\ \tfrac{2+5}{2},\ \tfrac{3+6}{2}\right) = (2.5,\ 3.5,\ 4.5), \qquad
@@ -965,7 +965,7 @@ standardised features: d_B = 2.236, d_M = 1.000  -&gt;  M
 <div class="cell border-box-sizing text_cell rendered" id="cell-id=06b71066"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Dos generadores con semilla 0 dan los mismos tres números; la semilla 1 da otros. Una permutación aleatoria de los índices de los pacientes es la forma en que se hace una división en entrenamiento y prueba (Sección 6.3).</p>
-<div class="box bridge"><h4>Puente con el plan oficial</h4><p>El Laboratorio 1 del plan oficial presenta los vectores, matrices, listas y data frames de R. Un arreglo de NumPy equivale a la matriz de R, un <code>DataFrame</code> al data frame de R, un <code>dict</code> cumple el papel de una lista con nombres, y la idea de una tabla ordenada (tidy) —una fila por observación, una columna por variable— es la misma.<sup class="c"><a href="#r21">[21]</a></sup> Dos diferencias hacen tropezar a quienes vienen de R: Python cuenta desde 0, y un rango (slice) excluye su extremo final.</p></div>
+<div class="box bridge"><h4>Puente con el plan oficial</h4><p>El Laboratorio 1 del plan oficial presenta los vectores, matrices, listas y data frames de R. Un arreglo de NumPy equivale a la matriz de R, un <code>DataFrame</code> al data frame de R, un <code>dict</code> cumple el papel de una lista con nombres, y la idea de una tabla tidy —una fila por observación, una columna por variable— es la misma.<sup class="c"><a href="#r21">[21]</a></sup> Dos diferencias hacen tropezar a quienes vienen de R: Python cuenta desde 0, y un slice excluye su extremo final.</p></div>
 <h2 id="s4">4. pandas: tablas con etiquetas</h2><h3 id="s4-1">4.1 Series y DataFrame</h3><p>Un <strong><code>DataFrame</code></strong> es una tabla bidimensional cuyas columnas tienen nombres, cuyas filas tienen etiquetas (el <strong>índice</strong>) y cuyas columnas pueden ser de tipos distintos;<sup class="c"><a href="#r6">[6]</a></sup> una columna es una <strong><code>Series</code></strong>. Por debajo, una columna numérica es un arreglo de NumPy, así que la Sección 3 se le aplica. Los cargadores de scikit-learn devuelven un <code>DataFrame</code> con <code>as_frame=True</code>.</p>
 </div>
 </div>
@@ -1911,7 +1911,7 @@ true benign                       4               103
 <h2 id="s9">9. Resumen</h2><p>Ahora deberías poder explicar, sin apuntes:</p>
 <ul>
 <li>Qué es un kernel, por qué la salida de una celda depende del orden de ejecución y por qué "Restart and run all" es la prueba de un notebook confiable.</li>
-<li>El rebanado con el extremo final excluido; la comparación de números de punto flotante con <code>np.isclose</code>; <code>shape</code>, <code>dtype</code>, máscaras booleanas, vectorización y broadcasting.</li>
+<li>El slicing con el extremo final excluido; la comparación de números de punto flotante con <code>np.isclose</code>; <code>shape</code>, <code>dtype</code>, máscaras booleanas, vectorización y broadcasting.</li>
 <li>Que <code>axis</code> nombra la dimensión que desaparece: <code>axis=0</code> da un valor por columna, <code>axis=1</code> uno por fila.</li>
 <li>La fórmula de estandarización $z = (x - \bar{x})/s$, a mano, y por qué puede invertir una decisión del centroide más cercano.</li>
 <li><code>loc</code> frente a <code>iloc</code> y la trampa del índice filtrado; <code>groupby(...).agg(...)</code>; <code>isna</code>/<code>dropna</code>/<code>fillna</code>; las variables categóricas; el viaje de ida y vuelta a CSV y <code>to_numpy()</code>.</li>
@@ -1932,15 +1932,15 @@ true benign                       4               103
 <h2 id="glossary">Glosario</h2><dl class="gloss">
 <dt>Eje (axis)</dt><dd>En una reducción de NumPy, la dimensión que se colapsa: <code>axis=0</code> produce un valor por columna, <code>axis=1</code> uno por fila.</dd>
 <dt>Máscara booleana (Boolean mask)</dt><dd>Un arreglo de <code>True</code>/<code>False</code> producido por una comparación y usado como índice para seleccionar elementos o filas.</dd>
-<dt>Broadcasting (difusión)</dt><dd>La regla de NumPy para combinar arreglos de formas distintas: las dimensiones se comparan desde la derecha y una dimensión de tamaño 1 (o ausente) se repite virtualmente.</dd>
+<dt>Broadcasting</dt><dd>La regla de NumPy para combinar arreglos de formas distintas: las dimensiones se comparan desde la derecha y una dimensión de tamaño 1 (o ausente) se repite virtualmente.</dd>
 <dt>Categórica (Categorical)</dt><dd>Un dtype de pandas que almacena etiquetas como una lista fija de categorías más un código entero por fila; puede ser ordenada.</dd>
-<dt>Kernel (kernel)</dt><dd>El proceso de Python en segundo plano que ejecuta las celdas de código y conserva todas las variables entre ellas.</dd>
+<dt>Kernel</dt><dd>El proceso de Python en segundo plano que ejecuta las celdas de código y conserva todas las variables entre ellas.</dd>
 <dt>Estimador (estimator)</dt><dd>Cualquier objeto de scikit-learn con un método <code>fit</code>; los predictores agregan <code>predict</code> y <code>score</code>, los transformadores agregan <code>transform</code>.</dd>
 <dt>Hiperparámetro (hyperparameter)</dt><dd>Un ajuste que se elige antes del ajuste del modelo; se distingue de las cantidades aprendidas, cuyos nombres terminan en guion bajo.</dd>
 <dt>Fuga de datos (leakage)</dt><dd>Cualquier flujo de información desde los datos de prueba hacia el entrenamiento de un modelo, incluidos los estadísticos de preprocesamiento calculados antes de dividir; infla el rendimiento informado.</dd>
 <dt>loc / iloc</dt><dd>Selección de pandas por etiqueta (el extremo final del rango se incluye) / por posición entera (el extremo final se excluye).</dd>
 <dt>ndarray</dt><dd>El arreglo <em>n</em>-dimensional de NumPy: un bloque de elementos de un único dtype con una forma.</dd>
-<dt>Pipeline (pipeline)</dt><dd>Un estimador de scikit-learn que encadena transformadores y un estimador final, ajusta cada paso con los datos de entrenamiento en orden y aplica los mismos pasos a los datos nuevos.</dd>
+<dt>Pipeline</dt><dd>Un estimador de scikit-learn que encadena transformadores y un estimador final, ajusta cada paso con los datos de entrenamiento en orden y aplica los mismos pasos a los datos nuevos.</dd>
 <dt>random_state / semilla (seed)</dt><dd>El entero que inicializa un generador pseudoaleatorio; la misma semilla reproduce la misma secuencia, división o simulación.</dd>
 <dt>Estandarización (standardisation, z-score)</dt><dd>Transformar cada característica mediante $z = (x - \bar{x})/s$ para que tenga media 0 y desviación estándar 1; la implementa <code>StandardScaler</code>.</dd>
 <dt>Vectorización (vectorisation)</dt><dd>Calcular con arreglos completos, en código compilado, en lugar de bucles elemento a elemento.</dd>
