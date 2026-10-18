@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es" data-title-es="BGM411 · Inteligencia Artificial (R) — Daniel Bustos" data-title-en="BGM411 · Artificial Intelligence (R) — Daniel Bustos">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BGM411 · Inteligencia Artificial (R) — Daniel Bustos</title>
+<meta name="description" content="Material de estudio de BGM411 Inteligencia Artificial, edición en R: nueve unidades y dos suplementos en notebooks ejecutables en Google Colab.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BGM411 · Inteligencia Artificial (R) — Daniel Bustos">
+<meta property="og:description" content="Material de estudio de BGM411 Inteligencia Artificial, edición en R: nueve unidades y dos suplementos en notebooks ejecutables en Google Colab.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+<script>
+  /* Tema antes de pintar, para evitar el destello claro en modo oscuro. */
+  try {
+    var t = localStorage.getItem('db-theme');
+    if (!t) t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="../../assets/css/course.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-es="Saltar al contenido" data-en="Skip to content">Saltar al contenido</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="../../">
+      <span class="brand-mark">DB</span>
+      <span class="brand-text">
+        <strong>Daniel Bustos</strong>
+        <small data-es="Bioinformática Estructural · UCM" data-en="Structural Bioinformatics · UCM">Bioinformática Estructural · UCM</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="BGM411">
+      <a href="../" data-es="← BGM411 · ambas ediciones" data-en="← BGM411 · both editions">← BGM411 · ambas ediciones</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="course-hero">
+    <div class="wrap">
+      <p class="crumbs"><a href="../" data-es="BGM411 · Inteligencia Artificial" data-en="BGM411 · Artificial Intelligence">BGM411 · Inteligencia Artificial</a> /</p>
+      <div class="ed-head">
+        <span class="course-code">BGM411</span>
+        <span class="lang-badge lang-r" data-es="Edición R" data-en="R edition">Edición R</span>
+      </div>
+      <h1><span data-es="Inteligencia Artificial" data-en="Artificial Intelligence">Inteligencia Artificial</span> <span class="h1-lang">· R</span></h1>
+      <nav class="ed-switch" aria-label="Edición / Edition"><a class="ed-opt" href="../Python/">Python</a><a class="ed-opt on" href="./" aria-current="page">R</a></nav>
+      <ul class="course-meta">
+        <li data-es="<strong>Carrera:</strong> Bioingeniería Médica" data-en="<strong>Degree:</strong> Medical Bioengineering"><strong>Carrera:</strong> Bioingeniería Médica</li>
+        <li data-es="<strong>Nivel:</strong> 4.º año, 1.<sup>er</sup> semestre" data-en="<strong>Level:</strong> 4th year, 1st semester"><strong>Nivel:</strong> 4.º año, 1.<sup>er</sup> semestre</li>
+        <li data-es="<strong>Profesor:</strong> Daniel Bustos, PhD (coordinador)" data-en="<strong>Lecturer:</strong> Daniel Bustos, PhD (coordinator)"><strong>Profesor:</strong> Daniel Bustos, PhD (coordinador)</li>
+        <li><strong>Universidad Católica del Maule</strong></li>
+      </ul>
+      <p class="course-lede" data-es="Edición en <strong>R</strong>, equivalente unidad por unidad a la de Python. Cada unidad es un <strong>notebook de Jupyter con kernel de R (.ipynb)</strong>: ábrelo en Google Colab, que lo carga directamente con el entorno de R, o descárgalo para trabajar en Jupyter o en RStudio." data-en="<strong>R</strong> edition, matching the Python edition unit for unit. Each unit is a <strong>Jupyter notebook with an R kernel (.ipynb)</strong>: open it in Google Colab, which loads it directly with the R runtime, or download it to work in Jupyter or RStudio.">Edición en <strong>R</strong>, equivalente unidad por unidad a la de Python. Cada unidad es un <strong>notebook de Jupyter con kernel de R (.ipynb)</strong>: ábrelo en Google Colab, que lo carga directamente con el entorno de R, o descárgalo para trabajar en Jupyter o en RStudio.</p>
+      <div class="hero-cta" style="margin:20px 0 4px">
+        <a class="btn btn-primary" href="BGM411_R_notebooks.zip" download data-es="Descargar todos los notebooks de R (.zip) ↓" data-en="Download all R notebooks (.zip) ↓">Descargar todos los notebooks de R (.zip) ↓</a>
+      </div>
+      <ol class="flow" aria-label="Orden sugerido">
+        <li data-es="S0 · R (si es nuevo)" data-en="S0 · R (if new)">S0 · R (si es nuevo)</li>
+        <li>U1–U2</li>
+        <li data-es="S1 · Evaluación" data-en="S1 · Evaluation">S1 · Evaluación</li>
+        <li>U3–U9</li>
+      </ol>
+      <p class="note" data-es="💡 <strong>Cómo usar Colab con R:</strong> Colab abre estos notebooks con el entorno de R automáticamente. Los paquetes del curso no vienen instalados: ejecuta primero <code>install.packages(c(&quot;mlbench&quot;, &quot;rpart.plot&quot;, &quot;e1071&quot;, &quot;randomForest&quot;, &quot;pROC&quot;, &quot;neuralnet&quot;))</code> (cada notebook indica en su primera celda los que necesita). Los notebooks de R se publican <strong>sin resultados guardados</strong>: usa <em>Runtime → Run all</em> para generar tablas y figuras; la vista previa sí los muestra. Para guardar tus cambios usa <em>File → Save a copy in Drive</em>. Están escritos en inglés. Las tres pruebas teóricas cubren las unidades 1–3, 4–6 y 7–9." data-en="💡 <strong>Using Colab with R:</strong> Colab opens these notebooks with the R runtime automatically. The course packages are not preinstalled: first run <code>install.packages(c(&quot;mlbench&quot;, &quot;rpart.plot&quot;, &quot;e1071&quot;, &quot;randomForest&quot;, &quot;pROC&quot;, &quot;neuralnet&quot;))</code> (each notebook lists the ones it needs in its first cell). The R notebooks are published <strong>without saved outputs</strong>: use <em>Runtime → Run all</em> to generate tables and figures; the preview shows them. To keep your changes use <em>File → Save a copy in Drive</em>. The three theory tests cover Units 1–3, 4–6 and 7–9.">💡 <strong>Cómo usar Colab con R:</strong> Colab abre estos notebooks con el entorno de R automáticamente. Los paquetes del curso no vienen instalados: ejecuta primero <code>install.packages(c("mlbench", "rpart.plot", "e1071", "randomForest", "pROC", "neuralnet"))</code> (cada notebook indica en su primera celda los que necesita). Los notebooks de R se publican <strong>sin resultados guardados</strong>: usa <em>Runtime → Run all</em> para generar tablas y figuras; la vista previa sí los muestra. Para guardar tus cambios usa <em>File → Save a copy in Drive</em>. Están escritos en inglés. Las tres pruebas teóricas cubren las unidades 1–3, 4–6 y 7–9.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:28px">
+    <div class="wrap">
+      <div class="units">
+        <article class="unit supp">
+          <div class="unit-num"><small data-es="Suplemento" data-en="Supplement">Suplemento</small>S0</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/S0_R_Toolkit/S0_R_Toolkit.ipynb" target="_blank" rel="noopener" data-es="El kit de R para machine learning" data-en="The R toolkit for machine learning">El kit de R para machine learning</a></h2>
+            <p class="unit-sub">Supplement 0 — The R Toolkit for Machine Learning</p>
+            <p class="desc" data-es="Lo esencial de R para el curso: vectores, data frames, gráficos y los paquetes de machine learning que se usan en las unidades. Recomendado antes de la Unidad 1 si no has usado R." data-en="R essentials for the course: vectors, data frames, plots and the machine-learning packages used in the units. Recommended before Unit 1 if R is new to you.">Lo esencial de R para el curso: vectores, data frames, gráficos y los paquetes de machine learning que se usan en las unidades. Recomendado antes de la Unidad 1 si no has usado R.</p>
+            <ul class="tags subtle"><li>R</li><li>data.frame</li><li>ggplot2</li><li>mlbench</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/S0_R_Toolkit/S0_R_Toolkit.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="S0_R_Toolkit/S0_R_Toolkit.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="S0_R_Toolkit/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U1</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U1_Introduction_AI_Pattern_Recognition/U1_Introduction_AI_Pattern_Recognition.ipynb" target="_blank" rel="noopener" data-es="Introducción a la IA y al reconocimiento de patrones" data-en="Introduction to AI and pattern recognition">Introducción a la IA y al reconocimiento de patrones</a></h2>
+            <p class="unit-sub">Unit 1 — Introduction to Artificial Intelligence and Pattern Recognition</p>
+            <p class="desc" data-es="Qué es la inteligencia artificial, su historia y sus enfoques; el reconocimiento de patrones y el clasificador más simple, a mano y en código; aplicaciones en medicina y bioingeniería; datos, privacidad y ética." data-en="What artificial intelligence is, its history and approaches; pattern recognition and the simplest classifier, by hand and in code; applications in medicine and bioengineering; data, privacy and ethics.">Qué es la inteligencia artificial, su historia y sus enfoques; el reconocimiento de patrones y el clasificador más simple, a mano y en código; aplicaciones en medicina y bioingeniería; datos, privacidad y ética.</p>
+            <ul class="tags subtle"><li>AI history</li><li>Pattern recognition</li><li>Nearest-centroid</li><li>Ethics</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U1_Introduction_AI_Pattern_Recognition/U1_Introduction_AI_Pattern_Recognition.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U1_Introduction_AI_Pattern_Recognition/U1_Introduction_AI_Pattern_Recognition.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U1_Introduction_AI_Pattern_Recognition/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U2</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U2_Learning_and_Regression/U2_Learning_and_Regression.ipynb" target="_blank" rel="noopener" data-es="Aprendizaje, regresión y el primer clasificador" data-en="Learning, regression and the first classifier">Aprendizaje, regresión y el primer clasificador</a></h2>
+            <p class="unit-sub">Unit 2 — Learning: Paradigms, Regression and the First Classifier</p>
+            <p class="desc" data-es="Qué significa aprender; paradigmas de aprendizaje; regresión lineal y descenso de gradiente; primer encuentro con el sobreajuste; y regresión logística como primer clasificador." data-en="What it means to learn; learning paradigms; linear regression and gradient descent; a first look at overfitting; and logistic regression as the first classifier.">Qué significa aprender; paradigmas de aprendizaje; regresión lineal y descenso de gradiente; primer encuentro con el sobreajuste; y regresión logística como primer clasificador.</p>
+            <ul class="tags subtle"><li>Supervised learning</li><li>Linear regression</li><li>Gradient descent</li><li>Logistic regression</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U2_Learning_and_Regression/U2_Learning_and_Regression.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U2_Learning_and_Regression/U2_Learning_and_Regression.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U2_Learning_and_Regression/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit supp">
+          <div class="unit-num"><small data-es="Suplemento" data-en="Supplement">Suplemento</small>S1</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/S1_Model_Evaluation/S1_Model_Evaluation.ipynb" target="_blank" rel="noopener" data-es="Evaluar y validar un modelo" data-en="Evaluating and validating a model">Evaluar y validar un modelo</a></h2>
+            <p class="unit-sub">Supplement 1 — Evaluating and Validating a Model</p>
+            <p class="desc" data-es="Hold-out y validación cruzada, sobreajuste y el compromiso sesgo–varianza, métricas de clasificación y regresión, fuga de datos, y validación interna versus externa. Leer antes de la Unidad 3: todas las unidades siguientes usan este vocabulario." data-en="Hold-out and cross-validation, overfitting and the bias–variance trade-off, classification and regression metrics, data leakage, and internal versus external validation. Read before Unit 3: every later unit uses this vocabulary.">Hold-out y validación cruzada, sobreajuste y el compromiso sesgo–varianza, métricas de clasificación y regresión, fuga de datos, y validación interna versus externa. Leer antes de la Unidad 3: todas las unidades siguientes usan este vocabulario.</p>
+            <ul class="tags subtle"><li>Cross-validation</li><li>Sensitivity / specificity</li><li>ROC</li><li>Data leakage</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/S1_Model_Evaluation/S1_Model_Evaluation.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="S1_Model_Evaluation/S1_Model_Evaluation.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="S1_Model_Evaluation/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U3</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U3_Bayes_SVM_kNN/U3_Bayes_SVM_kNN.ipynb" target="_blank" rel="noopener" data-es="Clasificadores bayesianos, SVM y k-vecinos" data-en="Bayesian classifiers, SVM and k-NN">Clasificadores bayesianos, SVM y k-vecinos</a></h2>
+            <p class="unit-sub">Unit 3 — Bayesian Classifiers, Support Vector Machines and k-Nearest Neighbours</p>
+            <p class="desc" data-es="Tres formas de trazar una frontera de decisión: teoría bayesiana de la decisión, Naive Bayes y redes bayesianas; k vecinos más cercanos; y máquinas de soporte vectorial, comparadas entre sí." data-en="Three ways to draw a decision boundary: Bayesian decision theory, Naive Bayes and Bayesian networks; k-nearest neighbours; and support vector machines, compared side by side.">Tres formas de trazar una frontera de decisión: teoría bayesiana de la decisión, Naive Bayes y redes bayesianas; k vecinos más cercanos; y máquinas de soporte vectorial, comparadas entre sí.</p>
+            <ul class="tags subtle"><li>Naive Bayes</li><li>Bayesian networks</li><li>k-NN</li><li>SVM</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U3_Bayes_SVM_kNN/U3_Bayes_SVM_kNN.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U3_Bayes_SVM_kNN/U3_Bayes_SVM_kNN.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U3_Bayes_SVM_kNN/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U4</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U4_Trees_Random_Forest/U4_Trees_Random_Forest.ipynb" target="_blank" rel="noopener" data-es="Árboles binarios, árboles de decisión y random forests" data-en="Binary trees, decision trees and random forests">Árboles binarios, árboles de decisión y random forests</a></h2>
+            <p class="unit-sub">Unit 4 — Binary Trees, Decision Trees and Random Forests</p>
+            <p class="desc" data-es="Árboles binarios, de búsqueda y balanceados, con un ejemplo resuelto a mano; el paso a los árboles de decisión; random forests; y una mirada a gradient boosting, con aplicaciones en medicina." data-en="Binary, search and balanced trees, with a worked example by hand; the step to decision trees; random forests; and a look at gradient boosting, with medical applications.">Árboles binarios, de búsqueda y balanceados, con un ejemplo resuelto a mano; el paso a los árboles de decisión; random forests; y una mirada a gradient boosting, con aplicaciones en medicina.</p>
+            <ul class="tags subtle"><li>Binary search trees</li><li>Decision trees</li><li>Random forest</li><li>Gradient boosting</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U4_Trees_Random_Forest/U4_Trees_Random_Forest.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U4_Trees_Random_Forest/U4_Trees_Random_Forest.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U4_Trees_Random_Forest/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U5</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U5_Clustering_PCA_ICA/U5_Clustering_PCA_ICA.ipynb" target="_blank" rel="noopener" data-es="Aprendizaje no supervisado: clustering, PCA e ICA" data-en="Unsupervised learning: clustering, PCA and ICA">Aprendizaje no supervisado: clustering, PCA e ICA</a></h2>
+            <p class="unit-sub">Unit 5 — Unsupervised Learning: k-Means, Hierarchical Clustering, PCA and ICA</p>
+            <p class="desc" data-es="Aprender sin etiquetas: k-means y clustering jerárquico, análisis de componentes principales e independientes, cómo evaluar resultados no supervisados y aplicaciones médicas." data-en="Learning without labels: k-means and hierarchical clustering, principal and independent component analysis, how to evaluate unsupervised results, and medical applications.">Aprender sin etiquetas: k-means y clustering jerárquico, análisis de componentes principales e independientes, cómo evaluar resultados no supervisados y aplicaciones médicas.</p>
+            <ul class="tags subtle"><li>k-Means</li><li>Hierarchical clustering</li><li>PCA</li><li>ICA</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U5_Clustering_PCA_ICA/U5_Clustering_PCA_ICA.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U5_Clustering_PCA_ICA/U5_Clustering_PCA_ICA.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U5_Clustering_PCA_ICA/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U6</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U6_Neural_Networks/U6_Neural_Networks.ipynb" target="_blank" rel="noopener" data-es="Redes neuronales artificiales" data-en="Artificial neural networks">Redes neuronales artificiales</a></h2>
+            <p class="unit-sub">Unit 6 — Artificial Neural Networks: from the Neuron to the Multilayer Perceptron</p>
+            <p class="desc" data-es="Del cerebro humano al modelo computacional de la neurona; perceptrón simple y multicapa; entrenamiento en la práctica; un ejemplo resuelto de diagnóstico de cáncer de mama; y el paso al deep learning." data-en="From the human brain to the computational neuron; the simple and multilayer perceptron; training in practice; a worked breast-cancer diagnosis example; and the step to deep learning.">Del cerebro humano al modelo computacional de la neurona; perceptrón simple y multicapa; entrenamiento en la práctica; un ejemplo resuelto de diagnóstico de cáncer de mama; y el paso al deep learning.</p>
+            <ul class="tags subtle"><li>Perceptron</li><li>MLP</li><li>Backpropagation</li><li>Deep learning</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U6_Neural_Networks/U6_Neural_Networks.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U6_Neural_Networks/U6_Neural_Networks.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U6_Neural_Networks/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U7</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U7_Genetic_Algorithms/U7_Genetic_Algorithms.ipynb" target="_blank" rel="noopener" data-es="Algoritmos genéticos y computación evolutiva" data-en="Genetic algorithms and evolutionary computation">Algoritmos genéticos y computación evolutiva</a></h2>
+            <p class="unit-sub">Unit 7 — Genetic Algorithms and Evolutionary Computation</p>
+            <p class="desc" data-es="Optimización como búsqueda; elementos de un algoritmo genético; el problema x² de Goldberg resuelto a mano; una implementación reutilizable; por qué funciona (esquemas y diversidad); y la familia de métodos evolutivos y de enjambre." data-en="Optimisation as search; the elements of a genetic algorithm; Goldberg’s x² problem solved by hand; a reusable implementation; why it works (schemata and diversity); and the wider family of evolutionary and swarm methods.">Optimización como búsqueda; elementos de un algoritmo genético; el problema x² de Goldberg resuelto a mano; una implementación reutilizable; por qué funciona (esquemas y diversidad); y la familia de métodos evolutivos y de enjambre.</p>
+            <ul class="tags subtle"><li>Selection</li><li>Crossover</li><li>Mutation</li><li>Swarm methods</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U7_Genetic_Algorithms/U7_Genetic_Algorithms.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U7_Genetic_Algorithms/U7_Genetic_Algorithms.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U7_Genetic_Algorithms/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U8</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U8_Medical_Image_Classification/U8_Medical_Image_Classification.ipynb" target="_blank" rel="noopener" data-es="Clasificación de imágenes médicas con redes neuronales" data-en="Medical image classification with neural networks">Clasificación de imágenes médicas con redes neuronales</a></h2>
+            <p class="unit-sub">Unit 8 — Classification of Medical Image Patterns with Neural Networks</p>
+            <p class="desc" data-es="Imágenes médicas como patrones: preprocesamiento, características diseñadas versus aprendidas, el perceptrón multicapa como clasificador de imágenes, pruebas de topología, convolución, qué puede fallar y lectura de los artículos fundamentales." data-en="Medical images as patterns: pre-processing, hand-crafted versus learned features, the multilayer perceptron as an image classifier, topology experiments, convolution, what can go wrong, and reading the landmark papers.">Imágenes médicas como patrones: preprocesamiento, características diseñadas versus aprendidas, el perceptrón multicapa como clasificador de imágenes, pruebas de topología, convolución, qué puede fallar y lectura de los artículos fundamentales.</p>
+            <ul class="tags subtle"><li>Pre-processing</li><li>Feature extraction</li><li>MLP</li><li>Convolution</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U8_Medical_Image_Classification/U8_Medical_Image_Classification.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U8_Medical_Image_Classification/U8_Medical_Image_Classification.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U8_Medical_Image_Classification/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>U9</div>
+          <div>
+            <h2><a href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U9_Applications_and_Ethics/U9_Applications_and_Ethics.ipynb" target="_blank" rel="noopener" data-es="Aplicaciones y ética profesional" data-en="Applications and professional ethics">Aplicaciones y ética profesional</a></h2>
+            <p class="unit-sub">Unit 9 — Applications of Pattern Recognition: Data Mining, Medical Images, Diagnostic Systems and Professional Ethics</p>
+            <p class="desc" data-es="Minería de datos, reconocimiento de imágenes médicas y sistemas de diagnóstico; ética profesional en el trabajo con datos; un panorama de aplicaciones actuales; y el resumen del curso." data-en="Data mining, medical image recognition and diagnostic systems; professional ethics in working with data; a panorama of current applications; and the course summary.">Minería de datos, reconocimiento de imágenes médicas y sistemas de diagnóstico; ética profesional en el trabajo con datos; un panorama de aplicaciones actuales; y el resumen del curso.</p>
+            <ul class="tags subtle"><li>Data mining</li><li>Diagnostic systems</li><li>Professional ethics</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="https://colab.research.google.com/github/DanielBustosG/DanielBustosG.github.io/blob/main/BGM411/R/U9_Applications_and_Ethics/U9_Applications_and_Ethics.ipynb" target="_blank" rel="noopener" data-es="Abrir en Colab ↗" data-en="Open in Colab ↗">Abrir en Colab ↗</a>
+            <a class="btn btn-ghost btn-sm" href="U9_Applications_and_Ethics/U9_Applications_and_Ethics.ipynb" download data-es="Descargar notebook ↓" data-en="Download notebook ↓">Descargar notebook ↓</a>
+            <a class="preview-link" href="U9_Applications_and_Ethics/" data-es="Vista previa (sin ejecutar)" data-en="Preview (read only)">Vista previa (sin ejecutar)</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p data-es="© <span class='yr'>2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule."
+       data-en="© <span class='yr'>2026</span> Daniel Bustos · Bioinformatics and Computational Chemistry Laboratory, Universidad Católica del Maule.">© <span class="yr">2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule.</p>
+    <p class="footer-meta"><a href="../../" data-es="Volver al sitio principal" data-en="Back to main site">Volver al sitio principal</a></p>
+  </div>
+</footer>
+
+<script src="../../assets/js/course.js"></script>
+</body>
+</html>

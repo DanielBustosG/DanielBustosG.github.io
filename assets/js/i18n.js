@@ -440,9 +440,9 @@ var I18N_EN = {
     '<span class="project-years">4th year · 1st semester</span></div>' +
     '<h3><a href="BGM411/">BGM411 · Artificial Intelligence</a></h3>' +
     '<p class="project-role">Medical Bioengineering · Universidad Católica del Maule</p>' +
-    '<p>Nine units and two supplements as Python notebooks that run in Google Colab: supervised ' +
-    'and unsupervised learning, neural networks, genetic algorithms and medical image ' +
-    'classification.</p>' +
+    '<p>Nine units and two supplements as notebooks that run in Google Colab, in two equivalent ' +
+    'editions, <strong>Python</strong> and <strong>R</strong>: supervised and unsupervised learning, ' +
+    'neural networks, genetic algorithms and medical image classification.</p>' +
     '<p><a class="btn btn-ghost" href="BGM411/">View course material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
     '<span class="badge badge-coi">Supporting material</span>' +

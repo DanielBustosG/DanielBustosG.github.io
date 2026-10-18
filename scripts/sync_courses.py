@@ -4,7 +4,7 @@ Copia el material de estudio de los cursos al sitio y lo deja listo para publica
 
 Uso (desde la carpeta Webpage):
     python3 scripts/sync_courses.py            # todos los cursos
-    python3 scripts/sync_courses.py BGM411     # solo uno
+    python3 scripts/sync_courses.py BGM411     # ambas ediciones de BGM411 (o BGM411-R, BGM411-Python)
     python3 scripts/sync_courses.py BGM324 "/otra/ruta/Material_Estudio"
 
 Qué hace con cada curso:
@@ -14,7 +14,8 @@ Qué hace con cada curso:
   - Agrega a cada clase una barra superior para volver al índice del curso.
   - Aplica los reemplazos de enlaces definidos para el curso (por ejemplo, los
     botones "Open in Colab" de BGM411 apuntan al repositorio publicado).
-  - En BGM411 genera BGM411_notebooks.zip con todos los notebooks.
+  - En los materiales con notebooks genera un .zip con todos ellos.
+  - BGM411 tiene dos ediciones (Python y R) en BGM411/Python/ y BGM411/R/.
 
 Los originales NO se modifican. El índice de cada curso (BGM324/index.html,
 BGM411/index.html) se mantiene a mano: si agregas una unidad, súmale su tarjeta.
@@ -35,17 +36,32 @@ COURSES = {
         "label": "BGM324 &middot; Bioinform&aacute;tica",
         "replace": [],
     },
-    "BGM411": {
-        "src": DOCS / "IA_BGM411/Material_Estudio_IA",
-        "label": "BGM411 &middot; Inteligencia Artificial",
-        # Un .zip con todos los notebooks, enlazado desde BGM411/index.html.
-        "zip": "BGM411_notebooks.zip",
+    # BGM411 tiene dos ediciones equivalentes, cada una en su subcarpeta.
+    # "python3 scripts/sync_courses.py BGM411" sincroniza ambas.
+    "BGM411-Python": {
+        "src": DOCS / "IA_BGM411/Material_Estudio_IA_Python",
+        "dest": "BGM411/Python",
+        "home": "../../../",
+        "label": "BGM411 &middot; Inteligencia Artificial &middot; Python",
+        "zip": "BGM411_Python_notebooks.zip",
         "replace": [
             # Botones "Open in Colab" / "View on GitHub": del marcador del build al repo real.
-            ("USER/REPO/blob/main/IA/Material_Estudio_IA/", f"{REPO}/blob/main/BGM411/"),
+            ("USER/REPO/blob/main/IA_BGM411/Material_Estudio_IA_Python/", f"{REPO}/blob/main/BGM411/Python/"),
             # Enlaces cruzados al material de bioinformática (estructura local de carpetas).
-            ("../../Material_Estudio/", "../../BGM324/"),
-            ("../Material_Estudio/", "../BGM324/"),
+            ("../../Material_Estudio/", "../../../BGM324/"),
+        ],
+    },
+    "BGM411-R": {
+        "src": DOCS / "IA_BGM411/Material_Estudio_IA_R",
+        "dest": "BGM411/R",
+        "home": "../../../",
+        "label": "BGM411 &middot; Inteligencia Artificial &middot; R",
+        "zip": "BGM411_R_notebooks.zip",
+        # El export desde R deja caracteres como <U+00F3> en vez de "ó": se corrigen al publicar.
+        "fix_unicode_escapes": True,
+        "replace": [
+            ("USER/REPO/blob/main/IA_BGM411/Material_Estudio_IA_R/", f"{REPO}/blob/main/BGM411/R/"),
+            ("../../Material_Estudio/", "../../../BGM324/"),
         ],
     },
     # Material de apoyo (no son cursos formales).
@@ -71,23 +87,24 @@ COURSES = {
 
 MARK = "<!-- course-backbar -->"
 OLD_MARK = "<!-- bgm324-backbar -->"
+UNI_ESC = re.compile(r"(?:&lt;|<)U\+([0-9A-Fa-f]{4,6})(?:&gt;|>)")
 SKIP = shutil.ignore_patterns(".DS_Store", "Thumbs.db", "__pycache__", ".ipynb_checkpoints")
 
 
-def backbar(label):
+def backbar(label, home="../../"):
     return MARK + f"""
 <nav class="course-backbar" aria-label="Curso" style="position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:#0f6f8c;color:#fff;font:600 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif">
   <a href="../" style="color:#fff;text-decoration:none">&larr; {label}</a>
-  <a href="../../" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a>
+  <a href="{home}" style="color:#fff;text-decoration:none;opacity:.85;font-weight:500">Daniel Bustos &middot; LBQC-UCM</a>
 </nav>
 """
 
 
-def inject(text, label):
+def inject(text, label, home="../../"):
     if MARK in text or OLD_MARK in text:
         return text
     m = re.search(r"<body[^>]*>", text, flags=re.I)
-    bar = backbar(label)
+    bar = backbar(label, home)
     return (text[: m.end()] + "\n" + bar + text[m.end():]) if m else bar + text
 
 
@@ -97,8 +114,8 @@ def sync(code, src):
         print(f"[{code}] no encuentro la carpeta: {src} (se omite)")
         return
     units = sorted(p for p in src.iterdir() if p.is_dir() and (p / "index.html").exists())
-    dest = ROOT / code
-    dest.mkdir(exist_ok=True)
+    dest = ROOT / cfg.get("dest", code)
+    dest.mkdir(parents=True, exist_ok=True)
     print(f"[{code}] {src}")
     for unit in units:
         out = dest / unit.name
@@ -110,8 +127,10 @@ def sync(code, src):
             new = text
             for old, rep in cfg["replace"]:
                 new = new.replace(old, rep)
+            if cfg.get("fix_unicode_escapes"):
+                new = UNI_ESC.sub(lambda m: chr(int(m.group(1), 16)), new)
             if f.suffix == ".html" and f.name == "index.html" and f.parent == out:
-                new = inject(new, cfg["label"])
+                new = inject(new, cfg["label"], cfg.get("home", "../../"))
             if new != text:
                 f.write_text(new, encoding="utf-8")
         print(f"   {unit.name}: {sum(1 for x in out.rglob('*') if x.is_file())} archivos")
@@ -123,7 +142,7 @@ def sync(code, src):
             for nb in nbs:
                 z.write(nb, f"{folder}/{nb.name}")
         print(f"   {zpath.name}: {len(nbs)} notebooks, {zpath.stat().st_size / 1e6:.1f} MB")
-    print(f"   {len(units)} unidades → {code}/\n")
+    print(f"   {len(units)} unidades → {cfg.get('dest', code)}/\n")
 
 
 def main():
@@ -133,6 +152,11 @@ def main():
         code = names[args[0].lower()]
         src = Path(args[1]).expanduser() if len(args) > 1 else COURSES[code]["src"]
         sync(code, src)
+    elif args and any(k.startswith(args[0].lower() + "-") for k in names):
+        # Grupo de ediciones, p. ej. "BGM411" → BGM411-Python y BGM411-R
+        for k in names:
+            if k.startswith(args[0].lower() + "-"):
+                sync(names[k], COURSES[names[k]]["src"])
     else:
         for code, cfg in COURSES.items():
             sync(code, cfg["src"])

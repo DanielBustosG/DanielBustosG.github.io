@@ -93,3 +93,38 @@
   .paper-cite strong { color: var(--text); }
   .paper-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
   .flow.stats li:not(:last-child)::after { display: none; }
+
+  /* BGM411: dos ediciones (Python / R) */
+  .crumbs { font-size: .82rem; color: var(--text-mute); margin: 0 0 10px; }
+  .crumbs a { color: var(--text-soft); }
+  .ed-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .ed-head .course-code { margin-bottom: 0; }
+  .lang-badge {
+    display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .04em;
+    border-radius: 6px; padding: 3px 10px; color: #fff;
+  }
+  .lang-python { background: #3a6ea5; }
+  .lang-r { background: #1f6f5c; }
+  .h1-lang { color: var(--text-mute); font-weight: 400; }
+  .ed-switch {
+    display: inline-flex; margin: 16px 0 0; padding: 3px; gap: 3px;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--bg-card);
+  }
+  .ed-opt { padding: 6px 18px; border-radius: 7px; font-size: .88rem; font-weight: 650; color: var(--text-soft); }
+  .ed-opt:hover { background: var(--bg-inset); text-decoration: none; color: var(--text); }
+  .ed-opt.on { background: var(--accent); color: #fff; }
+  :root[data-theme="dark"] .ed-opt.on { color: #04222c; }
+  .ed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .ed-card {
+    background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; box-shadow: var(--shadow); border-top: 4px solid #3a6ea5;
+  }
+  .ed-card.ed-r { border-top-color: #1f6f5c; }
+  .ed-card h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; margin: 12px 0 8px; }
+  .ed-card p { color: var(--text-soft); font-size: .95rem; }
+  .ed-pk { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem !important; color: var(--text) !important; background: var(--bg-inset); border-radius: 6px; padding: 8px 10px; }
+  .ed-note { font-size: .85rem !important; color: var(--text-mute) !important; }
+  .ed-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; }
+  .toc-units { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 6px 24px; margin: 16px 0 6px; padding: 0; }
+  .toc-units li { display: flex; gap: 10px; align-items: baseline; font-size: .92rem; color: var(--text-soft); padding: 6px 0; border-bottom: 1px solid var(--line-soft); }
+  .toc-code { flex: none; width: 30px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
