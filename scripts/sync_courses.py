@@ -14,6 +14,7 @@ Qué hace con cada curso:
   - Agrega a cada clase una barra superior para volver al índice del curso.
   - Aplica los reemplazos de enlaces definidos para el curso (por ejemplo, los
     botones "Open in Colab" de BGM411 apuntan al repositorio publicado).
+  - En BGM411 genera BGM411_notebooks.zip con todos los notebooks.
 
 Los originales NO se modifican. El índice de cada curso (BGM324/index.html,
 BGM411/index.html) se mantiene a mano: si agregas una unidad, súmale su tarjeta.
@@ -21,6 +22,7 @@ BGM411/index.html) se mantiene a mano: si agregas una unidad, súmale su tarjeta
 import re
 import shutil
 import sys
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -36,6 +38,8 @@ COURSES = {
     "BGM411": {
         "src": DOCS / "IA_BGM411/Material_Estudio_IA",
         "label": "BGM411 &middot; Inteligencia Artificial",
+        # Un .zip con todos los notebooks, enlazado desde BGM411/index.html.
+        "zip": "BGM411_notebooks.zip",
         "replace": [
             # Botones "Open in Colab" / "View on GitHub": del marcador del build al repo real.
             ("USER/REPO/blob/main/IA/Material_Estudio_IA/", f"{REPO}/blob/main/BGM411/"),
@@ -92,6 +96,14 @@ def sync(code, src):
             if new != text:
                 f.write_text(new, encoding="utf-8")
         print(f"   {unit.name}: {sum(1 for x in out.rglob('*') if x.is_file())} archivos")
+    if cfg.get("zip"):
+        zpath = dest / cfg["zip"]
+        folder = Path(cfg["zip"]).stem
+        nbs = sorted(dest.glob("*/*.ipynb"))
+        with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
+            for nb in nbs:
+                z.write(nb, f"{folder}/{nb.name}")
+        print(f"   {zpath.name}: {len(nbs)} notebooks, {zpath.stat().st_size / 1e6:.1f} MB")
     print(f"   {len(units)} unidades → {code}/\n")
 
 

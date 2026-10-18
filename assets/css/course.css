@@ -72,3 +72,7 @@
     .site-header .header-actions { margin-left: 0; }
   }
   @media (max-width: 600px) { .site-header .nav { display: none; } }
+
+  .preview-link { font-size: .78rem; text-align: center; color: var(--text-mute); padding: 2px 0; }
+  .preview-link:hover { color: var(--accent); }
+  .note strong { color: var(--text); }
