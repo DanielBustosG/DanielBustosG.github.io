@@ -149,11 +149,17 @@ def sync(code, src):
     if cfg.get("zip"):
         zpath = dest / cfg["zip"]
         folder = Path(cfg["zip"]).stem
-        nbs = sorted(dest.glob("*/*.ipynb"))
-        with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
-            for nb in nbs:
-                z.write(nb, f"{folder}/{nb.name}")
-        print(f"   {zpath.name}: {len(nbs)} notebooks, {zpath.stat().st_size / 1e6:.1f} MB")
+        allnb = sorted(dest.glob("*/*.ipynb"))
+        # Los notebooks traducidos (<carpeta>_es.ipynb) van en un zip aparte: <zip>_es.zip
+        groups = [(zpath, folder, [n for n in allnb if not n.stem.endswith("_es")])]
+        es = [n for n in allnb if n.stem.endswith("_es")]
+        if es:
+            groups.append((dest / f"{Path(cfg['zip']).stem}_es.zip", f"{folder}_es", es))
+        for zp, fold, nbs in groups:
+            with zipfile.ZipFile(zp, "w", zipfile.ZIP_DEFLATED) as z:
+                for nb in nbs:
+                    z.write(nb, f"{fold}/{nb.name}")
+            print(f"   {zp.name}: {len(nbs)} notebooks, {zp.stat().st_size / 1e6:.1f} MB")
     print(f"   {len(units)} unidades → {cfg.get('dest', code)}/\n")
 
 
