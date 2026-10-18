@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Unit 1 · Sequence Alignment — BGM324 Bioinformatics, Universidad Católica del Maule</title>
+<title>Topic 1 · Sequence Alignment — BGM324 Bioinformatics, Universidad Católica del Maule</title>
 <meta name="description" content="Study material on pairwise and multiple sequence alignment, substitution matrices, BLAST statistics and their role in structural bioinformatics and drug design. BGM324 Bioinformatics, Medical Bioengineering, Universidad Católica del Maule.">
 <style>
 :root{--ink:#1d2430;--muted:#5b6573;--accent:#2b5d9b;--accent2:#d2691e;--bg:#ffffff;--panel:#f5f7fa;--line:#d9dee5;--code:#f0f3f7;--good:#3a7d44}
@@ -85,8 +85,8 @@ footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1
 
 <header class="banner"><div class="inner">
 <div class="kicker">BGM324 · Bioinformatics · Medical Bioengineering · Universidad Católica del Maule</div>
-<h1>Unit 1 — Sequence Alignment: Theory, Algorithms and Statistical Interpretation</h1>
-<div class="meta">Study material accompanying lecture 01 (<em>Sequence alignments</em>) · Prepared by Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · First unit of the module: sequence analysis → protein structure prediction → molecular docking → computer-aided drug design → molecular dynamics</div>
+<h1>Topic 1 — Sequence Alignment: Theory, Algorithms and Statistical Interpretation</h1>
+<div class="meta">Study material accompanying lecture 01 (<em>Sequence alignments</em>) · Prepared by Daniel Bustos, Ph.D., Laboratorio de Bioinformática y Química Computacional (LBQC), Facultad de Medicina · First topic of the module: sequence analysis → protein structure prediction → molecular docking → computer-aided drug design → molecular dynamics</div>
 </div></header>
 
 <div class="layout">
@@ -147,7 +147,7 @@ footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1
 <tr><td>Structural bioinformatics</td><td>Target protein against proteins of known 3D structure (PDB)</td><td>Templates for homology modelling; MSAs used by AlphaFold-type methods; residue conservation mapped on a structure</td></tr>
 </tbody></table>
 <div class="box bridge"><h4>Bridge to the rest of the module</h4>
-<p>The last row of the table is the one that connects this unit to the lectures that follow. The protein structure prediction lecture begins by searching the Protein Data Bank for a template with BLAST and then aligning the target to it; the quality of that alignment determines the quality of the model more than any other factor. The docking and drug-design lectures use multiple alignments to decide which residues of a binding pocket are conserved across species or across a protein family, and therefore which interactions a ligand must satisfy. The molecular dynamics lecture starts from models whose sequence numbering is reconciled with the experimental protein through an alignment. Every downstream mistake traceable to a poor alignment is cheap to avoid here and expensive to fix later.</p></div>
+<p>The last row of the table is the one that connects this topic to the lectures that follow. The protein structure prediction lecture begins by searching the Protein Data Bank for a template with BLAST and then aligning the target to it; the quality of that alignment determines the quality of the model more than any other factor. The docking and drug-design lectures use multiple alignments to decide which residues of a binding pocket are conserved across species or across a protein family, and therefore which interactions a ligand must satisfy. The molecular dynamics lecture starts from models whose sequence numbering is reconciled with the experimental protein through an alignment. Every downstream mistake traceable to a poor alignment is cheap to avoid here and expensive to fix later.</p></div>
 </section>
 
 <!-- ============================================================ -->
@@ -166,7 +166,7 @@ footer{max-width:1100px;margin:3rem auto 2rem;padding:1.2rem 1.5rem;border-top:1
 <img src="figures/fig01_homology.png" alt="Schematic gene tree showing a duplication followed by two speciation events, with orthologous and paralogous pairs labelled">
 <figcaption><b>Figure 1. Orthologs and paralogs are defined by the event at their last common ancestor.</b> An ancestral gene duplicates into copies A and B (orange circle). Each copy is then inherited by two species after a speciation event (green squares). A in species 1 and A in species 2 are orthologs; A and B in the same species are paralogs; all four genes are homologs. Note that A in species 1 and B in species 2 are also paralogs, because the node that separates them is the duplication, not the speciation. Koonin (2005) reviews the finer vocabulary (in-paralogs, out-paralogs, co-orthologs) needed when duplications and speciations interleave.<sup class="c"><a href="#r15">[15]</a></sup></figcaption>
 </figure>
-<p>The haemoglobin example is worth keeping in mind for the rest of the unit: the globin family (haemoglobin α and β chains, myoglobin, plant leghaemoglobins) descends from a single ancestral oxygen-binding protein, its members share the same three-dimensional fold, and yet some pairs retain less than 20 % sequence identity. It is the canonical case in which sequence comparison alone struggles while structural comparison succeeds, and we shall return to it in Sections 8 and 9.</p>
+<p>The haemoglobin example is worth keeping in mind for the rest of the topic: the globin family (haemoglobin α and β chains, myoglobin, plant leghaemoglobins) descends from a single ancestral oxygen-binding protein, its members share the same three-dimensional fold, and yet some pairs retain less than 20 % sequence identity. It is the canonical case in which sequence comparison alone struggles while structural comparison succeeds, and we shall return to it in Sections 8 and 9.</p>
 
 <h3 id="s2-2">2.2 Similarity is evidence for homology, not homology itself</h3>
 <p>The lecture slides illustrate the concept of homology with the pentadactyl limb: the wing of a bat, the flipper of a dolphin and the human hand share the same skeletal plan because they inherited it from a common tetrapod ancestor, even though they now serve flight, swimming and grasping. Comparative anatomists reached this conclusion from structural correspondence, and sequence analysis reasons the same way: we <em>observe</em> similarity and we <em>infer</em> homology when the similarity is too great to have arisen by chance.</p>
@@ -554,7 +554,7 @@ Lupin globin      VKEAILKTIKEVVGAKWSEELNSAWTIAYDELAIVIKKEMNDAA---
 <!-- ============================================================ -->
 <section id="s9">
 <h2><span class="num">Section 9</span>From alignment to structure: what the next lectures will assume</h2>
-<p>The lectures that follow — protein structure prediction, docking, drug design and molecular dynamics — all begin from sequence comparisons made with the tools of this unit. Three empirical relationships justify that dependence.</p>
+<p>The lectures that follow — protein structure prediction, docking, drug design and molecular dynamics — all begin from sequence comparisons made with the tools of this topic. Three empirical relationships justify that dependence.</p>
 <h3>9.1 Sequence identity predicts structural similarity</h3>
 <p>Chothia and Lesk compared pairs of homologous proteins of known structure and found that the root-mean-square deviation of their common core increases smoothly, approximately exponentially, with sequence divergence: pairs above 50 % identity superimpose to within about 1 Å, while pairs near 20 % identity diverge to 2–2.5 Å and share a shrinking core.<sup class="c"><a href="#r22">[22]</a></sup> This relationship is the theoretical basis of <strong>homology (comparative) modelling</strong>: if a template of known structure can be found with sufficient identity to the target, the target's backbone can be built on the template's coordinates, and the expected accuracy of the model can be estimated from the identity alone. The quality of the <em>alignment</em> between target and template sets a hard ceiling on the quality of the model, because a residue aligned to the wrong template position will be placed in the wrong location in space no matter how well the side chains are optimised. Target–template alignments are therefore built with the most information available — PSI-BLAST or HMM profiles, secondary-structure prediction, and manual inspection — rather than with a single pairwise alignment.</p>
 <h3>9.2 The twilight zone</h3>
@@ -731,7 +731,7 @@ pairwiseAlignment("GATTACA", "GCATGCG", type = "global",
 </ol>
 <h3>Textbooks</h3>
 <ol class="refs" start="33">
-<li id="r31">Durbin R, Eddy SR, Krogh A, Mitchison G. <em>Biological Sequence Analysis: Probabilistic Models of Proteins and Nucleic Acids</em>. Cambridge University Press; 1998. — The rigorous treatment of pairwise alignment, alignment statistics, profiles and HMMs; chapters 2, 5 and 6 cover this unit.</li>
+<li id="r31">Durbin R, Eddy SR, Krogh A, Mitchison G. <em>Biological Sequence Analysis: Probabilistic Models of Proteins and Nucleic Acids</em>. Cambridge University Press; 1998. — The rigorous treatment of pairwise alignment, alignment statistics, profiles and HMMs; chapters 2, 5 and 6 cover this topic.</li>
 <li id="r32">Mount DW. <em>Bioinformatics: Sequence and Genome Analysis</em>. 2nd ed. Cold Spring Harbor Laboratory Press; 2004. — Chapter 3 (pairwise alignment), 4 (statistics), 5 (MSA), 6 (database searching). The most detailed textbook account of PAM and BLOSUM derivation.</li>
 <li id="r33">Lesk AM. <em>Introduction to Bioinformatics</em>. 5th ed. Oxford University Press; 2019. — Accessible introduction; chapter 5 on alignment and phylogeny.</li>
 <li id="r34">Pevsner J. <em>Bioinformatics and Functional Genomics</em>. 3rd ed. Wiley-Blackwell; 2015. — Chapters 3–6 on pairwise alignment, BLAST, advanced database searching and MSA, with many worked web examples.</li>
