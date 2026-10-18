@@ -1,0 +1,39 @@
+{
+  "_instrucciones": [
+    "Archivo único de configuración de publicaciones. Lo leen la página (assets/js/app.js) y el actualizador (scripts/update_publications.py).",
+    "authorFilters: filtros de OpenAlex que identifican tus trabajos. Si un paper tuyo no aparece, búscalo en https://api.openalex.org/works?search=<título> y agrega 'author.id:<id>'.",
+    "minYear: se descartan trabajos anteriores (homónimos).",
+    "blocklist: títulos de homónimos a excluir, en minúsculas, sin acentos ni puntuación.",
+    "extraWorks: papers que OpenAlex aún no indexa. Copia el ejemplo de _plantillaExtra a la lista extraWorks. Cuando OpenAlex lo indexe, se deduplica solo (puedes borrarlo de aquí)."
+  ],
+  "mailto": "danielbustos.ibi@gmail.com",
+  "authorFilters": [
+    "author.orcid:0000-0002-2136-2305",
+    "author.id:A5137396268"
+  ],
+  "minYear": 2016,
+  "blocklist": [
+    "el barrio esta en extincion",
+    "transformaciones en la estructura socio-ocupacional de la provincia de nuble mirada desde la perspectiva funcionalista",
+    "influencia do frio extremo na temperatura interna corporal na pressao arterial sanguinea e frequencia cardiaca",
+    "variabilidade biologica de aldolase serica sua utilidade na interpretacao dos resultados",
+    "biological variation of serum aldolase its use for interpretation of the results variabilidade biologica de aldolase serica sua utilidade na interpretacao dos resultados",
+    "on the existence of foliations by solutions to the exterior dirichlet problem for the minimal surface equation",
+    "harmonic gauss maps of submanifolds of arbitrary codimension of the euclidean space and sphere and some applications",
+    "paradoxical low flowlow gradient severe aortic stenosis a clinical entity or a scientific artifact",
+    "psychological and behavioral effects of glp1 and gip agonists in weight loss a comprehensive review"
+  ],
+  "extraWorks": [],
+  "_plantillaExtra": {
+    "title": "Título exacto del artículo",
+    "authors": [
+      "Autor A",
+      "Daniel Bustos"
+    ],
+    "venue": "Nombre de la revista",
+    "year": 2026,
+    "doi": "https://doi.org/10.xxxx/xxxxx",
+    "citations": 0,
+    "type": "article"
+  }
+}

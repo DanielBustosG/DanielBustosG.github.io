@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daniel Bustos — Bioinformática Estructural</title>
+<meta name="description" content="Daniel Bustos Guajardo, PhD. Bioinformática estructural, simulaciones de dinámica molecular y diseño de fármacos. Laboratorio de Bioinformática y Química Computacional (LBQC), Universidad Católica del Maule.">
+<meta name="author" content="Daniel Bustos Guajardo">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Daniel Bustos — Bioinformática Estructural">
+<meta property="og:description" content="Bioinformática estructural, dinámica molecular y diseño de fármacos. LBQC, Universidad Católica del Maule.">
+<meta property="og:image" content="assets/img/daniel.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-i18n="skip">Saltar al contenido</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="#inicio">
+      <span class="brand-mark">DB</span>
+      <span class="brand-text">
+        <strong>Daniel Bustos</strong>
+        <small data-i18n="brand_sub">Bioinformática Estructural · UCM</small>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Navegación principal">
+      <a href="#sobre-mi" data-i18n="nav_about">Sobre mí</a>
+      <a href="#investigacion" data-i18n="nav_research">Investigación</a>
+      <a href="#publicaciones" data-i18n="nav_pubs">Publicaciones</a>
+      <a href="#grupo" data-i18n="nav_group">Grupo</a>
+      <a href="#proyectos" data-i18n="nav_projects">Proyectos</a>
+      <a href="#contacto" data-i18n="nav_contact">Contacto</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ══════════════════════════ INICIO ══════════════════════════ -->
+<section class="hero" id="inicio">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="hero_eyebrow">Universidad Católica del Maule · Facultad de Medicina</p>
+      <h1>Daniel Bustos <span class="degree">, PhD</span></h1>
+      <p class="lede" data-i18n="hero_lede">
+        Investigo cómo se comportan las proteínas a escala atómica y uso ese conocimiento
+        para diseñar moléculas con potencial terapéutico. Combino <strong>bioinformática
+        estructural</strong>, <strong>simulaciones de dinámica molecular</strong> y
+        <strong>machine learning</strong> para pasar de la estructura al mecanismo,
+        y del mecanismo al fármaco.
+      </p>
+      <p class="hero-affil" data-i18n="hero_affil">
+        Profesor Adjunto e investigador del
+        <strong>Laboratorio de Bioinformática y Química Computacional (LBQC)</strong>,
+        Facultad de Medicina, Universidad Católica del Maule, Talca, Chile.
+      </p>
+
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#publicaciones" data-i18n="hero_cta_pubs">Ver publicaciones</a>
+        <a class="btn btn-ghost" href="#investigacion" data-i18n="hero_cta_research">Líneas de investigación</a>
+      </div>
+
+      <ul class="hero-links">
+        <li><a href="https://scholar.google.com/citations?user=Som7kaQAAAAJ&hl=es" target="_blank" rel="noopener">Google Scholar ↗</a></li>
+        <li><a href="https://orcid.org/0000-0002-2136-2305" target="_blank" rel="noopener">ORCID ↗</a></li>
+        <li><a href="https://www.researchgate.net/profile/Daniel-Bustos-12" target="_blank" rel="noopener">ResearchGate ↗</a></li>
+      </ul>
+    </div>
+
+    <aside class="hero-panel">
+      <!-- Para cambiar la foto, reemplaza assets/img/daniel.jpg (cuadrada, ~800×800 px). -->
+      <div class="portrait"><img src="assets/img/daniel.jpg" alt="Daniel Bustos Guajardo" width="800" height="800"></div>
+
+      <div class="metrics" id="metrics">
+        <div class="metric">
+          <span class="metric-val" data-metric="works">—</span>
+          <span class="metric-lbl" data-i18n="metric_works">Publicaciones</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val" data-metric="citations">—</span>
+          <span class="metric-lbl" data-i18n="metric_citations">Citas</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val" data-metric="hindex">—</span>
+          <span class="metric-lbl" data-i18n="metric_h">índice h</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val" data-metric="i10">—</span>
+          <span class="metric-lbl" data-i18n="metric_i10">índice i10</span>
+        </div>
+      </div>
+      <p class="metrics-note" id="metricsNote">Cargando métricas…</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ══════════════════════════ SOBRE MÍ ══════════════════════════ -->
+<section class="section" id="sobre-mi">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow" data-i18n="s1_eyebrow">01 — Perfil</p>
+      <h2 data-i18n="s1_title">Sobre mí</h2>
+    </header>
+
+    <div class="about-grid">
+      <div class="prose" data-i18n="about_prose">
+        <p>
+          Soy <strong>Ingeniero en Bioinformática</strong> y <strong>Doctor en Ciencias
+          Aplicadas</strong> por la Universidad de Talca. Actualmente me desempeño como
+          Profesor Adjunto e investigador en la Facultad de Medicina de la Universidad Católica
+          del Maule, donde participé en la <strong>co-creación del Laboratorio de
+          Bioinformática y Química Computacional (LBQC)</strong>.
+        </p>
+        <p>
+          Mi trabajo se sitúa en la frontera entre la física de biomoléculas y el
+          descubrimiento de fármacos. Me interesa una pregunta transversal: <em>¿cómo la
+          dinámica de una proteína — no solo su estructura estática — determina dónde y
+          cómo se une un ligando?</em> Para responderla combino, entre otras técnicas, dinámica
+          molecular de todos los átomos, metadinámica, cribado virtual basado en ensembles y modelos de
+          aprendizaje automático entrenados sobre propiedades fisicoquímicas.
+        </p>
+        <p>
+          Esta aproximación me ha permitido trabajar en sistemas muy distintos:
+          canales iónicos (TRPV1, TASK/K2P, hERG, TRPV5/6), enzimas bacterianas como la
+          <em>ureasa</em> de <em>Helicobacter pylori</em> y las bombas de eflujo RND de
+          <em>Pseudomonas aeruginosa</em>, la maduración y el aroma de la frutilla, y el
+          diseño de polímeros y nanoacarreadores para liberación controlada. El hilo
+          conductor no es el sistema biológico, sino el método.
+        </p>
+        <p>
+          En docencia participo en la carrera de <strong>Bioingeniería Médica</strong> de la
+          UCM, en la línea de Bioinformática. Integro además el claustro de tres programas
+          de posgrado de la Universidad Católica del Maule: el <strong>Magíster en Ciencias
+          de la Computación</strong>, el <strong>Doctorado en Ingeniería</strong> y el
+          <strong>Doctorado en Biotecnología Traslacional</strong>.
+        </p>
+      </div>
+
+      <div class="about-side">
+        <div class="card">
+          <h3 data-i18n="about_edu_h">Formación</h3>
+          <ul class="timeline" data-i18n="about_edu_list">
+            <li>
+              <span class="tl-year">PhD</span>
+              <div><strong>Doctor en Ciencias Aplicadas</strong><span>Universidad de Talca</span></div>
+            </li>
+            <li>
+              <span class="tl-year">Ing.</span>
+              <div><strong>Ingeniería en Bioinformática</strong><span>Universidad de Talca</span></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="about_areas_h">Áreas de trabajo</h3>
+          <ul class="tags" data-i18n="about_areas_list">
+            <li>Bioinformática estructural</li>
+            <li>Dinámica molecular</li>
+            <li>Diseño de fármacos</li>
+            <li>Machine learning</li>
+            <li>Cribado virtual</li>
+            <li>Ciencia de datos</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="lbl_methods">Métodos</h3>
+          <ul class="tags subtle" data-i18n="about_methods_list">
+            <li>GROMACS / AMBER</li>
+            <li>Metadinámica</li>
+            <li>Docking por ensembles</li>
+            <li>QM/MM</li>
+            <li>Energías libres (MM-PBSA)</li>
+            <li>Python / scikit-learn</li>
+          </ul>
+          <p class="card-note" data-i18n="about_methods_note">Edita esta lista en <code>index.html</code> para reflejar tu stack exacto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ INVESTIGACIÓN ══════════════════════════ -->
+<section class="section alt" id="investigacion">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow" data-i18n="s2_eyebrow">02 — Líneas</p>
+      <h2 data-i18n="s2_title">Investigación</h2>
+      <p class="section-sub" data-i18n="s2_sub">
+        Algunos de los sistemas que investiga mi grupo, todos abordados con un mismo
+        enfoque: entender el mecanismo a escala atómica y usarlo para diseñar.
+        Selecciona una pestaña para explorar cada línea.
+      </p>
+    </header>
+
+    <div class="tabs" id="researchTabs">
+      <div class="tablist" role="tablist" aria-label="Sistemas de estudio">
+        <button role="tab" id="tab-canales" aria-controls="panel-canales" aria-selected="true" class="tab" data-i18n="tab_channels">
+          <span class="tab-ico">⚡</span> Canales iónicos
+        </button>
+        <button role="tab" id="tab-ureasa" aria-controls="panel-ureasa" aria-selected="false" class="tab" tabindex="-1" data-i18n="tab_urease">
+          <span class="tab-ico">🦠</span> Ureasa · <i>H. pylori</i>
+        </button>
+        <button role="tab" id="tab-pseudomonas" aria-controls="panel-pseudomonas" aria-selected="false" class="tab" tabindex="-1" data-i18n="tab_pseudo">
+          <span class="tab-ico">🧫</span> <i>P. aeruginosa</i>
+        </button>
+        <button role="tab" id="tab-frutilla" aria-controls="panel-frutilla" aria-selected="false" class="tab" tabindex="-1" data-i18n="tab_straw">
+          <span class="tab-ico">🍓</span> Frutilla · maduración
+        </button>
+        <button role="tab" id="tab-polimeros" aria-controls="panel-polimeros" aria-selected="false" class="tab" tabindex="-1" data-i18n="tab_poly">
+          <span class="tab-ico">💊</span> Polímeros · delivery
+        </button>
+      </div>
+
+      <!-- ── Canales iónicos ── -->
+      <div role="tabpanel" id="panel-canales" aria-labelledby="tab-canales" class="tabpanel">
+        <div class="panel-grid">
+          <div class="prose" data-i18n="r_channels_prose">
+            <h3>Canales iónicos: de la compuerta al fármaco</h3>
+            <p>
+              Los canales iónicos traducen señales físicas y químicas en corriente eléctrica.
+              Son blancos farmacológicos de primer orden, pero también notoriamente difíciles:
+              sus sitios de unión suelen ser <em>crípticos</em> y aparecen solo en ciertos
+              estados conformacionales. Aquí es donde la simulación aporta lo que la
+              estructura estática no puede.
+            </p>
+            <h4>Preguntas que abordamos</h4>
+            <ul>
+              <li>¿Qué determina la <strong>cinética de inactivación</strong> en canales TRP selectivos a calcio? Identificamos un dominio hélice-lazo-hélice intracelular que la modula, y trazamos su variación evolutiva.</li>
+              <li>¿Cómo <strong>sensa el pH intracelular</strong> el canal TASK-2? Elucidamos la base estructural del mecanismo.</li>
+              <li>¿Por qué <strong>hERG1</strong> desactiva tan lentamente? Describimos un nexo hidrofóbico intracelular crítico para ese proceso.</li>
+              <li>¿Se pueden diseñar <strong>análogos de capsaicina</strong> para TRPV1 de forma costo-efectiva? Propusimos un pipeline racional de diseño y selección.</li>
+            </ul>
+            <h4>Enfoque</h4>
+            <p>
+              Dinámica molecular de todos los átomos sobre ensembles conformacionales,
+              análisis de cavidades a lo largo de la trayectoria, mutagénesis <i>in silico</i>
+              contrastada con electrofisiología experimental de nuestros colaboradores, y más
+              recientemente integración con machine learning y reposicionamiento de fármacos.
+            </p>
+          </div>
+          <aside class="panel-side">
+            <div class="card">
+              <h4 data-i18n="lbl_systems">Sistemas</h4>
+              <ul class="tags">
+                <li>TRPV1</li><li>TRPV5 / TRPV6</li><li>TASK-1 / TASK-2 / TASK-3</li>
+                <li>TREK-1</li><li>hERG1</li><li>K2P</li>
+              </ul>
+            </div>
+            <div class="card highlight">
+              <h4 data-i18n="lbl_key_pubs">Publicaciones clave</h4>
+              <ul class="mini-refs" data-refs="TREK-1|TASK-2 K2P|hERG1|capsaicin analogues|TRPV1 Ion Channel"></ul>
+            </div>
+            <div class="card">
+              <h4 data-i18n="lbl_collab">Colaboración</h4>
+              <p class="card-note" data-i18n="r_channels_collab">Wendy González (U. de Talca), Sebastián Brauchi (UACh), Niels Decher (Marburg), Leandro Zúñiga (U. de Talca), Bruna Benso.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ── Ureasa ── -->
+      <div role="tabpanel" id="panel-ureasa" aria-labelledby="tab-ureasa" class="tabpanel" hidden>
+        <div class="panel-grid">
+          <div class="prose" data-i18n="r_urease_prose">
+            <h3>Ureasa de <i>Helicobacter pylori</i>: inhibidores por diseño computacional</h3>
+            <p>
+              <i>H. pylori</i> coloniza el estómago humano gracias a su <strong>ureasa</strong>,
+              una metaloenzima de níquel que hidroliza urea y neutraliza el medio ácido.
+              Inhibirla es una estrategia atractiva frente a la resistencia antibiótica
+              creciente — pero el sitio activo es estrecho, cargado y muy dependiente de
+              la dinámica de una tapa flexible.
+            </p>
+            <h4>Estrategia en capas</h4>
+            <ol>
+              <li><strong>Filtrado por ML.</strong> Entrenamos clasificadores usando propiedades fisicoquímicas como criterio de filtro, lo que reduce drásticamente el espacio químico antes de docking.</li>
+              <li><strong>Cribado virtual comparativo.</strong> Evaluamos sistemáticamente metodologías de virtual screening para predecir actividad inhibitoria de ureasa — qué funciona y qué no, con datos.</li>
+              <li><strong>Reposicionamiento.</strong> Rastreamos fármacos aprobados en busca de nuevos andamiajes químicos potentes.</li>
+              <li><strong>Metadinámica.</strong> Estimamos energías libres de unión y caracterizamos la ruta de entrada del ligando, no solo la pose final.</li>
+              <li><strong>ADME <i>in silico</i>.</strong> Descartamos candidatos inviables antes de proponerlos.</li>
+            </ol>
+            <h4>Resultados</h4>
+            <p>
+              Hemos reportado inhibidores basados en triazoles mediante un marco integrado
+              de machine learning, cribado virtual y metadinámica, y descubierto nuevos
+              andamiajes químicos por reposicionamiento de fármacos. En paralelo publicamos
+              un análisis comparativo de metodologías que sirve de referencia para el campo.
+            </p>
+          </div>
+          <aside class="panel-side">
+            <div class="card">
+              <h4 data-i18n="lbl_methods">Métodos</h4>
+              <ul class="tags" data-i18n="r_urease_methods">
+                <li>Machine learning</li><li>Virtual screening</li><li>Drug repurposing</li>
+                <li>Metadinámica</li><li>ADME</li><li>Dinámica molecular</li>
+              </ul>
+            </div>
+            <div class="card highlight">
+              <h4 data-i18n="lbl_key_pubs">Publicaciones clave</h4>
+              <ul class="mini-refs" data-refs="Urease Inhibitors|Urease Inhibitory|urease inhibitors|Unveiling Novel Urease"></ul>
+            </div>
+            <div class="card">
+              <h4 data-i18n="lbl_relevance">Relevancia</h4>
+              <p class="card-note" data-i18n="r_urease_relevance"><i>H. pylori</i> infecta a cerca de la mitad de la población mundial y está clasificado como carcinógeno de grupo 1. La resistencia a claritromicina lo sitúa en la lista de patógenos prioritarios de la OMS.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ── Pseudomonas ── -->
+      <div role="tabpanel" id="panel-pseudomonas" aria-labelledby="tab-pseudomonas" class="tabpanel" hidden>
+        <div class="panel-grid">
+          <div class="prose" data-i18n="r_pseudo_prose">
+            <h3><i>Pseudomonas aeruginosa</i>: bombas RND y fosforilcolina fosfatasa</h3>
+            <p>
+              <i>P. aeruginosa</i> es un patógeno oportunista ESKAPE y una de las amenazas
+              prioritarias de la OMS. Su resistencia no depende solo de enzimas que degradan
+              antibióticos, sino de una arquitectura de <strong>expulsión activa</strong> que
+              vacía el fármaco de la célula antes de que actúe. Atacamos el problema por dos
+              flancos.
+            </p>
+            <h4>Bombas de eflujo RND</h4>
+            <p>
+              Las bombas de la familia <em>Resistance-Nodulation-Division</em> son complejos
+              tripartitos que atraviesan ambas membranas. Aplicamos <strong>proteómica
+              sustractiva</strong> para acotar el proteoma a blancos esenciales y sin homólogo
+              humano, y luego <strong>docking por ensembles</strong> sobre conformaciones
+              extraídas de dinámica molecular para reposicionar fármacos aprobados como
+              potenciales inhibidores de eflujo. La lógica: un inhibidor de bomba no mata la
+              bacteria, pero devuelve potencia a antibióticos que ya tenemos.
+            </p>
+            <h4>Fosforilcolina fosfatasa (PchP)</h4>
+            <p>
+              PchP participa en el metabolismo de la fosforilcolina y contribuye a la
+              virulencia. Caracterizamos su <strong>sitio de inhibición</strong> a nivel
+              estructural, describiendo cómo el ligando y los cationes divalentes modulan
+              la actividad enzimática — información necesaria para cualquier diseño racional
+              sobre este blanco.
+            </p>
+          </div>
+          <aside class="panel-side">
+            <div class="card">
+              <h4 data-i18n="lbl_targets">Blancos</h4>
+              <ul class="tags" data-i18n="r_pseudo_targets">
+                <li>Bombas RND</li><li>PchP</li><li>Proteoma esencial</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4 data-i18n="lbl_methods">Métodos</h4>
+              <ul class="tags subtle" data-i18n="r_pseudo_methods">
+                <li>Proteómica sustractiva</li><li>Ensemble docking</li>
+                <li>Drug repurposing</li><li>Análisis de cavidades</li>
+              </ul>
+            </div>
+            <div class="card highlight">
+              <h4 data-i18n="lbl_key_pubs">Publicaciones clave</h4>
+              <ul class="mini-refs" data-refs="Pseudomonas aeruginosa RND|Phosphorylcholine Phosphatase"></ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ── Frutilla ── -->
+      <div role="tabpanel" id="panel-frutilla" aria-labelledby="tab-frutilla" class="tabpanel" hidden>
+        <div class="panel-grid">
+          <div class="prose" data-i18n="r_straw_prose">
+            <h3>Frutilla: la química molecular del aroma y la maduración</h3>
+            <p>
+              El sabor de una frutilla es el resultado de una red enzimática que se activa
+              durante la maduración. Entenderla a nivel estructural y transcripcional abre
+              la puerta a mejorar calidad y poscosecha sin recurrir al ensayo y error.
+              Trabajamos en <i>Fragaria</i> combinando expresión génica con modelamiento
+              estructural de las enzimas responsables.
+            </p>
+            <h4>Familias enzimáticas estudiadas</h4>
+            <ul>
+              <li><strong>AAT</strong> — alcohol aciltransferasas: el paso clave del rompecabezas del aroma, responsables de los ésteres volátiles característicos.</li>
+              <li><strong>ADH</strong> — alcohol deshidrogenasas: caracterizamos cómo cambia su expresión a lo largo de la maduración.</li>
+              <li><strong>PDC</strong> — piruvato descarboxilasas: caracterización estructural y transcripcional de la familia génica.</li>
+              <li><strong>HPL</strong> — hidroperóxido liasas: regulación del desarrollo en la biosíntesis de volátiles verdes.</li>
+              <li><strong>α-manosidasa 8</strong> — su modulación por hongos endófitos antárticos bajo olas de calor y déficit hídrico.</li>
+            </ul>
+            <h4>Por qué importa</h4>
+            <p>
+              El cambio climático somete a los cultivos a estrés térmico e hídrico que
+              degrada calidad y rendimiento. Parte de nuestro trabajo explora si microorganismos
+              extremófilos — endófitos antárticos — pueden conferir tolerancia, y qué ocurre a
+              nivel molecular cuando lo hacen.
+            </p>
+          </div>
+          <aside class="panel-side">
+            <div class="card">
+              <h4 data-i18n="lbl_enzymes">Enzimas</h4>
+              <ul class="tags">
+                <li>AAT</li><li>ADH</li><li>PDC</li><li>HPL</li><li>α-manosidasa</li><li>MATE</li>
+              </ul>
+            </div>
+            <div class="card highlight">
+              <h4 data-i18n="lbl_key_pubs">Publicaciones clave</h4>
+              <ul class="mini-refs" data-refs="alcohol acyltransferases|Alcohol dehydrogenase gene expression|pyruvate decarboxylase|FaHPL|Mannosidase"></ul>
+            </div>
+            <div class="card">
+              <h4 data-i18n="lbl_collab">Colaboración</h4>
+              <p class="card-note" data-i18n="r_straw_collab">Luis Morales-Quintana (U. Autónoma de Chile).</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ── Polímeros ── -->
+      <div role="tabpanel" id="panel-polimeros" aria-labelledby="tab-polimeros" class="tabpanel" hidden>
+        <div class="panel-grid">
+          <div class="prose" data-i18n="r_poly_prose">
+            <h3>Polímeros y nanoacarreadores: diseñar el contenedor, no solo la carga</h3>
+            <p>
+              Una molécula activa sirve poco si no llega donde debe, en la cantidad correcta
+              y en el momento correcto. Modelamos matrices poliméricas y nanoacarreadores para
+              entender — a escala molecular — cómo confinan, protegen y liberan su carga.
+            </p>
+            <h4>Sistemas</h4>
+            <ul>
+              <li><strong>Redes calcio–alginato.</strong> Cómo la coordinación del calcio modula el confinamiento del ligando y la respuesta biológica, en un estudio multiescala computacional–experimental.</li>
+              <li><strong>Mezclas alginato–quitosano.</strong> Liberación controlada de ácido abscísico (ABA) mediante un enfoque sinérgico de gel entrecruzado.</li>
+              <li><strong>NLCs</strong> (nanoacarreadores lipídicos) con colorantes integrados covalentemente, para desempeño terapéutico y diagnóstico simultáneo.</li>
+              <li><strong>Hidrogeles para péptidos antimicrobianos</strong> catiónicos, diseñados racionalmente por modelamiento molecular.</li>
+              <li><strong>Nanopartículas para remediación.</strong> Remoción de pesticidas carbamatos y glifosato de soluciones acuosas.</li>
+              <li><strong>Nanoencapsulación de antocianinas</strong> radiomarcadas, con aumento medible de biodisponibilidad oral y cambios en biodistribución.</li>
+            </ul>
+            <h4>Enfoque</h4>
+            <p>
+              El punto en común es tratar el material como un sistema molecular simulable:
+              dinámica molecular de la matriz polimérica, análisis de interacciones
+              anfitrión–huésped (por ejemplo alcoholes cíclicos en β-ciclodextrina), y
+              validación experimental con nuestros colaboradores en química y farmacia.
+            </p>
+          </div>
+          <aside class="panel-side">
+            <div class="card">
+              <h4 data-i18n="lbl_materials">Materiales</h4>
+              <ul class="tags" data-i18n="r_poly_materials">
+                <li>Alginato</li><li>Quitosano</li><li>NLCs</li>
+                <li>β-ciclodextrina</li><li>Hidrogeles</li><li>PVA</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4 data-i18n="lbl_applications">Aplicaciones</h4>
+              <ul class="tags subtle" data-i18n="r_poly_apps">
+                <li>Liberación controlada</li><li>Remediación ambiental</li>
+                <li>Teranóstica</li><li>Agroquímicos</li>
+              </ul>
+            </div>
+            <div class="card highlight">
+              <h4 data-i18n="lbl_key_pubs">Publicaciones clave</h4>
+              <ul class="mini-refs" data-refs="Calcium–Alginate Networks|Alginate–Chitosan|abscisic acid|NLCs|Cyclodextrin|antimicrobial peptide"></ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ PUBLICACIONES ══════════════════════════ -->
+<section class="section" id="publicaciones">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow" data-i18n="s3_eyebrow">03 — Producción</p>
+      <h2 data-i18n="s3_title">Publicaciones</h2>
+      <p class="section-sub" data-i18n="s3_sub">
+        Listado completo, del más reciente al más antiguo. Se actualiza automáticamente
+        desde <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
+        cada vez que se carga la página, por lo que un artículo nuevo aparece aquí sin
+        editar código.
+      </p>
+    </header>
+
+    <div class="pub-controls">
+      <div class="search-field">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="pubSearch" placeholder="Buscar por título, autor o revista…" data-i18n-placeholder="pub_search_ph" aria-label="Buscar publicaciones">
+      </div>
+      <div class="filter-field">
+        <label for="pubYear" data-i18n="pub_year">Año</label>
+        <select id="pubYear"><option value="" data-i18n="pub_all">Todos</option></select>
+      </div>
+      <div class="filter-field">
+        <label for="pubType" data-i18n="pub_type">Tipo</label>
+        <select id="pubType"><option value="" data-i18n="pub_all">Todos</option></select>
+      </div>
+      <div class="filter-field">
+        <label for="pubSort" data-i18n="pub_sort">Orden</label>
+        <select id="pubSort">
+          <option value="year" data-i18n="pub_sort_year">Más reciente</option>
+          <option value="citations" data-i18n="pub_sort_cites">Más citado</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="pub-status" id="pubStatus" role="status">Cargando publicaciones…</p>
+
+    <div class="table-scroll">
+      <table class="pub-table" id="pubTable">
+        <caption class="sr-only">Listado de publicaciones de Daniel Bustos</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="col-n">#</th>
+            <th scope="col" class="col-year" data-i18n="th_year">Año</th>
+            <th scope="col" class="col-pub" data-i18n="th_pub">Publicación</th>
+            <th scope="col" class="col-cite" data-i18n="th_cites">Citas</th>
+            <th scope="col" class="col-link" data-i18n="th_link">Enlace</th>
+          </tr>
+        </thead>
+        <tbody id="pubBody"></tbody>
+      </table>
+    </div>
+
+    <p class="pub-foot" id="pubFoot"></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════ GRUPO ══════════════════════════ -->
+<section class="section alt" id="grupo">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow" data-i18n="s4_eyebrow">04 — Equipo</p>
+      <h2 data-i18n="s4_title">Grupo de investigación</h2>
+      <p class="section-sub" data-i18n="s4_sub">
+        Laboratorio de Bioinformática y Química Computacional (LBQC) — Facultad de
+        Medicina, Universidad Católica del Maule.
+      </p>
+    </header>
+
+    <div class="group-intro prose" data-i18n="group_intro">
+      <p>
+        El LBQC nació en la Facultad de Medicina de la UCM con una idea simple: acercar la
+        capacidad de cómputo y el modelamiento molecular a preguntas biomédicas concretas,
+        y hacerlo desde regiones. Trabajamos en la intersección de la bioinformática
+        estructural, la química computacional y la ciencia de datos, casi siempre en
+        colaboración estrecha con grupos experimentales que ponen a prueba nuestras
+        predicciones.
+      </p>
+      <p>
+        Formamos estudiantes de pregrado y posgrado en simulación molecular, programación
+        científica y diseño de fármacos asistido por computador.
+      </p>
+    </div>
+
+    <h3 class="subhead" data-i18n="group_members_h">Grupo Daniel Bustos</h3>
+    <!-- EDITA: agrega o quita gente duplicando un <li>. Si editas aquí,
+         actualiza también group_people en assets/js/i18n.js. -->
+    <div class="roster" data-i18n="group_people">
+      <section class="roster-group">
+        <h4>Asistentes de investigación</h4>
+        <ul class="roster-list">
+          <li><strong>Antonia Flores</strong><span>Bioingeniera Médica · Universidad Católica del Maule</span></li>
+          <li><strong>Constanza Henríquez</strong><span>Ingeniera Civil en Bioinformática · Universidad de Talca</span></li>
+        </ul>
+      </section>
+
+      <section class="roster-group">
+        <h4>Estudiantes de doctorado</h4>
+        <ul class="roster-list">
+          <li><strong>Gabriela Urra</strong><span>Doctorado en Ciencias mención Modelado de Sistemas Químicos y Biológicos · Universidad de Talca</span></li>
+          <li><strong>Camila Flores</strong><span>Doctorado en Ingeniería · Universidad Católica del Maule</span></li>
+          <li><strong>Natalia Morales</strong><span>Doctorado en Ingeniería · Universidad Católica del Maule</span></li>
+          <li><strong>Elizabeth Valdés</strong><span>Doctorado en Biotecnología Traslacional · Universidad Católica del Maule</span><span class="grad">Graduada · 2026</span></li>
+        </ul>
+      </section>
+
+      <section class="roster-group">
+        <h4>Estudiantes de magíster</h4>
+        <ul class="roster-list">
+          <li><strong>Natalia Morales</strong><span>Magíster en Ciencias de la Computación · Universidad Católica del Maule</span><span class="grad">Graduada · 2024</span></li>
+          <li><strong>Camila Flores</strong><span>Magíster en Ciencias de la Computación · Universidad Católica del Maule</span><span class="grad">Graduada · 2024</span></li>
+          <li><strong>Verónica Leddermann</strong><span>Magíster en Ciencias de la Computación · Universidad Católica del Maule</span><span class="grad">Graduada · 2025</span></li>
+          <li><strong>Jaime González</strong><span>Magíster en Ciencias de la Computación · Universidad Católica del Maule</span><span class="grad">Graduado · 2025</span></li>
+        </ul>
+      </section>
+
+      <section class="roster-group">
+        <h4>Estudiantes de pregrado</h4>
+        <ul class="roster-list">
+          <li><strong>Javier Farías</strong><span>Bioingeniería Médica · Universidad Católica del Maule · 5.º año</span></li>
+          <li><strong>Vicente Rojas</strong><span>Bioingeniería Médica · Universidad Católica del Maule · 5.º año</span></li>
+          <li><strong>David Alarcón</strong><span>Bioingeniería Médica · Universidad Católica del Maule · 5.º año</span></li>
+          <li><strong>Sofía Herrera</strong><span>Bioingeniería Médica · Universidad Católica del Maule · 5.º año</span></li>
+          <li><strong>José Gálvez</strong><span>Bioingeniería Médica · Universidad Católica del Maule · 4.º año</span></li>
+          <li><strong>Fernanda Sáez</strong><span>Bioingeniería Médica · Universidad Católica del Maule · 4.º año</span></li>
+          <li><strong>Nicolás Carrasco</strong><span>Bioingeniería Médica · Universidad Católica del Maule · 4.º año</span></li>
+          <li><strong>Sofía Ríos-Rozas</strong><span>Bioingeniería Médica · Universidad Católica del Maule</span><span class="grad">Graduada</span></li>
+          <li><strong>Gabriela Urra</strong><span>Ingeniería en Biotecnología · Universidad Católica del Maule</span><span class="grad">Graduada</span></li>
+          <li><strong>Paulina Valenzuela</strong><span>Ingeniería Civil en Bioinformática · Universidad de Talca</span><span class="grad">Graduada</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <h3 class="subhead" data-i18n="theses_h">Tesis dirigidas y codirigidas</h3>
+    <p class="theses-sub" data-i18n="theses_sub">Tesis finalizadas en los últimos diez años. Los títulos se muestran en su idioma original.</p>
+    <!-- EDITA: agrega una tesis duplicando un <li> en el grupo correspondiente y actualiza el contador .thesis-count.
+         Los nombres de programa se traducen con las claves prog_... de assets/js/i18n.js. -->
+    <div class="theses">
+      <section class="thesis-group">
+        <header class="thesis-head">
+          <h4 data-i18n="th_pg_h">Posgrado</h4>
+          <span class="thesis-role" data-i18n="th_role_dir">Director de tesis</span>
+          <span class="thesis-count">5</span>
+        </header>
+        <ol class="thesis-list">
+          <li>
+            <span class="th-year">2026</span>
+            <div>
+              <p class="th-title">Establecimiento de una metodología para la identificación de nuevos compuestos inhibidores de ureasa de <i>Helicobacter pylori</i> mediante el uso de estrategias teóricas y experimentales</p>
+              <p class="th-meta"><strong>Elizabeth Valdés Muñoz</strong> · <span data-i18n="prog_dbt">Doctorado en Biotecnología Traslacional, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Implementación de un método de puntajes multiparámetro para la clasificación de candidatos a fármacos</p>
+              <p class="th-meta"><strong>Verónica Leddermann Gutiérrez</strong> · <span data-i18n="prog_mcc">Magíster en Ciencias de la Computación, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Aproximación computacional para el descubrimiento de inhibidores del canal iónico TRPV1: desde la minería de datos basada en aprendizaje automático hasta el reposicionamiento de fármacos</p>
+              <p class="th-meta"><strong>Jaime González Díaz</strong> · <span data-i18n="prog_mcc">Magíster en Ciencias de la Computación, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2024</span>
+            <div>
+              <p class="th-title">Propiedades fisicoquímicas utilizadas como criterios de filtrado para construir clasificadores basados en algoritmos de aprendizaje automático: inhibidores de ureasa como caso de estudio</p>
+              <p class="th-meta"><strong>Natalia Morales Rosales</strong> · <span data-i18n="prog_mcc">Magíster en Ciencias de la Computación, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2024</span>
+            <div>
+              <p class="th-title">Diseño de una librería en R para el análisis de datos de docking molecular como una estrategia de diseño de fármacos</p>
+              <p class="th-meta"><strong>Camila Flores Morales</strong> · <span data-i18n="prog_mcc">Magíster en Ciencias de la Computación, UCM</span></p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="thesis-group">
+        <header class="thesis-head">
+          <h4 data-i18n="th_ug_h">Pregrado</h4>
+          <span class="thesis-role" data-i18n="th_role_guide">Profesor guía</span>
+          <span class="thesis-count">8</span>
+        </header>
+        <ol class="thesis-list">
+          <li>
+            <span class="th-year">2026</span>
+            <div>
+              <p class="th-title">Priorización y caracterización estructural de variantes de significado incierto en los genes POLE y POLD1 mediante integración de predictores <i>in silico</i>, dinámica molecular y comunicación intramolecular</p>
+              <p class="th-meta"><strong>Sofía Herrera</strong> · <span data-i18n="prog_bim_tit">Título profesional · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2026</span>
+            <div>
+              <p class="th-title">Evaluación de la red de interacciones de la interfaz MexAB–OprM de <i>Pseudomonas aeruginosa</i> mediante simulaciones de dinámica molecular</p>
+              <p class="th-meta"><strong>David Alarcón</strong> · <span data-i18n="prog_bim_tit">Título profesional · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2026</span>
+            <div>
+              <p class="th-title">Reconstrucción jerárquica de MexAB–OprM mediante AlphaFold-Multimer y CombFold: benchmark contra sus registros experimentales</p>
+              <p class="th-meta"><strong>Vicente Rojas</strong> · <span data-i18n="prog_bim_tit">Título profesional · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2026</span>
+            <div>
+              <p class="th-title">Recuperación de los registros experimentales de MexAB–OprM mediante docking jerárquico con restricciones de simetría</p>
+              <p class="th-meta"><strong>Javier Farías</strong> · <span data-i18n="prog_bim_tit">Título profesional · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Hacia nuevas terapias: reposicionamiento computacional de fármacos como inhibidores potenciales de la ureasa de <i>Helicobacter pylori</i></p>
+              <p class="th-meta"><strong>Sofía Ríos Rozas</strong> · <span data-i18n="prog_bim_tit">Título profesional · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Benchmark de programas de docking y protocolos integrados con aprendizaje profundo en inhibidores de ureasa de <i>Helicobacter pylori</i></p>
+              <p class="th-meta"><strong>David Alarcón</strong> · <span data-i18n="prog_bim_lic">Licenciatura (Taller de Investigación y Formación II) · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2023</span>
+            <div>
+              <p class="th-title">Identificación de nuevos derivados del inhibidor DJM en la enzima ureasa de <i>Helicobacter pylori</i> con la técnica computacional <i>enumeration</i></p>
+              <p class="th-meta"><strong>Gabriela Urra</strong> · <span data-i18n="prog_biotec">Ingeniería en Biotecnología, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2022</span>
+            <div>
+              <p class="th-title">Implementación de una estrategia basada en métodos teórico-computacionales para la búsqueda y diseño de inhibidores en la enzima ureasa de <i>Helicobacter pylori</i></p>
+              <p class="th-meta"><strong>Paulina Valenzuela</strong> · <span data-i18n="prog_bioinfo">Ingeniería Civil en Bioinformática, Universidad de Talca</span></p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="thesis-group">
+        <header class="thesis-head">
+          <h4 data-i18n="th_co_h">Pregrado</h4>
+          <span class="thesis-role" data-i18n="th_role_coguide">Profesor co-guía</span>
+          <span class="thesis-count">8</span>
+        </header>
+        <ol class="thesis-list">
+          <li>
+            <span class="th-year">2026</span>
+            <div>
+              <p class="th-title">Priorización de candidatos a inhibidores de MexAB–OprM de <i>Pseudomonas aeruginosa</i> mediante cribado virtual secuencial y <i>ensemble docking</i></p>
+              <p class="th-meta"><strong>Fernanda Sáez</strong> · <span data-i18n="prog_bim_lic">Licenciatura (Taller de Investigación y Formación II) · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2026</span>
+            <div>
+              <p class="th-title">Análisis de coevolución proteína–proteína para la identificación de señales coevolutivas entre OprM y proteínas de fusión de membrana de sistemas RND de <i>Pseudomonas aeruginosa</i></p>
+              <p class="th-meta"><strong>José Gálvez</strong> · <span data-i18n="prog_bim_lic">Licenciatura (Taller de Investigación y Formación II) · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2026</span>
+            <div>
+              <p class="th-title">Predicción computacional de péptidos con potencial de unión a la interfaz MexA–OprM de <i>Pseudomonas aeruginosa</i></p>
+              <p class="th-meta"><strong>Nicolás Carrasco</strong> · <span data-i18n="prog_bim_lic">Licenciatura (Taller de Investigación y Formación II) · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Protocolo multiescala para el diseño racional de fotointerruptores optogenéticos basado en rodopsinas bioestables</p>
+              <p class="th-meta"><strong>Cristóbal Avendaño</strong> · <span data-i18n="prog_bim_tit">Título profesional · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Reclasificación de variantes de significado incierto en genes de susceptibilidad asociados a cáncer de mama hereditario</p>
+              <p class="th-meta"><strong>Sofía Herrera</strong> · <span data-i18n="prog_bim_lic">Licenciatura (Taller de Investigación y Formación II) · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Análisis comparativo del espacio químico de inhibidores de ureasa en bases de datos farmacológicas y ambientales mediante técnicas quimioinformáticas</p>
+              <p class="th-meta"><strong>Javier Farías Abarca</strong> · <span data-i18n="prog_bim_lic">Licenciatura (Taller de Investigación y Formación II) · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Evaluación de nuevos compuestos cumarínicos como potenciales inhibidores de ureasa con aplicación biomédica</p>
+              <p class="th-meta"><strong>Tamara Barros</strong> · <span data-i18n="prog_bim_lic">Licenciatura (Taller de Investigación y Formación II) · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+          <li>
+            <span class="th-year">2025</span>
+            <div>
+              <p class="th-title">Mutagénesis <i>in silico</i> en la proteína MFG-E8 para potenciar la afinidad por fosfatidilserina</p>
+              <p class="th-meta"><strong>Vicente Rojas Santander</strong> · <span data-i18n="prog_bim_lic">Licenciatura (Taller de Investigación y Formación II) · Bioingeniería Médica, UCM</span></p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ PROYECTOS ══════════════════════════ -->
+<section class="section" id="proyectos">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow" data-i18n="s5_eyebrow">05 — Proyectos</p>
+      <h2 data-i18n="s5_title">Proyectos y financiamiento</h2>
+      <p class="section-sub" data-i18n="s5_sub">
+        Proyectos adjudicados, del más reciente al más antiguo. Los títulos se muestran
+        en su idioma oficial de postulación.
+      </p>
+    </header>
+
+    <!-- Logo ANID solo en proyectos ANID; el proyecto interno UCM no lo lleva. -->
+    <div class="projects" data-i18n="projects_list">
+      <article class="project">
+        <div class="project-head">
+          <span class="badge badge-lead">Director</span>
+          <span class="project-years">2026 — 2030</span>
+        </div>
+        <h3>Disrupting Antibiotic Resistance in <i>Pseudomonas aeruginosa</i>: Peptide Inhibitors Targeting the Assembly of the OprM protein with the MexAB, MexXY, MexCD and MexEF efflux pumps</h3>
+        <p class="project-role">Investigador Responsable · ANID FONDECYT Regular</p>
+        <p>
+          En lugar de inhibir cada bomba de eflujo por separado, apuntamos al punto donde
+          todas convergen: el ensamblaje con el canal de membrana externa OprM. Diseñamos
+          péptidos que bloquean esa interfaz, desarmando el sistema completo en vez de
+          una sola bomba.
+        </p>
+        <ul class="tags subtle"><li><i>P. aeruginosa</i></li><li>Péptidos</li><li>Bombas Mex</li></ul>
+        <div class="project-funder">
+          <img class="funder-logo" src="assets/img/anid.webp" alt="ANID — Agencia Nacional de Investigación y Desarrollo" width="44" height="40" loading="lazy">
+          <div class="funder-id"><span class="funder-inst">FONDECYT Regular</span><span class="project-code">N° 1260886</span></div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="project-head">
+          <span class="badge badge-coi">Coinvestigador</span>
+          <span class="project-years">2025 — 2029</span>
+        </div>
+        <h3>Targeting ABC transporters with peptide-based strategies to combat hospital-acquired infections caused by <i>Staphylococcus aureus</i> and <i>Klebsiella pneumoniae</i></h3>
+        <p class="project-role">Coinvestigador · ANID FONDECYT Exploración</p>
+        <p>
+          Extiende la estrategia de péptidos a los transportadores ABC de dos patógenos
+          intrahospitalarios prioritarios, donde la resistencia deja cada vez menos
+          alternativas terapéuticas.
+        </p>
+        <ul class="tags subtle"><li>Transportadores ABC</li><li>Infecciones intrahospitalarias</li></ul>
+        <!-- EDITA: falta el código de este proyecto. Agrégalo como <span class="project-code">N° XXXXXXXX</span> dentro de .funder-id (aquí y en projects_list de i18n.js). -->
+        <div class="project-funder">
+          <img class="funder-logo" src="assets/img/anid.webp" alt="ANID — Agencia Nacional de Investigación y Desarrollo" width="44" height="40" loading="lazy">
+          <div class="funder-id"><span class="funder-inst">FONDECYT Exploración 2025</span></div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="project-head">
+          <span class="badge badge-coi">Coinvestigador</span>
+          <span class="project-years">2025 — 2029</span>
+        </div>
+        <h3>Integrated approach to optimal hormone application under drought and heat stress response in Strawberry plants and fruit quality determinations</h3>
+        <p class="project-role">Coinvestigador · ANID FONDECYT Regular</p>
+        <p>
+          Cómo aplicar hormonas de forma óptima para que la frutilla resista sequía y
+          estrés térmico sin sacrificar calidad de fruto — el correlato agronómico de
+          nuestra línea de maduración y aroma.
+        </p>
+        <ul class="tags subtle"><li>Frutilla</li><li>Estrés hídrico y térmico</li></ul>
+        <div class="project-funder">
+          <img class="funder-logo" src="assets/img/anid.webp" alt="ANID — Agencia Nacional de Investigación y Desarrollo" width="44" height="40" loading="lazy">
+          <div class="funder-id"><span class="funder-inst">FONDECYT Regular</span><span class="project-code">N° 1250346</span></div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="project-head">
+          <span class="badge badge-coi">Coinvestigador</span>
+          <span class="project-years">2024 — 2028</span>
+        </div>
+        <h3>Contributions to Control and Filter Design for Networked Cyber-Physical Systems: Theory and Applications</h3>
+        <p class="project-role">Coinvestigador · ANID FONDECYT Regular</p>
+        <p>
+          Teoría de control y diseño de filtros para sistemas ciberfísicos en red, con
+          aplicaciones que incluyen sistemas farmacocinéticos médicos.
+        </p>
+        <ul class="tags subtle"><li>Sistemas ciberfísicos</li><li>Teoría de control</li></ul>
+        <div class="project-funder">
+          <img class="funder-logo" src="assets/img/anid.webp" alt="ANID — Agencia Nacional de Investigación y Desarrollo" width="44" height="40" loading="lazy">
+          <div class="funder-id"><span class="funder-inst">FONDECYT Regular</span><span class="project-code">N° 1241305</span></div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="project-head">
+          <span class="badge badge-lead">Director</span>
+          <span class="project-years">2023</span>
+        </div>
+        <h3>Red de colaboración Chileno-Española-Brasileña para el diseño racional de fármacos y nanosistemas de liberación controlada contra resistencia microbiana</h3>
+        <p class="project-role">Director · ANID Fomento a la Vinculación Internacional</p>
+        <p>
+          Red internacional que articula los dos ejes del laboratorio — diseño racional de
+          fármacos y nanosistemas de liberación controlada — frente a la resistencia
+          microbiana.
+        </p>
+        <ul class="tags subtle"><li>Red internacional</li><li>Nanosistemas</li></ul>
+        <div class="project-funder">
+          <img class="funder-logo" src="assets/img/anid.webp" alt="ANID — Agencia Nacional de Investigación y Desarrollo" width="44" height="40" loading="lazy">
+          <div class="funder-id"><span class="funder-inst">Vinculación Internacional</span><span class="project-code">N° FOVI230136</span></div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="project-head">
+          <span class="badge badge-lead">Director</span>
+          <span class="project-years">2022 — 2025</span>
+        </div>
+        <h3>A robust theoretical and experimental drug design strategy to discover new and highly potent urease inhibitors for <i>Helicobacter pylori</i> based on coumarin derivatives</h3>
+        <p class="project-role">Investigador Responsable · ANID FONDECYT Iniciación</p>
+        <p>
+          El proyecto que sostiene nuestra línea de ureasa: derivados de cumarina como
+          andamiaje de partida, combinando diseño computacional con validación
+          experimental.
+        </p>
+        <ul class="tags subtle"><li>Ureasa</li><li><i>H. pylori</i></li><li>Cumarinas</li></ul>
+        <div class="project-funder">
+          <img class="funder-logo" src="assets/img/anid.webp" alt="ANID — Agencia Nacional de Investigación y Desarrollo" width="44" height="40" loading="lazy">
+          <div class="funder-id"><span class="funder-inst">FONDECYT Iniciación</span><span class="project-code">N° 11220444</span></div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="project-head">
+          <span class="badge badge-lead">Director</span>
+          <span class="project-years">2022</span>
+        </div>
+        <h3>Subtractive genomics, drug repurposing and polypharmacology as a strategy to combat resistant <i>Pseudomonas aeruginosa</i> bacteria</h3>
+        <p class="project-role">Director · Proyecto interno UCM</p>
+        <p>
+          Genómica sustractiva para acotar el proteoma a blancos esenciales, y
+          reposicionamiento de fármacos con enfoque polifarmacológico contra
+          <i>P. aeruginosa</i> resistente.
+        </p>
+        <ul class="tags subtle"><li>Genómica sustractiva</li><li>Drug repurposing</li></ul>
+        <div class="project-funder">
+          <span class="funder-text">UCM</span>
+          <div class="funder-id"><span class="funder-inst">Financiamiento interno UCM</span><span class="project-code">N° UCM-IN22207</span></div>
+        </div>
+      </article>
+    </div>
+
+    <h3 class="subhead" data-i18n="teaching_h">Docencia y gestión</h3>
+    <div class="projects" data-i18n="teaching_list">
+      <article class="project">
+        <div class="project-head">
+          <span class="badge badge-active">Permanente</span>
+        </div>
+        <h3>Co-creación del LBQC</h3>
+        <p class="project-role">Laboratorio de Bioinformática y Química Computacional · UCM</p>
+        <p>
+          Puesta en marcha del laboratorio y su infraestructura de cómputo para
+          modelamiento molecular en la Facultad de Medicina.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CONTACTO ══════════════════════════ -->
+<section class="section alt" id="contacto">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow" data-i18n="s6_eyebrow">06 — Contacto</p>
+      <h2 data-i18n="s6_title">Contacto</h2>
+    </header>
+
+    <div class="contact-grid">
+      <div class="prose">
+        <p data-i18n="contact_p">
+          Si te interesa colaborar, hacer tu tesis en el laboratorio o consultar sobre
+          alguno de nuestros trabajos, escríbeme. Respondo a todo el correo académico.
+        </p>
+        <!-- EDITA: reemplaza por tu correo institucional -->
+        <p class="contact-line">
+          <strong data-i18n="contact_email_l">Correo</strong>
+          <a href="mailto:dbustos@ucm.cl">dbustos@ucm.cl</a>
+        </p>
+        <p class="contact-line">
+          <strong data-i18n="contact_addr_l">Dirección</strong>
+          <span data-i18n="contact_addr">Facultad de Medicina, Universidad Católica del Maule<br>Av. San Miguel 3605, Talca, Chile</span>
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 data-i18n="contact_profiles_h">Perfiles</h3>
+        <ul class="profile-links">
+          <li><a href="https://scholar.google.com/citations?user=Som7kaQAAAAJ&hl=es" target="_blank" rel="noopener">Google Scholar</a></li>
+          <li><a href="https://orcid.org/0000-0002-2136-2305" target="_blank" rel="noopener">ORCID · 0000-0002-2136-2305</a></li>
+          <li><a href="https://openalex.org/A5065920526" target="_blank" rel="noopener">OpenAlex</a></li>
+          <li><a href="https://www.researchgate.net/profile/Daniel-Bustos-12" target="_blank" rel="noopener">ResearchGate</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p data-i18n="footer_copy">© <span id="year">2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule.</p>
+    <p class="footer-meta" data-i18n="footer_meta">Datos bibliográficos vía <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>.</p>
+  </div>
+</footer>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
