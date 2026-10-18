@@ -136,9 +136,6 @@ var I18N_EN = {
     'trajectory, <i>in silico</i> mutagenesis tested against our collaborators\' experimental ' +
     'electrophysiology, and more recently integration with machine learning and drug ' +
     'repurposing.</p>',
-  r_channels_collab:
-    'Wendy González (U. de Talca), Sebastián Brauchi (UACh), Niels Decher (Marburg), ' +
-    'Leandro Zúñiga (U. de Talca), Bruna Benso.',
 
   r_urease_prose:
     '<h3><i>Helicobacter pylori</i> urease: inhibitors by computational design</h3>' +
