@@ -481,7 +481,7 @@ var I18N_EN = {
     '<p><a class="btn btn-ghost" href="Caso_Ureasa/">View material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
     '<span class="badge badge-supp">Supplementary information</span>' +
-    '<span class="project-years">15 sections · 18 tables</span></div>' +
+    '<span class="project-years">15 sections</span></div>' +
     '<h3><a href="Compendio_RND/">Compendium of RND efflux pumps</a></h3>' +
     '<p class="project-role">In-depth material · ANID–Fondecyt Regular project 1260886</p>' +
     '<p>Verified evidence on the assembly of RND efflux pumps in <em>Pseudomonas aeruginosa</em>, ' +
