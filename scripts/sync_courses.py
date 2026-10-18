@@ -75,6 +75,8 @@ COURSES = {
         # En la versión en español, esos enlaces apuntan a la versión en español de BGM324.
         "replace_es": [
             (r'(\.\./\.\./BGM324/[0-9A-Za-z_]+/)index\.html', r"\1index_es.html"),
+            # Navegación entre unidades del mismo curso: a la versión en español.
+            (r'href="\.\./(U[0-9AB]+_[A-Za-z_]+)/(?:index\.html)?"', r'href="../\1/index_es.html"'),
         ],
     },
     # Material de apoyo (no son cursos formales).
