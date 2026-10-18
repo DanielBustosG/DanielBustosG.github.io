@@ -456,9 +456,11 @@ var I18N_EN = {
     '<article class="project"><div class="project-head">' +
     '<span class="badge badge-coi">Case study</span>' +
     '<span class="project-years">6 notebooks</span></div>' +
-    '<h3><a href="Caso_Ureasa/">Reading a published paper, end to end</a></h3>' +
+    '<h3><a href="Caso_Ureasa/">Provenance confounding in urease inhibitors</a></h3>' +
     '<p class="project-role">Supporting material · BGM324 Bioinformatics</p>' +
-    '<p>A step-by-step reconstruction of a paper published by the group (IJMS 2026) on ' +
+    '<p>A step-by-step reconstruction of a paper published by the group (' +
+    '<a href="https://doi.org/10.3390/ijms27209159" target="_blank" rel="noopener">IJMS 2026, ' +
+    'doi:10.3390/ijms27209159</a>) on ' +
     'provenance confounding in urease inhibitors, using its own data: validation, null models and ' +
     'conformal prediction.</p>' +
     '<p><a class="btn btn-ghost" href="Caso_Ureasa/">View material →</a></p></article>' +
