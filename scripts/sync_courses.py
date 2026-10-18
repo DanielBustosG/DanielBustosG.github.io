@@ -64,6 +64,19 @@ COURSES = {
             ("../../Material_Estudio/", "../../../BGM324/"),
         ],
     },
+    # Curso complementario de BGM324, unidades 1–5 del programa oficial (libro curricular).
+    "Bioinformatics-Complementary": {
+        "src": DOCS / "Bioinformatica_BGM324/Segun_libro_curricular",
+        "label": "Bioinformatics &middot; complementary course",
+        "replace": [
+            # Enlaces a los documentos de BGM324 (en la carpeta local se llaman Material_Estudio).
+            ("../../Material_Estudio/", "../../BGM324/"),
+        ],
+        # En la versión en español, esos enlaces apuntan a la versión en español de BGM324.
+        "replace_es": [
+            (r'(\.\./\.\./BGM324/[0-9A-Za-z_]+/)index\.html', r"\1index_es.html"),
+        ],
+    },
     # Material de apoyo (no son cursos formales).
     "Cheminformatics": {
         "src": DOCS / "ChemInformatics/Material",
@@ -132,6 +145,9 @@ def sync(code, src):
             new = text
             for old, rep in cfg["replace"]:
                 new = new.replace(old, rep)
+            if f.name == "index_es.html":
+                for pat, rep in cfg.get("replace_es", []):
+                    new = re.sub(pat, rep, new)
             if cfg.get("fix_unicode_escapes"):
                 new = UNI_ESC.sub(lambda m: chr(int(m.group(1), 16)), new)
             if f.suffix == ".html" and f.parent == out and f.name in ("index.html", "index_es.html"):

@@ -434,6 +434,15 @@ var I18N_EN = {
     'molecular dynamics.</p>' +
     '<p><a class="btn btn-ghost" href="BGM324/">View course material →</a></p></article>' +
     '<article class="project"><div class="project-head">' +
+    '<span class="badge badge-coi">Complementary course</span>' +
+    '<span class="project-years">6 documents</span></div>' +
+    '<h3><a href="Bioinformatics-Complementary/">Bioinformatics - complementary course</a></h3>' +
+    '<p class="project-role">Companion to BGM324 Bioinformatics · Curriculum Units 1–5</p>' +
+    '<p>A self-study course that follows the official curriculum item by item: introduction and ' +
+    'information theory, sequencing, databases and annotation, pairwise alignment and BLAST, ' +
+    'multiple alignment and phylogenetics, and structural bioinformatics.</p>' +
+    '<p><a class="btn btn-ghost" href="Bioinformatics-Complementary/">View material →</a></p></article>' +
+    '<article class="project"><div class="project-head">' +
     '<span class="badge badge-active">Study material</span>' +
     '<span class="project-years">4th year · 1st semester</span></div>' +
     '<h3><a href="BGM411/">BGM411 · Artificial Intelligence</a></h3>' +

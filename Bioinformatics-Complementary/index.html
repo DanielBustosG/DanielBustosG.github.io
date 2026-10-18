@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es" data-title-es="Bioinformatics - complementary course — Daniel Bustos" data-title-en="Bioinformatics - complementary course — Daniel Bustos">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bioinformatics - complementary course — Daniel Bustos</title>
+<meta name="description" content="Curso complementario de BGM324 Bioinformática (Bioingeniería Médica, UCM): seis documentos que siguen el programa oficial, unidades 1–5.">
+<meta name="author" content="Daniel Bustos Guajardo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bioinformatics - complementary course">
+<meta property="og:description" content="Curso complementario de BGM324 Bioinformática (Bioingeniería Médica, UCM): seis documentos que siguen el programa oficial, unidades 1–5.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+<script>
+  /* Tema antes de pintar, para evitar el destello claro en modo oscuro. */
+  try {
+    var t = localStorage.getItem('db-theme');
+    if (!t) t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="../assets/css/course.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-es="Saltar al contenido" data-en="Skip to content">Saltar al contenido</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="../">
+      <span class="brand-mark">DB</span>
+      <span class="brand-text">
+        <strong>Daniel Bustos</strong>
+        <small data-es="Bioinformática Estructural · UCM" data-en="Structural Bioinformatics · UCM">Bioinformática Estructural · UCM</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="BGM324">
+      <a href="../" data-es="← Volver al sitio" data-en="← Back to main site">← Volver al sitio</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="course-hero">
+    <div class="wrap">
+      <span class="course-code">BGM324</span>
+      <h1>Bioinformatics - complementary course</h1>
+      <ul class="course-meta">
+        <li data-es="<strong>Carrera:</strong> Bioingeniería Médica" data-en="<strong>Degree:</strong> Medical Bioengineering"><strong>Carrera:</strong> Bioingeniería Médica</li>
+        <li data-es="<strong>Nivel:</strong> 3.<sup>er</sup> año, 2.º semestre" data-en="<strong>Level:</strong> 3rd year, 2nd semester"><strong>Nivel:</strong> 3.<sup>er</sup> año, 2.º semestre</li>
+        <li data-es="<strong>Profesor:</strong> Daniel Bustos, PhD" data-en="<strong>Lecturer:</strong> Daniel Bustos, PhD"><strong>Profesor:</strong> Daniel Bustos, PhD</li>
+        <li><strong>Universidad Católica del Maule</strong></li>
+      </ul>
+      <p class="course-lede" data-es="Curso de autoestudio que sigue, ítem por ítem, el programa oficial de BGM324 Bioinformática (unidades 1–5). Cada tema se construye desde las definiciones y la intuición hasta el formalismo, con un ejemplo resuelto sobre datos reales, la interpretación de los resultados y las limitaciones de cada método. Complementa el <a href=&quot;../BGM324/&quot;>material de estudio de BGM324</a>." data-en="A self-study course that follows, item by item, the official curriculum of BGM324 Bioinformatics (Units 1–5). Each topic is built from definitions and intuition up to the formalism, with a worked example on real data, the interpretation of results and the limitations of every method. It complements the <a href=&quot;../BGM324/&quot;>BGM324 study material</a>.">Curso de autoestudio que sigue, ítem por ítem, el programa oficial de BGM324 Bioinformática (unidades 1–5). Cada tema se construye desde las definiciones y la intuición hasta el formalismo, con un ejemplo resuelto sobre datos reales, la interpretación de los resultados y las limitaciones de cada método. Complementa el <a href="../BGM324/">material de estudio de BGM324</a>.</p>
+      <ol class="flow" aria-label="Secuencia del curso">
+        <li data-es="Información" data-en="Information">Información</li>
+        <li data-es="Secuenciación" data-en="Sequencing">Secuenciación</li>
+        <li data-es="Bases de datos" data-en="Databases">Bases de datos</li>
+        <li data-es="Alineamiento" data-en="Alignment">Alineamiento</li>
+        <li data-es="Filogenia" data-en="Phylogenetics">Filogenia</li>
+        <li data-es="Estructura" data-en="Structure">Estructura</li>
+      </ol>
+      <p class="note" data-es="📘 Los documentos están en inglés; la versión en español está en preparación. Cada unidad incluye recuadros prácticos («Try it yourself»), un taller práctico (90–120 min, solo herramientas web y Google Colab), autoevaluación con respuestas, glosario y referencias." data-en="📘 The documents are in English; a Spanish version is in preparation. Each unit includes hands-on boxes (“Try it yourself”), a practical workshop (90–120 min, web tools and Google Colab only), a self-assessment with worked answers, a glossary and references.">📘 Los documentos están en inglés; la versión en español está en preparación. Cada unidad incluye recuadros prácticos («Try it yourself»), un taller práctico (90–120 min, solo herramientas web y Google Colab), autoevaluación con respuestas, glosario y referencias.</p>
+      <p class="note" data-es="🧬 Caso transversal: el gen de la β-globina humana (<i>HBB</i>), la hemoglobina y la anemia falciforme aparecen en todas las unidades, desde su contenido de información hasta su estructura tridimensional." data-en="🧬 Running case: the human β-globin gene (<i>HBB</i>), haemoglobin and sickle-cell disease reappear in every unit, from their information content to their three-dimensional structure.">🧬 Caso transversal: el gen de la β-globina humana (<i>HBB</i>), la hemoglobina y la anemia falciforme aparecen en todas las unidades, desde su contenido de información hasta su estructura tridimensional.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:28px">
+    <div class="wrap">
+      <!-- Generado por scripts: si agregas una unidad, súmala a la lista UNITS del generador. -->
+      <div class="units">
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>1</div>
+          <div>
+            <h2><a href="U1_Introduction_to_Bioinformatics/" data-es="Introducción a la bioinformática" data-en="Introduction to Bioinformatics">Introducción a la bioinformática</a></h2>
+            <p class="unit-sub" data-es="Ítems 1.1–1.5 del programa" data-en="Curriculum items 1.1–1.5">Ítems 1.1–1.5 del programa</p>
+            <p class="desc" data-es="Qué es la bioinformática, teoría de la información aplicada a secuencias biológicas, genómica y proteómica, sistemas operativos, lenguajes de programación y herramientas generales, modelos matemáticos de secuencias, y el marco regulatorio y ético de la bioinformática en salud (internacional y chileno)." data-en="What bioinformatics is, information theory applied to biological sequences, genomics and proteomics, operating systems, programming languages and general tools, mathematical models of sequences, and the regulatory and ethical framework of bioinformatics in health (international and Chilean).">Qué es la bioinformática, teoría de la información aplicada a secuencias biológicas, genómica y proteómica, sistemas operativos, lenguajes de programación y herramientas generales, modelos matemáticos de secuencias, y el marco regulatorio y ético de la bioinformática en salud (internacional y chileno).</p>
+            <ul class="tags subtle"><li>Information theory</li><li>Omics</li><li>Markov models</li><li>Ethics</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="U1_Introduction_to_Bioinformatics/" data-es="Leer (en inglés) →" data-en="Read →">Leer (en inglés) →</a>
+          </div>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>2</div>
+          <div>
+            <h2><a href="U2_Sequence_Determination/" data-es="Determinación de secuencias" data-en="Sequence Determination">Determinación de secuencias</a></h2>
+            <p class="unit-sub" data-es="Ítems 2.1–2.5 del programa" data-en="Curriculum items 2.1–2.5">Ítems 2.1–2.5 del programa</p>
+            <p class="desc" data-es="Cómo se secuencian el ADN, el ARN y las proteínas: Sanger y secuenciación de nueva y tercera generación, ensamblaje de genomas y el Proyecto Genoma Humano, navegadores genómicos, ética de los datos genómicos, análisis de expresión génica (EST, microarreglos, RNA-seq) y proteómica por espectrometría de masas." data-en="How DNA, RNA and proteins are sequenced: Sanger and next/third-generation sequencing, genome assembly and the Human Genome Project, genome browsers, ethics of genomic data, gene-expression analysis (ESTs, microarrays, RNA-seq) and mass-spectrometry proteomics.">Cómo se secuencian el ADN, el ARN y las proteínas: Sanger y secuenciación de nueva y tercera generación, ensamblaje de genomas y el Proyecto Genoma Humano, navegadores genómicos, ética de los datos genómicos, análisis de expresión génica (EST, microarreglos, RNA-seq) y proteómica por espectrometría de masas.</p>
+            <ul class="tags subtle"><li>Sanger</li><li>NGS</li><li>Assembly</li><li>RNA-seq</li><li>Mass spectrometry</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="U2_Sequence_Determination/" data-es="Leer (en inglés) →" data-en="Read →">Leer (en inglés) →</a>
+          </div>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>3</div>
+          <div>
+            <h2><a href="U3_Primary_Databases_and_Annotation/" data-es="Bases de datos primarias y anotación de secuencias" data-en="Primary Databases and Sequence Annotation">Bases de datos primarias y anotación de secuencias</a></h2>
+            <p class="unit-sub" data-es="Ítems 3.1–3.3 del programa" data-en="Curriculum items 3.1–3.3">Ítems 3.1–3.3 del programa</p>
+            <p class="desc" data-es="Registros y tablas de features de GenBank/ENA/DDBJ, dbEST y UniProtKB; formatos de secuencia; localización de genes, elementos reguladores, secuencias codificantes y exones; dot plots; parámetros fisicoquímicos, sitios de proteasas, modificaciones postraduccionales, péptidos señal, hidropatía, regiones transmembrana y dominios." data-en="GenBank/ENA/DDBJ, dbEST and UniProtKB records and feature tables; sequence formats; locating genes, regulatory elements, coding sequences and exons; dot plots; physicochemical parameters, protease sites, post-translational modifications, signal peptides, hydropathy, transmembrane regions and domains.">Registros y tablas de features de GenBank/ENA/DDBJ, dbEST y UniProtKB; formatos de secuencia; localización de genes, elementos reguladores, secuencias codificantes y exones; dot plots; parámetros fisicoquímicos, sitios de proteasas, modificaciones postraduccionales, péptidos señal, hidropatía, regiones transmembrana y dominios.</p>
+            <ul class="tags subtle"><li>GenBank</li><li>UniProtKB</li><li>ORFs</li><li>Dot plots</li><li>InterPro</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="U3_Primary_Databases_and_Annotation/" data-es="Leer (en inglés) →" data-en="Read →">Leer (en inglés) →</a>
+          </div>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>4A</div>
+          <div>
+            <h2><a href="U4A_Pairwise_Alignment_and_BLAST/" data-es="Análisis de secuencias I: alineamiento de pares y BLAST" data-en="Sequence Analysis I: Pairwise Alignment and BLAST">Análisis de secuencias I: alineamiento de pares y BLAST</a></h2>
+            <p class="unit-sub" data-es="Ítems 4.1–4.3 del programa" data-en="Curriculum items 4.1–4.3">Ítems 4.1–4.3 del programa</p>
+            <p class="desc" data-es="Homología (ortólogos, parálogos, xenólogos), tipos de alineamiento, sistemas de puntuación, matrices PAM y BLOSUM, penalizaciones por gaps, fuerza bruta, dot plots, Needleman–Wunsch, Smith–Waterman, las heurísticas de FASTA y BLAST, y el uso práctico de NCBI BLAST." data-en="Homology (orthologues, paralogues, xenologues), alignment types, scoring systems, PAM and BLOSUM matrices, gap penalties, brute force, dot plots, Needleman–Wunsch, Smith–Waterman, FASTA and BLAST heuristics, and practical use of NCBI BLAST.">Homología (ortólogos, parálogos, xenólogos), tipos de alineamiento, sistemas de puntuación, matrices PAM y BLOSUM, penalizaciones por gaps, fuerza bruta, dot plots, Needleman–Wunsch, Smith–Waterman, las heurísticas de FASTA y BLAST, y el uso práctico de NCBI BLAST.</p>
+            <ul class="tags subtle"><li>PAM / BLOSUM</li><li>Needleman–Wunsch</li><li>Smith–Waterman</li><li>BLAST</li><li>E-value</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="U4A_Pairwise_Alignment_and_BLAST/" data-es="Leer (en inglés) →" data-en="Read →">Leer (en inglés) →</a>
+          </div>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>4B</div>
+          <div>
+            <h2><a href="U4B_Multiple_Alignment_Motifs_Phylogenetics/" data-es="Análisis de secuencias II: alineamiento múltiple, motivos, bases de datos secundarias y filogenia" data-en="Sequence Analysis II: Multiple Alignment, Motifs, Secondary Databases and Phylogenetics">Análisis de secuencias II: alineamiento múltiple, motivos, bases de datos secundarias y filogenia</a></h2>
+            <p class="unit-sub" data-es="Ítems 4.4–4.7 del programa" data-en="Curriculum items 4.4–4.7">Ítems 4.4–4.7 del programa</p>
+            <p class="desc" data-es="Algoritmos de alineamiento múltiple, edición con Jalview y BoxShade, motivos conservados (patrones, reglas, fingerprints, bloques, perfiles, modelos ocultos de Markov), registros de PROSITE, PRINTS y Pfam, y análisis filogenético." data-en="Multiple sequence alignment algorithms, editing with Jalview and BoxShade, conserved motifs (patterns, rules, fingerprints, blocks, profiles, hidden Markov models), PROSITE, PRINTS and Pfam records, and phylogenetic analysis.">Algoritmos de alineamiento múltiple, edición con Jalview y BoxShade, motivos conservados (patrones, reglas, fingerprints, bloques, perfiles, modelos ocultos de Markov), registros de PROSITE, PRINTS y Pfam, y análisis filogenético.</p>
+            <ul class="tags subtle"><li>MSA</li><li>Profile HMM</li><li>PROSITE / Pfam</li><li>Phylogenetics</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="U4B_Multiple_Alignment_Motifs_Phylogenetics/" data-es="Leer (en inglés) →" data-en="Read →">Leer (en inglés) →</a>
+          </div>
+        </article>
+
+        <article class="unit">
+          <div class="unit-num"><small data-es="Unidad" data-en="Unit">Unidad</small>5</div>
+          <div>
+            <h2><a href="U5_Structural_Bioinformatics/" data-es="Bioinformática estructural" data-en="Structural Bioinformatics">Bioinformática estructural</a></h2>
+            <p class="unit-sub" data-es="Ítems 5.1–5.4 del programa" data-en="Curriculum items 5.1–5.4">Ítems 5.1–5.4 del programa</p>
+            <p class="desc" data-es="Determinación experimental de estructuras, archivos PDB y el Protein Data Bank, software de visualización y bases de datos estructurales, predicción de estructura secundaria de proteínas y ARN, predicción de estructura terciaria (del modelado por homología a AlphaFold) y docking molecular." data-en="Experimental structure determination, PDB files and the Protein Data Bank, visualisation software and structural databases, secondary-structure prediction of proteins and RNA, tertiary-structure prediction (homology modelling to AlphaFold) and molecular docking.">Determinación experimental de estructuras, archivos PDB y el Protein Data Bank, software de visualización y bases de datos estructurales, predicción de estructura secundaria de proteínas y ARN, predicción de estructura terciaria (del modelado por homología a AlphaFold) y docking molecular.</p>
+            <ul class="tags subtle"><li>PDB</li><li>Secondary structure</li><li>AlphaFold</li><li>Docking</li></ul>
+          </div>
+          <div class="unit-actions">
+            <a class="btn btn-primary btn-sm" href="U5_Structural_Bioinformatics/" data-es="Leer (en inglés) →" data-en="Read →">Leer (en inglés) →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p data-es="© <span class='yr'>2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule."
+       data-en="© <span class='yr'>2026</span> Daniel Bustos · Bioinformatics and Computational Chemistry Laboratory, Universidad Católica del Maule.">© <span class="yr">2026</span> Daniel Bustos · Laboratorio de Bioinformática y Química Computacional, Universidad Católica del Maule.</p>
+    <p class="footer-meta"><a href="../" data-es="Volver al sitio principal" data-en="Back to main site">Volver al sitio principal</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/course.js"></script>
+</body>
+</html>
