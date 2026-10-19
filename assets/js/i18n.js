@@ -498,7 +498,8 @@ var I18N_EN = {
     'focused on the OMF–MFP interface and the rotational register: 112 PDB entries checked, ' +
     '334 references with resolved DOIs and 164 logged searches, including those that found nothing. ' +
     'Available in Spanish only.</p>' +
-    '<p><a class="btn btn-ghost" href="Compendio_RND/">View compendium →</a></p></article>',
+    '<p><a class="btn btn-ghost" href="Compendio_RND/">View compendium →</a> ' +
+    '<a class="btn btn-ghost" href="Compendio_RND/Compendio_RND_completo.zip" download>Download all (.zip) ↓</a></p></article>',
 
   /* ── Contacto ──────────────────────────────────────────── */
   s6_eyebrow: '06 — Contact',
