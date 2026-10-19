@@ -128,3 +128,8 @@
   .toc-units { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 6px 24px; margin: 16px 0 6px; padding: 0; }
   .toc-units li { display: flex; gap: 10px; align-items: baseline; font-size: .92rem; color: var(--text-soft); padding: 6px 0; border-bottom: 1px solid var(--line-soft); }
   .toc-code { flex: none; width: 30px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+/* Data Science: bloques del índice de contenidos y bloque de código dentro de una nota. */
+.toc-block { font-size: .76rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-mute); margin: 26px 0 0; }
+.note pre { background: var(--bg-inset); border-radius: 6px; padding: 10px 12px; margin: 8px 0; overflow-x: auto; font-size: .8rem; line-height: 1.5; }
+.note pre code { background: none; padding: 0; white-space: pre; }

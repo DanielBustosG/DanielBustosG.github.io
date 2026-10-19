@@ -1,0 +1,15 @@
+{
+ "rock1_morgan_sparse.csv.gz": {
+  "sha256": "91ba97bb272dd7adf1333e02130e78faf657c3d2685244bf1c694d86bdf67fb8",
+  "size_bytes": 761975
+ },
+ "screening_morgan_sparse.csv.gz": {
+  "sha256": "2c935ab91c8166dd4c114214b76328e2302cf873ccfa7c5be1af75e7c24621f7",
+  "size_bytes": 2106648
+ },
+ "rock1_curated.sdf.gz": {
+  "sha256": "ca35b5fbd2bcb87300bd90fb56edc2af664f517c0036eecffe3871ae69930ec2",
+  "size_bytes": 958589
+ },
+ "generated_with": "RDKit 2026.03.4 rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=2048); sparse (id, bit) pairs of the set bits"
+}

@@ -5,6 +5,7 @@ Copia el material de estudio de los cursos al sitio y lo deja listo para publica
 Uso (desde la carpeta Webpage):
     python3 scripts/sync_courses.py            # todos los cursos
     python3 scripts/sync_courses.py BGM411     # ambas ediciones de BGM411 (o BGM411-R, BGM411-Python)
+    python3 scripts/sync_courses.py DataScience   # ambas ediciones de Data Science
     python3 scripts/sync_courses.py BGM324 "/otra/ruta/Material_Estudio"
 
 Qué hace con cada curso:
@@ -79,29 +80,50 @@ COURSES = {
             (r'href="\.\./(U[0-9AB]+_[A-Za-z_]+)/(?:index\.html)?"', r'href="../\1/index_es.html"'),
         ],
     },
-    # Curso complementario de ciencia de datos (onboarding del LBQC), 27 unidades en notebooks.
-    "DataScience": {
+    # Curso complementario de ciencia de datos (inducción del LBQC): 27 unidades en dos ediciones
+    # equivalentes, Python y R. "python3 scripts/sync_courses.py DataScience" sincroniza ambas.
+    # Las dos ediciones usan los mismos datos: se publican una sola vez en DataScience/data/.
+    "DataScience-Python": {
         "src": DOCS / "DataScience/Material",
-        "label": "Data Science &middot; complementary course",
-        "zip": "DataScience_notebooks.zip",
-        # Los notebooks leen sus datos congelados desde data/ en el repositorio publicado.
-        "extra": ["data"],
+        "dest": "DataScience/Python",
+        "home": "../../../",
+        "label": "Data Science &middot; Python",
+        "zip": "DataScience_Python_notebooks.zip",
+        # (carpeta de origen, destino relativo al sitio, zip opcional con su contenido)
+        "extra": [("data", "DataScience/data", "DataScience/DataScience_data.zip")],
         "replace": [
             ("USER/REPO", REPO),
-            ("DataScience/Material/", "DataScience/"),
+            ("DataScience/Material/data/", "DataScience/data/"),
+            ("DataScience/Material/", "DataScience/Python/"),
+            ("../../Material_R/", "../../R/"),
             # Enlaces cruzados a otros cursos (estructura local de carpetas → sitio).
-            ("../../../ChemInformatics/Material/", "../../Cheminformatics/"),
-            ("../../../IA_BGM411/Material_Estudio_IA_Python/", "../../BGM411/Python/"),
-            ("../../../Bioinformatica_BGM324/Material_Estudio/", "../../BGM324/"),
+            ("../../../ChemInformatics/Material/", "../../../Cheminformatics/"),
+            ("../../../IA_BGM411/Material_Estudio_IA_Python/", "../../../BGM411/Python/"),
+            ("../../../Bioinformatica_BGM324/Material_Estudio/", "../../../BGM324/"),
         ],
-        # Las salidas de los notebooks muestran rutas locales del Mac donde se ejecutaron
-        # (avisos de librerías, carpetas temporales): se reemplazan por rutas genéricas.
-        "replace_re": [
-            (r"/Users/[^/\s]+/\.claude-science/conda/envs/[^/\s]+/lib/(python3\.\d+)/site-packages/",
-             r"/usr/lib/\1/site-packages/"),
-            (r"/Users/[^/\s]+/\.claude-science/orgs/[0-9a-f-]+/workspaces/[0-9a-f-]+/\.tmp/", "/tmp/"),
-            (r"/Users/[^/\s]+/Documents/Bioinformatica_BGM324/DataScience/(?:Material/)?data", "../data"),
+        "replace_re": "DS_PATHS",
+    },
+    "DataScience-R": {
+        "src": DOCS / "DataScience/Material_R",
+        "dest": "DataScience/R",
+        "home": "../../../",
+        "label": "Data Science &middot; R",
+        "zip": "DataScience_R_notebooks.zip",
+        # El export desde R deja caracteres como <U+2014> en vez de "—": se corrigen al publicar.
+        "fix_unicode_escapes": True,
+        "replace": [
+            ("USER/REPO", REPO),
+            ("DataScience/Material_R/data/", "DataScience/data/"),
+            ("DataScience/Material_R/", "DataScience/R/"),
+            ("../../Material_R/data/", "../../data/"),
+            ('href="../data/', 'href="../../data/'),
+            ('href=\\"../data/', 'href=\\"../../data/'),   # dentro del JSON del notebook
+            ("../../Material/", "../../Python/"),
+            ("../../../ChemInformatics/Material/", "../../../Cheminformatics/"),
+            ("../../../IA_BGM411/Material_Estudio_IA_R/", "../../../BGM411/R/"),
+            ("../../../Bioinformatica_BGM324/Material_Estudio/", "../../../BGM324/"),
         ],
+        "replace_re": "DS_PATHS",
     },
     # Material de apoyo (no son cursos formales).
     "Cheminformatics": {
@@ -123,6 +145,18 @@ COURSES = {
         ],
     },
 }
+
+# Las salidas de los notebooks de Data Science muestran rutas locales del Mac donde se ejecutaron
+# (avisos de librerías, carpetas temporales): se reemplazan por rutas genéricas al publicar.
+DS_PATHS = [
+    (r"/Users/[^/\s]+/\.claude-science/conda/envs/[^/\s]+/lib/(python3\.\d+)/site-packages/",
+     r"/usr/lib/\1/site-packages/"),
+    (r"/Users/[^/\s]+/\.claude-science/orgs/[0-9a-f-]+/workspaces/[0-9a-f-]+/\.tmp/", "/tmp/"),
+    (r"/Users/[^/\s]+/Documents/Bioinformatica_BGM324/DataScience/(?:Material(?:_R)?/|Python/|R/)?data", "../data"),
+]
+for _c in COURSES.values():
+    if _c.get("replace_re") == "DS_PATHS":
+        _c["replace_re"] = DS_PATHS
 
 MARK = "<!-- course-backbar -->"
 OLD_MARK = "<!-- bgm324-backbar -->"
@@ -190,14 +224,21 @@ def sync(code, src):
             if new != text:
                 f.write_text(new, encoding="utf-8")
         print(f"   {unit.name}: {sum(1 for x in out.rglob('*') if x.is_file())} archivos")
-    for name in cfg.get("extra", []):
-        # Carpetas de apoyo sin index.html (p. ej. datos): se copian tal cual.
+    for name, out_rel, zip_rel in cfg.get("extra", []):
+        # Carpetas de apoyo sin index.html (p. ej. datos): se copian tal cual, con un zip opcional.
         if (src / name).is_dir():
-            if (dest / name).exists():
-                shutil.rmtree(dest / name)
-            shutil.copytree(src / name, dest / name, ignore=shutil.ignore_patterns(
+            out = ROOT / out_rel
+            if out.exists():
+                shutil.rmtree(out)
+            shutil.copytree(src / name, out, ignore=shutil.ignore_patterns(
                 ".DS_Store", "__pycache__", "*.pyc", ".gitkeep", ".ipynb_checkpoints"))
-            print(f"   {name}/: {sum(1 for x in (dest / name).rglob('*') if x.is_file())} archivos")
+            files = sorted(x for x in out.rglob("*") if x.is_file())
+            print(f"   {out_rel}/: {len(files)} archivos")
+            if zip_rel:
+                with zipfile.ZipFile(ROOT / zip_rel, "w", zipfile.ZIP_DEFLATED) as z:
+                    for x in files:
+                        z.write(x, f"{name}/{x.relative_to(out).as_posix()}")
+                print(f"   {zip_rel}: {(ROOT / zip_rel).stat().st_size / 1e6:.1f} MB")
     if cfg.get("zip"):
         zpath = dest / cfg["zip"]
         folder = Path(cfg["zip"]).stem
