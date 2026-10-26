@@ -1,12 +1,12 @@
 {
-  "generated": "2026-10-19",
+  "generated": "2026-10-26",
   "source": "OpenAlex",
   "filters": [
     "author.orcid:0000-0002-2136-2305",
     "author.id:A5137396268"
   ],
   "count": 58,
-  "citations": 399,
+  "citations": 403,
   "h_index": 11,
   "i10_index": 16,
   "works": [
@@ -406,7 +406,7 @@
         "Ricardo Oliveira",
         "Jonathan M. Palma"
       ],
-      "venue": null,
+      "venue": "Anais do ... Simpósio Brasileiro de Sistemas Elétricos",
       "year": 2025,
       "volume": null,
       "issue": null,
@@ -466,7 +466,7 @@
       "doi": "https://doi.org/10.3390/ijms25041968",
       "url": "https://doi.org/10.3390/ijms25041968",
       "oa_url": "https://www.mdpi.com/1422-0067/25/4/1968/pdf?version=1707214290",
-      "citations": 16,
+      "citations": 18,
       "type": "article"
     },
     {
@@ -708,7 +708,7 @@
         "Márcio J. Lacerda",
         "Jonathan M. Palma"
       ],
-      "venue": null,
+      "venue": "IEEE International Conference on Automatica",
       "year": 2024,
       "volume": null,
       "issue": null,
@@ -995,6 +995,28 @@
       "type": "article"
     },
     {
+      "id": "https://openalex.org/W4211199076",
+      "title": "Multi-Equilibrium Point Coupled Tanks System: a tutorial about LPV modelling and control design",
+      "authors": [
+        "Jorge A. Zolorza",
+        "Jonathan M. Palma",
+        "Leonardo P. Carvalho",
+        "Daniel Bustos",
+        "Cecília F. Morais",
+        "Karina A. Barbosa"
+      ],
+      "venue": "IEEE CHILEAN Conference on Electrical, Electronics Engineering, Information and Communication Technologies (CHILECON)",
+      "year": 2021,
+      "volume": null,
+      "issue": null,
+      "pages": "1-7",
+      "doi": "https://doi.org/10.1109/chilecon54041.2021.9702916",
+      "url": "https://doi.org/10.1109/chilecon54041.2021.9702916",
+      "oa_url": null,
+      "citations": 2,
+      "type": "conference-paper"
+    },
+    {
       "id": "https://openalex.org/W4200270575",
       "title": "A Novel Theoretical Probabilistic Model for Opportunistic Routing with Applications in Energy Consumption for WSNs",
       "authors": [
@@ -1027,35 +1049,13 @@
         "Wendy González",
         "Erix W. Hernández"
       ],
-      "venue": "2021 IEEE International Conference on Automation/XXIV Congress of the Chilean Association of Automatic Control (ICA-ACCA)",
+      "venue": "IEEE International Conference on Automatica",
       "year": 2021,
       "volume": null,
       "issue": null,
       "pages": "1-7",
       "doi": "https://doi.org/10.1109/icaacca51523.2021.9465239",
       "url": "https://doi.org/10.1109/icaacca51523.2021.9465239",
-      "oa_url": null,
-      "citations": 1,
-      "type": "conference-paper"
-    },
-    {
-      "id": "https://openalex.org/W4211199076",
-      "title": "Multi-Equilibrium Point Coupled Tanks System: a tutorial about LPV modelling and control design",
-      "authors": [
-        "Jorge A. Zolorza",
-        "Jonathan M. Palma",
-        "Leonardo P. Carvalho",
-        "Daniel Bustos",
-        "Cecília F. Morais",
-        "Karina A. Barbosa"
-      ],
-      "venue": "IEEE CHILEAN Conference on Electrical, Electronics Engineering, Information and Communication Technologies (CHILECON)",
-      "year": 2021,
-      "volume": null,
-      "issue": null,
-      "pages": null,
-      "doi": "https://doi.org/10.1109/chilecon54041.2021.9702916",
-      "url": "https://doi.org/10.1109/chilecon54041.2021.9702916",
       "oa_url": null,
       "citations": 1,
       "type": "conference-paper"
@@ -1255,7 +1255,7 @@
       "doi": "https://doi.org/10.3390/ijms19082437",
       "url": "https://doi.org/10.3390/ijms19082437",
       "oa_url": "https://www.mdpi.com/1422-0067/19/8/2437/pdf",
-      "citations": 16,
+      "citations": 17,
       "type": "article"
     },
     {
