@@ -1,40 +1,15 @@
 {
-  "generated": "2026-10-26",
+  "generated": "2026-11-02",
   "source": "OpenAlex",
   "filters": [
     "author.orcid:0000-0002-2136-2305",
     "author.id:A5137396268"
   ],
   "count": 58,
-  "citations": 403,
+  "citations": 411,
   "h_index": 11,
   "i10_index": 16,
   "works": [
-    {
-      "id": "https://openalex.org/W7139116793",
-      "title": "Changes in Alcohol dehydrogenase gene expression throughout strawberry fruit ripening process",
-      "authors": [
-        "Daniel Bustos",
-        "David Alarcón-Muñoz",
-        "Francisca Arriaza-Rodríguez",
-        "Felipe Moraga",
-        "Gabriela Urra",
-        "Carolina Parra-Palma",
-        "Francisca Hormazabal-Abarza",
-        "Patricio Ramos",
-        "Luis Morales-Quintana"
-      ],
-      "venue": "Plant Molecular Biology",
-      "year": 2026,
-      "volume": "116",
-      "issue": "2",
-      "pages": null,
-      "doi": "https://doi.org/10.1007/s11103-026-01691-0",
-      "url": "https://doi.org/10.1007/s11103-026-01691-0",
-      "oa_url": null,
-      "citations": 0,
-      "type": "article"
-    },
     {
       "id": "https://openalex.org/W7154611223",
       "title": "Drug Repurposing Uncovers New Chemical Scaffolds as Potent Urease Inhibitors: A Comprehensive Computational Study",
@@ -60,6 +35,31 @@
       "doi": "https://doi.org/10.3390/ijms27083561",
       "url": "https://doi.org/10.3390/ijms27083561",
       "oa_url": "https://www.mdpi.com/1422-0067/27/8/3561/pdf?version=1776344050",
+      "citations": 1,
+      "type": "article"
+    },
+    {
+      "id": "https://openalex.org/W7139116793",
+      "title": "Changes in Alcohol dehydrogenase gene expression throughout strawberry fruit ripening process",
+      "authors": [
+        "Daniel Bustos",
+        "David Alarcón-Muñoz",
+        "Francisca Arriaza-Rodríguez",
+        "Felipe Moraga",
+        "Gabriela Urra",
+        "Carolina Parra-Palma",
+        "Francisca Hormazabal-Abarza",
+        "Patricio Ramos",
+        "Luis Morales-Quintana"
+      ],
+      "venue": "Plant Molecular Biology",
+      "year": 2026,
+      "volume": "116",
+      "issue": "2",
+      "pages": null,
+      "doi": "https://doi.org/10.1007/s11103-026-01691-0",
+      "url": "https://doi.org/10.1007/s11103-026-01691-0",
+      "oa_url": null,
       "citations": 0,
       "type": "article"
     },
@@ -240,32 +240,6 @@
       "type": "article"
     },
     {
-      "id": "https://openalex.org/W4413435445",
-      "title": "Integrative Computational Approaches for TRPV1 Ion Channel Inhibitor Discovery: An Integrated Machine Learning, Drug Repurposing and Molecular Simulation Approach",
-      "authors": [
-        "Jaime González",
-        "Jonathan M. Palma",
-        "Bruna Benso",
-        "Elizabeth Valdés-Muñoz",
-        "Gabriela Urra",
-        "Sofía E. Ríos-Rozas",
-        "Natalia Morales",
-        "Reynier Suardíaz",
-        "Melissa Alegría-Arcos",
-        "Daniel Bustos"
-      ],
-      "venue": "Journal of Chemical Information and Modeling",
-      "year": 2025,
-      "volume": "65",
-      "issue": "17",
-      "pages": "8957-8968",
-      "doi": "https://doi.org/10.1021/acs.jcim.5c00991",
-      "url": "https://doi.org/10.1021/acs.jcim.5c00991",
-      "oa_url": null,
-      "citations": 3,
-      "type": "article"
-    },
-    {
       "id": "https://openalex.org/W4416843398",
       "title": "Integrative Computational Approaches for the Discovery of Triazole-Based Urease Inhibitors: A Machine Learning, Virtual Screening, and Meta-Dynamics Framework",
       "authors": [
@@ -291,6 +265,32 @@
       "doi": "https://doi.org/10.3390/ijms262311576",
       "url": "https://doi.org/10.3390/ijms262311576",
       "oa_url": "https://www.mdpi.com/1422-0067/26/23/11576/pdf?version=1764349301",
+      "citations": 4,
+      "type": "article"
+    },
+    {
+      "id": "https://openalex.org/W4413435445",
+      "title": "Integrative Computational Approaches for TRPV1 Ion Channel Inhibitor Discovery: An Integrated Machine Learning, Drug Repurposing and Molecular Simulation Approach",
+      "authors": [
+        "Jaime González",
+        "Jonathan M. Palma",
+        "Bruna Benso",
+        "Elizabeth Valdés-Muñoz",
+        "Gabriela Urra",
+        "Sofía E. Ríos-Rozas",
+        "Natalia Morales",
+        "Reynier Suardíaz",
+        "Melissa Alegría-Arcos",
+        "Daniel Bustos"
+      ],
+      "venue": "Journal of Chemical Information and Modeling",
+      "year": 2025,
+      "volume": "65",
+      "issue": "17",
+      "pages": "8957-8968",
+      "doi": "https://doi.org/10.1021/acs.jcim.5c00991",
+      "url": "https://doi.org/10.1021/acs.jcim.5c00991",
+      "oa_url": null,
       "citations": 3,
       "type": "article"
     },
@@ -318,7 +318,7 @@
       "doi": "https://doi.org/10.1021/acsomega.5c04457",
       "url": "https://doi.org/10.1021/acsomega.5c04457",
       "oa_url": "https://pubs.acs.org/doi/pdf/10.1021/acsomega.5c04457?ref=article_openPDF",
-      "citations": 2,
+      "citations": 3,
       "type": "article"
     },
     {
@@ -418,27 +418,6 @@
       "type": "conference-paper"
     },
     {
-      "id": "https://openalex.org/W4391172700",
-      "title": "A journey from molecule to physiology and in silico tools for drug discovery targeting the transient receptor potential vanilloid type 1 (TRPV1) channel",
-      "authors": [
-        "Cesar A. Amaya-Rodriguez",
-        "Karina Carvajal-Zamorano",
-        "Daniel Bustos",
-        "Melissa Alegría-Arcos",
-        "Karen Castillo"
-      ],
-      "venue": "Frontiers in Pharmacology",
-      "year": 2024,
-      "volume": "14",
-      "issue": null,
-      "pages": "1251061-1251061",
-      "doi": "https://doi.org/10.3389/fphar.2023.1251061",
-      "url": "https://doi.org/10.3389/fphar.2023.1251061",
-      "oa_url": "https://www.frontiersin.org/articles/10.3389/fphar.2023.1251061/pdf?isPublishedV2=False",
-      "citations": 19,
-      "type": "article"
-    },
-    {
       "id": "https://openalex.org/W4391575923",
       "title": "Unveiling Novel Urease Inhibitors for Helicobacter pylori: A Multi-Methodological Approach from Virtual Screening and ADME to Molecular Dynamics Simulations",
       "authors": [
@@ -466,8 +445,29 @@
       "doi": "https://doi.org/10.3390/ijms25041968",
       "url": "https://doi.org/10.3390/ijms25041968",
       "oa_url": "https://www.mdpi.com/1422-0067/25/4/1968/pdf?version=1707214290",
-      "citations": 18,
+      "citations": 19,
       "type": "article"
+    },
+    {
+      "id": "https://openalex.org/W4391172700",
+      "title": "A journey from molecule to physiology and in silico tools for drug discovery targeting the transient receptor potential vanilloid type 1 (TRPV1) channel",
+      "authors": [
+        "Cesar A. Amaya-Rodriguez",
+        "Karina Carvajal-Zamorano",
+        "Daniel Bustos",
+        "Melissa Alegría-Arcos",
+        "Karen Castillo"
+      ],
+      "venue": "Frontiers in Pharmacology",
+      "year": 2024,
+      "volume": "14",
+      "issue": null,
+      "pages": "1251061-1251061",
+      "doi": "https://doi.org/10.3389/fphar.2023.1251061",
+      "url": "https://doi.org/10.3389/fphar.2023.1251061",
+      "oa_url": "https://www.frontiersin.org/articles/10.3389/fphar.2023.1251061/pdf?isPublishedV2=False",
+      "citations": 19,
+      "type": "review"
     },
     {
       "id": "https://openalex.org/W4391686222",
@@ -642,7 +642,7 @@
       "doi": "https://doi.org/10.3390/ijms25084303",
       "url": "https://doi.org/10.3390/ijms25084303",
       "oa_url": "https://www.mdpi.com/1422-0067/25/8/4303/pdf?version=1712980617",
-      "citations": 4,
+      "citations": 6,
       "type": "article"
     },
     {
@@ -742,6 +742,27 @@
       "type": "article"
     },
     {
+      "id": "https://openalex.org/W4360840417",
+      "title": "Cost-Effective Pipeline for a Rational Design and Selection of Capsaicin Analogues Targeting TRPV1 Channels",
+      "authors": [
+        "Daniel Bustos",
+        "Christian Galarza",
+        "Wilson Ordoñez",
+        "Sebastian Brauchi",
+        "Bruna Benso"
+      ],
+      "venue": "ACS Omega",
+      "year": 2023,
+      "volume": "8",
+      "issue": "13",
+      "pages": "11736-11749",
+      "doi": "https://doi.org/10.1021/acsomega.2c05672",
+      "url": "https://doi.org/10.1021/acsomega.2c05672",
+      "oa_url": "https://pubs.acs.org/doi/pdf/10.1021/acsomega.2c05672",
+      "citations": 12,
+      "type": "article"
+    },
+    {
       "id": "https://openalex.org/W4384131274",
       "title": "Calcium-Alginate-Chitosan Nanoparticle as a Potential Solution for Pesticide Removal, a Computational Approach",
       "authors": [
@@ -767,27 +788,6 @@
       "url": "https://doi.org/10.3390/polym15143020",
       "oa_url": "https://www.mdpi.com/2073-4360/15/14/3020/pdf?version=1689158500",
       "citations": 12,
-      "type": "article"
-    },
-    {
-      "id": "https://openalex.org/W4360840417",
-      "title": "Cost-Effective Pipeline for a Rational Design and Selection of Capsaicin Analogues Targeting TRPV1 Channels",
-      "authors": [
-        "Daniel Bustos",
-        "Christian Galarza",
-        "Wilson Ordoñez",
-        "Sebastian Brauchi",
-        "Bruna Benso"
-      ],
-      "venue": "ACS Omega",
-      "year": 2023,
-      "volume": "8",
-      "issue": "13",
-      "pages": "11736-11749",
-      "doi": "https://doi.org/10.1021/acsomega.2c05672",
-      "url": "https://doi.org/10.1021/acsomega.2c05672",
-      "oa_url": "https://pubs.acs.org/doi/pdf/10.1021/acsomega.2c05672",
-      "citations": 11,
       "type": "article"
     },
     {
@@ -911,7 +911,7 @@
       "pages": "15014-15027",
       "doi": "https://doi.org/10.1021/acs.jmedchem.1c00378",
       "url": "https://doi.org/10.1021/acs.jmedchem.1c00378",
-      "oa_url": "https://doi.org/10.7270/q2959nh4",
+      "oa_url": null,
       "citations": 5,
       "type": "article"
     },
@@ -1125,7 +1125,7 @@
       "doi": "https://doi.org/10.1016/j.biocel.2019.04.010",
       "url": "https://doi.org/10.1016/j.biocel.2019.04.010",
       "oa_url": null,
-      "citations": 15,
+      "citations": 16,
       "type": "article"
     },
     {
