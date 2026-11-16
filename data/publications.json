@@ -1,15 +1,40 @@
 {
-  "generated": "2026-11-09",
+  "generated": "2026-11-16",
   "source": "OpenAlex",
   "filters": [
     "author.orcid:0000-0002-2136-2305",
     "author.id:A5137396268"
   ],
   "count": 123,
-  "citations": 1694,
+  "citations": 1726,
   "h_index": 23,
-  "i10_index": 48,
+  "i10_index": 50,
   "works": [
+    {
+      "id": "https://openalex.org/W7139116793",
+      "title": "Changes in Alcohol dehydrogenase gene expression throughout strawberry fruit ripening process",
+      "authors": [
+        "Daniel Bustos",
+        "David Alarcón-Muñoz",
+        "Francisca Arriaza-Rodríguez",
+        "Felipe Moraga",
+        "Gabriela Urra",
+        "Carolina Parra-Palma",
+        "Francisca Hormazabal-Abarza",
+        "Patricio Ramos",
+        "Luis Morales-Quintana"
+      ],
+      "venue": "Plant Molecular Biology",
+      "year": 2026,
+      "volume": "116",
+      "issue": "2",
+      "pages": null,
+      "doi": "https://doi.org/10.1007/s11103-026-01691-0",
+      "url": "https://doi.org/10.1007/s11103-026-01691-0",
+      "oa_url": null,
+      "citations": 1,
+      "type": "article"
+    },
     {
       "id": "https://openalex.org/W7154611223",
       "title": "Drug Repurposing Uncovers New Chemical Scaffolds as Potent Urease Inhibitors: A Comprehensive Computational Study",
@@ -36,31 +61,6 @@
       "url": "https://doi.org/10.3390/ijms27083561",
       "oa_url": "https://www.mdpi.com/1422-0067/27/8/3561/pdf?version=1776344050",
       "citations": 1,
-      "type": "article"
-    },
-    {
-      "id": "https://openalex.org/W7139116793",
-      "title": "Changes in Alcohol dehydrogenase gene expression throughout strawberry fruit ripening process",
-      "authors": [
-        "Daniel Bustos",
-        "David Alarcón-Muñoz",
-        "Francisca Arriaza-Rodríguez",
-        "Felipe Moraga",
-        "Gabriela Urra",
-        "Carolina Parra-Palma",
-        "Francisca Hormazabal-Abarza",
-        "Patricio Ramos",
-        "Luis Morales-Quintana"
-      ],
-      "venue": "Plant Molecular Biology",
-      "year": 2026,
-      "volume": "116",
-      "issue": "2",
-      "pages": null,
-      "doi": "https://doi.org/10.1007/s11103-026-01691-0",
-      "url": "https://doi.org/10.1007/s11103-026-01691-0",
-      "oa_url": null,
-      "citations": 0,
       "type": "article"
     },
     {
@@ -356,6 +356,31 @@
       "type": "article"
     },
     {
+      "id": "https://openalex.org/W4410344623",
+      "title": "Identification of druggable binding sites and small molecules as modulators of TMC1",
+      "authors": [
+        "Pedro De-la-Torre",
+        "Claudia Martínez-García",
+        "Paul Gratias",
+        "Matthew Mun",
+        "Paula Santana",
+        "Nurunisa Akyuz",
+        "Wendy González",
+        "Artur A. Indzhykulian",
+        "David Ramírez"
+      ],
+      "venue": "Communications Biology",
+      "year": 2025,
+      "volume": "8",
+      "issue": "1",
+      "pages": "742-742",
+      "doi": "https://doi.org/10.1038/s42003-025-07943-x",
+      "url": "https://doi.org/10.1038/s42003-025-07943-x",
+      "oa_url": "https://www.nature.com/articles/s42003-025-07943-x.pdf",
+      "citations": 5,
+      "type": "article"
+    },
+    {
       "id": "https://openalex.org/W4410112376",
       "title": "Molecular determinants of HCO3− and cation transport in the human cation-dependent Cl−/HCO3− exchanger AE4",
       "authors": [
@@ -466,31 +491,6 @@
       "doi": "https://doi.org/10.1021/acsomega.5c04457",
       "url": "https://doi.org/10.1021/acsomega.5c04457",
       "oa_url": "https://pubs.acs.org/doi/pdf/10.1021/acsomega.5c04457?ref=article_openPDF",
-      "citations": 4,
-      "type": "article"
-    },
-    {
-      "id": "https://openalex.org/W4410344623",
-      "title": "Identification of druggable binding sites and small molecules as modulators of TMC1",
-      "authors": [
-        "Pedro De-la-Torre",
-        "Claudia Martínez-García",
-        "Paul Gratias",
-        "Matthew Mun",
-        "Paula Santana",
-        "Nurunisa Akyuz",
-        "Wendy González",
-        "Artur A. Indzhykulian",
-        "David Ramírez"
-      ],
-      "venue": "Communications Biology",
-      "year": 2025,
-      "volume": "8",
-      "issue": "1",
-      "pages": "742-742",
-      "doi": "https://doi.org/10.1038/s42003-025-07943-x",
-      "url": "https://doi.org/10.1038/s42003-025-07943-x",
-      "oa_url": "https://www.nature.com/articles/s42003-025-07943-x.pdf",
       "citations": 4,
       "type": "article"
     },
@@ -687,7 +687,7 @@
       "doi": "https://doi.org/10.3390/ijms25041968",
       "url": "https://doi.org/10.3390/ijms25041968",
       "oa_url": "https://www.mdpi.com/1422-0067/25/4/1968/pdf?version=1707214290",
-      "citations": 20,
+      "citations": 21,
       "type": "article"
     },
     {
@@ -758,7 +758,7 @@
       "doi": "https://doi.org/10.3390/gels10030185",
       "url": "https://doi.org/10.3390/gels10030185",
       "oa_url": "https://www.mdpi.com/2310-2861/10/3/185/pdf?version=1709876789",
-      "citations": 9,
+      "citations": 10,
       "type": "article"
     },
     {
@@ -784,6 +784,31 @@
       "doi": "https://doi.org/10.1016/j.plaphy.2024.108668",
       "url": "https://doi.org/10.1016/j.plaphy.2024.108668",
       "oa_url": null,
+      "citations": 10,
+      "type": "article"
+    },
+    {
+      "id": "https://openalex.org/W4402758747",
+      "title": "A study of the oral bioavailability and biodistribution increase of Nanoencapsulation-driven Delivering radiolabeled anthocyanins",
+      "authors": [
+        "Thiécla Katiane Osvaldt Rosales",
+        "Fábio Fernando Alves da Silva",
+        "Andy Gonzàlez Rivera",
+        "Sofia Nascimento dos Santos",
+        "Daniel Bustos",
+        "Luis Alberto Morales-Quintana",
+        "Hélder A. Santos",
+        "Emerson Soares Bernardes",
+        "João Paulo Fabi"
+      ],
+      "venue": "Food Research International",
+      "year": 2024,
+      "volume": "197",
+      "issue": "Pt 1",
+      "pages": "115125-115125",
+      "doi": "https://doi.org/10.1016/j.foodres.2024.115125",
+      "url": "https://doi.org/10.1016/j.foodres.2024.115125",
+      "oa_url": "http://hdl.handle.net/10138/601689",
       "citations": 9,
       "type": "article"
     },
@@ -812,31 +837,6 @@
       "doi": "https://doi.org/10.3390/ijms25158027",
       "url": "https://doi.org/10.3390/ijms25158027",
       "oa_url": "https://www.mdpi.com/1422-0067/25/15/8027/pdf?version=1721733686",
-      "citations": 8,
-      "type": "article"
-    },
-    {
-      "id": "https://openalex.org/W4402758747",
-      "title": "A study of the oral bioavailability and biodistribution increase of Nanoencapsulation-driven Delivering radiolabeled anthocyanins",
-      "authors": [
-        "Thiécla Katiane Osvaldt Rosales",
-        "Fábio Fernando Alves da Silva",
-        "Andy Gonzàlez Rivera",
-        "Sofia Nascimento dos Santos",
-        "Daniel Bustos",
-        "Luis Alberto Morales-Quintana",
-        "Hélder A. Santos",
-        "Emerson Soares Bernardes",
-        "João Paulo Fabi"
-      ],
-      "venue": "Food Research International",
-      "year": 2024,
-      "volume": "197",
-      "issue": "Pt 1",
-      "pages": "115125-115125",
-      "doi": "https://doi.org/10.1016/j.foodres.2024.115125",
-      "url": "https://doi.org/10.1016/j.foodres.2024.115125",
-      "oa_url": "http://hdl.handle.net/10138/601689",
       "citations": 8,
       "type": "article"
     },
@@ -893,7 +893,7 @@
       "doi": "https://doi.org/10.1073/pnas.2400650121",
       "url": "https://doi.org/10.1073/pnas.2400650121",
       "oa_url": "https://www.pnas.org/doi/pdf/10.1073/pnas.2400650121",
-      "citations": 6,
+      "citations": 7,
       "type": "article"
     },
     {
@@ -1181,7 +1181,7 @@
       "doi": "https://doi.org/10.2147/ott.s326614",
       "url": "https://doi.org/10.2147/ott.s326614",
       "oa_url": "https://www.dovepress.com/getfile.php?fileID=82288",
-      "citations": 77,
+      "citations": 81,
       "type": "review"
     },
     {
@@ -1209,6 +1209,26 @@
       "type": "article"
     },
     {
+      "id": "https://openalex.org/W4223900477",
+      "title": "Structural Effects of pH Variation and Calcium Amount on the Microencapsulation of Glutathione in Alginate Polymers",
+      "authors": [
+        "Daniel Bustos",
+        "Erix W. Hernández-Rodríguez",
+        "Ricardo I. Castro",
+        "Luis Morales-Quintana"
+      ],
+      "venue": "BioMed Research International",
+      "year": 2022,
+      "volume": "2022",
+      "issue": "1",
+      "pages": "5576090-5576090",
+      "doi": "https://doi.org/10.1155/2022/5576090",
+      "url": "https://doi.org/10.1155/2022/5576090",
+      "oa_url": "https://downloads.hindawi.com/journals/bmri/2022/5576090.pdf",
+      "citations": 6,
+      "type": "article"
+    },
+    {
       "id": "https://openalex.org/W4287010147",
       "title": "A Direct Interaction between Cyclodextrins and TASK Channels Decreases the Leak Current in Cerebellar Granule Neurons",
       "authors": [
@@ -1229,26 +1249,6 @@
       "url": "https://doi.org/10.3390/biology11081097",
       "oa_url": "https://www.mdpi.com/2079-7737/11/8/1097/pdf?version=1658567769",
       "citations": 6,
-      "type": "article"
-    },
-    {
-      "id": "https://openalex.org/W4223900477",
-      "title": "Structural Effects of pH Variation and Calcium Amount on the Microencapsulation of Glutathione in Alginate Polymers",
-      "authors": [
-        "Daniel Bustos",
-        "Erix W. Hernández-Rodríguez",
-        "Ricardo I. Castro",
-        "Luis Morales-Quintana"
-      ],
-      "venue": "BioMed Research International",
-      "year": 2022,
-      "volume": "2022",
-      "issue": "1",
-      "pages": "5576090-5576090",
-      "doi": "https://doi.org/10.1155/2022/5576090",
-      "url": "https://doi.org/10.1155/2022/5576090",
-      "oa_url": "https://downloads.hindawi.com/journals/bmri/2022/5576090.pdf",
-      "citations": 5,
       "type": "article"
     },
     {
@@ -1373,7 +1373,7 @@
       "doi": "https://doi.org/10.3390/ijms22041892",
       "url": "https://doi.org/10.3390/ijms22041892",
       "oa_url": "https://www.mdpi.com/1422-0067/22/4/1892/pdf?version=1613731458",
-      "citations": 82,
+      "citations": 83,
       "type": "review"
     },
     {
@@ -1481,6 +1481,30 @@
       "type": "article"
     },
     {
+      "id": "https://openalex.org/W3131087600",
+      "title": "Diversity of functional alterations of the ClC‐5 exchanger in the region of the proton glutamate in patients with Dent disease 1",
+      "authors": [
+        "Imène Sakhi",
+        "Yohan Bignon",
+        "Nadia Frachon",
+        "Marguerite Hureaux",
+        "Bárbara Arévalo",
+        "Wendy González",
+        "Rosa Vargas‐Poussou",
+        "Stéphane Lourdel"
+      ],
+      "venue": "Human Mutation",
+      "year": 2021,
+      "volume": "42",
+      "issue": "5",
+      "pages": "537-550",
+      "doi": "https://doi.org/10.1002/humu.24184",
+      "url": "https://doi.org/10.1002/humu.24184",
+      "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/humu.24184",
+      "citations": 8,
+      "type": "article"
+    },
+    {
       "id": "https://openalex.org/W3186565777",
       "title": "PPI-MASS: An Interactive Web Server to Identify Protein-Protein Interactions From Mass Spectrometry-Based Proteomics Data",
       "authors": [
@@ -1505,30 +1529,6 @@
       "url": "https://doi.org/10.3389/fmolb.2021.701477",
       "oa_url": "https://www.frontiersin.org/articles/10.3389/fmolb.2021.701477/pdf",
       "citations": 7,
-      "type": "article"
-    },
-    {
-      "id": "https://openalex.org/W3131087600",
-      "title": "Diversity of functional alterations of the ClC‐5 exchanger in the region of the proton glutamate in patients with Dent disease 1",
-      "authors": [
-        "Imène Sakhi",
-        "Yohan Bignon",
-        "Nadia Frachon",
-        "Marguerite Hureaux",
-        "Bárbara Arévalo",
-        "Wendy González",
-        "Rosa Vargas‐Poussou",
-        "Stéphane Lourdel"
-      ],
-      "venue": "Human Mutation",
-      "year": 2021,
-      "volume": "42",
-      "issue": "5",
-      "pages": "537-550",
-      "doi": "https://doi.org/10.1002/humu.24184",
-      "url": "https://doi.org/10.1002/humu.24184",
-      "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/humu.24184",
-      "citations": 6,
       "type": "article"
     },
     {
@@ -1559,7 +1559,7 @@
       "doi": "https://doi.org/10.1111/bph.15480",
       "url": "https://doi.org/10.1111/bph.15480",
       "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/bph.15480",
-      "citations": 6,
+      "citations": 7,
       "type": "article"
     },
     {
@@ -1793,7 +1793,7 @@
       "doi": "https://doi.org/10.1096/fj.201901195rrr",
       "url": "https://doi.org/10.1096/fj.201901195rrr",
       "oa_url": "https://repositorio.uchile.cl/handle/2250/175079",
-      "citations": 50,
+      "citations": 52,
       "type": "article"
     },
     {
@@ -1841,7 +1841,7 @@
       "doi": "https://doi.org/10.1038/s41598-020-65679-6",
       "url": "https://doi.org/10.1038/s41598-020-65679-6",
       "oa_url": "https://www.nature.com/articles/s41598-020-65679-6.pdf",
-      "citations": 30,
+      "citations": 31,
       "type": "article"
     },
     {
@@ -1862,7 +1862,7 @@
       "doi": "https://doi.org/10.1002/prot.25901",
       "url": "https://doi.org/10.1002/prot.25901",
       "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/prot.25901",
-      "citations": 16,
+      "citations": 17,
       "type": "article"
     },
     {
@@ -2044,7 +2044,7 @@
       "doi": "https://doi.org/10.1126/science.aav0569",
       "url": "https://doi.org/10.1126/science.aav0569",
       "oa_url": "https://ora.ox.ac.uk/objects/uuid:413f89cf-1e16-47fb-83e1-5a0b532b5cab/files/mbfb488d2ca0a72ba4b815f3ee8c0215e",
-      "citations": 126,
+      "citations": 128,
       "type": "article"
     },
     {
@@ -2345,7 +2345,7 @@
       "doi": "https://doi.org/10.3390/pr7120940",
       "url": "https://doi.org/10.3390/pr7120940",
       "oa_url": "https://www.mdpi.com/2227-9717/7/12/940/pdf?version=1575975964",
-      "citations": 10,
+      "citations": 11,
       "type": "article"
     },
     {
@@ -2368,25 +2368,6 @@
       "oa_url": "https://www.mdpi.com/1422-0067/20/18/4651/pdf?version=1568883868",
       "citations": 3,
       "type": "erratum"
-    },
-    {
-      "id": "https://openalex.org/W2954058475",
-      "title": "Yeast strainSaccharomyces cerevisiaeBYT45 lacking the cation extrusion systemsENA1-5andNHA1is suitable for the characterization of TASK-3 potassium channel antagonists",
-      "authors": [
-        "Janin Riedelsberger",
-        "Patricia A Obando",
-        "Wendy Gonzalez"
-      ],
-      "venue": "FEMS Yeast Research",
-      "year": 2019,
-      "volume": "19",
-      "issue": "5",
-      "pages": null,
-      "doi": "https://doi.org/10.1093/femsyr/foz044",
-      "url": "https://doi.org/10.1093/femsyr/foz044",
-      "oa_url": null,
-      "citations": 1,
-      "type": "article"
     },
     {
       "id": "https://openalex.org/W2911597402",
@@ -2416,6 +2397,25 @@
       "doi": "https://doi.org/10.1016/j.bpj.2018.11.1635",
       "url": "https://doi.org/10.1016/j.bpj.2018.11.1635",
       "oa_url": "http://www.cell.com/article/S000634951832900X/pdf",
+      "citations": 1,
+      "type": "article"
+    },
+    {
+      "id": "https://openalex.org/W2954058475",
+      "title": "Yeast strainSaccharomyces cerevisiaeBYT45 lacking the cation extrusion systemsENA1-5andNHA1is suitable for the characterization of TASK-3 potassium channel antagonists",
+      "authors": [
+        "Janin Riedelsberger",
+        "Patricia A Obando",
+        "Wendy Gonzalez"
+      ],
+      "venue": "FEMS Yeast Research",
+      "year": 2019,
+      "volume": "19",
+      "issue": "5",
+      "pages": null,
+      "doi": "https://doi.org/10.1093/femsyr/foz044",
+      "url": "https://doi.org/10.1093/femsyr/foz044",
+      "oa_url": null,
       "citations": 1,
       "type": "article"
     },
@@ -2531,7 +2531,7 @@
       "doi": "https://doi.org/10.1016/j.bpj.2018.08.014",
       "url": "https://doi.org/10.1016/j.bpj.2018.08.014",
       "oa_url": "http://www.cell.com/article/S0006349518309664/pdf",
-      "citations": 28,
+      "citations": 29,
       "type": "article"
     },
     {
@@ -2552,7 +2552,7 @@
       "doi": "https://doi.org/10.3390/ijms19082437",
       "url": "https://doi.org/10.3390/ijms19082437",
       "oa_url": "https://www.mdpi.com/1422-0067/19/8/2437/pdf",
-      "citations": 18,
+      "citations": 19,
       "type": "article"
     },
     {
@@ -2744,7 +2744,7 @@
       "doi": "https://doi.org/10.3390/md15100313",
       "url": "https://doi.org/10.3390/md15100313",
       "oa_url": "https://www.mdpi.com/1660-3397/15/10/313/pdf",
-      "citations": 47,
+      "citations": 49,
       "type": "review"
     },
     {
@@ -2889,7 +2889,7 @@
       "doi": "https://doi.org/10.1016/j.tplants.2016.10.006",
       "url": "https://doi.org/10.1016/j.tplants.2016.10.006",
       "oa_url": "http://www.cell.com/article/S1360138516301650/pdf",
-      "citations": 56,
+      "citations": 59,
       "type": "review"
     },
     {
@@ -2908,8 +2908,8 @@
       "pages": "309-317",
       "doi": "https://doi.org/10.1124/mol.116.103895",
       "url": "https://doi.org/10.1124/mol.116.103895",
-      "oa_url": "http://hdl.handle.net/10533/228049",
-      "citations": 52,
+      "oa_url": "http://americanae.aecid.es/americanae/es/registros/registro.do?tipoRegistro=MTD&idBib=3236115",
+      "citations": 53,
       "type": "review"
     },
     {
@@ -2960,6 +2960,28 @@
       "type": "article"
     },
     {
+      "id": "https://openalex.org/W2465742846",
+      "title": "Cooperation through Competition—Dynamics and Microeconomics of a Minimal Nutrient Trade System in Arbuscular Mycorrhizal Symbiosis",
+      "authors": [
+        "Stephan Schott",
+        "Braulio Valdebenito",
+        "Daniel Bustos",
+        "Judith L. Gomez-Porras",
+        "Tripti Sharma",
+        "Ingo Dreyer"
+      ],
+      "venue": "Frontiers in Plant Science",
+      "year": 2016,
+      "volume": "7",
+      "issue": null,
+      "pages": "912-912",
+      "doi": "https://doi.org/10.3389/fpls.2016.00912",
+      "url": "https://doi.org/10.3389/fpls.2016.00912",
+      "oa_url": "https://www.frontiersin.org/articles/10.3389/fpls.2016.00912/pdf",
+      "citations": 36,
+      "type": "article"
+    },
+    {
       "id": "https://openalex.org/W2407761355",
       "title": "Molecular dynamics simulations and CD spectroscopy reveal hydration-induced unfolding of the intrinsically disordered LEA proteins COR15A and COR15B from Arabidopsis thaliana",
       "authors": [
@@ -2979,28 +3001,6 @@
       "doi": "https://doi.org/10.1039/c6cp02272c",
       "url": "https://doi.org/10.1039/c6cp02272c",
       "oa_url": "https://pubs.rsc.org/en/content/articlepdf/2016/cp/c6cp02272c",
-      "citations": 35,
-      "type": "article"
-    },
-    {
-      "id": "https://openalex.org/W2465742846",
-      "title": "Cooperation through Competition—Dynamics and Microeconomics of a Minimal Nutrient Trade System in Arbuscular Mycorrhizal Symbiosis",
-      "authors": [
-        "Stephan Schott",
-        "Braulio Valdebenito",
-        "Daniel Bustos",
-        "Judith L. Gomez-Porras",
-        "Tripti Sharma",
-        "Ingo Dreyer"
-      ],
-      "venue": "Frontiers in Plant Science",
-      "year": 2016,
-      "volume": "7",
-      "issue": null,
-      "pages": "912-912",
-      "doi": "https://doi.org/10.3389/fpls.2016.00912",
-      "url": "https://doi.org/10.3389/fpls.2016.00912",
-      "oa_url": "https://www.frontiersin.org/articles/10.3389/fpls.2016.00912/pdf",
       "citations": 35,
       "type": "article"
     },
